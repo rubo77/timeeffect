@@ -135,9 +135,9 @@
 	$GLOBALS['_PJ_strings']['access_owner']			= 'Owner is allowed to';
 	$GLOBALS['_PJ_strings']['access_group']			= 'Group members are allowed to';
 	$GLOBALS['_PJ_strings']['access_world']			= 'Agents are allowed to';
-	$GLOBALS['_PJ_strings']['access_customer_rwx']	= 'Edit customers, read projects and create new projects';
+	$GLOBALS['_PJ_strings']['access_customer_rwx']	= 'Edit customer, read projects and create new projects';
 	$GLOBALS['_PJ_strings']['access_customer_rx']	= 'Read projects and create new projects';
-	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Edit customers and read projects';
+	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Edit customer and read projects';
 	$GLOBALS['_PJ_strings']['access_customer_r']	= 'Read projects';
 	$GLOBALS['_PJ_strings']['access_project_rwx']	= 'Edit project, read efforts and cretae new efforts';
 	$GLOBALS['_PJ_strings']['access_project_rx']	= 'Read efforts and create new efforts';

@@ -18,6 +18,7 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	$a_buffer = str_replace('<%thousands_seperator%>', $thousands_seperator, $a_buffer);
 	$a_buffer = str_replace('<%session_length%>', $session_length, $a_buffer);
 	$a_buffer = str_replace('<%http_root%>', $http_root, $a_buffer);
+	$a_buffer = str_replace('<%allow_delete%>', $allow_delete, $a_buffer);
 	if($a_file = @fopen('../include/aperetiv.inc.php', 'w')) {
 		fputs($a_file, $a_buffer);
 		@fclose($a_file);

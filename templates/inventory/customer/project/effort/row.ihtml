@@ -12,6 +12,6 @@
 if($effort->giveValue('note') != '') { ?>
 <A CLASS="list" HREF="JavaScript:openPopUp('<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?detail=1&eid=" . $effort->giveValue('id') ?>', 400, 400)"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/note.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;Notiz</A>
 <?php } ?>&nbsp;</TD>
-		<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
+		<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('admin') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR>
 <!-- inventory/customer/project/effort/row.ihtml - END -->

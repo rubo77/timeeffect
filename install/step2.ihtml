@@ -150,14 +150,28 @@ while($file = readdir($dir)) {
 						<td class="FormFieldName"><input class="FormField" name="admin_password" value="<?= $admin_password ?>"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Select whether agents are allowd to delete data:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName">allow delete:</td>
+						<td class="FormField" width="300"><select class="FormField" name="allow_delete">
+							<option Value="1" selected>Yes
+							<option value="0">No
+						</select></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td width="500" colspan="2" align="right"><input type="submit" value="next &gt;&gt;"></td>
-					</tr><tr>
-						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>
 </form>
 				</table>

@@ -10,7 +10,7 @@
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('hours')) ?></TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
-						<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
+						<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 					</TR>
 <?php
 if($effort->giveValue('note') != '') {

@@ -55,6 +55,11 @@
 	*/
 	$_PJ_table_prefix 	= 'te_';
 
+	/*
+	   agents are allow to delete efforts
+	*/
+	$_PJ_agents_allow_delete 	= 0;
+
 /* ******************************************************** */
 /* customizable variables - END                             */
 /* ******************************************************** */
@@ -171,7 +176,7 @@
 							30,
 							31);
 
-	$_PJ_timeeffect_version		= 'Beta 1.1.e, RC 1';
+	$_PJ_timeeffect_version		= 'Beta 1.1 (e), RC 1';
 
 	include_once($_PJ_include_path . '/database.inc.php');
 	include_once($_PJ_include_path . '/functions.inc.php');

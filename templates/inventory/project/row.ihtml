@@ -28,7 +28,7 @@ if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')
 ?>&nbsp;<?php
 }
 ?></TD>
-		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
+		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('write') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR><?php
 	if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
 		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);

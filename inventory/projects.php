@@ -67,7 +67,7 @@
 	}
 
 	if(isset($delete) && !isset($cancel)) {
-		if(!$project->checkUserAccess('write')) {
+		if(!$project->checkUserAccess('write') || (!$_PJ_auth->checkPermission('accountant') && !$GLOBALS['_PJ_agents_allow_delete'])) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 			include("$_PJ_root/templates/error.ihtml");
 			include_once("$_PJ_include_path/degestiv.inc.php");

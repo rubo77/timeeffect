@@ -55,6 +55,11 @@
 	*/
 	$_PJ_table_prefix 	= '<%db_prefix%>';
 
+	/*
+	   agents are allow to delete efforts
+	*/
+	$_PJ_agents_allow_delete 	= <%allow_delete%>;
+
 /* ******************************************************** */
 /* customizable variables - END                             */
 /* ******************************************************** */

@@ -213,6 +213,9 @@
 					?>
 					</SELECT>
 					</TD>
+<?php
+if($_PJ_auth->checkPermission('accountant')) {
+?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
 					<TD CLASS="FormField">
@@ -262,6 +265,7 @@
 					(<?= $GLOBALS['_PJ_strings']['day'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['year'] ?>)
 					</TD>
 <?php
+}
 if($_PJ_auth->checkPermission('admin')) {
 ?>
 				</TR><TR>

@@ -68,6 +68,9 @@
 						<td>admin password:</td>
 						<td width="300"><?= $admin_password ?></td>
 					</tr><tr>
+						<td>allow delete:</td>
+						<td width="300"><?= $allow_delete ?></td>
+					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
@@ -88,6 +91,7 @@
 <input type="hidden" name="language" value="<?= $language ?>">
 <input type="hidden" name="admin_user" value="<?= $admin_user ?>">
 <input type="hidden" name="admin_password" value="<?= $admin_password ?>">
+<input type="hidden" name="allow_delete" value="<?= $allow_delete ?>">
 						<td colspan="2" align="right"><input type="submit" value="finish &gt;&gt;"></td>
 					</tr>
 </form>
