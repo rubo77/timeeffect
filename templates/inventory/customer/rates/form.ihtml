@@ -37,7 +37,7 @@ while($data = $rates->giveNext()) {
 					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_name_width ?>">
 					<INPUT TYPE="hidden" NAME="currency[<?=$data['id']?>]" VALUE="<?= $GLOBALS['_PJ_currency'] ?>">
 					<INPUT CLASS="FormField" TYPE='text' SIZE="10" name="name[<?=$data['id']?>]" VALUE="<?=$data['name']?>"></TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?=$data['price']?>"></TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?= str_replace( '.', $GLOBALS['_PJ_decimal_point'], $data['price']); ?>"></TD>
 				</TR>
 <?php
 $i++;

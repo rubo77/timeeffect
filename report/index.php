@@ -35,6 +35,10 @@
 	}
 
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, ($mode));
+	if($_PJ_auth->checkPermission('accountant') && is_array($charge)) {
+		$statistic->billEfforts(date('Y-m-d'), implode(',', array_keys($charge)));
+	}
+
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
 	include("$_PJ_root/templates/list.ihtml");
 

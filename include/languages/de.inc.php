@@ -88,6 +88,7 @@
 	$GLOBALS['_PJ_strings']['next']					= 'Weiter';
 	$GLOBALS['_PJ_strings']['agent']				= 'Bearbeiter';
 	$GLOBALS['_PJ_strings']['accounting']			= 'Stundenabrechnung';
+	$GLOBALS['_PJ_strings']['bill']					= 'berechnen';
 	$GLOBALS['_PJ_strings']['billed']				= 'Berechnet';
 	$GLOBALS['_PJ_strings']['billed_at']			= 'berechnet am';
 	$GLOBALS['_PJ_strings']['usebilled']			= 'berechnete Aufw&auml;nde verwenden';
@@ -174,6 +175,7 @@
 	$GLOBALS['_PJ_strings']['error_perm_empty']		= 'Bitte wählen Sie mindestens eine Nutzerrolle f&uuml;r diesen Benutzer!';
 	$GLOBALS['_PJ_strings']['error_gids_empty']		= 'Bitte wählen Sie mindestens eine Gruppe f&uuml;r diesen Benutzer!';
 	$GLOBALS['_PJ_strings']['error_name_empty']		= 'Bitte geben Sie den Nachname dieses Benutzers ein!';
+	$GLOBALS['_PJ_strings']['error_zero_effort']	= 'Bitte wählen Sie eine Dauer!';
 
 	$GLOBALS['_PJ_strings']['error']				= 'FEHLER';
 	$GLOBALS['_PJ_strings']['line']					= 'Zeile';
@@ -198,9 +200,10 @@
 						);
 
 	$_PJ_permission_names	= array (
-							 'admin'	=> 'Administrator',
-							 'agent'	=> 'Bearbeiter',
-							 'client'	=> 'Kunde',
+							 'admin'		=> 'Administrator',
+							 'accountant'	=> 'Buchhalter',
+							 'agent'		=> 'Bearbeiter',
+							 'client'		=> 'Kunde',
 							 );
 
 	$_PJ_weekdays		= array (
@@ -222,6 +225,7 @@
 						 '5' => 'Fr',
 						 '6' => 'Sa'
 						 );
+
 	$_PJ_days = array (
 						 'Sun' => 'So',
 						 'Mon' => 'Mo',
@@ -236,5 +240,5 @@
 	$_PJ_today		= date('d.m.Y');
 	$_PJ_now		= date('H:i:s');
 
-	$format_date	= 'd.m.Y';
+	$_PJ_format_date	= 'd.m.Y';
 ?>

@@ -5,9 +5,22 @@
 	$agent				= $_PJ_auth->giveUserById($effort->giveValue('user'));
 ?>
 					<TR>
-						<TD COLSPAN="8"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 					<TR HEIGHT="25">
+<?php
+if($_PJ_auth->checkPermission('accountant')) {
+	if(!$effort->giveValue('billed')) {
+?>
+						<TD CLASS="list<?= $rowclass ?>"><input name="charge[<?= $effort->giveValue('id') ?>]" type="checkbox" checked></TD>
+<?php
+	} else {
+?>
+						<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
+<?php
+	}
+}
+?>
 <?php if(!$cid) { ?>
 						<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('customer_name') ?></TD>
 <?php }
@@ -20,7 +33,7 @@
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatDate($effort->giveValue('date')); ?></TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= $effort->formatTime($effort->giveValue('end'), "H:i"); ?></TD>
 <?php
-if($shown['be']) {
+if($mode == 'billed') {
 ?>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatDate($effort->giveValue('billed')); ?></TD>
 <?php

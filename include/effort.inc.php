@@ -121,6 +121,14 @@
 		function giveEffort() {
 			return $this->efforts[$this->effort_cursor];
 		}
+
+		function billEfforts($date, $ids) {
+			if(!is_object($this->db)) {
+				$this->db = new Database;
+			}
+			$query = "UPDATE " . $GLOBALS['_PJ_effort_table'] . " SET BILLED = '$date' WHERE id IN ($ids)";
+			$this->db->query($query);
+		}
 	}
 
 	class Effort extends Data {
@@ -186,6 +194,9 @@
 			   (date("Y", $e_timestamp) <= 1970	))
 				return;
 
+			if($b_timestamp == $e_timestamp) {
+	        	return $GLOBALS['_PJ_strings']['error_zero_effort'];
+	        }
 			if(date("H", $b_timestamp) > date("H", $e_timestamp)) {
 				$b_time	= "00:00:00";
 				$date	= date("Y-m-d", $b_timestamp+86400);
@@ -228,6 +239,7 @@
 			$query .= "'" . $this->data['rate'] . "', ";
 			$query .= "'" . $this->data['user'] . "', ";
 			$query .= $this->data['billed'] . ")";
+
 			$this->db->query($query);
 
 			$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";

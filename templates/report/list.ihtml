@@ -33,7 +33,13 @@ if($statistic->count()) {
 			</TR><TR>
 				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 					<TR>
-<?php if(!$cid) { ?>
+<?php
+if($_PJ_auth->checkPermission('accountant')) {
+?>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['bill'] ?></TH>
+<?php
+}
+if(!$cid) { ?>
 						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['customer'] ?></TH>
 <?php }
 	if(!$pid) { ?>
@@ -45,7 +51,7 @@ if($statistic->count()) {
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['date'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['from_to'] ?></TH>
 <?php
-if($shown['be']) {
+if($mode == 'billed') {
 ?>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['billed_at'] ?></TH>
 <?php
@@ -54,6 +60,17 @@ if($shown['be']) {
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workinghours'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] ?></TH>
 					</TR>
+<FORM ACTION="<?= $GLOBALS['_PJ_reports_script'] ?>" METHOD="<?= $GLOBALS['_PJ_form_method'] ?>">
+<INPUT TYPE="hidden" NAME="report" VALUE="1">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<?= $cid ?>">
+<INPUT TYPE="hidden" NAME="pid" VALUE="<?= $pid ?>">
+<INPUT TYPE="hidden" NAME="syear" VALUE="<?= $syear ?>">
+<INPUT TYPE="hidden" NAME="smonth" VALUE="<?= $smonth ?>">
+<INPUT TYPE="hidden" NAME="sday" VALUE="<?= $sday ?>">
+<INPUT TYPE="hidden" NAME="eyear" VALUE="<?= $eyear ?>">
+<INPUT TYPE="hidden" NAME="emonth" VALUE="<?= $emonth ?>">
+<INPUT TYPE="hidden" NAME="eday" VALUE="<?= $eday ?>">
+<INPUT TYPE="hidden" NAME="mode" VALUE="billed">
 <?php
 	$rowclass = 1;
 	while($statistic->nextEffort()) {
@@ -69,25 +86,40 @@ if($shown['be']) {
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
 					</TR><TR HEIGHT="25">
 <?php
-$colspan = 2;
+$colspan = 3;
+if($_PJ_auth->checkPermission('accountant')) {
+	$colspan++;
+}
 if(!$cid) {
 	$colspan++;
 }
 if(!$pid) {
 	$colspan++;
 }
+if($statistic->count()) {
 ?>
 						<TD COLSPAN="<?= $colspan ?>"></TD>
 						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
 						<TD CLASS="listSumNumeric"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true); ?></TD>
 						<TD CLASS="listSumNumeric"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
+<?php
+}
+?>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
 					</TR>
-				</TABLE></TD>
+				</TABLE>
+<?php
+if($statistic->count() && $_PJ_auth->checkPermission('accountant')) {
+?>
+				<INPUT TYPE="submit" VALUE="<?= $GLOBALS['_PJ_strings']['bill'] ?> &gt;&gt;"></TD>
+<?php
+}
+?>
 			</TR>
+<FORM>
 		</TABLE></TD>
 	</TR>
 </TABLE>

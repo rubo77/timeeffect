@@ -35,41 +35,45 @@
 			exit;
 		}
 		if(isset($altered)) {
-			if(($hours > 0) || ($minutes > 0)) {
-				$data = array();
-				$data['id']				= $eid;
-				$data['project_id']		= $pid;
-				$data['date']			= "$year-$month-$day";
-				$data['begin']			= "$hour:$minute:$second";
-				$data['description']	= add_slashes($description);
-				$data['note']			= add_slashes($note);
-				$data['rate']			= $rate;
-				$data['user']			= $user;
-				$data['gid']			= $gid;
-				$data['access']			= $access_owner . $access_group . $access_world;
-				if($data['user'] == '') {
-					$data['user']	= $effort->giveValue('user');
-				}
-				if($data['user'] == '') {
-					$data['user']	= $_PJ_auth->giveValue('id');
-				}
-				if($data['gid'] == '') {
-					$data['gid']	= $effort->giveValue('gid');
-				}
-				if($data['access'] == '') {
-					$data['access']	= $effort->giveValue('access');
-				}
-				if(date("Y", strtotime("$billing_day/$billing_month/$billing_year")) > 1970) {
-					$data['billed']			= "'$billing_year-$billing_month-$billing_day'";
-				} else {
-					$data['billed']			= "NULL";
-				}
-	
-				$new_effort = new Effort($data, $_PJ_auth);
-				$new_effort->setEndTime("$hours:$minutes");
-				$new_effort->save();
-				$list = 1;
+			$data = array();
+			$data['id']				= $eid;
+			$data['project_id']		= $pid;
+			$data['date']			= "$year-$month-$day";
+			$data['begin']			= "$hour:$minute:$second";
+			$data['description']	= add_slashes($description);
+			$data['note']			= add_slashes($note);
+			$data['rate']			= $rate;
+			$data['user']			= $user;
+			$data['gid']			= $gid;
+			$data['access']			= $access_owner . $access_group . $access_world;
+			if($data['user'] == '') {
+				$data['user']	= $effort->giveValue('user');
 			}
+			if($data['user'] == '') {
+				$data['user']	= $_PJ_auth->giveValue('id');
+			}
+			if($data['gid'] == '') {
+				$data['gid']	= $effort->giveValue('gid');
+			}
+			if($data['access'] == '') {
+				$data['access']	= $effort->giveValue('access');
+			}
+			if(date("Y", strtotime("$billing_day/$billing_month/$billing_year")) > 1970) {
+				$data['billed']			= "'$billing_year-$billing_month-$billing_day'";
+			} else {
+				$data['billed']			= "NULL";
+			}
+	
+			$new_effort = new Effort($data, $_PJ_auth);
+			$new_effort->setEndTime("$hours:$minutes");
+			$message = $new_effort->save();
+			if($message != '') {
+				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
+				include("$_PJ_root/templates/edit.ihtml");
+				include_once("$_PJ_include_path/degestiv.inc.php");
+				exit;
+			}
+			$list = 1;
 		} else {
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
 			include("$_PJ_root/templates/edit.ihtml");

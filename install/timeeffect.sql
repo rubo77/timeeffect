@@ -15,7 +15,7 @@ CREATE TABLE `<%db_prefix%>auth` (
   KEY `username` (`username`,`password`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin,agent', '', 1, '<%admin_user%>', '<%admin_password%>', '', 'Administrator', '', '', '');
+INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin', '', 1, '<%admin_user%>', '<%admin_password%>', '', 'Administrator', '', '', '');
 
 CREATE TABLE `<%db_prefix%>customer` (
   `id` int(32) unsigned NOT NULL auto_increment,
@@ -78,8 +78,9 @@ CREATE TABLE `<%db_prefix%>group` (
 
 
 INSERT INTO `<%db_prefix%>group` VALUES (1, 65535, 'admin');
-INSERT INTO `<%db_prefix%>group` VALUES (2, 6, 'agent');
-INSERT INTO `<%db_prefix%>group` VALUES (3, 4, 'client');
+INSERT INTO `<%db_prefix%>group` VALUES (2, 8, 'accountant');
+INSERT INTO `<%db_prefix%>group` VALUES (3, 4, 'agent');
+INSERT INTO `<%db_prefix%>group` VALUES (4, 2, 'client');
 
 
 CREATE TABLE `<%db_prefix%>project` (

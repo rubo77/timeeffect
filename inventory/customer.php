@@ -44,7 +44,7 @@
 							$data[$i]['id']			= $id;
 							$data[$i]['cid']		= $cid;
 							$data[$i]['name']		= $name[$r_keys[$i]];
-							$data[$i]['price']		= $price[$r_keys[$i]];
+							$data[$i]['price']		= str_replace($GLOBALS['_PJ_decimal_point'], '.', $price[$r_keys[$i]]);
 							$data[$i]['currency']	= $currency[$r_keys[$i]];
 						}
 					}

@@ -53,7 +53,6 @@
 	$GLOBALS['_PJ_strings']['edit_group']			= 'edit group';
 	$GLOBALS['_PJ_strings']['group_list']			= 'Group list';
 
-
 	$GLOBALS['_PJ_strings']['report']				= 'Report';
 
 	$GLOBALS['_PJ_strings']['yes']					= 'yes';
@@ -89,6 +88,7 @@
 	$GLOBALS['_PJ_strings']['next']					= 'Next';
 	$GLOBALS['_PJ_strings']['agent']				= 'Agent';
 	$GLOBALS['_PJ_strings']['accounting']			= 'Accounting';
+	$GLOBALS['_PJ_strings']['bill']					= 'charge';
 	$GLOBALS['_PJ_strings']['billed']				= 'charged';
 	$GLOBALS['_PJ_strings']['billed_at']			= 'charged';
 	$GLOBALS['_PJ_strings']['usebilled']			= 'use charged efforts';
@@ -132,13 +132,19 @@
 	$GLOBALS['_PJ_strings']['allow_nc']				= 'allowed to create new customers';
 	$GLOBALS['_PJ_strings']['gids']					= 'groups';
 	$GLOBALS['_PJ_strings']['gid']					= 'belongs to group';
-	$GLOBALS['_PJ_strings']['access_owner']			= 'Owner is alloed to';
+	$GLOBALS['_PJ_strings']['access_owner']			= 'Owner is allowed to';
 	$GLOBALS['_PJ_strings']['access_group']			= 'Group members are allowed to';
 	$GLOBALS['_PJ_strings']['access_world']			= 'Agents are allowed to';
 	$GLOBALS['_PJ_strings']['access_customer_rwx']	= 'Edit customers, read projects and create new projects';
 	$GLOBALS['_PJ_strings']['access_customer_rx']	= 'Read projects and create new projects';
 	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Edit customers and read projects';
 	$GLOBALS['_PJ_strings']['access_customer_r']	= 'Read projects';
+	$GLOBALS['_PJ_strings']['access_project_rwx']	= 'Edit project, read efforts and cretae new efforts';
+	$GLOBALS['_PJ_strings']['access_project_rx']	= 'Read efforts and create new efforts';
+	$GLOBALS['_PJ_strings']['access_project_rw']	= 'Edit project and read efforts';
+	$GLOBALS['_PJ_strings']['access_project_r']		= 'Read efforts';
+	$GLOBALS['_PJ_strings']['access_effort_rw']		= 'Read and edit effort';
+	$GLOBALS['_PJ_strings']['access_effort_r']		= 'Read effort';
 
 	$GLOBALS['_PJ_strings']['access_na']			= 'no access';
 	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agents are allowed to see foreign efforts';
@@ -169,6 +175,7 @@
 	$GLOBALS['_PJ_strings']['error_perm_empty']		= 'Please select at least one role for this user!';
 	$GLOBALS['_PJ_strings']['error_gids_empty']		= 'Please select at least one group for this user!';
 	$GLOBALS['_PJ_strings']['error_name_empty']		= 'Please enter the last name of this user!';
+	$GLOBALS['_PJ_strings']['error_zero_effort']	= 'Please select a duration!';
 
 	$GLOBALS['_PJ_strings']['error']				= 'ERROR';
 	$GLOBALS['_PJ_strings']['line']					= 'line';
@@ -193,19 +200,21 @@
 						);
 
 	$_PJ_permission_names	= array (
-							 'admin'	=> 'Administrator',
-							 'agent'	=> 'Agent',
-							 'client'	=> 'Customer',
+							 'admin'		=> 'Administrator',
+							 'accountant'	=> 'Accountant',
+							 'agent'		=> 'Agent',
+							 'client'		=> 'Customer',
 							 );
 
 	$_PJ_weekdays		= array (
-						 '0' => 'Sundday',
+						 '0' => 'Sunday',
 						 '1' => 'Monday',
 						 '2' => 'Tuesday',
 						 '3' => 'Wednesday',
 						 '4' => 'Thursday',
 						 '5' => 'Friday',
-						 '6' => 'Saturday');
+						 '6' => 'Saturday'
+						 );
 
 	$_PJ_weekdays_abbr	= array (
 						 '0' => 'Sun',
@@ -214,7 +223,9 @@
 						 '3' => 'Wed',
 						 '4' => 'Thu',
 						 '5' => 'Fri',
-						 '6' => 'Sat');
+						 '6' => 'Sat'
+						 );
+
 	$_PJ_days = array (
 						 'Sun' => 'Sun',
 						 'Mon' => 'Mon',
@@ -229,5 +240,5 @@
 	$_PJ_today		= date('d.m.Y');
 	$_PJ_now		= date('H:i:s');
 
-	$format_date	= 'm/d/Y';
+	$_PJ_format_date	= 'm/d/Y';
 ?>

@@ -93,7 +93,7 @@ if($_PJ_auth->checkPermission('admin')) {
 	reset($a_permissions);
 	foreach($a_permissions as $name => $key) {
 ?>
-						<OPTION<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $name ?>
+						<OPTION VALUE="<?= $name ?>"<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $GLOBALS['_PJ_permission_names'][$name] ?>
 <?php
 	}
 ?>

@@ -79,28 +79,24 @@ TD.listDetail {
 	background:			#F5F5F5;
 	color:				#000063;
 	padding:			3px;
-	vertical-align:		top;
 }
 
 TD.listDetail1 {
 	background:			#FFFFFF;
 	color:				#000063;
 	padding:			3px;
-	vertical-align:		top;
 }
 
 TD.listSubDetail {
 	background:			#F5F5F5;
 	color:				#AAAACC;
 	padding:			3px;
-	vertical-align:		top;
 }
 
 TD.listSubDetail1 {
 	background:			#FFFFFF;
 	color:				#AAAACC;
 	padding:			3px;
-	vertical-align:		top;
 }
 
 TD.listDetailNumeric {
@@ -108,7 +104,6 @@ TD.listDetailNumeric {
 	color:				#000063;
 	padding:			3px;
 	text-align:			right;
-	vertical-align:		top;
 }
 
 TD.listDetailNumeric1 {
@@ -116,7 +111,6 @@ TD.listDetailNumeric1 {
 	color:				#000063;
 	padding:			3px;
 	text-align:			right;
-	vertical-align:		top;
 }
 
 TD.listSubDetailNumeric {
@@ -124,7 +118,6 @@ TD.listSubDetailNumeric {
 	color:				#AAAACC;
 	padding:			3px;
 	text-align:			right;
-	vertical-align:		top;
 }
 
 TD.listSubDetailNumeric1 {
@@ -132,7 +125,6 @@ TD.listSubDetailNumeric1 {
 	color:				#AAAACC;
 	padding:			3px;
 	text-align:			right;
-	vertical-align:		top;
 }
 
 TD.listFoot {

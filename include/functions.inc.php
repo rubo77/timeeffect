@@ -7,7 +7,10 @@
 		return $number;
 	}
 
-	function formatDate($date, $format = "d.m.Y") {
+	function formatDate($date, $format = NULL) {
+		if(!$format) {
+			$format = $GLOBALS['_PJ_format_date'];
+		}
 		if($date == '') {
 			return NULL;
 		}
@@ -33,7 +36,7 @@
 			case 'seconds':
 				return ($e_time - $b_time);
 			default:
-				return calculateFromSeconds ($what, ($e_time - $b_time));
+				return calculateFromSeconds($what, ($e_time - $b_time));
 		}
 	}
 	function calculateFromSeconds($what, $seconds) {

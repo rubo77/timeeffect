@@ -134,9 +134,11 @@
 					</SELECT>
 					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
 					</TD>
+<!--
 				</TR><TR>
 					<TD CLASS="FormFieldName"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?>:</TD>
 					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="pdf" VALUE="1"></TD>
+-->
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['usebilled'] ?>:</TD>
 					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="mode" VALUE="billed"></TD>

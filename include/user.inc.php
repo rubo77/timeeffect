@@ -63,6 +63,7 @@
 				$this->load($data);
 			}
 			$this->loadGroups();
+			$this->loadPermissionNames();
 		}
 
 		function load($id = '') {
@@ -89,6 +90,17 @@
 				$this->data['group_names'] .= $this->db->f('name');
 			}
 		}
+
+		function loadPermissionNames() {
+			$user_perms = explode(',', $this->giveValue('permissions'));
+			foreach($user_perms as $user_perm) {
+				if($this->data['perm_names']) {
+					$this->data['perm_names'] .= ', ';
+				}
+				$this->data['perm_names'] .= $GLOBALS['_PJ_permission_names'][$user_perm];
+			}
+		}
+
 		function exists($username) {
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username' AND id <> '" . $this->data['id'] . "'";
 			$this->db->query($query);

@@ -14,7 +14,10 @@
 			return $number;
 		} /* End of function DataList::formatNumber() */
 
-		function formatDate($date, $format = "d.m.Y") {
+		function formatDate($date, $format = NULL) {
+			if(!$format) {
+				$format = $GLOBALS['_PJ_format_date'];
+			}
 			if($date == '') {
 				return NULL;
 			}

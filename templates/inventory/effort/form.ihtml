@@ -66,6 +66,8 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
+					<TD CLASS="Error" COLSPAN="2"><?= $message ?></TD>
+				</TR><TR>
 					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><b><?= $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
 					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><b><?php print $project->giveValue('project_name'); ?></b></TD>
 				</TR><TR>
@@ -205,8 +207,8 @@
 							}
 							printf(' VALUE="%02d">%s (%s %s)' , $data['price'], $data['name'], $data['currency'], formatNumber($data['price']));
 						}
-						if(!$rate_found) {
-							printf('<OPTION VALUE="%02d" SELECTED>%s %s' , $rate, $GLOBALS['_PJ_currency'], formatNumber($rate));
+						if($rate != '' && !$rate_found) {
+							printf('<OPTION VALUE="%s" SELECTED>%s %s' , $rate, $GLOBALS['_PJ_currency'], formatNumber($rate));
 						}
 					?>
 					</SELECT>

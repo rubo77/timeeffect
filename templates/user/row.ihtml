@@ -5,7 +5,7 @@
 					<TR HEIGHT="25">
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?edit=1&uid=" . $user->giveValue('id') ?>"><?= $user->giveValue('username') ?></A></TD>
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('firstname') ?> <?= $user->giveValue('lastname') ?></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('permissions') ?></TD>
+						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('perm_names') ?></TD>
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('group_names') ?></TD>
 <?php
 if($user->giveValue('id') != '1') {
