@@ -1,0 +1,14 @@
+Subject: TIMEEFFECT first beta release on SF.net
+
+TIMEFFECT is a multi user PHP4/MySQL driven time recording tool.
+It helps users to track efforts spent for costumers on particular projects and lets them generate statistics and accounting reports in HTML and/or PDF format. Customers and projects may be equipped with budgets which will be considered within the customers or project statistics.
+
+TIMEFFECT currently includes German and English translations but is prepared to support any language.
+
+Following features are planned or element of development:
+ - installation: there is no installation routine at present. This nuisance will be abolished a.s.a.p.
+ - client view: customers will be provided with a special 'client view' which will display statistical data about any projects, offers and efforts related to this particular customer.
+ - offer management: designated users will be able to create offers for their customers in PDF format. offers can be switched into projects converting the calculation of the offer into an project related budget.
+ - invoice management: users can generate invoices for customers/projects in PDF format.
+
+You can find a fully functional demo at: http://www.timeeffect.de/
