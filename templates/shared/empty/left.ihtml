@@ -15,51 +15,11 @@
 				<TD CLASS="leftHead"><?=$GLOBALS['_PJ_strings']['navigation']?></TD>
 			</TR><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?= $nav_width ?>" HEIGHT="1" BORDER="0"></TD>
-			</TR><TR>
-				<TD><A CLASS="left" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] ?>"><?= $GLOBALS['_PJ_strings']['customers'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-top.gif" WIDTH="11" HEIGHT="7" BORDER="0"></TD>
-			</TR><TR>
-				<TD><?php
-		if(($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) || ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script'])) {
-		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] ?>"><?= $GLOBALS['_PJ_strings']['projects'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
-		} ?>&nbsp;</TD>
-			</TR><TR>
-				<TD><?php
-		if($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script']) {
-		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] ?>"><?= $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
-		} ?>&nbsp;</TD>
-			</TR><TR>
-				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
-			</TR><TR>
-				<TD CLASS="leftHead"><?= $GLOBALS['_PJ_strings']['chosen_elements'] ?></TD>
-			</TR><TR>
-				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?= $nav_width ?>" HEIGHT="1" BORDER="0"></TD>
-			</TR><TR>
-				<TD><?php
-		if(is_object($customer) && $customer->giveValue('id')) {
-		?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
-		print $customer->giveValue('customer_name');
-		?></A><?php
-		} ?>&nbsp;</TD>
-			</TR><TR>
-				<TD><?php
-		if(is_object($project) && $project->giveValue('id')) {
-		?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
-		print $project->giveValue('project_name');
-		?></A><?php
-		} ?>&nbsp;</TD>
-			</TR><TR>
-				<TD><?php
-		if(is_object($effort) && $effort->giveValue('id')) {
-		?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?edit=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
-		if(strlen($effort->giveValue('description')) > $max_length) {
-			print substr($effort->giveValue('description'), 0, $max_length-3) . '...';
-		} else {
-			print $effort->giveValue('description');
-		}
-		?></A><?php
-		} ?>&nbsp;</TD>
+			</TR>
 			</TR>
 		</TABLE></TD>
+	</TR><TR>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net/projects/timeeffect/" target="_blank"><IMG src="http://sourceforge.net/sflogo.php?group_id=104682&type=4" border="0" alt="SourceForge.net Logo"></A><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

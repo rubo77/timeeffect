@@ -6,14 +6,32 @@
 <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
 	<TR>
 		<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
-			<TR>
-				<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
+			<TR HEIGHT="150">
+				<TD CLASS="headFrame" COLSPAN="2" VALIGN="top"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
 			</TR><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+			</TR><TR>
+				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+				<TD CLASS="leftHead"><?=$GLOBALS['_PJ_strings']['navigation']?></TD>
+			</TR><TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?= $nav_width ?>" HEIGHT="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] ?>"><?= $GLOBALS['_PJ_strings']['customers'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-top.gif" WIDTH="11" HEIGHT="7" BORDER="0"></TD>
+			</TR><TR>
+				<TD><?php
+		if(is_object($customer) && $customer->giveValue('id')) {
+		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] ?>?cid=<?= $cid ?>"><?= $GLOBALS['_PJ_strings']['projects'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
+		} ?>&nbsp;</TD>
+			</TR><TR>
+				<TD><?php
+		if(is_object($project) && $project->giveValue('id')) {
+		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] ?>?cid=<?= $cid ?>&pid=<?= $pid ?>"><?= $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
+		} ?>&nbsp;</TD>
 			</TR><?php
 		if(is_object($customer) && $customer->giveValue('id')) {
 		?><TR>
-				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
+			</TR><TR>
 				<TD CLASS="leftHead"><?= $GLOBALS['_PJ_strings']['inventory'] ?></TD>
 			</TR><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?= $nav_width ?>" HEIGHT="1" BORDER="0"></TD>
@@ -48,6 +66,8 @@
 			}
 		}?>
 		</TABLE></TD>
+	</TR><TR>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net/projects/timeeffect/" target="_blank"><IMG src="http://sourceforge.net/sflogo.php?group_id=104682&type=4" border="0" alt="SourceForge.net Logo"></A><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

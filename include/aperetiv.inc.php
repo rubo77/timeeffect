@@ -30,8 +30,8 @@
 	*/
 	$_PJ_default_language		= 'de';
 
-	$_PJ_decimal_point			= '.';
-	$_PJ_thousands_seperator	= ',';
+	$_PJ_decimal_point			= ',';
+	$_PJ_thousands_seperator	= '.';
 	$_PJ_currency				= '€';
 
 	/*

@@ -10,14 +10,29 @@
 
 <body>
 
-<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
+<TABLE	WIDTH="100%"
+		BORDER="<?php print($_PJ_inner_frame_border); ?>"
+		CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+		CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
 	<TR>
-		<TD VALIGN="top"><br>&nbsp;<b><?= $GLOBALS['_PJ_strings']['not_implemented'] ?>!</b></TD>
-	</TR><TR>
-		<TD>&nbsp;<a href="javascript:self.close()"><b><?= $GLOBALS['_PJ_strings']['close_window'] ?></b></a></TD>
-	</TR><TR>
-		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?></td>
+		<TD CLASS="content" ALIGN="center">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+			<TR>
+				<TD><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="20" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="20" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><b><?= $GLOBALS['_PJ_strings']['not_implemented'] ?>!</b></TD>
+			</TR><TR>
+				<TD><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD ALIGN="center"><A CLASS="note" HREF="JavaScript:self.close()"><IMG src="<?= $GLOBALS['_PJ_icon_path'] ?>/close_window.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['close_window'] ?></A></TD>
+			</TR>
+		</TABLE>
+		</TD>
 	</TR>
 </TABLE>
+
+
 </body>
 </html>
