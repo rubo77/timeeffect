@@ -35,7 +35,7 @@
 		$eday = intval(date('d'));
 	}
 
-	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $$mode);
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
 	if($_PJ_auth->checkPermission('accountant') && is_array($charge)) {
 		$statistic->billEfforts(date('Y-m-d'), implode(',', array_keys($charge)));
 	}

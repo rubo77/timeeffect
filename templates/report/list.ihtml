@@ -106,6 +106,9 @@ if(!$cid) {
 if(!$pid) {
 	$colspan++;
 }
+if($statistic->mode == 'billed') {
+	$colspan++;
+}
 if($statistic->count()) {
 ?>
 						<TD COLSPAN="<?= $colspan ?>"></TD>
@@ -122,7 +125,7 @@ if($statistic->count()) {
 					</TR>
 				</TABLE>
 <?php
-if($statistic->count() && $_PJ_auth->checkPermission('accountant')) {
+if($statistic->count() && ($statistic->count() != $statistic->count(true)) && $_PJ_auth->checkPermission('accountant')) {
 ?>
 				<INPUT TYPE="submit" VALUE="<?= $GLOBALS['_PJ_strings']['bill'] ?> &gt;&gt;"></TD>
 <?php

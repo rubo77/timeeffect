@@ -8,8 +8,9 @@
 		var $db;
 		var $data;
 		var $stats;
-		var	$effort_count = 0;
-		var $effort_cursor = -1;
+		var	$effort_count			= 0;
+		var $effort_cursor			= -1;
+		var $billed_effort_count	= 0;
 
 		function Statistics(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {
 			$this->customer	= $customer;
@@ -107,6 +108,7 @@
 				if($this->db->Record['billed'] != '') {
 					$this->data['billed_seconds']			+= $seconds;
 					$this->months['billed']["$year-$month"] += $seconds;
+					$this->billed_effort_count++;
 				} else {
 					$this->months['open']["$year-$month"]	+= $seconds;
 				}
@@ -211,6 +213,13 @@
 			while($this->db->next_record()) {
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
+				if($this->db->Record['billed'] != '') {
+					$this->data['billed_seconds']			+= $seconds;
+					$this->months['billed']["$year-$month"] += $seconds;
+					$this->billed_effort_count++;
+				} else {
+					$this->months['open']["$year-$month"]	+= $seconds;
+				}
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
@@ -303,6 +312,13 @@
 			while($this->db->next_record()) {
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
+				if($this->db->Record['billed'] != '') {
+					$this->data['billed_seconds']			+= $seconds;
+					$this->months['billed']["$year-$month"] += $seconds;
+					$this->billed_effort_count++;
+				} else {
+					$this->months['open']["$year-$month"]	+= $seconds;
+				}
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
@@ -395,6 +411,13 @@
 			while($this->db->next_record()) {
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
+				if($this->db->Record['billed'] != '') {
+					$this->data['billed_seconds']			+= $seconds;
+					$this->months['billed']["$year-$month"] += $seconds;
+					$this->billed_effort_count++;
+				} else {
+					$this->months['open']["$year-$month"]	+= $seconds;
+				}
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
@@ -504,6 +527,13 @@
 			while($this->db->next_record()) {
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
+				if($this->db->Record['billed'] != '') {
+					$this->data['billed_seconds']			+= $seconds;
+					$this->months['billed']["$year-$month"] += $seconds;
+					$this->billed_effort_count++;
+				} else {
+					$this->months['open']["$year-$month"]	+= $seconds;
+				}
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
@@ -520,7 +550,10 @@
 			return $this->data[$key];
 		}
 
-		function count() {
+		function count($billed = false) {
+			if($billed) {
+				return $this->billed_effort_count;
+			}
 			return $this->effort_count;
 		}
 	}

@@ -58,8 +58,8 @@ function sf(){
 <!-- START - content -->
 <FORM METHOD="POST" ACTION="<?= $GLOBALS['PHP_SELF'] ?>">
 <?php
-// print $_GET && $_POST as hidden form fields
-print PJAuth::assembleFormFields();
+// print $_GET && $_POST as hidden form fields. Exclude fields password and username
+print PJAuth::assembleFormFields(NULL, NULL, array('password', 'username'));
 ?>
 		<TD VALIGN="top"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 			<TR>
