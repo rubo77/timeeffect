@@ -25,3 +25,11 @@
   changes:
    - minor bugs fixes on display of currency and adding new users
    - changed statistics for billed efforts
+
+###################################
+2004-10-25:
+  release: beta 1.1.e, RC 1
+  changes:
+   - added UNIX like user model
+   - added mechanism to charge efforts
+
