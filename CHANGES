@@ -15,3 +15,6 @@
   release: beta 1.1.c
   changes:
    - adding installation routine
+   - changing PDF layout to support the display of a
+     logo image on top of each page
+   - changing display of currency to one global value
