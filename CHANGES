@@ -18,3 +18,10 @@
    - changing PDF layout to support the display of a
      logo image on top of each page
    - changing display of currency to one global value
+
+###################################
+2004-07-14:
+  release: beta 1.1.d
+  changes:
+   - minor bugs fixes on display of currency and adding new users
+   - changed statistics for billed efforts

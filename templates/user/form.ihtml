@@ -22,7 +22,8 @@
 			$password_retype		= $GLOBALS['_PJ_password_dummy'];
 		}
 	} else {
-		$username			= $login;
+		$username			= '';
+		$permissions = array();
 	}
 	$a_permissions = $_PJ_auth->permissions;
 	include($GLOBALS['_PJ_root'] . '/templates/user/options/edit.ihtml');
@@ -70,11 +71,12 @@ if($_PJ_auth->checkPermission('admin')) {
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['permissions'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="permissions[]" multiple="multiple">
 <?php
-	$_PJ_p_count = count($_PJ_auth->permissions);
+	$_PJ_p_count = count($a_permissions);
 	reset($a_permissions);
 	foreach($a_permissions as $name => $key) {
 ?>
 						<OPTION<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $name ?>
+
 <?php
 	}
 ?>

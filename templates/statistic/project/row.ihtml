@@ -25,9 +25,9 @@
 		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project<?php if($project->giveValue('closed') == 'Yes') print 'c' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><?= $project->giveValue('project_name') ?></A></TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;</TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('days')) print formatNumber($project->giveValue('days'), true); ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('costs')) print formatNumber($project->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget'), true) . '&nbsp;€'; ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('costs')) print formatNumber($project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
 	if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
 		$efforts	= new EffortList($project->giveValue('id'));

@@ -36,23 +36,13 @@ function documentHead() {
 		$pdf->MultiCell($pdf->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
 	}
 
-	if(intval($year) && intval($month)) {
-		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
-		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
-		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
-		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $GLOBALS['_PJ_months'][$month] . " $year", 0, 1, 'L', 0);
-	}
-
-	if(intval($syear) && intval($eyear)) {
-		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
-		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
-		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
-		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, "$sday. " . $GLOBALS['_PJ_months'][$smonth] . " $syear - $eday. " . $GLOBALS['_PJ_months'][$emonth] . " $eyear", 0, 1, 'L', 0);
-	}
+	$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
+	$head = $GLOBALS['_PJ_strings']['period'] . ": ";
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
+	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
+	
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
+	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, formatDate("$syear-$smonth-$sday", $GLOBALS['format_date']) . ' - ' . formatDate("$eyear-$emonth-$eday", $GLOBALS['format_date']), 0, 1, 'L', 0);
 
 	$pdf->Ln();
 }
@@ -135,7 +125,7 @@ if(intval($year) && intval($month)) {
 	if(!$eday) {
 		$eday = date('d');
 	}
-	$statistic	= new Statistics(false, $cid, $pid, $show_closed);
+	$statistic	= new Statistics(false, $cid, $pid, $mode);
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
 } else {
 	$statistic	= new Statistics(true, $cid, $pid, $mode);
