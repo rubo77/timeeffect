@@ -1,0 +1,17 @@
+###################################
+2004-03-18:
+  release: beta 1.1
+  changes:
+   - first official beta release
+
+###################################
+2004-03-29:
+  release: beta 1.1.b
+  changes:
+   - adding PEAR sources to release
+
+###################################
+2004-04-07:
+  release: beta 1.1.c
+  changes:
+   - adding installation routine
