@@ -2,6 +2,7 @@
 <?php
 	$sum_effort_costs	+= $effort->giveValue('costs');
 	$sum_effort_days	+= $effort->giveValue('days');
+	$sum_effort_hours	+= $effort->giveValue('hours');
 	$agent				= $_PJ_auth->giveUserById($effort->giveValue('user'));
 ?>
 					<TR>

@@ -110,7 +110,7 @@ if($statistic->count()) {
 ?>
 						<TD COLSPAN="<?= $colspan ?>"></TD>
 						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true); ?></TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_effort_hours) print formatNumber($sum_effort_hours, true); ?></TD>
 						<TD CLASS="listSumNumeric"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
 <?php
