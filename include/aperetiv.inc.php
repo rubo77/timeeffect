@@ -171,6 +171,8 @@
 							30,
 							31);
 
+	$_PJ_timeeffect_version		= 'Beta 1.1 (e), RC 1';
+
 	include_once($_PJ_include_path . '/database.inc.php');
 	include_once($_PJ_include_path . '/functions.inc.php');
 	include_once($_PJ_include_path . '/data.inc.php');
@@ -217,7 +219,5 @@
  	} else if(isset($sbe) && $sbe == 0) {
  		unset($shown['be']);
  	}
-
-	$_PJ_timeeffect_version		= 'Beta 1.1 (e), RC 1';
 
 ?>

@@ -19,7 +19,7 @@
 			</TR>
 		</TABLE></TD>
 	</TR><TR>
-		<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net/projects/timeeffect/" target="_blank"><IMG src="http://sourceforge.net/sflogo.php?group_id=104682&type=4" border="0" alt="SourceForge.net Logo"></A><br><br></td>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net/projects/timeeffect/" target="_blank"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/sf.gif" border="0" alt="SourceForge.net Logo"></A><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

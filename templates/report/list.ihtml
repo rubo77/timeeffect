@@ -40,7 +40,8 @@ if($statistic->count()) {
 				
 						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['project'] ?></TH>
 <?php } ?>
-						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['name'] ?></TH>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['description'] ?></TH>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['agent'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['date'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['from_to'] ?></TH>
 <?php
@@ -50,7 +51,7 @@ if($shown['be']) {
 <?php
 }
 ?>
-						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workingdays'] ?></TH>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workinghours'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] ?></TH>
 					</TR>
 <?php

@@ -129,6 +129,8 @@ if($GLOBALS['_PJ_session_length']) {
 			</TR><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 			</TR>
+	</TR><TR>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $GLOBALS['_PJ_timeeffect_version'] ?></td>
 		</TABLE></TD>
 </FORM>
 <!-- END - content -->
