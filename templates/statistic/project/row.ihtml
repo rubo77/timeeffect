@@ -27,7 +27,7 @@
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('days')) print formatNumber($project->giveValue('days'), true); ?></TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('costs')) print formatNumber($project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?><?php if(doubleval($project->giveValue('project_budget')-$project->giveValue('costs')) < 0) print 'Neg'; ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
 	if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
 		$efforts	= new EffortList($project->giveValue('id'));

@@ -1,4 +1,4 @@
-<?
+<?php
 	function formatNumber($number, $force_float = false) {
 		$number = number_format($number, 2, $GLOBALS['_PJ_decimal_point'] , $GLOBALS['_PJ_thousands_seperator']);
 		if(!$force_float) {

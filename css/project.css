@@ -70,6 +70,14 @@ TD.listSumNumeric {
 	font-weight:		bold;
 }
 
+TD.listSumNumericNeg {
+	background:			#FFFFFF;
+	color:				#FF0000;
+	padding:			3px;
+	text-align:			right;
+	font-weight:		bold;
+}
+
 TD.list1 {
 	background:			#FFFFFF;
 	color:				#555555;
@@ -111,9 +119,25 @@ TD.listDetailNumeric {
 	vertical-align:		top;
 }
 
+TD.listDetailNumericNeg {
+	background:			#F5F5F5;
+	color:				#FF0000;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
 TD.listDetailNumeric1 {
 	background:			#FFFFFF;
 	color:				#000063;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
+TD.listDetailNumeric1Neg {
+	background:			#FFFFFF;
+	color:				#FF0000;
 	padding:			3px;
 	text-align:			right;
 	vertical-align:		top;
