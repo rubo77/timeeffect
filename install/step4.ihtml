@@ -1,8 +1,6 @@
 <?php
 include_once('functions.inc.php');
 
-copy('index.html-dist', '../index.html');
-
 if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	while(!feof($a_file)) {
 		$a_buffer .= fread($a_file, 4096);
