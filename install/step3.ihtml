@@ -1,0 +1,68 @@
+				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
+				Please check the entered values and press 'finish'<br><br>
+				<table cellpadding="0" cellspacing="0" border="0">
+					<tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><b>database values</b></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td>table prefix:</td>
+						<td width="300"><?= $db_prefix ?></td>
+					</tr><tr>
+						<td width="200">database name:</td>
+						<td width="300"><?= $db_name ?></td>
+					</tr><tr>
+						<td>database host:</td>
+						<td width="300"><?= $db_host ?></td>
+					</tr><tr>
+						<td>database user:</td>
+						<td width="300"><?= $db_user ?></td>
+					</tr><tr>
+						<td>database password:</td>
+						<td width="300"><?= $db_password ?></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><b>other values</b></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td>interface language:</td>
+						<td width="300"><?= $language ?></td>
+					</tr><tr>
+						<td>currency:</td>
+						<td width="300"><?= $currency ?></td>
+					</tr><tr>
+						<td>admin user:</td>
+						<td width="300"><?= $admin_user ?></td>
+					</tr><tr>
+						<td>admin password:</td>
+						<td width="300"><?= $admin_password ?></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+<form action="<?= $PHP_SELF ?>" method="POST">
+<input type="hidden" name="step" value="4">
+<input type="hidden" name="db_prefix" value="<?= $db_prefix ?>">
+<input type="hidden" name="db_name" value="<?= $db_name ?>">
+<input type="hidden" name="db_host" value="<?= $db_host ?>">
+<input type="hidden" name="db_user" value="<?= $db_user ?>">
+<input type="hidden" name="db_password" value="<?= $db_password ?>">
+<input type="hidden" name="currency" value="<?= $currency ?>">
+<input type="hidden" name="language" value="<?= $language ?>">
+<input type="hidden" name="admin_user" value="<?= $admin_user ?>">
+<input type="hidden" name="admin_password" value="<?= $admin_password ?>">
+						<td colspan="2" align="right"><input type="submit" value="finish"></td>
+					</tr>
+</form>
+				</table>

@@ -1,0 +1,108 @@
+<?php
+if(!isset($db_prefix)) {
+	$db_prefix = 'te_';
+}
+if(!isset($db_name)) {
+	$db_name = 'timeeffect';
+}
+if(!isset($db_user)) {
+	$db_user = 'timeeffect';
+}
+if(!isset($db_host)) {
+	$db_host = 'localhost';
+}
+if(!isset($db_password)) {
+	$db_password = 'PfTe04';
+}
+?>
+				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
+				Please enter the appropriate values in the following fields and press 'next >>'<br><br>
+				<table cellpadding="0" cellspacing="0" border="0">
+<form action="<?= $PHP_SELF ?>" method="POST">
+<input type="hidden" name="step" value="2">
+					<tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter the prefix for the TIMEEFFECT database tables. You may use this option to make it easier to identify the TIMEEFFECT database tables:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName" width="200">table prefix:</td>
+						<td class="FormField" width="300"><input class="FormField" name="db_prefix" value="<?= $db_prefix ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter the name of the TIMEEFFECT database:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName">database name:</td>
+						<td class="FormFieldName"><input class="FormField" name="db_name" value="<?= $db_name ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter the name of the host where the TIMEEFFECT database is located:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName">database host:</td>
+						<td class="FormFieldName"><input class="FormField" name="db_host" value="<?= $db_host ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter the name of the TIMEEFFECT database user:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName">database user:</td>
+						<td class="FormFieldName"><input class="FormField" name="db_user" value="<?= $db_user ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter the password of the TIMEEFFECT database user:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+					<tr>
+						<td class="FormFieldName">database password:</td>
+						<td class="FormFieldName"><input class="FormField" name="db_password" value="<?= $db_password ?>"></td>
+					</tr>
+					<tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2" align="right"><input type="submit" value="next >>"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr>
+</form>
+				</table>

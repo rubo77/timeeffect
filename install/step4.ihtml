@@ -1,0 +1,65 @@
+<?php
+include_once('functions.inc.php');
+
+copy('index.html-dist', '../index.html');
+
+if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
+	while(!feof($a_file)) {
+		$a_buffer .= fread($a_file, 4096);
+	}
+	@fclose($a_file);
+	$http_root = str_replace('/install', '', dirname($PHP_SELF));
+	$a_buffer = str_replace('<%db_prefix%>', $db_prefix, $a_buffer);
+	$a_buffer = str_replace('<%db_name%>', $db_name, $a_buffer);
+	$a_buffer = str_replace('<%db_host%>', $db_host, $a_buffer);
+	$a_buffer = str_replace('<%db_user%>', $db_user, $a_buffer);
+	$a_buffer = str_replace('<%db_password%>', $db_password, $a_buffer);
+	$a_buffer = str_replace('<%language%>', $language, $a_buffer);
+	$a_buffer = str_replace('<%currency%>', $currency, $a_buffer);
+	$a_buffer = str_replace('<%http_root%>', $http_root, $a_buffer);
+	if($a_file = @fopen('../include/aperetiv.inc.php', 'w')) {
+		fputs($a_file, $a_buffer);
+		@fclose($a_file);
+	} else {
+		$error_message = 'opening of file \'aperetiv.inc.php\' for writing failed!';
+	}
+} else {
+	$error_message = 'opening of file \'aperetiv.inc.php-dist\' failed!';
+}
+
+if($sql_file = @fopen('timeeffect.sql', 'r')) {
+	while(!feof($sql_file)) {
+		$sql_buffer .= fread($sql_file, 4096);
+	}
+	@fclose($sql_file);
+	$sql_buffer = str_replace('<%db_prefix%>', $db_prefix, $sql_buffer);
+	$sql_buffer = str_replace('<%admin_user%>', $admin_user, $sql_buffer);
+	$sql_buffer = str_replace('<%admin_password%>', md5($admin_password), $sql_buffer);
+
+	$pieces = array();
+	splitSqlFile($pieces, $sql_buffer, 0);
+	$pieces_count = count($pieces);
+	for($i = 0; $i < $pieces_count; $i++) {
+		$db->query($pieces[$i]);
+		if($db->Errno) {
+			$error_message = 'execution of SQL command failed (' . $pieces[$i] . ')';
+			break;
+		}
+	}
+} else {
+	$error_message = 'opening of file \'timeeffect.sql\' failed!';
+}
+if(!$error_message) {
+?>
+				<b>TIMEEFFECT Installation - finished</b><br><br>
+				the installation process has been successfully finished.<br>
+				Please remove the 'install' directory for security reasons.<br>
+				You can access your TIMEEFFECT installation <a href="../index.html">here</a>;
+<?php
+} else {
+?>
+				<b>TIMEEFFECT Installation - failed!</b><br><br>
+				<span class="errorMessage"><b>ERROR: <?= $error_message ?></b></span><br>
+<?php
+}
+?>
