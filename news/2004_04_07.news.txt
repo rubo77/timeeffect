@@ -1,0 +1,20 @@
+Subject: TIMEEFFECT: now with setup routine
+
+TIMEEFFECT now comes with a setup routine which eases the installation of the system highly.
+
+The aim of TIMEEFECT is to provide project participants with time recording possibilities.
+ - First: project workers are able to track their personal
+   efforts spent on the several projects they are involved.
+ - Second: project managers are able to view statistics about
+   the amount of efforts spent on specific projects/customers.
+ - Third: project accounters are able to extract accounting
+   information about the projects for creation of invoices.
+   
+TIMEFFECT currently includes German and English translations but is prepared to support any language.
+
+Following features are planned or element of development:
+ - client view: customers will be provided with a special 'client view' which will display statistical data about any projects, offers and efforts related to this particular customer.
+ - offer management: designated users will be able to create offers for their customers in PDF format. offers can be switched into projects converting the calculation of the offer into an project related budget.
+ - invoice management: users can generate invoices for customers/projects in PDF format.
+
+You can find a fully functional demo at: http://www.timeeffect.de/
