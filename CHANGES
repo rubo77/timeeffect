@@ -44,3 +44,10 @@
   release: beta 1.1.g, RC 1
   changes:
    - minor bug fixes
+
+###################################
+2004-11-06:
+  release: beta 1.1.h, RC 1
+  changes:
+   - adding CSV reports
+   - filter reports by user

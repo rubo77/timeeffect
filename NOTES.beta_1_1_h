@@ -1,6 +1,18 @@
-This release adds a UNIX like user model and a mechanism to charge efforts
+This release adds a CSV report and the possibilty to filter
+reports by user
 
 ######################################
+UPDATE:
+
+Beta 1.1.g:
+simply make a backup copy of the files
+	'include/aperetiv.inc.php'
+and 
+	'include/layout.inc.php'
+Untar the TIMEEFFECT package to the appropriate directory.
+
+
+Former releases:
 Since we made major changes to the TIMEEFFECT data model there is no accurate way to
 update from any prior versions of TIMEEFFECT.
 Please install TIMEEFFECT from scratch.
