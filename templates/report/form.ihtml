@@ -3,7 +3,7 @@
 	include($GLOBALS['_PJ_root'] . '/templates/report/options/edit.ihtml');
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
-	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $customer_budget_currency ?>">
+	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $GLOBALS['_PJ_currency'] ?>">
 	<INPUT TYPE="hidden" NAME="report" VALUE="1">
 
 	<CENTER>

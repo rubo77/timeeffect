@@ -5,52 +5,52 @@ function documentHead() {
 
 	$pdf->SetY($GLOBALS['_PJ_pdf_top_margin']);
 
-	$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_header_font_size']);
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 	$y_line = $pdf->GetY();
 	$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
 	$head = $GLOBALS['_PJ_strings']['accounting'];
 	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 1, 'L', 0);
-	$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_header_font_size']);
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 
 	if($customer->giveValue("customer_name")) {
-		$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$y_line = $pdf->GetY();
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
 		$head = $GLOBALS['_PJ_strings']['customer'] . ": ";
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($pdf->GetStringWidth($customer->giveValue("customer_name")), $GLOBALS['_PJ_pdf_header_font_size']+2, $customer->giveValue("customer_name"), 0, 1, 'L', 0);
 	}
 
 	if($project->giveValue("project_name")) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
 		$head = $GLOBALS['_PJ_strings']['project'] . ": ";
-		$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 	
 		$x_align = $pdf->GetX();
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $project->giveValue("project_name"), '', 1, 'L', 0);
 		$pdf->SetX($x_align);
-		$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_small_font_size']-1);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_small_font_size']-1);
 		$pdf->MultiCell($pdf->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
 	}
 
 	if(intval($year) && intval($month)) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
 		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
-		$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $GLOBALS['_PJ_months'][$month] . " $year", 0, 1, 'L', 0);
 	}
 
 	if(intval($syear) && intval($eyear)) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
 		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
-		$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-		$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, "$sday. " . $GLOBALS['_PJ_months'][$smonth] . " $syear - $eday. " . $GLOBALS['_PJ_months'][$emonth] . " $eyear", 0, 1, 'L', 0);
 	}
 
@@ -63,7 +63,7 @@ function tableHead() {
 	$pdf->SetY($pdf->GetY() + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 	$pdf->SetFillColor($GLOBALS['_PJ_pdf_table_head_bg_r'], $GLOBALS['_PJ_pdf_table_head_bg_g'], $GLOBALS['_PJ_pdf_table_head_bg_b']);
 	$pdf->SetTextColor($GLOBALS['_PJ_pdf_table_head_fg_r'], $GLOBALS['_PJ_pdf_table_head_fg_g'], $GLOBALS['_PJ_pdf_table_head_fg_b']);
-	$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_small_font_size']);
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_small_font_size']);
 	reset($GLOBALS['fields']);
 	while(list($name, $string) = each($GLOBALS['fields'])) {
 		if($GLOBALS['field_widths'][$name] == 0) {
@@ -186,7 +186,7 @@ while($statistic->nextEffort()) {
 		$pdf->SetTextColor($GLOBALS['_PJ_pdf_table_row1_fg_r'], $GLOBALS['_PJ_pdf_table_row1_fg_g'], $GLOBALS['_PJ_pdf_table_row1_fg_b']);
 		$filled = true;
 	}
-	$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_small_font_size']);
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_small_font_size']);
 	$y_line = $pdf->GetY();
 		
 	$string = preg_replace("/<br>/", "", $effort->giveValue('description'));
@@ -238,7 +238,7 @@ while($statistic->nextEffort()) {
 	$pdf->SetX($GLOBALS['field_lefts']['price']);
 	$price = $rates->giveValue($effort->giveValue("rate") . ".price") * $effort->giveValue("hours");
 	$price_sum += $price;
-	$pdf->Cell($GLOBALS['field_widths']['price'], ($y_next_line-$y_line), formatNumber($price, true) . " " . $rates->giveValue($effort->giveValue('rate') . ".currency"), 0, 0, $GLOBALS['field_aligns']['price'], 1);
+	$pdf->Cell($GLOBALS['field_widths']['price'], ($y_next_line-$y_line), formatNumber($price, true) . " " . $GLOBALS['_PJ_currency'], 0, 0, $GLOBALS['field_aligns']['price'], 1);
 
 	$pdf->SetY($y_next_line + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 
@@ -261,7 +261,7 @@ $y_line += $GLOBALS['_PJ_pdf_sum_spacing'];
 $pdf->SetY($y_line);
 
 $pdf->SetFillColor($GLOBALS['_PJ_pdf_table_sum_bg_r'], $GLOBALS['_PJ_pdf_table_sum_bg_g'], $GLOBALS['_PJ_pdf_table_sum_bg_b']);
-$pdf->SetFont('Arial','B',$GLOBALS['_PJ_pdf_small_font_size']);
+$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_small_font_size']);
 $pdf->SetX($GLOBALS['_PJ_pdf_left_margin'] + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 $sum_width = $GLOBALS['field_lefts']['effort'] - $GLOBALS['_PJ_pdf_table_cell_spacing'] - $GLOBALS['field_lefts']['count'];
 $pdf->Cell($sum_width, $GLOBALS['_PJ_pdf_small_font_size']+2, $GLOBALS['_PJ_strings']['sum'] . ":", 0, 0, 'R', 1);
@@ -272,7 +272,7 @@ $pdf->SetX($GLOBALS['field_lefts']['effort']);
 $pdf->Cell($GLOBALS['field_widths']['effort'], $GLOBALS['_PJ_pdf_small_font_size']+2, formatNumber($effort_sum, true), 0, 0, $GLOBALS['field_aligns']['effort'], 1);
 
 $pdf->SetX($GLOBALS['field_lefts']['price']);
-$pdf->Cell($GLOBALS['field_widths']['price'], $GLOBALS['_PJ_pdf_small_font_size']+2, formatNumber($price_sum, true) . " " . $rates->giveValue($a_effort['rate'] . ".currency"), 0, 0, $GLOBALS['field_aligns']['price'], 1);
+$pdf->Cell($GLOBALS['field_widths']['price'], $GLOBALS['_PJ_pdf_small_font_size']+2, formatNumber($price_sum, true) . " " . $GLOBALS['_PJ_currency'], 0, 0, $GLOBALS['field_aligns']['price'], 1);
 
 if($cid && ($foot_note != '')) {
 	$pdf->SetTextColor($GLOBALS['_PJ_pdf_footnote_fg_r'], $GLOBALS['_PJ_pdf_footnote_fg_g'], $GLOBALS['_PJ_pdf_footnote_fg_b']);
@@ -281,7 +281,7 @@ if($cid && ($foot_note != '')) {
 	$pdf->Ln();
 	$pdf->Ln();
 	$pdf->Ln();
-	$pdf->SetFont('Arial','',$GLOBALS['_PJ_pdf_mini_font_size']);
+	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_mini_font_size']);
 	$pdf->SetX($GLOBALS['_PJ_pdf_left_margin'] + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 	$pdf->MultiCell($pdf->w  - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'] - 3, $GLOBALS['_PJ_pdf_mini_font_size']+2, $foot_note, 0, 'L', 1);
 }

@@ -143,9 +143,6 @@
 	$GLOBALS['_PJ_strings']['is_not_defined']		= 'ist nicht definiert';
 	$GLOBALS['_PJ_strings']['not_implemented']		= 'noch nicht implementiert';
 
-	$GLOBALS['_PJ_strings']['pdf_header']			= 'JAN KROGMANN';
-	$GLOBALS['_PJ_strings']['pdf_subheader']		= 'IT Consulting';
-
 	$_PJ_months = array ('', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
 
 	$_PJ_months_abr = array ('',

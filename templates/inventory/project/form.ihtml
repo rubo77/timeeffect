@@ -12,7 +12,7 @@
 		$project_name				= $GLOBALS['_PJ_strings']['no_name'];
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/new.ihtml');
 	}
-	$project_budget_currency	= $_PJ_currency;
+	$project_budget_currency	= $GLOBALS['_PJ_currency'];
 ?>
 <FORM ACTION="<?= $GLOBALS['_PJ_projects_inventory_script'] ?>" METHOD="<?= $GLOBALS['_PJ_form_method'] ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">

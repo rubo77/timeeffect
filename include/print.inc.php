@@ -22,6 +22,17 @@ class PJPDF extends FPDF {
 		$img_height = 29/2+1;
 		$img_width = 100/2;
 
+		// if logo for PDF accounting report exists
+		if($GLOBALS['_PJ_pdf_logo'] && file_exists($GLOBALS['_PJ_root'] . '/images/' . $GLOBALS['_PJ_pdf_logo'])) {
+			$this->Image($GLOBALS['_PJ_root'] . '/images/' . $GLOBALS['_PJ_pdf_logo'],
+						 $this->w/2 - $GLOBALS['_PJ_pdf_logo_width']/2,
+						 $GLOBALS['_PJ_pdf_logo_top'],
+						 $GLOBALS['_PJ_pdf_logo_width'],
+						 $GLOBALS['_PJ_pdf_logo_height']);
+			return;
+		}
+
+		// add default page header
 		$this->SetLineWidth(0.1);
 		$this->Line(0, $line_y, $this->w,$line_y);
 		if($GLOBALS['_PJ_pdf_print_margins']) {
@@ -32,13 +43,13 @@ class PJPDF extends FPDF {
 			$this->Line(0, $this->h - $GLOBALS['_PJ_pdf_bottom_margin'], $this->w,$this->h - $GLOBALS['_PJ_pdf_bottom_margin']);
 		}
 
-		$this->SetFont('Arial','',$header_font_size);
+		$this->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$header_font_size);
 		$this->SetX($left_margin-3);
-		$name = $GLOBALS['_PJ_strings']['pdf_header'];
+		$name = $GLOBALS['_PJ_pdf_header_string'];
 		$this->Cell($this->GetStringWidth($name), $header_font_size+2, $name, 0, 1, 'L', 0);
 		$this->SetX($left_margin-3);
-		$this->SetFont('Arial','',$small_font_size-1);
-		$name = $GLOBALS['_PJ_strings']['pdf_subheader'];
+		$this->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$small_font_size-1);
+		$name = $GLOBALS['_PJ_pdf_subheader_string'];
 		$this->Cell($this->GetStringWidth($name), $header_font_size+2, $name, 0, 1, 'L', 0);
 	}
 
@@ -51,12 +62,15 @@ class PJPDF extends FPDF {
 		$this->SetFillColor($GLOBALS['_PJ_pdf_footer_bg_r'], $GLOBALS['_PJ_pdf_footer_bg_g'], $GLOBALS['_PJ_pdf_footer_bg_b']);
 		$this->SetTextColor($GLOBALS['_PJ_pdf_footer_fg_r'], $GLOBALS['_PJ_pdf_footer_fg_g'], $GLOBALS['_PJ_pdf_footer_fg_b']);
 	    $this->SetY(-$GLOBALS['_PJ_pdf_footer_margin']);
-	    $this->SetFont('Arial','',9);
-	    $this->Cell(0, 10, $GLOBALS['_PJ_strings']['page'] . ' ' . $this->PageNo().' ' . $GLOBALS['_PJ_strings']['of'] . ' {nb}', 0, 0, 'C');
-	    $this->SetY(-$GLOBALS['_PJ_pdf_footer_margin']+20);
-	    $this->SetX($GLOBALS['_PJ_pdf_left_margin']);
-	    $this->SetFont('Arial','',7.5);
-	    $this->MultiCell($this->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], 11, $GLOBALS['_PJ_pdf_footer_string'], 0, "C", 0);
+	    if($this->PageNo() > 1) {
+	    	$this->SetFont($GLOBALS['_PJ_pdf_font_face'],'',10);
+	    	$this->Cell(0, 10, $GLOBALS['_PJ_strings']['page'] . ' ' . $this->PageNo() . ' ' . $GLOBALS['_PJ_strings']['of'] . ' {nb}', 0, 0, 'C');
+	    } else {
+			$this->SetY(-$GLOBALS['_PJ_pdf_footer_margin']);
+			$this->SetX($GLOBALS['_PJ_pdf_left_margin']);
+			$this->SetFont($GLOBALS['_PJ_pdf_font_face'],'',6);
+			$this->MultiCell($this->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], 11, $GLOBALS['_PJ_pdf_footer_string'], 0, "C", 0);
+		}
 	}
 
 	function calculateLeft(&$field_widths) {
