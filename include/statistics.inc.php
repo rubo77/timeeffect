@@ -552,7 +552,7 @@
 
 		function count($billed = false) {
 			if($billed) {
-				return $this->billed_effort_count;
+				return ($this->effort_count + $this->billed_effort_count);
 			}
 			return $this->effort_count;
 		}

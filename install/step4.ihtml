@@ -71,4 +71,6 @@ if($error_message) {
 				The installation process has been successfully finished.<br><br>
 				<b>NOTE:</b> For security reasons please remove the 'install' directory and change the access rights for
 				your web server process of the file 'include/aperetiv.inc.php' to read only.<br><br>
+				<b>NOTE:</b> Please make sure to set the access rights to file 'include/pdflayout.inc.php' to writeable to your
+				web server process!<br><br>
 				You can access your TIMEEFFECT installation <a href="../index.html"><b>>> here</b></a>;
