@@ -1,4 +1,4 @@
-This release adds a CSV report and the possibilty to filter
+This release adds CSV reports and the possibilty to filter
 reports by user
 
 ######################################
@@ -9,7 +9,7 @@ simply make a backup copy of the files
 	'include/aperetiv.inc.php'
 and 
 	'include/layout.inc.php'
-Untar the TIMEEFFECT package to the appropriate directory.
+Untar the TIMEEFFECT package to the appropriate directory and restore the backup copies.
 
 
 Former releases:
