@@ -12,32 +12,70 @@
 		var $effort_count	= 0;
 		var $effort_cursor	= -1;
 
-		function EffortList($project_id, $show_billed = false, $cid = NULL, $limit = NULL) {
+		function EffortList(&$customer, &$project, &$user, $show_billed = false, $limit = NULL) {
+			$this->customer	= $customer;
+			$this->project	= $project;
+			$this->user		= $user;
 			$this->db = new Database;
 			$this->showBilled($show_billed);
 
-			if($project_id) {
-				$query  = "SELECT * FROM " . $GLOBALS['_PJ_effort_table'];
-				$query .= " WHERE project_id='$project_id'";
+			if(!$user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+			}
+
+			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
+			$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
+			$query .= ", " 		. $GLOBALS['_PJ_project_table'];
+			$query .= ", " 		. $GLOBALS['_PJ_customer_table'];
+			$query .= " WHERE "	. $GLOBALS['_PJ_effort_table'] . ".project_id=";
+			$query .= $GLOBALS['_PJ_project_table'] . ".id";
+			$query .= " AND "	. $GLOBALS['_PJ_project_table'] . ".customer_id=";
+			$query .= $GLOBALS['_PJ_customer_table'] . ".id";
+			if(is_object($project) && $project->giveValue('id')) {
+				$query .= " AND project_id='" . $project->giveValue('id') . "'";
 				$order_query = ' ORDER BY billed, date, begin';
 				$limit_query = '';
-			} elseif($cid) {
-				$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
-				$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
-				$query .= ", " 		. $GLOBALS['_PJ_project_table'];
-				$query .= ", " 		. $GLOBALS['_PJ_customer_table'];
-				$query .= " WHERE "	. $GLOBALS['_PJ_effort_table'] . ".project_id=";
-				$query .= $GLOBALS['_PJ_project_table'] . ".id";
-				$query .= " AND "	. $GLOBALS['_PJ_project_table'] . ".customer_id=";
-				$query .= $GLOBALS['_PJ_customer_table'] . ".id";
-				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='$cid'";
+			} else if(is_object($customer) && $customer->giveValue('id')) {
+				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='" . $customer->giveValue('id') . "'";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
-				$limit_query = ' LIMIT 10';
+				$limit_query = ' LIMIT 1000';
 			} else {
-				$query  = "SELECT * FROM " . $GLOBALS['_PJ_effort_table'];
-				$query .= ' WHERE 1';
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+				$query .= " AND project_id IN ($pids)";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
-				$limit_query = ' LIMIT 10';
+				$limit_query = ' LIMIT 1000';
 			}
 			if($limit) {
 				$limit_query = ' LIMIT ' . $limit;
@@ -45,12 +83,15 @@
 			if(!$this->show_billed) {
 				$query .= " AND (billed IS NULL OR billed = '0000-00-00')";
 			}
-			$query .= $order_query . $limit_query;
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND (" . $GLOBALS['_PJ_customer_table'] . ".readforeignefforts = 1 OR " . $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "')";
+			}
+			$query .= $access_query . $order_query . $limit_query;
 
 			$this->db->query($query);
 			$this->efforts = array();
 			while($this->db->next_record()) {
-				$this->efforts[] = new Effort($this->db->Record);
+				$this->efforts[] = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 		}
@@ -86,12 +127,14 @@
 		var $db;
 		var $data;
 
-		function Effort($effort = '') {
+		function Effort($effort = '', &$user) {
+			$this->user = $user;
 			if(is_array($effort)) {
 				$this->data = $effort;
 			} else if($effort != '') {
 				$this->load($effort);
 			}
+			$this->user_access = $this->getUserAccess();
 			$this->initEffort();
 		}
 
@@ -149,9 +192,11 @@
 				$date	= date("Y-m-d", $b_timestamp+86400);
 				$e_time	= date("H:i:s", $e_timestamp);
 
-				$query = "INSERT INTO " . $GLOBALS['_PJ_effort_table'] . " (project_id, date, begin, end, description, note, rate, user, billed, last)";
+				$query = "INSERT INTO " . $GLOBALS['_PJ_effort_table'] . " (project_id, gid, access, date, begin, end, description, note, rate, user, billed, last)";
 				$query .= " VALUES(";
-				$query .= $this->data['project_id'] . ", ";
+				$query .= "'" . $this->data['project_id'] . "', ";
+				$query .= "'" . $this->data['gid'] . "', ";
+				$query .= "'" . $this->data['access'] . "', ";
 				$query .= "'" . $date . "', ";
 				$query .= "'" . $b_time . "', ";
 				$query .= "'" . $e_time . "', ";
@@ -170,10 +215,12 @@
 				$e_time = date("H:i:s", $e_timestamp);
 			}
 
-			$query = "REPLACE INTO " . $GLOBALS['_PJ_effort_table'] . " (id, project_id, date, begin, end, description, note, rate, user, billed)";
+			$query = "REPLACE INTO " . $GLOBALS['_PJ_effort_table'] . " (id, project_id, gid, access, date, begin, end, description, note, rate, user, billed)";
 			$query .= " VALUES(";
 			$query .= "'" . $this->data['id'] . "', ";
-			$query .= $this->data['project_id'] . ", ";
+			$query .= "'" . $this->data['project_id'] . "', ";
+			$query .= "'" . $this->data['gid'] . "', ";
+			$query .= "'" . $this->data['access'] . "', ";
 			$query .= "'" . $this->data['date'] . "', ";
 			$query .= "'" . $b_time . "', ";
 			$query .= "'" . $e_time . "', ";

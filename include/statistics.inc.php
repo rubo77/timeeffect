@@ -11,10 +11,11 @@
 		var	$effort_count = 0;
 		var $effort_cursor = -1;
 
-		function Statistics($load = false, $customer = NULL, $project = NULL, $mode = NULL) {
-			$this->customer_id	= $customer;
-			$this->project_id	= $project;
-			$this->mode			= $mode;
+		function Statistics(&$user, $load = false, $customer = NULL, $project = NULL, $mode = NULL) {
+			$this->customer	= $customer;
+			$this->project	= $project;
+			$this->mode		= $mode;
+			$this->user		= $user;
 			if(!$load) {
 				return;
 			}
@@ -26,6 +27,43 @@
 				$this->db = new Database;
 			}
 
+			if(!$this->user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $this->user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+			}
+
 			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
 					 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
 					 $GLOBALS['_PJ_project_table'] . ".customer_id, " .
@@ -35,20 +73,24 @@
 					 $GLOBALS['_PJ_customer_table'] . ", " .
 					 $GLOBALS['_PJ_project_table'] .
 					 " WHERE " .
-					 $GLOBALS['_PJ_effort_table'] . ".project_id=" .
-					 $GLOBALS['_PJ_project_table'] . ".id AND " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id=" .
-					 $GLOBALS['_PJ_customer_table'] . ".id";
-			if($this->customer_id) {
+					 $GLOBALS['_PJ_effort_table'] . ".project_id=" . $GLOBALS['_PJ_project_table'] . ".id " . 
+					 " AND " .
+					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			if(is_object($this->customer) && $this->customer->giveValue('id')) {
 				$query .= " AND " .
-						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer_id . "'";
+						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer->giveValue('id') . "'";
 			}
-			if($this->project_id) {
+			if(is_object($this->project) && $this->project->giveValue('id')) {
 				$query .= " AND " .
-						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project_id . "'";
+						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project->giveValue('id') . "'";
 			}
 			if($this->mode != 'billed') {
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
+			}
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND (" . $GLOBALS['_PJ_customer_table'] . ".readforeignefforts = 1 OR " . $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "')";
+				$query .= " AND project_id IN ($pids)";
+				$query .= $access_query;
 			}
 			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
 					  $GLOBALS['_PJ_effort_table'] . ".begin ASC";
@@ -64,7 +106,7 @@
 					$this->months['open']["$year-$month"]	+= $seconds;
 				}
 				$this->data['seconds']						+= $seconds;
-				$this->efforts[] = new Effort($this->db->Record);
+				$this->efforts[] = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 			$this->data['billed_minutes']	= round(($this->data['billed_seconds']	/ 60), 2);
@@ -73,7 +115,7 @@
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer_id;
+			$this->data['customer_id']		= $this->project->giveValue('id');
 		}
 
 		function loadMonth($year, $month) {
@@ -82,6 +124,43 @@
 			}
 			$next_month = formatDate("$year-" . ($month+1) . "-01", "m");
 			$next_year = formatDate("$year-" . ($month+1) . "-01", "Y");
+
+			if(!$this->user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $this->user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+			}
 
 			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
 					 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
@@ -92,29 +171,30 @@
 					 $GLOBALS['_PJ_customer_table'] . ", " .
 					 $GLOBALS['_PJ_project_table'] .
 					 " WHERE " .
-					 $GLOBALS['_PJ_effort_table'] . ".project_id=" .
-					 $GLOBALS['_PJ_project_table'] . ".id AND " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id=" .
-					 $GLOBALS['_PJ_customer_table'] . ".id";
-			if($this->customer_id) {
-				$query .= " AND " .
-						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer_id . "'";
+					 $GLOBALS['_PJ_effort_table'] . ".project_id=" . $GLOBALS['_PJ_project_table'] . ".id " . 
+					 " AND " .
+					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND project_id IN ($pids)";
+				$query .= $access_query;
 			}
-			if($this->project_id) {
+			if(is_object($this->customer) && $this->customer->giveValue('id')) {
 				$query .= " AND " .
-						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project_id . "'";
+						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer->giveValue('id') . "'";
+			}
+			if(is_object($this->project) && $this->project->giveValue('id')) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->prjoect->giveValue('id') . "'";
 			}
 			$query .= " AND " .
 					  $GLOBALS['_PJ_effort_table'] . ".date >= '$year-$month-01'" .
 					  " AND " .
 					  $GLOBALS['_PJ_effort_table'] .
-					  ".date < '$next_year-$next_month-01'" .
-					  " AND " .
-					  $GLOBALS['_PJ_effort_table'] . ".billed IS ";
-			if($this->mode == 'billed') {
-				$query .= "NOT ";
+					  ".date < '$next_year-$next_month-01'";
+			if($this->mode != 'billed') {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
-			$query .= "NULL ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
 			$GLOBALS['_PJ_effort_table'] . ".begin ASC";
 
 			$this->db->query($query);
@@ -125,19 +205,56 @@
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
-				$this->efforts[]		 = new Effort($this->db->Record);
+				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer_id;
+			$this->data['customer_id']		= $this->customer->giveValue('id');
 		}
 
 		function loadProject($year, $month, $pid) {
 			if(!is_object($this->db)) {
 				$this->db = new Database;
 			}
+			if(!$this->user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $this->user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+			}
+
 			$next_date = formatDate("$year-" . ($month+1) . "-01", "Y-m-d");
 
 			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
@@ -145,7 +262,8 @@
 					 $GLOBALS['_PJ_project_table'] . ".customer_id " .
 					 " FROM " .
 					 $GLOBALS['_PJ_effort_table'] . ", " .
-					 $GLOBALS['_PJ_project_table'] .
+					 $GLOBALS['_PJ_project_table'] . ", " .
+					 $GLOBALS['_PJ_customer_table'] .
 					 " WHERE " .
 					 $GLOBALS['_PJ_project_table'] . ".id=" .
 					 $GLOBALS['_PJ_effort_table'] . ".project_id" .
@@ -157,12 +275,15 @@
 					 $GLOBALS['_PJ_effort_table'] .
 					 ".date < '$next_date'" .
 					 " AND " .
-					 $GLOBALS['_PJ_effort_table'] . ".billed IS ";
-			if($this->mode == 'billed') {
-				$query .= "NOT ";
+					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			if($this->mode != 'billed') {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
-			$query .= "NULL ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date, " .
-			$GLOBALS['_PJ_effort_table'] . ".begin";
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND project_id IN ($pids)";
+				$query .= $access_query;
+			}
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date, " . $GLOBALS['_PJ_effort_table'] . ".begin";
 
 			$this->db->query($query);
 
@@ -172,13 +293,13 @@
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
-				$this->efforts[]		 = new Effort($this->db->Record);
+				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer_id;
+			$this->data['customer_id']		= $this->customer->giveValue('id');
 		}
 
 		function loadProjectTime($start, $end, $pid) {
@@ -186,30 +307,71 @@
 				$this->db = new Database;
 			}
 
+			if(!$this->user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $this->user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+			}
+
 			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
 					 $GLOBALS['_PJ_project_table'] . ".project_name, " .
 					 $GLOBALS['_PJ_project_table'] . ".customer_id " .
 					 " FROM " .
 					 $GLOBALS['_PJ_effort_table'] . ", " .
-					 $GLOBALS['_PJ_project_table'] .
+					 $GLOBALS['_PJ_project_table'] . ", " .
+					 $GLOBALS['_PJ_customer_table'] .
 					 " WHERE " .
 					 $GLOBALS['_PJ_effort_table'] . ".project_id=" .
 					 $GLOBALS['_PJ_project_table'] . ".id" .
 					 " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".project_id=$pid" .
 					 " AND " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer_id . "'" .
+					 $GLOBALS['_PJ_project_table'] . ".customer_id='" . $GLOBALS['_PJ_customer_table'] . ".id" .
+					 " AND " .
+					 $GLOBALS['_PJ_customer_table'] . ".id='" . $this->customer->giveValue('id') . "'" .
 					 " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".date >= '$start'" .
 					 " AND " .
-					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'" .
-					 " AND " .
-					 $GLOBALS['_PJ_effort_table'] . ".billed IS ";
-			if($this->mode == 'billed') {
-				$query .= "NOT ";
+					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'";
+			if($this->mode != 'billed') {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
-			$query .= "NULL ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date, " .
-			$GLOBALS['_PJ_effort_table'] . ".begin";
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND project_id IN ($pids)";
+				$query .= $access_query;
+			}
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date, " . $GLOBALS['_PJ_effort_table'] . ".begin";
 
 			$this->db->query($query);
 
@@ -219,13 +381,13 @@
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
-				$this->efforts[]		 = new Effort($this->db->Record);
+				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer_id;
+			$this->data['customer_id']		= $this->customer->giveValue('id');
 		}
 
 		function loadTime($start, $end = '') {
@@ -241,6 +403,42 @@
 
 			$start = date("Y-m-d", strtotime($start));
 
+			if(!$this->user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $this->user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				while($this->db->next_record()) {
+					if($pids) {
+						$pids .= ',';
+					}
+					$pids .= $this->db->f('id');
+				}
+				if(!$pids) {
+					return;
+				}
+			}
 
 			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
 					 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
@@ -251,17 +449,16 @@
 					 $GLOBALS['_PJ_customer_table'] . ", " .
 					 $GLOBALS['_PJ_project_table'] .
 					 " WHERE " .
-					 $GLOBALS['_PJ_effort_table'] . ".project_id=" .
-					 $GLOBALS['_PJ_project_table'] . ".id AND " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id=" .
-					 $GLOBALS['_PJ_customer_table'] . ".id";
-			if($this->customer_id) {
+					 $GLOBALS['_PJ_effort_table'] . ".project_id=" . $GLOBALS['_PJ_project_table'] . ".id" . 
+					 "  AND " .
+					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			if(is_object($this->customer) && $this->customer->giveValue('id')) {
 				$query .= " AND " .
-						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer_id . "'";
+						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer->giveValue('id') . "'";
 			}
-			if($this->project_id) {
+			if(is_object($this->project) && $this->project->giveValue('id')) {
 				$query .= " AND " .
-						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project_id . "'";
+						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project->giveValue('id') . "'";
 			}
 			$query .= " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".date >= '$start'" .
@@ -272,8 +469,11 @@
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
 
-			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
-			$GLOBALS['_PJ_effort_table'] . ".begin ASC";
+			if(!$this->user->checkPermission('admin')) {
+				$query .= " AND project_id IN ($pids)";
+				$query .= $access_query;
+			}
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date, " . $GLOBALS['_PJ_effort_table'] . ".begin ASC";
 
 			$this->db->query($query);
 			while($this->db->next_record()) {
@@ -282,13 +482,13 @@
 				$this->data['seconds']	+= $seconds;
 				$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
-				$this->efforts[]		 = new Effort($this->db->Record);
+				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
 				$this->effort_count++;
 			}
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer_id;
+			$this->data['customer_id']		= $this->customer->giveValue('id');
 		}
 
 		function giveValue($key) {
@@ -297,7 +497,7 @@
 
 		function calculatePrice($starttime, $endtime) {
 			$query = "SELECT price, currency FROM " . $GLOBALS['_PJ_rate_table'] .
-					 " WHERE customer_id=" . $this->customer_id .
+					 " WHERE customer_id=" . $this->customer->giveValue('id') .
 					 " AND starttime >= '" . $startime . "'".
 					 " AND endtime >= '" . $endime . "'";
 			$this->db->query($query);

@@ -31,10 +31,12 @@
 			$data['email']				= $email;
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
-			$data['permissions']		= implode(',', $permissions);
+			$data['gids']				= @implode(',', $gids);
 			$data['lastname']			= $lastname;
 			$data['firstname']			= $firstname;
 			$data['username']			= $login;
+			$data['permissions']		= @implode(',', $permissions);
+			$data['allow_nc']			= $allow_nc;
 
 			$new_user = new User($data);
 			$message = $new_user->save();

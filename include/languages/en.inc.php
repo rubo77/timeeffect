@@ -1,4 +1,8 @@
 <?php
+	$GLOBALS['_PJ_strings']['language']					= 'Language';
+	$GLOBALS['_PJ_strings']['language_de']				= 'German';
+	$GLOBALS['_PJ_strings']['language_en']				= 'English';
+
 	$GLOBALS['_PJ_strings']['closed']					= 'closed';
 
 	$GLOBALS['_PJ_strings']['new_customer']				= 'Add new customer';
@@ -29,15 +33,15 @@
 	$GLOBALS['_PJ_strings']['effort_list']			= 'Effort list';
 	$GLOBALS['_PJ_strings']['edit_effort']			= 'edit effort';
 	$GLOBALS['_PJ_strings']['effort_basic_data']	= 'basic data';
-	$GLOBALS['_PJ_strings']['show_closed_efforts']	= 'show accounted efforts';
-	$GLOBALS['_PJ_strings']['hide_closed_efforts']	= 'hide accounted efforts';
+	$GLOBALS['_PJ_strings']['show_closed_efforts']	= 'show charged efforts';
+	$GLOBALS['_PJ_strings']['hide_closed_efforts']	= 'hide charged efforts';
 	$GLOBALS['_PJ_strings']['effort_for']			= 'Effort for';
 
 	$GLOBALS['_PJ_strings']['new_user']				= 'Add new user';
 	$GLOBALS['_PJ_strings']['user']					= 'User';
 	$GLOBALS['_PJ_strings']['username']				= 'Username';
 	$GLOBALS['_PJ_strings']['user_basic_data']		= 'User basic data';
-	$GLOBALS['_PJ_strings']['permissions']			= 'Groups';
+	$GLOBALS['_PJ_strings']['permissions']			= 'user role(s)';
 	$GLOBALS['_PJ_strings']['edit_user']			= 'edit user';
 	$GLOBALS['_PJ_strings']['user_list']			= 'User list';
 
@@ -76,9 +80,9 @@
 	$GLOBALS['_PJ_strings']['next']					= 'Next';
 	$GLOBALS['_PJ_strings']['agent']				= 'Agent';
 	$GLOBALS['_PJ_strings']['accounting']			= 'Accounting';
-	$GLOBALS['_PJ_strings']['billed']				= 'billed';
-	$GLOBALS['_PJ_strings']['billed_at']			= 'accounted on';
-	$GLOBALS['_PJ_strings']['usebilled']			= 'use accounted efforts';
+	$GLOBALS['_PJ_strings']['billed']				= 'charged';
+	$GLOBALS['_PJ_strings']['billed_at']			= 'charged';
+	$GLOBALS['_PJ_strings']['usebilled']			= 'use charged efforts';
 	$GLOBALS['_PJ_strings']['duration']				= 'duration';
 	$GLOBALS['_PJ_strings']['rate']					= 'rate';
 	$GLOBALS['_PJ_strings']['rate_name']			= 'rate name';
@@ -91,7 +95,7 @@
 	$GLOBALS['_PJ_strings']['remainingbudget']		= 'remaning budget';
 	$GLOBALS['_PJ_strings']['budget_in']			= 'Budget in';
 	$GLOBALS['_PJ_strings']['price']				= 'Price';
-	$GLOBALS['_PJ_strings']['price_in']				= $GLOBALS['_PJ_strings']['price'] . ' in';
+	$GLOBALS['_PJ_strings']['price_in']				= $GLOBALS['_PJ_strings']['price'] . ' per hour in';
 	$GLOBALS['_PJ_strings']['pdf']					= 'PDF';
 	$GLOBALS['_PJ_strings']['createpdf']			= 'generate PDF';
 	$GLOBALS['_PJ_strings']['close_window']			= 'close window';
@@ -116,6 +120,18 @@
 	$GLOBALS['_PJ_strings']['period']				= 'Period';
 	$GLOBALS['_PJ_strings']['active']				= 'active';
 	$GLOBALS['_PJ_strings']['inactive_hidden']		= 'inactive customers hidden';
+	$GLOBALS['_PJ_strings']['allow_nc']				= 'allowed to create new customers';
+	$GLOBALS['_PJ_strings']['gids']					= 'groups';
+	$GLOBALS['_PJ_strings']['gid']					= 'belongs to group';
+	$GLOBALS['_PJ_strings']['access_owner']			= 'Owner is alloed to';
+	$GLOBALS['_PJ_strings']['access_group']			= 'Group members are allowed to';
+	$GLOBALS['_PJ_strings']['access_world']			= 'Agents are allowed to';
+	$GLOBALS['_PJ_strings']['access_customer_rwx']	= 'Edit customers, read projects and create new projects';
+	$GLOBALS['_PJ_strings']['access_customer_rx']	= 'Read projects and create new projects';
+	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Edit customers and read projects';
+	$GLOBALS['_PJ_strings']['access_customer_r']	= 'Read projects';
+	$GLOBALS['_PJ_strings']['access_na']			= 'no access';
+	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agent is allowed to see foreign efforts';
 
 	$GLOBALS['_PJ_strings']['cancel']				= 'Cancel';
 	$GLOBALS['_PJ_strings']['save']					= 'Save';
@@ -136,7 +152,7 @@
 	$GLOBALS['_PJ_strings']['error_pw_empty']		= 'You have to enter a password!';
 	$GLOBALS['_PJ_strings']['error_user_empty']		= 'You have to enter a username!';
 	$GLOBALS['_PJ_strings']['error_user_exists']	= 'The entered username already exists!';
-	$GLOBALS['_PJ_strings']['error_access']			= 'Yu don\'t have the appropriate user rights to complete this action!!';
+	$GLOBALS['_PJ_strings']['error_access']			= 'You don\'t have the appropriate user rights to complete this action!!';
 
 	$GLOBALS['_PJ_strings']['error']				= 'ERROR';
 	$GLOBALS['_PJ_strings']['line']					= 'line';

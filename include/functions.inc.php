@@ -1,4 +1,4 @@
-<?php
+<?
 	function formatNumber($number, $force_float = false) {
 		$number = number_format($number, 2, $GLOBALS['_PJ_decimal_point'] , $GLOBALS['_PJ_thousands_seperator']);
 		if(!$force_float) {
@@ -8,6 +8,9 @@
 	}
 
 	function formatDate($date, $format = "d.m.Y") {
+		if($date == '') {
+			return NULL;
+		}
 		list($year, $month, $day) = explode("-", $date);
 		$timestamp = mktime(0, 0, 0, $month, $day, $year);
 		return date($format, $timestamp);

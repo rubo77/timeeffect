@@ -1,7 +1,9 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
 
-	$effort = new Effort($eid);
+	$customer = new Customer($cid, $_PJ_auth);
+
+	$effort = new Effort($eid, $_PJ_auth);
 	if($pid == '') {
 		if(is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
@@ -9,7 +11,7 @@
 			exit;
 		}
 	}
-	$project = new Project($pid);
+	$project = new Project($customer, $_PJ_auth, $pid);
 
 	if($cid == '') {
 		if(is_object($project)) {
@@ -18,7 +20,6 @@
 			exit;
 		}
 	}
-	$customer = new Customer($cid);
 	$center_template	= "statistic/effort";
 
 	if(isset($detail)) {
@@ -28,12 +29,12 @@
 	}
 
 	if(isset($pdf)) {
-		$efforts = new EffortList($pid, $shown['be'], $cid);
+		$efforts = new EffortList($customer, $project, $_PJ_auth, $shown['be']);
 		include("$_PJ_root/templates/statistic/effort/pdf.ihtml");
 		exit;
 	}
 
-	$efforts			= new EffortList($pid, $shown['be'], $cid);
+	$efforts			= new EffortList($customer, $project, $_PJ_auth, $shown['be']);
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['efforts'];
 	if($pid) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['effort_for'] . " '" . $project->giveValue('project_name') . "'";

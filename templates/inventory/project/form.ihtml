@@ -1,15 +1,30 @@
 <!-- inventory/project/form.ihtml - START -->
 <?php
+	$a_gids = $_PJ_auth->gids;
+	if($_PJ_auth->checkPermission('admin')) {
+		$u_gids						= @array_keys($a_gids);
+	} else {
+		$u_gids						= explode(',', $_PJ_auth->giveValue('gids'));
+	}
 	if(is_object($project) && !$new) {
 		$pid						= $project->giveValue('id');
-		$cid				= $project->giveValue('customer_id');
+		$cid						= $project->giveValue('customer_id');
 		$project_name				= $project->giveValue('project_name');
 		$project_desc				= $project->giveValue('project_desc');
 		$project_budget				= $project->giveValue('project_budget');
 		$closed						= $project->giveValue('closed');
+		$project_user				= $project->giveValue('user');
+		$project_gid				= $project->giveValue('gid');
+		$project_access_owner		= substr($project->giveValue('access'), 0, 3);
+		$project_access_group		= substr($project->giveValue('access'), 3, 3);
+		$project_access_world		= substr($project->giveValue('access'), 6, 3);
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/edit.ihtml');
 	} else {
 		$project_name				= $GLOBALS['_PJ_strings']['no_name'];
+		$user_access['write']		= true;
+		$project_access_owner		= 'rwx';
+		$project_access_group		= 'r-x';
+		$project_access_world		= 'r--';
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/new.ihtml');
 	}
 	$project_budget_currency	= $GLOBALS['_PJ_currency'];
@@ -38,6 +53,54 @@
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="project_desc"><?= $project_desc ?></TEXTAREA></TD>
+<?php
+if($_PJ_auth->checkPermission('admin') || $new || $project_user == $_PJ_auth->giveValue('id')) {
+?>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gid">
+<?php
+	reset($u_gids);
+	foreach($u_gids as $id) {
+?>
+						<OPTION<?php if($id == $project_gid) print ' SELECTED'; ?> value="<?= $id ?>"><?= $a_gids[$id] ?>
+<?php
+	}
+?>
+					 </SELECT></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_owner">
+						<OPTION VALUE="rwx"<?php if($project_access_owner == 'rwx') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_owner == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_owner == 'r-x') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_owner == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_owner == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_group">
+						<OPTION VALUE="rwx"<?php if($project_access_group == 'rwx') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_group == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_group == 'r-x') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_group == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_group == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_world">
+						<OPTION VALUE="rwx"<?php if($project_access_world == 'rwx') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_world == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_world == 'r-x') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_world == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_world == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+<?php
+}
+?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['closed'] ?>:</TD>
 					<TD CLASS="FormField">

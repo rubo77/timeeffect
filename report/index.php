@@ -1,17 +1,16 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
 
-	$customer 			= new Customer($cid);
-	$project 			= new Project($pid);
-	$effort 			= new Effort($eid);
+	$customer 			= new Customer($cid, $_PJ_auth);
+	$project 			= new Project($customer, $_PJ_auth, $pid);
 
 	$center_template	= "report";
 
 	$center_title		= $GLOBALS['_PJ_strings']['report'];
 
 	if(!isset($report)) {
-		$customers = new CustomerList($shown['ic']);
-		$projects = new ProjectList($cid, $shown['cp'], 0);
+		$customers = new CustomerList($_PJ_auth, $shown['ic']);
+		$projects = new ProjectList($customer, $_PJ_auth, $shown['cp'], 0);
 		include("$_PJ_root/templates/edit.ihtml");
 		exit;
 	} elseif(!$syear || !$eyear) {
@@ -35,7 +34,7 @@
 		$eday = intval(date('d'));
 	}
 
-	$statistic	= new Statistics(false, $cid, $pid, ($mode));
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, ($mode));
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
 	include("$_PJ_root/templates/list.ihtml");
 

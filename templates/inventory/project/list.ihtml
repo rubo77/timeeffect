@@ -1,4 +1,4 @@
-<!-- inventory//list.ihtml - START -->
+<!-- inventory/project/list.ihtml - START -->
 <?php
 	include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/list.ihtml');
 ?>
@@ -14,7 +14,7 @@
 						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR VALIGN="center">
 								<TH CLASS="list"><?php
-if($cid) {
+if($cid && $customer->checkUserAccess('new')) {
 ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?new=1&cid=$cid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?= $GLOBALS['_PJ_strings']['new_project'] ?>" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['new_project'] ?></A><?php
 } else { ?>&nbsp;<?php
 } ?></TH>

@@ -1,4 +1,8 @@
 <?php
+	$GLOBALS['_PJ_strings']['language']					= 'Sprache';
+	$GLOBALS['_PJ_strings']['language_de']				= 'Deutsch';
+	$GLOBALS['_PJ_strings']['language_en']				= 'Englisch';
+
 	$GLOBALS['_PJ_strings']['closed']					= 'abgeschlossen';
 
 	$GLOBALS['_PJ_strings']['new_customer']				= 'Neuen Kunden hinzuf&uuml;gen';
@@ -37,7 +41,7 @@
 	$GLOBALS['_PJ_strings']['user']					= 'Benutzer';
 	$GLOBALS['_PJ_strings']['username']				= 'Benutzername';
 	$GLOBALS['_PJ_strings']['user_basic_data']		= 'Benutzerdaten';
-	$GLOBALS['_PJ_strings']['permissions']			= 'Gruppenzugeh&ouml;rigkeit';
+	$GLOBALS['_PJ_strings']['permissions']			= 'Nutzerrolle(n)';
 	$GLOBALS['_PJ_strings']['edit_user']			= 'Benutzer bearbeiten';
 	$GLOBALS['_PJ_strings']['user_list']			= 'Benutzerliste';
 
@@ -91,7 +95,7 @@
 	$GLOBALS['_PJ_strings']['remainingbudget']		= 'Restbudget';
 	$GLOBALS['_PJ_strings']['budget_in']			= 'Budget in';
 	$GLOBALS['_PJ_strings']['price']				= 'Preis';
-	$GLOBALS['_PJ_strings']['price_in']				= $GLOBALS['_PJ_strings']['price'] . ' in';
+	$GLOBALS['_PJ_strings']['price_in']				= $GLOBALS['_PJ_strings']['price'] . ' pro Stunde in';
 	$GLOBALS['_PJ_strings']['pdf']					= 'PDF';
 	$GLOBALS['_PJ_strings']['createpdf']			= 'PDF generieren';
 	$GLOBALS['_PJ_strings']['close_window']			= 'Fenster schlie&szlig;en';
@@ -116,6 +120,25 @@
 	$GLOBALS['_PJ_strings']['period']				= 'Zeitraum';
 	$GLOBALS['_PJ_strings']['active']				= 'aktiv';
 	$GLOBALS['_PJ_strings']['inactive_hidden']		= 'inaktive Kunden versteckt';
+	$GLOBALS['_PJ_strings']['allow_nc']				= 'darf neue Kunden anlegen';
+	$GLOBALS['_PJ_strings']['gids']					= 'Gruppenzugehörigkeit';
+	$GLOBALS['_PJ_strings']['gid']					= 'gehört Gruppe';
+	$GLOBALS['_PJ_strings']['access_owner']			= 'Besitzer darf';
+	$GLOBALS['_PJ_strings']['access_group']			= 'Gruppenmitglieder d&uuml;rfen';
+	$GLOBALS['_PJ_strings']['access_world']			= 'Alle Agenten d&uuml;rfen';
+	$GLOBALS['_PJ_strings']['access_customer_rwx']	= 'Kunden bearbeiten, Projekte einsehen und neue Projekte anlegen';
+	$GLOBALS['_PJ_strings']['access_customer_rx']	= 'Projekte einsehen und neue anlegen';
+	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Kunden bearbeiten und Projekte einsehen';
+	$GLOBALS['_PJ_strings']['access_customer_r']	= 'Projekte einsehen';
+	$GLOBALS['_PJ_strings']['access_project_rwx']	= 'Projekt bearbeiten, Aufw&auml;nde einsehen und neue Aufw&auml;nde anlegen';
+	$GLOBALS['_PJ_strings']['access_project_rx']	= 'Aufw&auml;nde einsehen und neue anlegen';
+	$GLOBALS['_PJ_strings']['access_project_rw']	= 'Projekt bearbeiten und Aufw&auml;nde einsehen';
+	$GLOBALS['_PJ_strings']['access_project_r']		= 'Aufw&auml;nde einsehen';
+	$GLOBALS['_PJ_strings']['access_effort_rw']		= 'Aufwand einsehen und bearbeiten';
+	$GLOBALS['_PJ_strings']['access_effort_r']		= 'Aufwand einsehen';
+
+	$GLOBALS['_PJ_strings']['access_na']			= 'kein Zugriff';
+	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agent darf fremde Aufw&auml;nde einsehen';
 
 	$GLOBALS['_PJ_strings']['cancel']				= 'Abbrechen';
 	$GLOBALS['_PJ_strings']['save']					= 'Speichern';

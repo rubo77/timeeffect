@@ -61,7 +61,7 @@
 			} else {
 				$password = $this->giveValue('password');
 			}
-			$query = sprintf("UPDATE %s SET %s = '%s', firstname = '%s', lastname = '%s', email = '%s', telephone = '%s', facsimile = '%s' WHERE id='%s'",
+			$query = sprintf("UPDATE %s SET %s = '%s', firstname = '%s', lastname = '%s', email = '%s', telephone = '%s', facsimile = '%s', allow_nc = '%s' WHERE id='%s'",
 							 $this->storage->options['table'],
 							 $this->storage->options['passwordcol'],
 							 $password,
@@ -70,6 +70,7 @@
 							 $data['email'],
 							 $data['telephone'],
 							 $data['facsimile'],
+							 $data['allow_nc'],
 							 $data['id']
 							 );
 			$res = $this->storage->query($query);
@@ -101,6 +102,7 @@
 			$this->setExpire($GLOBALS['_PJ_session_length']);
 			$this->start();
 			$this->fetchAdditionalData();
+			$this->fetchGIDs();
 			$this->loadUserList();
 		}
 
@@ -132,6 +134,17 @@
 			} 
 			while($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
 				$this->permissions[$row['name']] = $row['level'];
+			}
+		}
+
+		function fetchGIDs() {
+			$query = sprintf("SELECT * FROM `%s`", $GLOBALS['_PJ_gid_table']);
+			$res = $this->storage->query($query);
+			if (DB::isError($res)) {
+				return PEAR::raiseError("", $res->code, PEAR_ERROR_DIE);
+			} 
+			while($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
+				$this->gids[$row['id']] = $row['name'];
 			}
 		}
 

@@ -1,5 +1,11 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
+	@session_name('timeeffect');
+	@session_start();
+	session_register('expanded');
+	session_register('shown');
+	session_register('_PJ_language');
+
 /* ******************************************************** */
 /* customizable variables - START                           */
 /* ******************************************************** */
@@ -15,9 +21,13 @@
 	$_PJ_root			= $DOCUMENT_ROOT . '/timeeffect';
 
 	/*
-	   select language ('en' or 'de' are currently availlable
+	   select default language ('en' or 'de' are currently availlable
 	*/
-	$_PJ_language		= 'en';
+	$_PJ_default_language		= 'en';
+
+	$_PJ_decimal_point			= ',';
+	$_PJ_thousands_seperator	= '.';
+	$_PJ_currency				= '€';
 
 	/*
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
@@ -43,6 +53,16 @@
 /* customizable variables - END                             */
 /* ******************************************************** */
 
+	$_PJ_budget_security_percentage		= 10;
+	/*
+	   if $lang is set set language to value of $lang. Otherwise select default language
+	*/
+	if(isset($lang)) {
+		$_PJ_language = $lang;
+	} else if(!isset($_PJ_language)) {
+		$_PJ_language		= $_PJ_default_language;
+	}
+
 	/*
 	   $_PJ_db_type is currently used for PEAR Module Auth only. Leave this untouched!
 	*/
@@ -50,19 +70,19 @@
 	$_PJ_include_path	= $_PJ_root . '/include';
 
 	if(!isset($_PJ_root)) {
-		print '<b>ERROR:</b> $_PJ_root is not defined! (' . __FILE__ . ', line: ' . __LINE__ . ')';
+		print '<b>ERROR:</b> $_PJ_root is not defined! (' . __FILE__ . ', line: 21)';
 		exit;
 	}
 	if(!isset($_PJ_http_root)) {
-		print '<b>ERROR:</b> $_PJ_http_root is not defined! (' . __FILE__ . ', line: ' . __LINE__ . ')';
+		print '<b>ERROR:</b> $_PJ_http_root is not defined! (' . __FILE__ . ', line: 17)';
 		exit;
 	}
 	if(!@file_exists($_PJ_root)) {
-		print '<b>ERROR:</b> the directory \'' . $_PJ_root . '\' does not exist! (' . __FILE__ . ', line: ' . __LINE__ . ')';
+		print '<b>ERROR:</b> the directory \'' . $_PJ_root . '\' does not exist! (' . __FILE__ . ', line: 21)';
 		exit;
 	}
 	if(!@is_dir($_PJ_root)) {
-		print '<b>ERROR:</b> \'' . $_PJ_root . '\' is not a directory! (' . __FILE__ . ', line: ' . __LINE__ . ')';
+		print '<b>ERROR:</b> \'' . $_PJ_root . '\' is not a directory! (' . __FILE__ . ', line: 21)';
 		exit;
 	}
 
@@ -74,33 +94,34 @@
 	// the following two lines must be activated if the PEAR packages
 	// are located within the timeeffect include path
 	$include_path = ini_get('include_path');
-	ini_set('include_path', $_PJ_root . '/include/pear/:./:' . $include_path);
+	ini_set('include_path', $_PJ_include_path . '/pear/:./:' . $include_path);
 
 	require_once ('PEAR.php');
 	// let timeefect complain when any PEAR error occurs
 	PEAR::setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 
-	define('FPDF_FONTPATH', $_PJ_root . '/include/font/');
+	define('FPDF_FONTPATH', $_PJ_include_path . '/font/');
 
-	$_PJ_css_path		= $_PJ_http_root . "/css";
-	$_PJ_icon_path		= $_PJ_http_root . "/icons";
-	$_PJ_icon_root		= $_PJ_root . "/icons";
-	$_PJ_image_path		= $_PJ_http_root . "/images";
-	$_PJ_logo_path		= $_PJ_http_root . "/logos";
-	$_PJ_logo_root		= $_PJ_root . "/logos";
+	$_PJ_css_path		= $_PJ_http_root	. "/css";
+	$_PJ_icon_path		= $_PJ_http_root	. "/icons";
+	$_PJ_icon_root		= $_PJ_root			. "/icons";
+	$_PJ_image_path		= $_PJ_http_root	. "/images";
+	$_PJ_logo_path		= $_PJ_http_root	. "/logos";
+	$_PJ_logo_root		= $_PJ_root			. "/logos";
 
-	$_PJ_project_table	= $_PJ_table_prefix . 'project';
-	$_PJ_customer_table	= $_PJ_table_prefix . 'customer';
-	$_PJ_effort_table	= $_PJ_table_prefix . 'effort';
-	$_PJ_rate_table		= $_PJ_table_prefix . 'rate';
-	$_PJ_user_table		= $_PJ_table_prefix . 'user';
-	$_PJ_auth_table		= $_PJ_table_prefix . 'auth';
-	$_PJ_group_table	= $_PJ_table_prefix . 'group';
+	$_PJ_project_table	= $_PJ_table_prefix	. 'project';
+	$_PJ_customer_table	= $_PJ_table_prefix	. 'customer';
+	$_PJ_effort_table	= $_PJ_table_prefix	. 'effort';
+	$_PJ_rate_table		= $_PJ_table_prefix	. 'rate';
+	$_PJ_user_table		= $_PJ_table_prefix	. 'user';
+	$_PJ_auth_table		= $_PJ_table_prefix	. 'auth';
+	$_PJ_group_table	= $_PJ_table_prefix	. 'group';
+	$_PJ_gid_table		= $_PJ_table_prefix	. 'gids';
 
 	$_PJ_form_method	= 'POST';
 	$_PJ_password_dummy	= 'nOcHaNgEs';
+	$_PJ_php_suffix		= 'php';
 
-	$_PJ_php_suffix			= 'php';
 	$_PJ_customer_inventory_script	= $_PJ_http_root . '/inventory/customer.'		. $_PJ_php_suffix;
 	$_PJ_projects_inventory_script	= $_PJ_http_root . '/inventory/projects.'		. $_PJ_php_suffix;
 	$_PJ_efforts_inventory_script	= $_PJ_http_root . '/inventory/efforts.'		. $_PJ_php_suffix;
@@ -111,11 +132,11 @@
 	$_PJ_pdf_statistics_script		= $_PJ_http_root . '/statistic/pdf.'		. $_PJ_php_suffix;
 	$_PJ_statistics_script			= $_PJ_customer_statistics_script;
 
-	$_PJ_help_script				= $_PJ_http_root . '/help.'			. $_PJ_php_suffix;
+	$_PJ_help_script				= $_PJ_http_root . '/help.' . $_PJ_php_suffix;
 
 	$_PJ_reports_script				= $_PJ_http_root . '/report/index.'	. $_PJ_php_suffix;
 
-	$_PJ_billing_script				= $_PJ_http_root . '/billing/index.'	. $_PJ_php_suffix;
+	$_PJ_billing_script				= $_PJ_http_root . '/billing/index.' . $_PJ_php_suffix;
 
 	$_PJ_user_script				= $_PJ_http_root . '/user/index.'	. $_PJ_php_suffix;
 	$_PJ_own_user_script			= $_PJ_http_root . '/user/own.'		. $_PJ_php_suffix;
@@ -126,14 +147,11 @@
 		$_PJ_last = date("YmdHis", time()-$last*86400);
 	}
 
-	$_PJ_decimal_point					= ',';
-	$_PJ_thousands_seperator			= '.';
-	$_PJ_currency						= '€';
 	$_PJ_budget_security_percentage		= 10;
 
 	$_PJ_day_counts = array(
 							31,
-							26,
+							29,
 							31,
 							30,
 							31,
@@ -159,9 +177,6 @@
 	include_once($_PJ_include_path . '/print.inc.php');
 
 	include_once($_PJ_include_path . '/auth.inc.php');
-
-	session_register('expanded');
-	session_register('shown');
 
 	if(isset($exc)) {
 		$expanded['cid'][$exc] = 1;

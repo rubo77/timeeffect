@@ -15,7 +15,7 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	$a_buffer = str_replace('<%language%>', $language, $a_buffer);
 	$a_buffer = str_replace('<%currency%>', $currency, $a_buffer);
 	$a_buffer = str_replace('<%http_root%>', $http_root, $a_buffer);
-	if($a_file = @fopen('../include/aperetiv.inc.php', 'w')) {
+	if($a_file = fopen('../include/aperetiv.inc.php', 'w')) {
 		fputs($a_file, $a_buffer);
 		@fclose($a_file);
 	} else {

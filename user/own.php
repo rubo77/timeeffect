@@ -11,6 +11,9 @@
 		$data['email']				= $email;
 		$data['password']			= $password;
 		$data['password_retype']	= $password_retype;
+		$data['permissions']		= $_PJ_auth->giveValue('permissions');
+		$data['gids']				= $_PJ_auth->giveValue('gids');
+		$data['allow_nc']			= $_PJ_auth->giveValue('allow_nc');
 		if($error = $_PJ_auth->save($data)) {
 			$message = "<FONT COLOR=\"red\"><B>$error</B></FONT>";
 		}

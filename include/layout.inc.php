@@ -4,8 +4,8 @@
 	$_PJ_inner_frame_cellspacing		= 1;
 	$_PJ_inner_frame_border				= 0;
 
-	$_PJ_form_field_name_width			= 250;
-	$_PJ_form_field_width				= 535;
+	$_PJ_form_field_name_width			= '40%';
+	$_PJ_form_field_width				= '60%';
 /* global layout settings - END */
 
 /* PDF layout settings - START */

@@ -1,7 +1,7 @@
 <!-- inventory/project/row.ihtml - START -->
 <?php
 	if($no_customer || (is_object($customer) && !$customer->giveValue('id'))) {
-		$customer = new Customer($project->giveValue('customer_id'));
+		$customer = new Customer($project->giveValue('customer_id'), $project->user);
 		$no_customer = 1;
 	}
 ?>
@@ -9,8 +9,8 @@
 		<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<?= $rowclass ?>" WIDTH="35%"><?php
-		if($project->count()) {
-			if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
+		if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
+			if(($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all'])) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -18,18 +18,20 @@
 		} else {
 		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
 		}
-		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project<?php if($project->giveValue('closed') == 'Yes') print 'c' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?edit=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><?= $project->giveValue('project_name') ?></A></TD>
+		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project<?php if($project->giveValue('closed') == 'Yes') print 'c' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if($project->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?edit=1&cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') ?>"><?php } ?><?= $project->giveValue('project_name') ?></A></TD>
 		<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
-		<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['create'] ?></A></TD>
+		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('new')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['create'] ?></A><?php } ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php
-if($project->count()) {
-?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/list.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['overview'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['overview'] ?></A><?php
-} else { ?>&nbsp;<?php
-} ?></TD>
-		<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
+if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
+?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/list.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['overview'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['overview'] ?></A><?php
+} else {
+?>&nbsp;<?php
+}
+?></TD>
+		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR><?php
 	if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
-		$efforts	= new EffortList($project->giveValue('id'));
+		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();
 			$row_class = !$row_class;

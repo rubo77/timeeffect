@@ -2,18 +2,19 @@
 	include_once("../include/aperetiv.inc.php");
 
 	if(isset($cid)) {
-		$customer 			= new Customer($cid);
+		$customer 			= new Customer($cid, $_PJ_auth);
 	}
 	$center_template	= "statistic/customer";
 
 	if(isset($expand)) {
-		$projects	= new ProjectList($cid);
+		$projects	= new ProjectList($customer, $_PJ_auth);
 		if(isset($pid)) {
-			$efforts		= new EffortList($pid);
+			$project = new Project($customer, $_PJ_auth, $pid);
+			$efforts		= new EffortList($customer, $project, $_PJ_auth);
 		}
 	}
 
-	$customer_list = new CustomerList($shown['ic']);
+	$customer_list = new CustomerList($_PJ_auth, $shown['ic']);
 	$center_template	= "statistic/customer";
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . 'Kundenliste';
 	include("$_PJ_root/templates/list.ihtml");

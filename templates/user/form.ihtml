@@ -1,5 +1,6 @@
 <!-- user/form.ihtml - START -->
 <?php
+	$permissions = array();
 	if($form_action == '') {
 		$form_action = $GLOBALS['_PJ_user_script'];
 	}
@@ -16,16 +17,18 @@
 		$email				= $user->giveValue('email');
 		$telephone			= $user->giveValue('telephone');
 		$facsimile			= $user->giveValue('facsimile');
+		$allow_nc			= $user->giveValue('allow_nc');
 		$permissions		= explode(',', $user->giveValue('permissions'));
+		$gids				= explode(',', $user->giveValue('gids'));
 		if(!isset($password)) {
 			$password			= $GLOBALS['_PJ_password_dummy'];
 			$password_retype		= $GLOBALS['_PJ_password_dummy'];
 		}
 	} else {
-		$username			= '';
-		$permissions = array();
+		$gids			= $_PJ_auth->gids;
 	}
-	$a_permissions = $_PJ_auth->permissions;
+	$a_permissions	= $_PJ_auth->permissions;
+	$a_gids			= $_PJ_auth->gids;
 	include($GLOBALS['_PJ_root'] . '/templates/user/options/edit.ihtml');
 ?>
 <FORM ACTION="<?= $form_action; ?>" METHOD="<?= $_PJ_form_method; ?>">
@@ -68,15 +71,32 @@
 if($_PJ_auth->checkPermission('admin')) {
 ?>
 				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['allow_nc'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT NAME="allow_nc">
+						<OPTION VALUE="0"<?php if($allow_nc == '0') print ' SELECTED'; ?>><?= $GLOBALS['_PJ_strings']['no'] ?>
+						<OPTION VALUE="1"<?php if($allow_nc == '1') print ' SELECTED'; ?>><?= $GLOBALS['_PJ_strings']['yes'] ?>
+					</SELECT>
+					</TD>
+				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['permissions'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="permissions[]" multiple="multiple">
 <?php
-	$_PJ_p_count = count($a_permissions);
 	reset($a_permissions);
 	foreach($a_permissions as $name => $key) {
 ?>
 						<OPTION<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $name ?>
-
+<?php
+	}
+?>
+					 </SELECT></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gids'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple">
+<?php
+	reset($a_gids);
+	foreach($a_gids as $id => $name) {
+?>
+						<OPTION<?php if(in_array($id, $gids)) print ' SELECTED'; ?> value="<?= $id ?>"><?= $name ?>
 <?php
 	}
 ?>

@@ -1,23 +1,35 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
 	if(isset($cid)) {
-		$customer 			= new Customer($cid);
+		$customer 	= new Customer($cid, $_PJ_auth);
 	}
 	if(isset($pid)) {
-		$project = new Project($pid);
+		$project = new Project($customer, $_PJ_auth, $pid);
 	}
 	if(isset($eid)) {
-		$effort = new Effort($eid);
+		$effort = new Effort($eid, $_PJ_auth);
 	}
 
 	$center_template	= "inventory/customer";
 	if(isset($new)) {
+		if(!$_PJ_auth->checkPermission('admin') && !intval($_PJ_auth->giveValue('allow_nc'))) {
+			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_customer'];
 		include("$_PJ_root/templates/add.ihtml");
 		exit;
 	}
 
 	if(isset($edit)) {
+		if($cid && !$customer->checkUserAccess('write')) {
+			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
 		if(isset($rates)) {
 			if(isset($altered)) {
 				if ($cid != '') {
@@ -51,7 +63,7 @@
 			exit;
 		} else {
 			if(isset($altered)) {
-				if ($customer_name != '') {
+				if($customer_name != '') {
 					$data = array();
 					$data['id']							= intval($id);
 					$data['active']						= $active;
@@ -61,7 +73,26 @@
 					$data['customer_budget']			= addslashes($customer_budget);
 					$data['customer_budget_currency']	= addslashes($customer_budget_currency);
 					$data['customer_logo']				= addslashes($customer_logo);
-					$customer = new Customer($data);
+					$data['user']						= $user;
+					$data['gid']						= $gid;
+					$data['access']						= $access_owner . $access_group . $access_world;
+					$data['readforeignefforts']			= $readforeignefforts;
+					if($data['user'] == '') {
+						$data['user']	= $customer->giveValue('user');
+					}
+					if($data['user'] == '') {
+						$data['user']	= $_PJ_auth->giveValue('id');
+					}
+					if($data['gid'] == '') {
+						$data['gid']	= $customer->giveValue('gid');
+					}
+					if($data['access'] == '') {
+						$data['access']	= $customer->giveValue('access');
+					}
+					if($data['readforeignefforts'] == '') {
+						$data['readforeignefforts']	= $customer->giveValue('readforeignefforts');
+					}
+					$customer = new Customer($data,  $_PJ_auth);
 					$customer->save();
 				}
 				$center_template	= "inventory/customer/rates";
@@ -77,6 +108,12 @@
 	}
 
 	if(isset($delete) && !isset($cancel)) {
+		if(!$customer->checkUserAccess('write')) {
+			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
 		if(isset($confirm)) {
 			$customer->delete();
 		} else {
@@ -87,7 +124,7 @@
 		}
 	}
 
-	$customer_list = new CustomerList($shown['ic']);
+	$customer_list = new CustomerList($_PJ_auth, $shown['ic']);
 	$center_template	= "inventory/customer";
 	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['customer_list'];
 

@@ -131,12 +131,14 @@
 				$password = $this->retrieve($this->data['id'], 'password');
 	        }
 
-	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, firstname, lastname, email, telephone, facsimile) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 	                         $GLOBALS['_PJ_auth_table'],
 	                         $this->data['id'],
 	                         $this->data['username'],
 	                         $password,
 	                         $this->data['permissions'],
+	                         $this->data['gids'],
+	                         $this->data['allow_nc'],
 	                         $this->data['firstname'],
 	                         $this->data['lastname'],
 	                         $this->data['email'],

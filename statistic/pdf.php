@@ -1,8 +1,8 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
 
-	$customer	= new Customer($cid);
-	$project	= new Project($pid);
+	$customer	= new Customer($cid, $_PJ_auth);
+	$project	= new Project($customer, $_PJ_auth, $pid);
 
 	$center_template	= "statistic/pdf";
 	include("$_PJ_root/templates/statistic/pdf/list.ihtml");

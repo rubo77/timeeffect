@@ -6,23 +6,45 @@
 
 	class ProjectList {
 		var $db;
-		var $data;
+		var $data = array();
 		var $projects;
 		var $show_closed = false;
 		var $project_count	= 0;
 		var $project_cursor	= -1;
 
-		function ProjectList($customer_id, $show_closed = false, $limit = 10) {
+		function ProjectList($customer, &$user, $show_closed = false, $limit = 1000) {
+			$this->customer	= $customer;
+			$this->user		= $user;
 			$this->db = new Database;
 			$this->showClosed($show_closed);
 
+			if(!$user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " (gid IN (" . $user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " (access LIKE '______r__')";
+				$access_query .= " ) ";
+			}
+
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'];
-			if($customer_id) {
-				$query .= " WHERE customer_id = $customer_id";
+			if(is_object($customer) && $customer->giveValue('id')) {
+				$query .= " WHERE customer_id = '" . $customer->giveValue('id') . "'";
 				$order = " ORDER BY closed, project_name";
 				$limit = "";
 			} else {
-				$query .= " WHERE 1";
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $access_query");
+				while($this->db->next_record()) {
+					if($cids) {
+						$cids .= ',';
+					}
+					$cids .= $this->db->f('id');
+				}
+				if(!$cids) {
+					return;
+				}
+				$query .= " WHERE customer_id IN ($cids)";
 				$order = " ORDER BY closed, last DESC, project_name";
 				if($limit) {
 					$sql_limit = " LIMIT $limit";
@@ -31,12 +53,13 @@
 			if(!$this->showClosed()) {
 				$query .= " AND closed = 'No'";
 			}
+			$query .= $access_query;
 			$query .= $order . $sql_limit;
 
 			$this->db->query($query);
 			$this->projects = array();
 			while($this->db->next_record()) {
-				$this->projects[] = new Project($this->db->Record);
+				$this->projects[] = new Project($customer, $user, $this->db->Record);
 				$this->project_count++;
 				$project = $this->projects[$this->project_count-1];
 				$this->data['seconds']			+= $project->giveValue('seconds');
@@ -92,12 +115,15 @@
 		var $effort_count	= 0;
 		var $effort_cursor	= -1;
 
-		function Project($project = '') {
+		function Project(&$customer, &$user, $project = '') {
+			$this->customer	= $customer;
+			$this->user		= $user;
 			if(is_array($project)) {
 				$this->data = $project;
 			} else if($project != '') {
 				$this->load($project);
 			}
+			$this->user_access				= $this->getUserAccess();
 			$this->loadEffort();
 		}
 
@@ -122,6 +148,9 @@
 			if(!$billed) {
 					$query .= " AND billed IS NULL";
 			}
+			if(!$this->user->checkPermission('admin') && !$this->customer->giveValue('readforeignefforts')) {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "'";
+			}
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				return $this->db->Record[0];
@@ -137,7 +166,7 @@
 				return;
 
 			$rates			= new Rates($this->data['customer_id']);
-			$effort_list	= new EffortList($this->data['id']);
+			$effort_list	= new EffortList($this->customer, $this, $this->user);
 			while($effort_list->nextEffort()) {
 				$effort = $effort_list->giveEffort();
 				$this->data['seconds']			+= $effort->giveValue('seconds');
@@ -162,11 +191,14 @@
 			if($this->data['id']) {
 				$query .= "id, ";
 			}
-			$query .= "customer_id, project_name, project_desc, project_budget, project_budget_currency, last, closed) VALUES(";
+			$query .= "customer_id, user, gid, access, project_name, project_desc, project_budget, project_budget_currency, last, closed) VALUES(";
 			if($this->data['id']) {
 				$query .= $this->data['id'] . ", ";
 			}
 			$query .= $this->data['customer_id'] . ", ";
+			$query .= "'" . $this->data['user'] . "', ";
+			$query .= "'" . $this->data['gid'] . "', ";
+			$query .= "'" . $this->data['access'] . "', ";
 			$query .= "'" . $this->data['project_name'] . "', ";
 			$query .= "'" . $this->data['project_desc'] . "', ";
 			$query .= "'" . $this->data['project_budget'] . "', ";

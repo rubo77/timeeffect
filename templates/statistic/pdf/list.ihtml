@@ -1,7 +1,7 @@
 <?php
 function documentHead() {
-	global $pdf, $customer, $project, $year, $month;
-	global $syear, $smonth, $sday, $eyear, $emonth, $eday;
+	global $pdf, $customer, $project, $year, $month, $_PJ_auth;
+	global $syear, $smonth, $sday, $eyear, $emonth, $eday, $mode;
 
 	$pdf->SetY($GLOBALS['_PJ_pdf_top_margin']);
 
@@ -32,17 +32,29 @@ function documentHead() {
 		$x_align = $pdf->GetX();
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $project->giveValue("project_name"), '', 1, 'L', 0);
 		$pdf->SetX($x_align);
-		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_small_font_size']-1);
-		$pdf->MultiCell($pdf->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
+		if($project->giveValue("project_desc")) {
+			$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_small_font_size']-1);
+			$pdf->MultiCell($pdf->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
+		}
 	}
 
-	$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-	$head = $GLOBALS['_PJ_strings']['period'] . ": ";
-	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
-	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
-	
-	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
-	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, formatDate("$syear-$smonth-$sday", $GLOBALS['format_date']) . ' - ' . formatDate("$eyear-$emonth-$eday", $GLOBALS['format_date']), 0, 1, 'L', 0);
+	if(intval($year) && intval($month)) {
+		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
+		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $GLOBALS['_PJ_months'][$month] . " $year", 0, 1, 'L', 0);
+	}
+
+	if(intval($syear) && intval($eyear)) {
+		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
+		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
+		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
+		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, "$sday. " . $GLOBALS['_PJ_months'][$smonth] . " $syear - $eday. " . $GLOBALS['_PJ_months'][$emonth] . " $eyear", 0, 1, 'L', 0);
+	}
 
 	$pdf->Ln();
 }
@@ -74,6 +86,7 @@ $GLOBALS['fields'] = array(
 		'project'		=> $GLOBALS['_PJ_strings']['project'],
 		'agent'			=> $GLOBALS['_PJ_strings']['agent'],
 		'date'			=> $GLOBALS['_PJ_strings']['date'],
+		'billed'		=> $GLOBALS['_PJ_strings']['billed'],
 		'time' 			=> $GLOBALS['_PJ_strings']['from_to'],
 		'description'	=> $GLOBALS['_PJ_strings']['description'],
 		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
@@ -88,6 +101,7 @@ $GLOBALS['field_widths'] = array(
 		'agent' 		=> 100,
 		'date'			=> 40,
 		'time' 			=> 65,
+		'billed' 		=> 55,
 		'description'	=> -1,
 		'effort'		=> 45,
 		'price'			=> 55
@@ -100,6 +114,7 @@ $GLOBALS['field_aligns'] = array(
 		'project'		=> 'L',
 		'agent' 		=> 'L',
 		'date'			=> 'C',
+		'billed'		=> 'C',
 		'time' 			=> 'C',
 		'description'	=> 'L',
 		'effort'		=> 'R',
@@ -110,7 +125,7 @@ $rates		= new Rates();
 
 $r_count	= $rates->giveCount();
 if(intval($year) && intval($month)) {
-	$statistic	= new Statistics(false, $cid, $pid, $mode);
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $mode);
 	$statistic->loadMonth($year, $month, $mode);
 } elseif(intval($syear) && intval($eyear)) {
 	if(!$smonth) {
@@ -125,10 +140,10 @@ if(intval($year) && intval($month)) {
 	if(!$eday) {
 		$eday = date('d');
 	}
-	$statistic	= new Statistics(false, $cid, $pid, $mode);
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $mode);
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
 } else {
-	$statistic	= new Statistics(true, $cid, $pid, $mode);
+	$statistic	= new Statistics($_PJ_auth, true, $customer, $project, $mode);
 }
 $menge		= $statistic->effortCount();
 
@@ -144,6 +159,10 @@ if(!$cid) {
 if(!$pid) {
 	$GLOBALS['field_widths']['project'] = 70;
 }
+if($mode != 'billed') {
+	$GLOBALS['field_widths']['billed'] = 0;
+}
+
 $GLOBALS['field_lefts'] = $pdf->calculateLeft($GLOBALS['field_widths']);
 
 documentHead();
@@ -200,7 +219,6 @@ while($statistic->nextEffort()) {
 		$pdf->SetY($y_line);
 	}
 
-
 	if(!$pid) {
 		$pdf->SetX($GLOBALS['field_lefts']['project']);
 		$pdf->Cell($GLOBALS['field_widths']['project'], ($y_next_line-$y_line), $effort->giveValue('project_name'), 0, 0, $GLOBALS['field_aligns']['project'], 1);
@@ -219,6 +237,17 @@ while($statistic->nextEffort()) {
 	$pdf->SetX($GLOBALS['field_lefts']['time']);
 	$pdf->Cell($GLOBALS['field_widths']['time'], ($y_next_line-$y_line), formatTime($effort->giveValue('begin'), "H:i") . " - " . formatTime($effort->giveValue('end'), "H:i"), 0, 0, $GLOBALS['field_aligns']['time'], 1);
 	$pdf->SetY($y_line);
+
+	if($mode == 'billed') {
+		if($effort->giveValue('billed')) {
+			$formatted_billed = formatDate($effort->giveValue('billed'), "d.m.Y");
+		} else {
+			$formatted_billed = '';
+		}
+		$pdf->SetX($GLOBALS['field_lefts']['billed']);
+		$pdf->Cell($GLOBALS['field_widths']['billed'], ($y_next_line-$y_line), $formatted_billed, 0, 0, $GLOBALS['field_aligns']['billed'], 1);
+		$pdf->SetY($y_line);
+	}
 
 	$pdf->SetX($GLOBALS['field_lefts']['effort']);
 	$pdf->Cell($GLOBALS['field_widths']['effort'], ($y_next_line-$y_line), formatNumber($effort->giveValue('hours'), true), 0, 0, $GLOBALS['field_aligns']['effort'], 1);

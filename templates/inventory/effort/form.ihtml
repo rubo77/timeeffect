@@ -1,5 +1,11 @@
 <!-- inventory/effort/form.ihtml - START -->
 <?php
+	$a_gids						= $_PJ_auth->gids;
+	if($_PJ_auth->checkPermission('admin')) {
+		$u_gids						= @array_keys($a_gids);
+	} else {
+		$u_gids						= explode(',', $_PJ_auth->giveValue('gids'));
+	}
 	$users			= $_PJ_auth->listUsers();
 	$rates			= new Rates($customer->giveValue("id"));
 	$r_count		= $rates->giveCount();
@@ -22,15 +28,23 @@
 			$minutes		= floor($effort->giveValue('billed_minutes')-($hours*60));
 			$seconds		= $effort->giveValue('billed_seconds')-($hours*3600)-($minutes*60);
 		}
-		$description	= $effort->giveValue('description');
-		$note			= $effort->giveValue('note');
-		$billed			= $effort->giveValue('billed');
-		$rate			= $effort->giveValue('rate');
-		$user			= $effort->giveValue('user');
+		$description				= $effort->giveValue('description');
+		$note						= $effort->giveValue('note');
+		$billed						= $effort->giveValue('billed');
+		$rate						= $effort->giveValue('rate');
+		$user						= $effort->giveValue('user');
+		$effort_gid					= $effort->giveValue('gid');
+		$effort_access_owner		= substr($effort->giveValue('access'), 0, 3);
+		$effort_access_group		= substr($effort->giveValue('access'), 3, 3);
+		$effort_access_world		= substr($effort->giveValue('access'), 6, 3);
 		list($billing_year, $billing_month, $billing_day) = explode("-", $billed);
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
 	} else {
 		$description	= $GLOBALS['_PJ_strings']['no_description'];
+		$user_access['write']		= true;
+		$effort_access_owner		= 'rw-';
+		$effort_access_group		= 'r--';
+		$effort_access_world		= 'r--';
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/new.ihtml');
 	}
 ?>
@@ -239,24 +253,66 @@
 					</SELECT>
 					(<?= $GLOBALS['_PJ_strings']['day'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['year'] ?>)
 					</TD>
+<?php
+if($_PJ_auth->checkPermission('admin')) {
+?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
-					<TD CLASS="FormField"><?php
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="user">
+					<?php
 						$a_user = $user;
 						reset($users);
 						while(list($cnt, $o_user) = each($users)) {
-							if($a_user == $o_user['id']) {
-								$name	= $o_user['firstname'] . " " . $o_user['lastname'];;
-								$uid	= $o_user['id'];
-							}
+?>
+						<OPTION VALUE="<?= $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+<?php
 						}
-						if(!$uid) {
-							$name	= $_PJ_auth->giveValue('firstname') . " " . $_PJ_auth->giveValue('lastname');
-							$uid	= $_PJ_auth->giveValue('id');
-						}
-						print $name;
 					?>
-					<INPUT TYPE="hidden" NAME="user" VALUE="<?= $uid ?>"></TD>
+					</SELECT>
+					</TD>
+<?php
+}
+if($_PJ_auth->checkPermission('admin') || $new || $user == $_PJ_auth->giveValue('id')) {
+?>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gid">
+<?php
+	reset($u_gids);
+	foreach($u_gids as $id) {
+?>
+						<OPTION<?php if($id == $project_gid) print ' SELECTED'; ?> value="<?= $id ?>"><?= $a_gids[$id] ?>
+<?php
+	}
+?>
+					 </SELECT></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_owner">
+						<OPTION VALUE="rw-"<?php if($effort_access_owner == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_owner == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_owner == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_group">
+						<OPTION VALUE="rw-"<?php if($effort_access_group == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_group == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_group == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_world">
+						<OPTION VALUE="rw-"<?php if($effort_access_world == 'rw-') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_world == 'r--') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_world == '---') print ' SELECTED' ?>><?= $GLOBALS['_PJ_strings']['access_na'] ?>
+					</SELECT>
+					</TD>
+<?php
+}
+?>
 				</TR><TR>
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>

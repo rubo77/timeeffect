@@ -100,6 +100,12 @@ if($GLOBALS['username'] != '') {
 						<TD CLASS="FormFieldName"><?=$GLOBALS['_PJ_strings']['password']?>:</TD>
 						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="password" NAME="password"></TD>
 					</TR><TR>
+						<TD CLASS="FormFieldName"><?=$GLOBALS['_PJ_strings']['language']?>:</TD>
+						<TD CLASS="FormField"><SELECT NAME="lang">
+							<OPTION VALUE="de"<?php if($GLOBALS['_PJ_language'] == 'de') print ' SELECTED'; ?>><?=$GLOBALS['_PJ_strings']['language_de']?>
+							<OPTION VALUE="en"<?php if($GLOBALS['_PJ_language'] == 'en') print ' SELECTED'; ?>><?=$GLOBALS['_PJ_strings']['language_en']?>
+						</TD>
+					</TR><TR>
 						<TD></TD>
 						<TD CLASS="FormField"><INPUT CLASS="FormSubmit" TYPE="submit" VALUE="<?=$GLOBALS['_PJ_strings']['login']?> >>"></TD>
 					</TR><TR>

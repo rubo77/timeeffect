@@ -12,6 +12,9 @@
 			<TR>
 				<TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 					<TR>
+<?php
+if($_PJ_auth->checkPermission('admin') || intval($_PJ_auth->giveValue('allow_nc'))) {
+?>
 						<TD>&nbsp;</TD>
 					</TR><TR>
 						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
@@ -20,6 +23,9 @@
 							</TR>
 						</TABLE></TD>
 					</TR><TR>
+<?php
+}
+?>
 						<TD>&nbsp;</TD>
 					</TR><TR>
 						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
