@@ -58,7 +58,7 @@
 	/*
 	   agents are allow to delete efforts
 	*/
-	$_PJ_agents_allow_delete 	= 0;
+	$_PJ_agents_allow_delete 	= 1;
 
 /* ******************************************************** */
 /* customizable variables - END                             */
