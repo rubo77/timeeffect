@@ -18,6 +18,8 @@
 ?>
 		</TD>
 <!-- END - content -->
+	</TR><TR>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?></td>
 	</TR>
 </TABLE>
 </BODY>

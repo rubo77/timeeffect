@@ -27,7 +27,10 @@
 <!-- END - content -->
 			</TR>
 		</TABLE></TD>
+	</TR><TR>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?></td>
 	</TR>
+</TABLE>
 </BODY>
 </HTML>
 <!-- add.ihtml - END -->

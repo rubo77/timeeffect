@@ -217,4 +217,7 @@
  	} else if(isset($sbe) && $sbe == 0) {
  		unset($shown['be']);
  	}
+
+	$_PJ_timeeffect_version		= 'Beta 1.1 (e), RC 1';
+
 ?>

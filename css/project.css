@@ -348,3 +348,9 @@ TEXTAREA.FormField {
 	color:				#FF7700;
 }
 
+TD.version {
+	color:				#AAAAAA;
+	font-size:			10px;
+	text-align:			center;
+	vertical-align:		bottom;
+}
