@@ -1,0 +1,271 @@
+<!-- inventory/effort/form.ihtml - START -->
+<?php
+	$users			= $_PJ_auth->listUsers();
+	$rates			= new Rates($customer->giveValue("id"));
+	$r_count		= $rates->giveCount();
+	if(is_object($effort) && !$new) {
+		$id				= $effort->giveValue('id');
+		$project_id		= $effort->giveValue('project_id');
+		$date			= $effort->giveValue('date');
+		list($year, $month, $day) = explode("-", $date);
+	
+		$begin			= $effort->giveValue('begin');
+		list($hour, $minute, $second) = explode(":", $begin);
+	
+		$end			= $effort->giveValue('end');
+		if($effort->giveValue('billed') == '') {
+			$hours			= floor($effort->giveValue('hours'));
+			$minutes		= floor($effort->giveValue('minutes')-($hours*60));
+			$seconds		= $effort->giveValue('seconds')-($hours*3600)-($minutes*60);
+		} else {
+			$hours			= floor($effort->giveValue('billed_hours'));
+			$minutes		= floor($effort->giveValue('billed_minutes')-($hours*60));
+			$seconds		= $effort->giveValue('billed_seconds')-($hours*3600)-($minutes*60);
+		}
+		$description	= $effort->giveValue('description');
+		$note			= $effort->giveValue('note');
+		$billed			= $effort->giveValue('billed');
+		$rate			= $effort->giveValue('rate');
+		$user			= $effort->giveValue('user');
+		list($billing_year, $billing_month, $billing_day) = explode("-", $billed);
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
+	} else {
+		$description	= $GLOBALS['_PJ_strings']['no_description'];
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/new.ihtml');
+	}
+?>
+
+<FORM ACTION="<? print $PHP_SELF; ?>" METHOD="<? print $_PJ_form_method; ?>">
+<INPUT TYPE="hidden" NAME="edit" VALUE="1">
+<INPUT TYPE="hidden" NAME="altered" VALUE="1">
+<INPUT TYPE="hidden" NAME="pid" VALUE="<?= $pid ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<?= $cid ?>">
+<INPUT TYPE="hidden" NAME="eid" VALUE="<?= $eid ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<?= $id ?>">
+
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?= $_PJ_inner_frame_border ?>"
+			CELLPADDING="<?= $_PJ_inner_frame_cellpadding ?>"
+			CELLSPACING="<?= $_PJ_inner_frame_cellspacing ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><b><?= $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><b><?php print $project->giveValue('project_name'); ?></b></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['description'] ?>:</TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['note'] ?>:</TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="note" COLS="35" ROWS="5" WRAP><?php print $note; ?></TEXTAREA></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['date'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT CLASS="FormSelect" NAME="day">
+					<?php
+						$a_day = $day;
+						if(!$day) {
+							$a_day = date("d");
+						}
+	
+						for($i=1; $i <= 31; $i++) {
+							print "<OPTION ";
+							if($a_day == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="month">
+					<?php
+						$a_month = $month;
+						if(!$month) {
+							$a_month = date("m");
+						}
+	
+						for($i=1; $i <= 12; $i++) {
+							print "<OPTION ";
+							if($a_month == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="year">
+					<?php
+						$a_year = $year;
+						if(!$year) {
+							$a_year = date("Y");
+						}
+						$max_year = date("Y");
+	
+						for($i=$a_year-1; $i <= $max_year; $i++) {
+							print "<OPTION ";
+							if($a_year == $i)
+								print " SELECTED";
+							printf(" VALUE='%04d'>%04d", $i, $i);
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['day'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['yaer'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['time_of_beginning'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT CLASS="FormSelect" NAME="hour">
+					<?php
+						$a_hour = $hour;
+						if(!$hour) {
+							$a_hour = date("H");
+						}
+	
+						for($i=0; $i < 24; $i++) {
+							print "<OPTION ";
+							if($a_hour == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="minute">
+					<?php
+						$a_minute = $minute;
+						if(!$minute) {
+							$a_minute = date("i");
+						}
+	
+						for($i=0; $i <= 11; $i++) {
+							print "<OPTION ";
+							if(floor($a_minute/5) == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i*5, $i*5);
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['hour'] ?>, <?= $GLOBALS['_PJ_strings']['minute'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['duration'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT CLASS="FormSelect" NAME="hours">
+					<?php
+						$a_hours = $hours;
+	
+						for($i=0; $i <= 24; $i++) {
+							print "<OPTION ";
+							if($a_hours == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="minutes">
+					<?php
+						$a_minutes = $minutes;
+	
+						for($i=0; $i <= 11; $i++) {
+							print "<OPTION ";
+							if(floor($a_minutes/5) == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i*5, $i*5);
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['hours'] ?>, <?= $GLOBALS['_PJ_strings']['minutes'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['rate'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT CLASS="FormField" NAME="rate">
+					<?php
+						$a_rate = $rate;
+						$rates->resetList();
+						while($data = $rates->giveNext()) {
+							print "<OPTION ";
+							if($a_rate == $data['id'])
+								print " SELECTED";
+							printf(" VALUE='%02d'>%s (%s %s)" , $data['id'], $data['name'], $data['currency'], $data['price']);
+						}
+					?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT CLASS="FormSelect" NAME="billing_day">
+						<OPTION VALUE="">
+					<?php
+						$a_billing_day = $billing_day;
+	
+						for($i=1; $i <= 31; $i++) {
+							print "<OPTION ";
+							if($a_billing_day == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="billing_month">
+						<OPTION VALUE="">
+					<?php
+						$a_billing_month = $billing_month;
+	
+						for($i=1; $i <= 12; $i++) {
+							print "<OPTION ";
+							if($a_billing_month == $i)
+								print " SELECTED";
+							printf(" VALUE='%02d'>%02d", $i, $i);
+						}
+					?>
+					</SELECT>
+					<SELECT CLASS="FormSelect" NAME="billing_year">
+						<OPTION VALUE="">
+					<?php
+						$a_billing_year = $billing_year;
+						if(!$billing_year) {
+							$a_billing_year = date("Y");
+						}
+						$max_billing_year = date("Y");
+	
+						for($i=$a_billing_year-1; $i <= $max_billing_year; $i++) {
+							print "<OPTION ";
+							if($billing_year && $a_billing_year == $i)
+								print " SELECTED";
+							printf(" VALUE='%04d'>%04d", $i, $i);
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['day'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['year'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
+					<TD CLASS="FormField"><?php
+						$a_user = $user;
+						reset($users);
+						while(list($cnt, $o_user) = each($users)) {
+							if($a_user == $o_user['id']) {
+								$name	= $o_user['firstname'] . " " . $o_user['lastname'];;
+								$uid	= $o_user['id'];
+							}
+						}
+						if(!$uid) {
+							$name	= $_PJ_auth->giveValue('firstname') . " " . $_PJ_auth->giveValue('lastname');
+							$uid	= $_PJ_auth->giveValue('id');
+						}
+						print $name;
+					?>
+					<INPUT TYPE="hidden" NAME="user" VALUE="<?= $uid ?>"></TD>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+				</TR>
+			</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+</FORM>
+<!-- inventory/effort/form.ihtml - END -->

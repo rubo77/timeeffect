@@ -1,0 +1,25 @@
+<!-- note.ihtml - START -->
+<HTML>
+<HEAD>
+<TITLE>TIMEEFFECT - <?= $center_title; ?></TITLE>
+<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/project.css" TYPE="text/css">
+</HEAD>
+<SCRIPT LANGUAGE="Javascript1.2" SRC="<?php print $_PJ_http_root; ?>/include/functions.js" type="text/javascript"></SCRIPT>
+
+<BODY>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
+	<TR>
+		<TD VALIGN="top">
+<!-- START - content -->
+<?php
+	if($center_template != '') {
+		include("$_PJ_root/templates/$center_template/note.ihtml");
+	}
+?>
+		</TD>
+<!-- END - content -->
+	</TR>
+</TABLE>
+</BODY>
+</HTML>
+<!-- note.ihtml - END -->

@@ -1,0 +1,127 @@
+<!-- list.ihtml - START -->
+<HTML>
+<HEAD>
+<TITLE>TIMEEFFECT - Login</TITLE>
+<LINK REL="stylesheet" HREF="<?= $GLOBALS['_PJ_css_path']; ?>/project.css" TYPE="text/css">
+<SCRIPT LANGUAGE="Javascript1.2" SRC="<?= $GLOBALS['_PJ_http_root']; ?>/include/functions.js" type="text/javascript"></SCRIPT>
+<SCRIPT language="Javascript1.2">
+<!--
+function sf(){
+	if(document.forms[0].username.value == '')
+		document.forms[0].username.focus();
+	else
+		document.forms[0].password.focus();
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY onLoad='sf()'>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
+	<TR HEIGHT="100">
+<!-- START - left navigation -->
+		<TD WIDTH="160" ROWSPAN="2"><!-- shared/left.ihtml - START -->
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
+			<TR>
+				<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
+					<TR>
+						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
+					</TR><TR>
+						<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+					</TR>
+				</TABLE></TD>
+			</TR>
+		</TABLE>
+		</TD>
+<!-- END - left navigation -->
+		<TD CLASS="headFrame"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+	<TR HEIGHT="100">
+<!-- START - Main Options  -->
+		<TD CLASS="mainOptionFrame" VALIGN="bottom">
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+			<TR>
+				<TD><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
+					<TR>
+						<TD CLASS="mainOptionS">&nbsp;&nbsp;<A CLASS="mainOptionS" HREF="<?= $GLOBALS['PHP_SELF'] ?>"><?= $GLOBALS['_PJ_strings']['authentication'] ?></A></TD>
+						<TD CLASS="mainOptionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/main-option-es.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+					</TR>
+				</TABLE>
+			</TR>
+		</TABLE>
+		</TD>
+<!-- END - Main Options  -->
+		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<?= $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><?= $GLOBALS['_PJ_strings']['help'] ?></A></TD>
+	</TR>
+</TABLE></TD>
+	</TR><TR>
+<!-- START - content -->
+<FORM METHOD="POST" ACTION="<?= $GLOBALS['PHP_SELF'] ?>">
+<?php
+// print $_GET && $_POST as hidden form fields
+print PJAuth::assembleFormFields();
+?>
+		<TD VALIGN="top"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+			<TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD CLASS="content"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="500">
+					<TR VALIGN="top">
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/login-welcome.gif" HEIGHT="80" WIDTH="71" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="20" BORDER="0"></TD>
+						<TD COLSPAN="2"><?=$GLOBALS['_PJ_strings']['login-welcome']?></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR>
+<?php
+if($GLOBALS['username'] != '') {
+?>
+					<TR>
+						<TD COLSPAN="2" CLASS="ErrorMessage"><?= $GLOBALS['_PJ_strings']['login_error_msg'] ?></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR>
+<?php
+}
+?>
+					<TR>
+						<TD CLASS="FormFieldName"><?=$GLOBALS['_PJ_strings']['username']?>:</TD>
+						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="text" NAME="username" VALUE="<?= $GLOBALS['username'] ?>"></TD>
+					</TR><TR>
+						<TD CLASS="FormFieldName"><?=$GLOBALS['_PJ_strings']['password']?>:</TD>
+						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="password" NAME="password"></TD>
+					</TR><TR>
+						<TD></TD>
+						<TD CLASS="FormField"><INPUT CLASS="FormSubmit" TYPE="submit" VALUE="<?=$GLOBALS['_PJ_strings']['login']?> >>"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><?=$GLOBALS['_PJ_strings']['session-expire']?></TD>
+					</TR>
+				</TABLE></TD>
+			</TR><TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+			</TR>
+		</TABLE></TD>
+</FORM>
+<!-- END - content -->
+	</TR>
+</TABLE>
+</BODY>
+</HTML>
+<!-- list.ihtml - END -->

@@ -1,0 +1,36 @@
+<!-- inventory/customer/delete.ihtml - START -->
+<?
+	if(is_object($customer)) {
+		$cid						= $customer->giveValue('id');
+		$customer_name				= $customer->giveValue('customer_name');
+		$customer_desc				= $customer->giveValue('customer_desc');
+		$customer_budget			= $customer->giveValue('customer_budget');
+		$customer_logo				= $customer->giveValue('customer_logo');
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/delete.ihtml');
+	} else {
+		exit;
+	}
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_customer_inventory_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<?=$cid?>">
+	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+				<TR>
+					<TD CLASS="MessageAsk" COLSPAN="2"><?= $GLOBALS['_PJ_strings']['ask_customer_delete'] ?></TD>
+				</TR><TR>
+					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <?= $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
+					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<?= $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+<!-- inventory/customer/delete.ihtml - END -->

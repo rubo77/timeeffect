@@ -1,0 +1,30 @@
+<?php
+if(is_object($customer) &&
+	$customer->giveValue('id') &&
+	((($SCRIPT_NAME == $GLOBALS['_PJ_customer_statistics_script']) && $list!=1) ||
+	  ($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) ||
+	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script']))) {
+$c_id = $customer->giveValue('id');
+?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
+print "[ID: '$c_id']&nbsp;" . $customer->giveValue('customer_name');
+}
+if(is_object($project) &&
+	$project->giveValue('id') &&
+	((($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) && $list!=1) ||
+	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script']))) {
+$p_id = $project->giveValue('id');
+if($c_id) {
+?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-r.gif" WIDTH="11" HEIGHT="7" BORDER="0">&nbsp;<?php
+} ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp<?php
+print "[ID: '$p_id']&nbsp;" . $project->giveValue('project_name');
+}
+if(is_object($effort) &&
+	$effort->giveValue('id') &&
+	($list != 1) &&
+	($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script'])) {
+	$e_id = $effort->giveValue('id');
+	if($p_id || $c_id) {
+?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-r.gif" WIDTH="11" HEIGHT="7" BORDER="0">&nbsp;<?php
+	} ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
+print "[ID: '$e_id']&nbsp;" . $effort->giveValue('description');
+} ?>

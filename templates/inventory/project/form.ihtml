@@ -1,0 +1,57 @@
+<!-- inventory/project/form.ihtml - START -->
+<?php
+	if(is_object($project) && !$new) {
+		$pid						= $project->giveValue('id');
+		$cid				= $project->giveValue('customer_id');
+		$project_name				= $project->giveValue('project_name');
+		$project_desc				= $project->giveValue('project_desc');
+		$project_budget				= $project->giveValue('project_budget');
+		$closed						= $project->giveValue('closed');
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/edit.ihtml');
+	} else {
+		$project_name				= $GLOBALS['_PJ_strings']['no_name'];
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/new.ihtml');
+	}
+	$project_budget_currency	= $_PJ_currency;
+?>
+<FORM ACTION="<?= $GLOBALS['_PJ_projects_inventory_script'] ?>" METHOD="<?= $GLOBALS['_PJ_form_method'] ?>">
+<INPUT TYPE="hidden" NAME="edit" VALUE="1">
+<INPUT TYPE="hidden" NAME="altered" VALUE="1">
+<INPUT TYPE="hidden" NAME="pid" VALUE="<?= $pid ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<?= $cid ?>">
+<INPUT TYPE="hidden" NAME="project_budget_currency" VALUE="<?=$project_budget_currency?>">
+
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?= $_PJ_inner_frame_border ?>"
+			CELLPADDING="<?= $_PJ_inner_frame_cellpadding ?>"
+			CELLSPACING="<?= $_PJ_inner_frame_cellspacing ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="FormFieldName" WIDTH="<?= $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<?= $_PJ_form_field_width ?>"><INPUT NAME="project_name" SIZE="30" MAXLENGTH="64" VALUE="<?= $project_name ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<?= $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['budget_in'] ?> <?=$project_budget_currency?>:</TD>
+					<TD CLASS="FormField" WIDTH="<?= $_PJ_form_field_width ?>"><INPUT NAME="project_budget" SIZE="30" MAXLENGTH="64" VALUE="<?= $project_budget ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['description'] ?>:</TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="project_desc"><?= $project_desc ?></TEXTAREA></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['closed'] ?>:</TD>
+					<TD CLASS="FormField">
+					<INPUT TYPE="radio" NAME="closed" VALUE="Yes"<?php if($closed=='Yes') print ' CHECKED' ?>>&nbsp;<?= $GLOBALS['_PJ_strings']['yes'] ?>
+					<INPUT TYPE="radio" NAME="closed" VALUE="No"<?php if($closed=='No' || !$closed) print ' CHECKED' ?>>&nbsp;<?= $GLOBALS['_PJ_strings']['no'] ?>
+					</TD>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+</FORM>
+<!-- inventory/project/form.ihtml - END -->

@@ -1,0 +1,25 @@
+<!-- inventory/project/options/list.ihtml - START -->
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+			<TR VALIGN="center">
+				<TD WIDTH="40"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="40" HEIGHT="60" BORDER="0"></TD>
+				<TD HEIGHT="60" CLASS="path"><?php include($GLOBALS['_PJ_root'] . '/templates/shared/path.ihtml'); ?>&nbsp;</TD>
+			</TR>
+		</TABLE>
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" BACKGROUND="<?= $GLOBALS['_PJ_image_path'] ?>/option-bg.gif">
+			<TR>
+				<TD VALIGN="top"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
+					<TR HEIGHT="24">
+						<TD WIDTH="40"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="40" HEIGHT="1" BORDER="0"></TD>
+						<TD BACKGROUND="<?= $GLOBALS['_PJ_image_path'] ?>/option-ub.gif"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/option-bu.gif" BORDER="0"></TD>
+						<TD CLASS="option" BACKGROUND="<?= $GLOBALS['_PJ_image_path'] ?>/option-ub.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?list=1"?> "><?= $GLOBALS['_PJ_strings']['customers']?></A>&nbsp;&nbsp;</TD>
+						<TD CLASS="optionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/option-us.gif" WIDTH="4" HEIGHT="24" BORDER="0"></TD>
+						<TD CLASS="option" BACKGROUND="<?= $GLOBALS['_PJ_image_path'] ?>/option-sb.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid"?> "><?= $GLOBALS['_PJ_strings']['projects']?></A>&nbsp;&nbsp;</TD>
+						<TD CLASS="optionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/option-su.gif" WIDTH="4" HEIGHT="24" BORDER="0"></TD>
+						<TD CLASS="option" BACKGROUND="<?= $GLOBALS['_PJ_image_path'] ?>/option-ub.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=$cid&pid=$pid"?> "><?= $GLOBALS['_PJ_strings']['efforts']?></A></TD>
+						<TD CLASS="optionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/option-eu.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+						<TD>&nbsp;</TD>
+					</TR>
+				</TABLE></TD>
+			</TR>
+		</TABLE>
+<!-- inventory/project/options/list.ihtml - END -->

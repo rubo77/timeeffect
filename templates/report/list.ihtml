@@ -1,0 +1,93 @@
+<!-- report/list.ihtml - START -->
+<?php
+	include($GLOBALS['_PJ_root'] . '/templates/report/options/list.ihtml');
+?>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+// -->
+</SCRIPT>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD CLASS="content">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+			<TR>
+				<TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+					<TR>
+						<TD>&nbsp;</TD>
+					</TR><TR>
+						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+							<TR>
+								<TH CLASS="list"><?php
+if($statistic->count()) {
+?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_pdf_statistics_script'] . "?mode=$mode&cid=$cid&pid=$pid&syear=$syear&smonth=$smonth&sday=$sday&eyear=$eyear&emonth=$emonth&eday=$eday" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?></A><?php
+} else { ?>&nbsp;<?php
+} ?></TH>
+							</TR>
+						</TABLE></TD>
+					</TR><TR>
+						<TD>&nbsp;</TD>
+					</TR><TR>
+						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
+					</TR>
+				</TABLE></TD>
+			</TR><TR>
+				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+					<TR>
+<?php if(!$cid) { ?>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['customer'] ?></TH>
+<?php }
+	if(!$pid) { ?>
+				
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['project'] ?></TH>
+<?php } ?>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['name'] ?></TH>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['date'] ?></TH>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['from_to'] ?></TH>
+<?php
+if($shown['be']) {
+?>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['billed_at'] ?></TH>
+<?php
+}
+?>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workingdays'] ?></TH>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] ?></TH>
+					</TR>
+<?php
+	$rowclass = 1;
+	while($statistic->nextEffort()) {
+		$rowclass = !$rowclass;
+		$effort = $statistic->giveEffort();
+		$row_class = !$row_class;
+		include("$_PJ_root/templates/report/row.ihtml");
+	}
+?>
+					<TR>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+					</TR><TR HEIGHT="25">
+<?php
+$colspan = 2;
+if(!$cid) {
+	$colspan++;
+}
+if(!$pid) {
+	$colspan++;
+}
+?>
+						<TD COLSPAN="<?= $colspan ?>"></TD>
+						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true); ?></TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;€'; ?></TD>
+					</TR><TR>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+					</TR>
+				</TABLE></TD>
+			</TR>
+		</TABLE></TD>
+	</TR>
+</TABLE>
+<!-- report/list.ihtml - END -->

@@ -1,0 +1,32 @@
+<!-- statistic/customer/project/row.ihtml - START -->
+	<TR>
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+		<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+	</TR><TR HEIGHT="25">
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php
+		if($project->count()) {
+			if($expanded['pid'][$project->giveValue('id')] || $expanded['cid']['all']) {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			} else {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			}
+		} else {
+		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
+		}
+		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&pid=" . $project->giveValue('id') ?>"><?= $project->giveValue('project_name') ?></A></TD>
+		<TD CLASS="listDetail<?= $rowclass ?>">&nbsp;</TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('days')) print formatNumber($project->giveValue('days'), true); ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('costs')) print formatNumber($project->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget'), true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+	</TR><?php
+	if($expanded['pid'][$project->giveValue('id')]) {
+		$efforts	= new EffortList($project->giveValue('id'));
+		while($efforts->nextEffort()) {
+			$effort = $efforts->giveEffort();
+			$row_class = !$row_class;
+			include("$_PJ_root/templates/statistic/customer/project/effort/row.ihtml");
+		}
+	}
+	?>
+<!-- statistic/customer/project/row.ihtml - END -->

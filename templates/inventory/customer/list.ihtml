@@ -1,0 +1,77 @@
+<!-- inventory/customer/list.ihtml - START -->
+<?php
+	include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/list.ihtml');
+?>
+<TABLE	WIDTH="100%"
+		BORDER="<?php print($_PJ_inner_frame_border); ?>"
+		CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+		CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+	<TR>
+		<TD CLASS="content">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+			<TR>
+				<TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+					<TR>
+						<TD>&nbsp;</TD>
+					</TR><TR>
+						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+							<TR>
+								<TH CLASS="list"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?new=1"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?= $GLOBALS['_PJ_strings']['new_customer'] ?>" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['new_customer'] ?></A></TH>
+							</TR>
+						</TABLE></TD>
+					</TR><TR>
+						<TD>&nbsp;</TD>
+					</TR><TR>
+						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD>&nbsp;</TD>
+					</TR>
+				</TABLE></TD>
+			</TR><TR>
+				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+					<TR>
+						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['name'] ?></TH>
+						<TH CLASS="list" COLSPAN="10"><?= $GLOBALS['_PJ_strings']['data'] ?></TH>
+					</TR>
+<?php
+	$rowclass = 1;
+	while($customer_list->nextCustomer()) {
+		$rowclass = !$rowclass;
+		$customer = $customer_list->giveCustomer();
+		$row_class = !$row_class;
+		if($expanded['cid']['all']) {
+			$expanded['cid'][$customer->giveValue('id')] = 1;
+		}
+		include("$_PJ_root/templates/inventory/customer/row.ihtml");
+	}
+	unset($expanded['cid']['all']);
+?>
+					<TR>
+						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR>
+				</TABLE></TD>
+			</TR><TR>
+				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+					<TR>
+						<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="3" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD ALIGN="left"><?php
+if(!$shown['ic']) {
+						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?sic=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['show_closed_customers'] ?></A>&nbsp;|&nbsp;<?= $customer_list->inactive_count . " " . $GLOBALS['_PJ_strings']['inactive_hidden'] ?><?php
+} else {
+						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?sic=0&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['hide_closed_customers'] ?></A><?php
+}
+						?>
+						
+						</TD>
+						<TD ALIGN="right">
+						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?exca=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['expand_all'] ?></A> |
+						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?coca=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['collapse_all'] ?>
+						</TD>
+					</TR>
+				</TABLE></TD>
+			</TR>
+		</TABLE></TD>
+	</TR>
+</TABLE>
+<!-- inventory/customer/list.ihtml - END -->

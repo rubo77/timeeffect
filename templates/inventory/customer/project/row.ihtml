@@ -1,0 +1,34 @@
+<!-- inventory/customer/project/row.ihtml - START -->
+	<TR>
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+		<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+	</TR><TR HEIGHT="25">
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php
+		if($project->count()) {
+			if($expanded['pid'][$project->giveValue('id')] || $expanded['cid']['all']) {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			} else {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			}
+		} else {
+		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
+		}
+		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?edit=1&pid=" . $project->giveValue('id') ?>"><?= $project->giveValue('project_name') ?></A></TD>
+		<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['create'] ?></A></TD>
+		<TD CLASS="list<?= $rowclass ?>"><?php
+if($project->count()) {
+?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/list.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['overview'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['overview'] ?></A><?php
+} else { ?>&nbsp;<?php
+} ?></TD>
+		<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
+	</TR><?php
+	if($expanded['pid'][$project->giveValue('id')]) {
+		$efforts	= new EffortList($project->giveValue('id'));
+		while($efforts->nextEffort()) {
+			$effort = $efforts->giveEffort();
+			$row_class = !$row_class;
+			include("$_PJ_root/templates/inventory/customer/project/effort/row.ihtml");
+		}
+	}
+	?>
+<!-- inventory/customer/project/row.ihtml - END -->

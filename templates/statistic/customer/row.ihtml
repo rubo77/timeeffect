@@ -1,0 +1,49 @@
+<!-- statistic/customer/row.ihtml - START -->
+<?php
+		$projects = new ProjectList($customer->giveValue('id'));
+		$remaining_budget = '';
+		$full_budget = intval($customer->giveValue('customer_budget')) + intval($projects->giveValue('budget'));
+		$sec	= $full_budget/100*$_PJ_budget_security_percentage;
+		$costs	= $projects->giveValue('costs');
+		$days	= $projects->giveValue('days');
+		if($full_budget > 0) {
+			$remaining_budget = $full_budget - $projects->giveValue('costs');
+		}
+		$sum_customer_costs				+= $costs;
+		$sum_customer_days				+= $days;
+		$sum_customer_full_budget		+= $full_budget;
+		$sum_customer_remaining_budget	+= $remaining_budget;
+?>
+	<TR>
+		<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+	</TR><TR HEIGHT="25">
+		<TD CLASS="list<?= $rowclass ?>"><?php
+		if($customer->count()) {
+			if($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all']) {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			} else {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			}
+		} else {
+		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16"><?php
+		}
+		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=" . $customer->giveValue('id') ?>"><?= $customer->giveValue('customer_name') ?></A></TD>
+		<TD CLASS="listDetail<?= $rowclass ?>">&nbsp;</TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($days) print formatNumber($days, true); ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($costs) print formatNumber($costs, true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($full_budget) print formatNumber($full_budget, true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($remaining_budget) print formatNumber($remaining_budget, true) . '&nbsp;€'; ?></TD>
+	</TR><?php
+	if($expanded['cid'][$customer->giveValue('id')]) {
+		$projects->reset();
+		while($projects->nextProject()) {
+			$project = $projects->giveProject();
+			$row_class = !$row_class;
+			if($expanded['cid']['all']) {
+				$expanded['pid'][$project->giveValue('id')] = 1;
+			}
+			include("$_PJ_root/templates/statistic/customer/project/row.ihtml");
+		}
+	}
+	?>
+<!-- statistic/customer/row.ihtml - END -->

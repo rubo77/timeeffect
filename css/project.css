@@ -1,0 +1,346 @@
+BODY {
+	font-family:		Verdana,Arial,sans-serif;
+	font-weight:		normal;
+	font-style:			normal;
+	background-color:	#FFFFFF;
+	color:				#000000;
+	margin-top:			0;
+	margin-left:		0;
+	margin-bottom:		0;
+	margin-right:		0;
+}
+
+TD {
+	font-size:			11px;
+}
+
+TD.headFrame {
+	background-color:	#000063;
+	color:				#FFFFFF;
+}
+
+TD.mainOptionU {
+	background-color:	#EE8000;
+	color:				#FFFFFF;
+	font-weight:		bold;
+	text-align:			center;
+}
+
+TD.mainOptionS {
+	background-color:	#FFFFFF;
+	color:				#EE8000;
+	font-weight:		bold;
+	text-align:			center;
+}
+
+TD.option {
+	background-color:	#EFEFEF;
+	color:				#AAAAAA;
+	font-weight:		bold;
+	text-align:			center;
+}
+
+TD.option {
+	background-color:	#FFFFFF;
+	color:				#EE8000;
+	font-weight:		bold;
+	text-align:			center;
+}
+
+TD.optionBackground {
+	background-color:	#AAAAAA;
+}
+
+TD.list {
+	background:			#F5F5F5;
+	color:				#555555;
+}
+
+TD.listSum {
+	background:			#FFFFFF;
+	color:				#000000;
+	font-weight:		bold;
+}
+
+TD.listSumNumeric {
+	background:			#FFFFFF;
+	color:				#000000;
+	padding:			3px;
+	text-align:			right;
+	font-weight:		bold;
+}
+
+TD.list1 {
+	background:			#FFFFFF;
+	color:				#555555;
+}
+
+TD.listDetail {
+	background:			#F5F5F5;
+	color:				#000063;
+	padding:			3px;
+	vertical-align:		top;
+}
+
+TD.listDetail1 {
+	background:			#FFFFFF;
+	color:				#000063;
+	padding:			3px;
+	vertical-align:		top;
+}
+
+TD.listSubDetail {
+	background:			#F5F5F5;
+	color:				#AAAACC;
+	padding:			3px;
+	vertical-align:		top;
+}
+
+TD.listSubDetail1 {
+	background:			#FFFFFF;
+	color:				#AAAACC;
+	padding:			3px;
+	vertical-align:		top;
+}
+
+TD.listDetailNumeric {
+	background:			#F5F5F5;
+	color:				#000063;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
+TD.listDetailNumeric1 {
+	background:			#FFFFFF;
+	color:				#000063;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
+TD.listSubDetailNumeric {
+	background:			#F5F5F5;
+	color:				#AAAACC;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
+TD.listSubDetailNumeric1 {
+	background:			#FFFFFF;
+	color:				#AAAACC;
+	padding:			3px;
+	text-align:			right;
+	vertical-align:		top;
+}
+
+TD.listFoot {
+	background:			#FFFFFF;
+	color:				#555555;
+}
+
+TD.leftNavi {
+	background:			#F5F5F5;
+	color:				#000000;
+}
+
+TD.leftNaviInfo {
+	background:			#F5F5F5;
+	color:				#000063;
+	font-size:			9px;
+}
+
+TD.note {
+	padding:			2px;
+	background:			#F5F5F5;
+	color:				#555555;
+}
+
+TD.noteHead {
+	font-weight:		bold;
+	text-align:			right;
+	padding:			2px;
+	padding-right:		5px;
+	background:			#EEEEEE;
+	color:				#555555;
+}
+
+TD.path {
+	font-weight:		normal;
+	font-size:			11px;
+	color:				#000063;
+	padding:			5px;
+	text-align:			left;
+}
+
+TD.topInfo {
+	color:				#FFFFFF;
+	padding:			5px;
+}
+
+TD.topNav {
+	font-weight:		bold;
+	color:				#FFFFFF;
+	padding:			5px;
+}
+
+TD.errorMessage {
+	color:				#FF0000;
+}
+
+TD.error {
+	font-weight:		bold;
+	padding:			10px;
+	color:				#FF0000;
+	text-align:			center;
+	font-size:			13px;
+}
+
+TH.list {
+	font-weight:		bold;
+	font-size:			11px;
+	color:				#000063;
+	padding:			5px;
+	text-align:			left;
+}
+
+TH.listNumeric {
+	font-weight:		bold;
+	font-size:			11px;
+	color:				#000063;
+	padding:			5px;
+	text-align:			right;
+}
+
+TH.note {
+	font-weight:		bold;
+	font-size:			11px;
+	color:				#000063;
+	padding:			5px;
+	text-align:			left;
+}
+
+.agentInfo {
+	color:				#888888;
+}
+
+A {
+	font-size:			11px;
+	text-decoration:	none;
+}
+
+A:hover {
+	text-decoration:	underline;
+}
+
+A.mainOptionS {
+	color:				#EE8000;
+}
+
+A.mainOptionU {
+	color:				#FFFFFF;
+}
+
+A.option {
+	color:				#777777;
+}
+
+A.option {
+	color:				#EE8000;
+}
+
+A.list {
+	color:				#DD7000;
+}
+
+A.listFoot {
+	color:				#000000;
+}
+
+A.left {
+	color:				#000000;
+}
+
+A.note {
+	color:				#DD7000;
+	font-weight:		bold;
+	font-size:			11px;
+}
+
+A.topNav {
+	color:				#FFFFFF;
+}
+
+.FormSubmit {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			11px;
+	font-weight:		normal;
+	font-style:			normal;
+}
+
+.FormField {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			11px;
+	font-weight:		normal;
+	font-style:			normal;
+	text-align:			left;
+}
+
+.FormSelect {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			11px;
+	font-weight:		normal;
+	font-style:			normal;
+}
+
+INPUT.FormField {
+	width:				300;
+	height:				20;
+}
+
+INPUT.SmallFormField {
+	width:				100;
+	height:				20;
+}
+
+SELECT.FormField {
+	width:				300;
+	height:				20;
+}
+
+TEXTAREA.FormField {
+	width:				300;
+	height:				100;
+}
+
+.FormFieldName {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			12px;
+	font-weight:		bold;
+	font-style:			bold;
+	text-align:			right;
+	color:				#000063;
+	padding-right:		5px;
+}
+
+.FormFieldHeader {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			12px;
+	font-weight:		bold;
+	font-style:			bold;
+	text-align:			left;
+	color:				#000063;
+	padding-right:		5px;
+}
+
+.MessageAsk {
+	font-family:		Verdana,Arial,sans-serif;
+	font-size:			12px;
+	font-weight:		normal;
+	font-style:			normal;
+	text-align:			left;
+	color:				#AA0000;
+	padding-bottom:		50px;
+}
+

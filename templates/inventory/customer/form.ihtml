@@ -1,0 +1,64 @@
+<!-- inventory/customer/form.ihtml - START -->
+<?
+	if(!isset($rates))
+		$basic = 1;
+
+	if(is_object($customer)) {
+		$cid						= $customer->giveValue('id');
+		$active						= $customer->giveValue('active');
+		$customer_name				= $customer->giveValue('customer_name');
+		$customer_desc				= $customer->giveValue('customer_desc');
+		$customer_budget			= $customer->giveValue('customer_budget');
+		$customer_logo				= $customer->giveValue('customer_logo');
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/edit.ihtml');
+	} else {
+		$active						= 'yes';
+		$customer_name				= $GLOBALS['_PJ_strings']['no_name'];
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/new.ihtml');
+	}
+	$customer_budget_currency	= $GLOBALS['_PJ_currency'];
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_customer_inventory_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $customer_budget_currency ?>">
+	<INPUT TYPE="hidden" NAME="edit" VALUE="1">
+	<INPUT TYPE="hidden" NAME="altered" VALUE="1">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<?=$cid?>">
+	<INPUT TYPE="hidden" NAME="id" VALUE="<?=$cid?>">
+
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_name" SIZE="30" MAXLENGTH="64" VALUE="<? print $customer_name ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['budget_in'] ?> <?=$customer_budget_currency?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_budget" SIZE="30" MAXLENGTH="64" VALUE="<? print $customer_budget ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['logo'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_logo" SIZE="30" MAXLENGTH="255" VALUE="<? print $customer_logo ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName">Beschreibung:</TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="customer_desc" ROWS="10" COLS="50"><? print $customer_desc ?></TEXTAREA></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['active'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
+					<INPUT TYPE="radio" NAME="active" VALUE="yes"<?php if($active=='yes') print ' CHECKED' ?>>&nbsp;<?= $GLOBALS['_PJ_strings']['yes'] ?>
+					<INPUT TYPE="radio" NAME="active" VALUE="no"<?php if($active=='no') print ' CHECKED' ?>>&nbsp;<?= $GLOBALS['_PJ_strings']['no'] ?>
+					</TD>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['next'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</FORM>
+<!-- inventory/customer/form.ihtml - END -->

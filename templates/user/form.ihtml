@@ -1,0 +1,96 @@
+<!-- user/form.ihtml - START -->
+<?php
+	if($form_action == '') {
+		$form_action = $GLOBALS['_PJ_user_script'];
+	}
+	if(!$_PJ_auth->checkPermission('admin')) {
+		$ro_firstname	= ' READONLY';
+		$ro_lastname	= ' READONLY';
+	}
+	if(is_object($user) && !$new) {
+		$ro_username		= ' READONLY';
+		$id					= $user->giveValue('id');
+		$firstname			= $user->giveValue('firstname');
+		$lastname			= $user->giveValue('lastname');
+		$username			= $user->giveValue('username');
+		$email				= $user->giveValue('email');
+		$telephone			= $user->giveValue('telephone');
+		$facsimile			= $user->giveValue('facsimile');
+		$permissions		= explode(',', $user->giveValue('permissions'));
+		if(!isset($password)) {
+			$password			= $GLOBALS['_PJ_password_dummy'];
+			$password_retype		= $GLOBALS['_PJ_password_dummy'];
+		}
+	} else {
+		$username			= $login;
+	}
+	$a_permissions = $_PJ_auth->permissions;
+	include($GLOBALS['_PJ_root'] . '/templates/user/options/edit.ihtml');
+?>
+<FORM ACTION="<?= $form_action; ?>" METHOD="<?= $_PJ_form_method; ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<?= $id ?>">
+<INPUT TYPE="hidden" NAME="own" VALUE="<?= $own ?>">
+<INPUT TYPE="hidden" NAME="edit" VALUE="1">
+<INPUT TYPE="hidden" NAME="altered" VALUE="1">
+	<CENTER>
+	<TABLE WIDTH="90%" BORDER="0" CELLPADDING="3" CELLSPACING="0">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="Error" COLSPAN="2"><?= $message ?></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['username'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" NAME="login" VALUE="<?= $username ?>"<?= $ro_username ?>></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['password'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password" VALUE="<?= $password ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['password_retype'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="<?= $password_retype ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['firstname'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="firstname" VALUE="<?= $firstname ?>"<?= $ro_firstname ?>></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['lastname'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" NAME="lastname" VALUE="<?= $lastname ?>"<?= $ro_lastname ?>></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['email'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="email" VALUE="<?= $email ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['telephone'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="telephone" VALUE="<?= $telephone ?>"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['facsimile'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="facsimile" VALUE="<?= $facsimile ?>"></TD>
+<?php
+if($_PJ_auth->checkPermission('admin')) {
+?>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['permissions'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="permissions[]" multiple="multiple">
+<?php
+	$_PJ_p_count = count($_PJ_auth->permissions);
+	reset($a_permissions);
+	foreach($a_permissions as $name => $key) {
+?>
+						<OPTION<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $name ?>
+<?php
+	}
+?>
+					 </SELECT></TD>
+<?php
+}
+?>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+				</TR>
+			</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+</FORM>
+<!-- user/form.ihtml - END -->

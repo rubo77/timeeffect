@@ -1,0 +1,49 @@
+<?php
+	$inventory_selection	= 'u';
+	$statistics_selection	= 'u';
+	$reports_selection	= 'u';
+	$users_selection		= 'u';
+	switch($PHP_SELF) {
+		case $GLOBALS['_PJ_customer_inventory_script']:
+		case $GLOBALS['_PJ_projects_inventory_script']:
+		case $GLOBALS['_PJ_efforts_inventory_script']:
+			$inventory_selection = 's';
+			break;
+		case $GLOBALS['_PJ_customer_statistics_script']:
+		case $GLOBALS['_PJ_projects_statistics_script']:
+		case $GLOBALS['_PJ_efforts_statistics_script']:
+			$statistics_selection = 's';
+			break;
+		case $GLOBALS['_PJ_reports_script']:
+			$reports_selection = 's';
+			break;
+		case $GLOBALS['_PJ_user_script']:
+		case $GLOBALS['_PJ_own_user_script']:
+			$users_selection = 's';
+			break;
+	}
+?>
+<!-- shared/main-options.ihtml - START -->
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+	<TR>
+		<TD><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
+			<TR>
+				<TD CLASS="mainOption<?= strtoupper($inventory_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($inventory_selection)?>" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] ?>"><?=$GLOBALS['_PJ_strings']['inventory']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($statistics_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($statistics_selection)?>" HREF="<?= $GLOBALS['_PJ_statistics_script'] ?>"><?=$GLOBALS['_PJ_strings']['statistics']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+<?php
+if($_PJ_auth->checkPermission('admin')) {
+?>
+				<TD CLASS="mainOption<?= strtoupper($users_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($users_selection)?>" HREF="<?= $GLOBALS['_PJ_user_script'] ?>"><?=$GLOBALS['_PJ_strings']['user']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+<?php
+}
+?>
+				<TD CLASS="mainOption<?= strtoupper($reports_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($reports_selection)?>" HREF="<?= $GLOBALS['_PJ_reports_script'] ?>"><?=$GLOBALS['_PJ_strings']['reports']?></A></TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/main-option-e<?= $reports_selection ?>.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+			</TR>
+		</TABLE>
+	</TR>
+</TABLE>
+<!-- shared/main-options.ihtml - END -->

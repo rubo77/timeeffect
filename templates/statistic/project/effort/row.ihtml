@@ -1,0 +1,15 @@
+<?php
+	$agent = $_PJ_auth->giveUserById($effort->giveValue('user'));
+?>
+<!-- statistic/project/effort/row.ihtml - START -->
+	<TR>
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+		<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+	</TR><TR HEIGHT="25">
+		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= formatNumber($effort->giveValue('days'), true); ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listSubDetailNumeric<?= $rowclass ?>" COLSPAN="2"><?= $effort->formatDate($effort->giveValue('date')); ?>, <?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= $effort->formatTime($effort->giveValue('end'), "H:i"); ?></TD>
+	</TR>
+<!-- statistic/project/effort/row.ihtml - END -->

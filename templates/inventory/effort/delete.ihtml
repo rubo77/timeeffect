@@ -1,0 +1,35 @@
+<!-- inventory/effort/delete.ihtml - START -->
+<?
+	if(is_object($effort)) {
+		$eid				= $effort->giveValue('id');
+		$description		= $effort->giveValue('description');
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/delete.ihtml');
+	} else {
+		exit;
+	}
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_efforts_inventory_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<INPUT TYPE="hidden" NAME="eid" VALUE="<?=$eid?>">
+	<INPUT TYPE="hidden" NAME="pid" VALUE="<?=$pid?>">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<?=$cid?>">
+	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+				<TR>
+					<TD CLASS="MessageAsk" COLSPAN="2"><?= $GLOBALS['_PJ_strings']['ask_effort_delete'] ?></TD>
+				</TR><TR>
+					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <?= $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
+					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<?= $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+<!-- inventory/effort/delete.ihtml - END -->

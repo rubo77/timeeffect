@@ -1,0 +1,24 @@
+<?php
+	include_once("../include/aperetiv.inc.php");
+
+	$center_template	= "user";
+	$center_title		= 'Benutzer';
+
+	if(isset($altered)) {
+		$data['id']					= $id;
+		$data['telephone']			= $telephone;
+		$data['facsimile']			= $facsimile;
+		$data['email']				= $email;
+		$data['password']			= $password;
+		$data['password_retype']	= $password_retype;
+		if($error = $_PJ_auth->save($data)) {
+			$message = "<FONT COLOR=\"red\"><B>$error</B></FONT>";
+		}
+	}
+	$form_action = $GLOBALS['_PJ_own_user_script'];
+	$user			= $_PJ_auth;
+	$center_title	= $GLOBALS['_PJ_strings']['edit_user'];
+	include("$_PJ_root/templates/edit.ihtml");
+
+	include_once("$_PJ_include_path/degestiv.inc.php");
+?>

@@ -1,0 +1,153 @@
+<!-- report/form.ihtml - START -->
+<?
+	include($GLOBALS['_PJ_root'] . '/templates/report/options/edit.ihtml');
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $customer_budget_currency ?>">
+	<INPUT TYPE="hidden" NAME="report" VALUE="1">
+
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
+					<SELECT NAME="cid" onChange="document.location.href='<?= $GLOBALS['PHP_SELF'] . "?cid=" ?>' + this.value;">
+						<OPTION VALUE="">--
+					<?php
+						while($customers->nextCustomer()) {
+							$customer = $customers->giveCustomer();
+							print "\t\t\t\t\t\t<OPTION VALUE=\"" . $customer->giveValue('id') . "\"";
+							if($customer->giveValue('id') == $cid) {
+								print " SELECTED";
+							}
+							print ">" . $customer->giveValue('customer_name') . "\n";
+						}
+					?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['project'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT NAME="pid">
+						<OPTION VALUE="">--
+					<?php
+						while($projects->nextProject()) {
+							$project = $projects->giveProject();
+							print "\t\t\t\t\t\t<OPTION VALUE=\"" . $project->giveValue('id') . "\"";
+							if($project->giveValue('id') == $pid) {
+								print " SELECTED";
+							}
+							print ">" . $project->giveValue('project_name') . "\n";
+						}
+					?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['start_date'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT NAME="syear">
+					<?php
+						$this_year	= date("Y");
+						$start_year	= $this_year - 5;
+						$end_year	= $this_year + 1;
+						for($i = $start_year; $i <= $end_year; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">$i\n";
+						}
+					?>
+					</SELECT>
+					<SELECT NAME="smonth">
+						<OPTION VALUE="">--
+					<?php
+						for($i = 1; $i <= 12; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">" . $GLOBALS['_PJ_months'][$i] . "\n";
+						}
+					?>
+					</SELECT>
+					<SELECT NAME="sday">
+						<OPTION VALUE="">--
+					<?php
+						for($i = 1; $i <= 31; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">" . sprintf("%02d", $i) . "\n";
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['end_date'] ?>:</TD>
+					<TD CLASS="FormField">
+					<SELECT NAME="eyear">
+					<?php
+						$this_year	= date("Y");
+						$start_year	= $this_year - 5;
+						$end_year	= $this_year + 1;
+						for($i = $start_year; $i <= $end_year; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">$i\n";
+						}
+					?>
+					</SELECT>
+					<SELECT NAME="emonth">
+						<OPTION VALUE="">--
+					<?php
+						for($i = 1; $i <= 12; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">" . $GLOBALS['_PJ_months'][$i] . "\n";
+						}
+					?>
+					</SELECT>
+					<SELECT NAME="eday">
+						<OPTION VALUE="">--
+					<?php
+						for($i = 1; $i <= 31; $i++) {
+							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
+							if($i == $this_year) {
+								print " SELECTED";
+							}
+							print ">" . sprintf("%02d", $i) . "\n";
+						}
+					?>
+					</SELECT>
+					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="pdf" VALUE="1"></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['usebilled'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="mode" VALUE="billed"></TD>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['next'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</FORM>
+<!-- report/form.ihtml - END -->

@@ -1,0 +1,27 @@
+<!-- inventory/effort/note.ihtml - START -->
+<TABLE	WIDTH="100%"
+		BORDER="<?php print($_PJ_inner_frame_border); ?>"
+		CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+		CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+	<TR>
+		<TD CLASS="content" ALIGN="center">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+			<TR>
+				<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR VALIGN="top">
+				<TH CLASS="note" COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $center_title ?></TD>
+			</TR><TR>
+				<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="20" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD WIDTH="20%" CLASS="noteHead"><?= $GLOBALS['_PJ_strings']['note'] ?>:</TD>
+				<TD WIDTH="80%" CLASS="note"><?= $effort->giveValue('note') ?></TD>
+			</TR><TR>
+				<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD COLSPAN="2" ALIGN="center"><A CLASS="note" HREF="JavaScript:self.close()"><IMG src="<?= $GLOBALS['_PJ_icon_path'] ?>/close_window.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['close_window'] ?></A></TD>
+			</TR>
+		</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+<!-- inventory/effort/note.ihtml - END -->
