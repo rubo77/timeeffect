@@ -135,6 +135,11 @@
 	$_PJ_pdf_logo_height				= 17.5;
 	$_PJ_pdf_logo_top					= 46;
 
+	// only used if PDF logo file does not exist
+	$_PJ_pdf_header_string				= 'TIMEEFFCT';
+	$_PJ_pdf_subheader_string			= 'IT Consulting';
+	$_PJ_pdf_footer_string				= "TIMEEFFECT";
+
 	$_PJ_pdf_top_margin					= 80;
 	$_PJ_pdf_left_margin				= 50;
 	$_PJ_pdf_head_right					= 60;
@@ -186,10 +191,6 @@
 	$_PJ_pdf_footer_fg_r				= 0;
 	$_PJ_pdf_footer_fg_g				= 0;
 	$_PJ_pdf_footer_fg_b				= 0;
-
-	$_PJ_pdf_header_string				= 'TIMEEFFCT';
-	$_PJ_pdf_subheader_string			= 'IT Consulting';
-	$_PJ_pdf_footer_string				= "TIMEEFFECT";
 
 /* PDF layout settings - END */
 
