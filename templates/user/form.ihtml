@@ -1,6 +1,5 @@
 <!-- user/form.ihtml - START -->
 <?php
-	
 	if(!is_array($permissions)) {
 		$permissions = array();
 	}
@@ -35,7 +34,7 @@
 	}
 	$a_permissions	= $_PJ_auth->permissions;
 	$a_gids			= $_PJ_auth->gids;
-	if(!is_array($a_gids) || !count($a_gids)) {
+	if(!$id && (!is_array($a_gids) || !count($a_gids))) {
 		print '<br><center><span class="errorMessage"><b>' . $GLOBALS['_PJ_strings']['missing_groups'] . '</b></center></span>';
 		return;
 	}

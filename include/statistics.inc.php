@@ -495,14 +495,6 @@
 			return $this->data[$key];
 		}
 
-		function calculatePrice($starttime, $endtime) {
-			$query = "SELECT price, currency FROM " . $GLOBALS['_PJ_rate_table'] .
-					 " WHERE customer_id=" . $this->customer->giveValue('id') .
-					 " AND starttime >= '" . $startime . "'".
-					 " AND endtime >= '" . $endime . "'";
-			$this->db->query($query);
-		}
-
 		function count() {
 			return $this->effort_count;
 		}

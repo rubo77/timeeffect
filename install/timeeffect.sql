@@ -15,7 +15,7 @@ CREATE TABLE `<%db_prefix%>auth` (
   KEY `username` (`username`,`password`)
 ) TYPE=MyISAM AUTO_INCREMENT=1 ;
 
-INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin,agent', '', 1, '<%admin_user%>', '<%admin_password%>', 'Administrator', '', '', '', '');
+INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin,agent', '', 1, '<%admin_user%>', '<%admin_password%>', '', 'Administrator', '', '', '');
 
 CREATE TABLE `<%db_prefix%>customer` (
   `id` int(32) unsigned NOT NULL auto_increment,

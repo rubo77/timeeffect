@@ -177,7 +177,7 @@
 				$this->data['billed_minutes']	+= $effort->giveValue('billed_minutes');
 				$this->data['billed_hours']		+= $effort->giveValue('billed_hours');
 				$this->data['billed_days']		+= $effort->giveValue('billed_days');
-				$this->data['costs']			+= $effort->giveValue('hours') * $rates->giveValue($effort->giveValue('rate') . ".price");
+				$this->data['costs']			+= $effort->giveValue('hours') * $effort->giveValue('rate');
 			}
 		}
 

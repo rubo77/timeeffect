@@ -151,7 +151,6 @@
 		}
 
 		function initEffort () {
-			$rates			= new Rates();
 			list($year, $month, $day) = explode("-", $this->data['date']);
 			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
 			list($e_hour, $e_minute, $e_second) = explode(":", $this->data['end']);
@@ -168,7 +167,7 @@
 			$this->data['minutes']	= round($this->data['seconds']	/ 60, 0);
 			$this->data['hours']	= round($this->data['seconds']	/ 3600, 2);
 			$this->data['days']		= round($this->data['seconds']	/ 28800, 2);
-			$this->data['costs']	+= $this->data['hours'] * $rates->giveValue($this->data['rate'] . ".price");
+			$this->data['costs']	+= $this->data['hours'] * $this->data['rate'];
 		}
 
 		function save () {

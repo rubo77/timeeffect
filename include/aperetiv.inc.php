@@ -28,7 +28,7 @@
 	/*
 	   select default language ('en' or 'de' are currently availlable
 	*/
-	$_PJ_default_language		= 'de';
+	$_PJ_default_language		= 'en';
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';

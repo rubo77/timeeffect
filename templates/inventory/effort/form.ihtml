@@ -196,11 +196,17 @@
 					<?php
 						$a_rate = $rate;
 						$rates->resetList();
+						$rate_found = false;
 						while($data = $rates->giveNext()) {
 							print "<OPTION ";
-							if($a_rate == $data['id'])
+							if($a_rate == $data['price']) {
 								print " SELECTED";
-							printf(" VALUE='%02d'>%s (%s %s)" , $data['id'], $data['name'], $data['currency'], $data['price']);
+								$rate_found = true;
+							}
+							printf(' VALUE="%02d">%s (%s %s)' , $data['price'], $data['name'], $data['currency'], formatNumber($data['price']));
+						}
+						if(!$rate_found) {
+							printf('<OPTION VALUE="%02d" SELECTED>%s %s' , $rate, $GLOBALS['_PJ_currency'], formatNumber($rate));
 						}
 					?>
 					</SELECT>
