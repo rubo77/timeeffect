@@ -71,17 +71,16 @@
 		exit;
 	}
 
-	require_once ('PEAR.php');
-	// let timeefect complain when any PEAR error occurs
-	PEAR::setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
-
-	define('FPDF_FONTPATH', $_PJ_root . '/include/font/');
-
 	// the following two lines must be activated if the PEAR packages
 	// are located within the timeeffect include path
 	$include_path = ini_get('include_path');
 	ini_set('include_path', $_PJ_root . '/include/pear/:./:' . $include_path);
 
+	require_once ('PEAR.php');
+	// let timeefect complain when any PEAR error occurs
+	PEAR::setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
+
+	define('FPDF_FONTPATH', $_PJ_root . '/include/font/');
 
 	$_PJ_css_path		= $_PJ_http_root . "/css";
 	$_PJ_icon_path		= $_PJ_http_root . "/icons";

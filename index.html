@@ -1,11 +1,122 @@
+<!-- list.ihtml - START -->
 <HTML>
 <HEAD>
-<META HTTP-EQUIV="REFRESH" CONTENT="0; URL=inventory/customer.php">
+<TITLE>TIMEEFFECT - Welcome</TITLE>
+<LINK REL="stylesheet" HREF="/timeeffect/css/project.css" TYPE="text/css">
+<SCRIPT LANGUAGE="Javascript1.2" SRC="/timeeffect/include/functions.js" type="text/javascript"></SCRIPT>
+<SCRIPT language="Javascript1.2">
+<!--
+function sf(){
+	if(document.forms[0].username.value == '')
+		document.forms[0].username.focus();
+	else
+		document.forms[0].password.focus();
+}
+
+//-->
+</SCRIPT>
 </HEAD>
 
-<BODY>
-<CENTER>
-<BR><BR><FONT FACE="Verdana,Arial,Helvetica">Falls Ihr Browser keine Weiterleitung unterst&uuml;tzt, klicken Sie bitte <A HREF="inventory/customer.php"><B>HIER</B></A>!</FONT>
-</CENTER>
+<BODY onLoad='sf()'>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
+	<TR HEIGHT="100">
+<!-- START - left navigation -->
+		<TD WIDTH="160" ROWSPAN="2"><!-- shared/left.ihtml - START -->
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
+			<TR>
+				<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
+					<TR>
+						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><a href="/timeeffect/"><IMG SRC="/timeeffect/images/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></a></TD>
+					</TR>
+				</TABLE></TD>
+			</TR>
+			<tr>
+				<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net" target="_blank"><IMG src="http://sourceforge.net/sflogo.php?group_id=104682&type=4" border="0" alt="SourceForge.net Logo"></A>
+				<br><br></td>
+			</tr>
+		</TABLE>
+		</TD>
+<!-- END - left navigation -->
+		<TD CLASS="headFrame"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+	<TR HEIGHT="100">
+<!-- START - Main Options  -->
+		<TD CLASS="mainOptionFrame" VALIGN="bottom">
+		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+			<TR>
+				<TD><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
+					<TR>
+						<TD CLASS="mainOptionS">&nbsp;&nbsp;<A CLASS="mainOptionS" HREF="index.html">English</A>&nbsp;&nbsp;</TD>
+						<TD CLASS="mainOptionDivision"><IMG SRC="/timeeffect/images/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+						<TD CLASS="mainOptionU">&nbsp;&nbsp;<A CLASS="mainOptionU" HREF="index_de.html">Deutsch</A></TD>
+						<TD CLASS="mainOptionDivision"><IMG SRC="/timeeffect/images/main-option-eu.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+					</TR>
+				</TABLE>
+			</TR>
+		</TABLE>
+		</TD>
+<!-- END - Main Options  -->
+	</TR>
+</TABLE></TD>
+	</TR><TR>
+<!-- START - content -->
+<FORM METHOD="POST" ACTION="/timeeffect/inventory/customer.php" target="_blank">
+		<TD VALIGN="top">
+		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+			<TR>
+				<TD><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD CLASS="content"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="500">
+					<TR VALIGN="top">
+						<TD ROWSPAN="5" ALIGN="right"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>
+						<TD COLSPAN="4"><B>Welcome to TIMEEFFECT!</B><BR><br>
+						TIMEEFFECT is a PHP4 based, multi user system for recording time employees spent on projects.
+						It includes facilities to manage agents, customers and projects. Users may generate reports and
+						statistics as well as accounting reports in PDF format.<br><br>
+						TIMEEFFECT is currently availlable in two the languages English and German.<br><br>
+						Visit the <A CLASS="left" HREF="/timeeffect/images/screenshots/" target="_blank">>> screenshot section</a> to have a glance on TIMEEFFECT.<br><br>
+						The latest release of TIMEEFFECT is availlable at <A href="http://sourceforge.net/projects/timeeffect/" target="_blank">>> sourceforge.net</a><br><br>
+						</td>
+					</TR><TR>
+						<TD COLSPAN="4"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="4"><IMG SRC="/timeeffect/images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="4"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="4">You can enter the fully functional demo application by clicking on the button 'login >>' below.</TD>
+					</TR><TR>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="/timeeffect/images/login-welcome.gif" HEIGHT="80" WIDTH="71" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="1" WIDTH="20" BORDER="0"></TD>
+						<TD CLASS="FormFieldName">Username:</TD>
+						<TD CLASS="FormField">
+						<INPUT CLASS="SmallFormField" TYPE="text" NAME="username" VALUE="admin"></TD>
+					</TR><TR>
+						<TD CLASS="FormFieldName">Password:</TD>
+						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="password" NAME="password" value="admin"></TD>
+					</TR><TR>
+						<TD></TD>
+						<TD CLASS="FormField"><INPUT CLASS="FormSubmit" TYPE="submit" VALUE="login >>"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="/timeeffect/images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+					</TR><TR>
+						<TD COLSPAN="2"><FONT COLOR="red"><B>NOTE:</B></FONT> for security reasons your session will end after 60 minutes. Please logon again after this period.</TD>
+					</TR>
+				</TABLE></TD>
+			</TR><TR>
+				<TD><IMG SRC="/timeeffect/images/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+			</TR><TR>
+				<TD><IMG SRC="/timeeffect/images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+			</TR>
+		</TABLE></TD>
+</FORM>
+<!-- END - content -->
+	</TR>
+</TABLE>
 </BODY>
 </HTML>
+<!-- list.ihtml - END -->

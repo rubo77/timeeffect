@@ -1,47 +1,51 @@
-<?php
-	$num_cols = 4;
-?>
 <HTML>
 <HEAD>
-<TITLE>Image-Browser</TITLE>
+<TITLE>TIMEEFFECT - Screenshots</TITLE>
+<STYLE>
+BODY {
+	font-family:		Verdana,Arial,sans-serif;
+	font-weight:		normal;
+	font-style:			normal;
+	background-color:	#FFFFFF;
+	color:				#000000;
+	margin-top:			5;
+	margin-left:		0;
+	margin-bottom:		0;
+	margin-right:		0;
+}
+
+</STYLE>
 </HEAD>
 
-<BODY BGCOLOR="CCCCCC">
-<TABLE CELLPADDING="10" CELLSPACING="0" BORDER="1">
+<BODY leftmargin="0" topmargin="0">
+<CENTER>
+<H1>Ski-Urlaub - Oberndorf 2004</H1>
+
+<TABLE BORDER=0 cellpadding="3" cellspacing="0">
 	<TR>
-<?
-	if(!($DIR = opendir("./")))
-		error_death("Konnte Verzeichnis nicht &ouml;ffnen");
-
-	while ($file = readdir($DIR)) {
-		if(($type= preg_match("/.gif$/i", $file)) ||
-		   ($type= preg_match("/.jpg$/i", $file)) ||
-		   ($type= preg_match("/.jpeg$/i", $file)) ||
-		   ($type= preg_match("/.png$/i", $file))) {
-		   		$FILES[] = $file;
-		}
-	}
-	closedir($DIR);
-
-	sort($FILES);
-	$count = count($FILES);
-	for ($i=0;$i < $count; $i++) {
-		$file = $FILES[$i];
-		if($j == $num_cols) {?>
-	</TR><TR>	
 <?php
-			$j = 0;
+	$cnt = 0;
+	$DIR = opendir("thumbs");
+	while($file = readdir($DIR)) {
+		if(($file == '.') ||
+		   ($file == '..')) {
+			continue;
 		}
-		++$j;
-?>
-		<TD VALIGN="bottom" ALIGN="center"><FONT FACE="Verdana,Arial,Helvetica" SIZE="-1"><IMG SRC="<?php print $file; ?>"><br><?php print $file; ?></FONT></TD>
-<?php
+		$files[$cnt++] = $file;
 	}
-
+	for($i = 1; $i <= $cnt; ++$i) {
+		?>
+		<TD><A style="text-decoration: none; color: #000000;" HREF="file.php?file=<?= $files[$i-1]; ?>"><IMG SRC="<?= 'thumbs/' . $files[$i-1]; ?>" BORDER="0"></A></TD>
+		<?php
+			if($i && $i % 4 == 0) {
+				print "</TR><TR>\n";
+			}
+	}
 ?>
-
 	</TR>
 </TABLE>
 
-</BODY>
-</HTML>
+</center>
+
+</body>
+</html>
