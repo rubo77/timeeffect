@@ -30,9 +30,9 @@
 		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=" . $customer->giveValue('id') ?>"><?= $customer->giveValue('customer_name') ?></A></TD>
 		<TD CLASS="listDetail<?= $rowclass ?>">&nbsp;</TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($days) print formatNumber($days, true); ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($costs) print formatNumber($costs, true) . '&nbsp;€'; ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($full_budget) print formatNumber($full_budget, true) . '&nbsp;€'; ?></TD>
-		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($remaining_budget) print formatNumber($remaining_budget, true) . '&nbsp;€'; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($costs) print formatNumber($costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($full_budget) print formatNumber($full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($remaining_budget) print formatNumber($remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
 	if($expanded['cid'][$customer->giveValue('id')]) {
 		$projects->reset();

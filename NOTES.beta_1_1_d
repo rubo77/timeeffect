@@ -1,0 +1,26 @@
+This release fixes some minor bugs on display of currency and adding new users
+
+######################################
+There are two different possibilties to update to from beta 1.1 or beta 1.1.b or beta 1.1.c to beta 1.1.d:
+
++++++++++++++++++++++++++++++++++
+A. updating from a beta 1.1.x version
+ - download the appropriate patch file ('timeeffect.patch.beta_1_1-beta_1_1_d.gz' or
+   'timeeffect.patch.beta_1_1_x-beta_1_1_d.gz' where 'x' marks your installed version).
+ - Copy it to the directory beneath the timeeffect install directory (e.g. if your
+   TIMEEFFECT is located in 'srv/www/htdocs/timeeffect' copy the file to '/srv/www/htdocs').
+ - gunzip and apply the patch.
+
++++++++++++++++++++++++++++++++++
+B. updating all files (recommended)
+ - download the file 'timeeffect_beta_1_1_d.tgz'.
+ - Copy the file 'timeeffect_beta_1_1_d.tgz' to the directory beneath the timeeffect
+   install directory (e.g. if your TIMEEFFECT is located in 'srv/www/htdocs/timeeffect'
+   copy the file to '/srv/www/htdocs')
+ - untar the file.
+ - copy your local copy of 'timeeffect/include/aperetiv.inc.php' and 'timeeffect/include/layout.inc.php' to
+   'timeeffect_beta_1_1_d/include'.
+ - remove the sub folder 'timeeffect_beta_1_1_d/install'.
+ - the new release is located in the new subfolder 'timeeffect_beta_1_1_d'. To restore your old system
+   rename or remove the subfolder where your old installtion was located. Then rename the new subfolder
+   'timeeffect_beta_1_1_d' to the name of the prior renamed/removed old subfolder.

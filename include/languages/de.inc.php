@@ -190,4 +190,6 @@
 	$_PJ_timestamp	= date('YmdHis');
 	$_PJ_today		= date('d.m.Y');
 	$_PJ_now		= date('H:i:s');
+
+	$format_date	= 'd.m.Y';
 ?>

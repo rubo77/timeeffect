@@ -9,7 +9,7 @@
 		$customer_name				= $customer->giveValue('customer_name');
 		$customer_desc				= $customer->giveValue('customer_desc');
 		$customer_budget			= $customer->giveValue('customer_budget');
-		$customer_logo				= $customer->giveValue('customer_logo');
+//		$customer_logo				= $customer->giveValue('customer_logo');
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/edit.ihtml');
 	} else {
 		$active						= 'yes';
@@ -40,10 +40,7 @@
 					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['budget_in'] ?> <?=$customer_budget_currency?>:</TD>
 					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_budget" SIZE="30" MAXLENGTH="64" VALUE="<? print $customer_budget ?>"></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['logo'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_logo" SIZE="30" MAXLENGTH="255" VALUE="<? print $customer_logo ?>"></TD>
-				</TR><TR>
-					<TD CLASS="FormFieldName">Beschreibung:</TD>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="customer_desc" ROWS="10" COLS="50"><? print $customer_desc ?></TEXTAREA></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['active'] ?>:</TD>

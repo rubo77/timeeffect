@@ -120,14 +120,12 @@
 				$this->data['billed_minutes']	= round($this->data['billed_seconds']	/ 60, 0);
 				$this->data['billed_hours']		= round($this->data['billed_seconds']	/ 3600, 2);
 				$this->data['billed_days']		= round($this->data['billed_seconds']	/ 28800, 2);
-				$this->data['costs']			+= $this->data['billed_hours'] * $rates->giveValue($this->data['rate'] . ".price");
-			} else {
-				$this->data['seconds']	= ($e_time - $b_time);
-				$this->data['minutes']	= round($this->data['seconds']	/ 60, 0);
-				$this->data['hours']	= round($this->data['seconds']	/ 3600, 2);
-				$this->data['days']		= round($this->data['seconds']	/ 28800, 2);
-				$this->data['costs']	+= $this->data['hours'] * $rates->giveValue($this->data['rate'] . ".price");
 			}
+			$this->data['seconds']	= ($e_time - $b_time);
+			$this->data['minutes']	= round($this->data['seconds']	/ 60, 0);
+			$this->data['hours']	= round($this->data['seconds']	/ 3600, 2);
+			$this->data['days']		= round($this->data['seconds']	/ 28800, 2);
+			$this->data['costs']	+= $this->data['hours'] * $rates->giveValue($this->data['rate'] . ".price");
 		}
 
 		function save () {

@@ -36,8 +36,8 @@ if($pid) {
 					<TR>
 						<TH CLASS="list" WIDTH="35%"><?= $GLOBALS['_PJ_strings']['name'] ?></TH>
 						<TH CLASS="list"><? print $GLOBALS['_PJ_strings']['agent'] ?></TD>
-						<TH CLASS="list"><? print $GLOBALS['_PJ_strings']['workinghours'] ?></TD>
-						<TH CLASS="list" WIDTH="200"><?= $GLOBALS['_PJ_strings']['costs'] . "&nbsp;" . $customer->giveValue('customer_budget_currency'); ?></TD>
+						<TH CLASS="listNumeric"><? print $GLOBALS['_PJ_strings']['workinghours'] ?></TD>
+						<TH CLASS="listNumeric" WIDTH="200"><?= $GLOBALS['_PJ_strings']['costs'] . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 						<TH CLASS="list">&nbsp;</TD>
 					</TR>
 <?php

@@ -47,12 +47,10 @@
 				$query .= " AND " .
 						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project_id . "'";
 			}
-			$query .= " AND " .
-					  $GLOBALS['_PJ_effort_table'] . ".billed IS ";
-			if($this->mode == 'billed') {
-				$query .= "NOT ";
+			if($this->mode != 'billed') {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
-			$query .= "NULL ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
 					  $GLOBALS['_PJ_effort_table'] . ".begin ASC";
 
 			$this->db->query($query);
@@ -60,13 +58,13 @@
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
 				if($this->db->Record['billed'] != '') {
-					$this->data['billed_seconds']	+= $seconds;
+					$this->data['billed_seconds']			+= $seconds;
 					$this->months['billed']["$year-$month"] += $seconds;
 				} else {
-					$this->data['seconds']			+= $seconds;
 					$this->months['open']["$year-$month"]	+= $seconds;
 				}
-				$this->efforts[]		 = new Effort($this->db->Record);
+				$this->data['seconds']						+= $seconds;
+				$this->efforts[] = new Effort($this->db->Record);
 				$this->effort_count++;
 			}
 			$this->data['billed_minutes']	= round(($this->data['billed_seconds']	/ 60), 2);
@@ -268,13 +266,13 @@
 			$query .= " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".date >= '$start'" .
 					 " AND " .
-					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'" .
-					 " AND " .
-					 $GLOBALS['_PJ_effort_table'] . ".billed IS ";
-			if($this->mode == 'billed') {
-				$query .= "NOT ";
+					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'";
+
+			if($this->mode != 'billed') {
+				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
-			$query .= "NULL ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
+
+			$query .= " ORDER BY " . $GLOBALS['_PJ_effort_table'] . ".date ASC, " .
 			$GLOBALS['_PJ_effort_table'] . ".begin ASC";
 
 			$this->db->query($query);

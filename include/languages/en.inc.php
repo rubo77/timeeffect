@@ -107,7 +107,7 @@
 	$GLOBALS['_PJ_strings']['shortcuts']			= 'shortcuts';
 	$GLOBALS['_PJ_strings']['expand_all']			= 'expand all';
 	$GLOBALS['_PJ_strings']['collapse_all']			= 'collapse all';
-	$GLOBALS['_PJ_strings']['sum']					= 'sum';
+	$GLOBALS['_PJ_strings']['sum']					= 'total';
 	$GLOBALS['_PJ_strings']['numbershort']			= 'No.';
 	$GLOBALS['_PJ_strings']['from_to']				= 'from/to';
 	$GLOBALS['_PJ_strings']['hours_short']			= 'hrs.';
@@ -190,4 +190,6 @@
 	$_PJ_timestamp	= date('YmdHis');
 	$_PJ_today		= date('d.m.Y');
 	$_PJ_now		= date('H:i:s');
+
+	$format_date	= 'm/d/Y';
 ?>

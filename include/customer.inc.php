@@ -24,6 +24,7 @@
 				$customer = $this->customers[$this->customer_count-1];
 			}
 
+			$this->inactive_count = 0;
 			$query = "SELECT count(id) FROM $_PJ_customer_table WHERE active='no'";
 			$this->db->query($query);
 			if($this->db->next_record()) {

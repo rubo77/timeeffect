@@ -10,7 +10,7 @@
 		<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php
 if($effort->giveValue('note') != '') { ?>
-<A CLASS="list" HREF="JavaScript:openPopUp('<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?detail=1&eid=" . $effort->giveValue('id') ?>', 400, 400)"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/note.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;Notiz</A>
+<A CLASS="list" HREF="JavaScript:openPopUp('<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?detail=1&eid=" . $effort->giveValue('id') ?>', 400, 400)"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/note.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['note'] ?></A>
 <?php } ?>&nbsp;</TD>
 		<TD CLASS="list<?= $rowclass ?>"><?= formatNumber($effort->giveValue('costs'), true) . "&nbsp;" . $GLOBALS['_PJ_currency'] ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A></TD>

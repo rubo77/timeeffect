@@ -4,7 +4,7 @@
 	$sum_effort_days				+= $effort->giveValue('days');
 ?>
 					<TR>
-						<TD COLSPAN="7"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="8"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 					<TR HEIGHT="25">
 <?php if(!$cid) { ?>
@@ -25,6 +25,6 @@ if($shown['be']) {
 }
 ?>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatNumber($effort->giveValue('days'), true); ?></TD>
-						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR>
 <!-- report/row.ihtml - END -->

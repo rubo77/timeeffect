@@ -8,8 +8,8 @@
 					<TR HEIGHT="25">
 						<TD CLASS="list<?= $rowclass ?>" WIDTH="35%">&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?edit=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><?= $effort->giveValue('description') ?></A></TD>
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('hours')) ?></TD>
-						<TD CLASS="list<?= $rowclass ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . "&nbsp;" . $customer->giveValue('customer_budget_currency') ?></TD>
+						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('hours')) ?></TD>
+						<TD CLASS="listDetailNumeric<?= $rowclass ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
 						<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
 					</TR>
 <?php
