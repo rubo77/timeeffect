@@ -185,10 +185,6 @@ TD.topNav {
 	padding:			5px;
 }
 
-TD.errorMessage {
-	color:				#FF0000;
-}
-
 TD.error {
 	font-weight:		bold;
 	padding:			10px;
@@ -342,5 +338,13 @@ TEXTAREA.FormField {
 	text-align:			left;
 	color:				#AA0000;
 	padding-bottom:		50px;
+}
+
+.errorMessage {
+	color:				#FF0000;
+}
+
+.warning {
+	color:				#FF7700;
 }
 

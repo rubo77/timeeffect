@@ -1,0 +1,43 @@
+<!-- group/form.ihtml - START -->
+<?php
+	$permissions = array();
+	if($form_action == '') {
+		$form_action = $GLOBALS['_PJ_group_script'];
+	}
+	if(!$_PJ_auth->checkPermission('admin')) {
+		$ro_firstname	= ' READONLY';
+		$ro_lastname	= ' READONLY';
+	}
+	if(is_object($group) && !$new) {
+		$id					= $group->giveValue('id');
+		$name				= $group->giveValue('name');
+	}
+	include($GLOBALS['_PJ_root'] . '/templates/group/options/edit.ihtml');
+?>
+<FORM ACTION="<?= $form_action; ?>" METHOD="<?= $_PJ_form_method; ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<?= $id ?>">
+<INPUT TYPE="hidden" NAME="own" VALUE="<?= $own ?>">
+<INPUT TYPE="hidden" NAME="edit" VALUE="1">
+<INPUT TYPE="hidden" NAME="altered" VALUE="1">
+	<CENTER>
+	<TABLE WIDTH="90%" BORDER="0" CELLPADDING="3" CELLSPACING="0">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<TR>
+					<TD CLASS="Error" COLSPAN="2"><?= $message ?></TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" NAME="name" VALUE="<?= $name ?>"></TD>
+				</TR><TR>
+					<TD>&nbsp;</TD>
+					<TD>&nbsp;</TD>
+				</TR><TR>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+				</TR>
+			</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+</FORM>
+<!-- group/form.ihtml - END -->

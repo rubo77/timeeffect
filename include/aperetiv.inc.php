@@ -1,5 +1,10 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
+	/* check whether register_globals is on or not */
+	if(!((bool) ini_get('register_globals'))) {
+		print "<font color=red><b>Please set the directive 'register_globals' in your php.ini to 'On'</b></font>";
+		exit;
+	}
 	@session_name('timeeffect');
 	@session_start();
 	session_register('expanded');
@@ -23,10 +28,10 @@
 	/*
 	   select default language ('en' or 'de' are currently availlable
 	*/
-	$_PJ_default_language		= 'en';
+	$_PJ_default_language		= 'de';
 
-	$_PJ_decimal_point			= ',';
-	$_PJ_thousands_seperator	= '.';
+	$_PJ_decimal_point			= '.';
+	$_PJ_thousands_seperator	= ',';
 	$_PJ_currency				= '€';
 
 	/*
@@ -39,15 +44,16 @@
 
 	/*
 	   define maximum session length in seconds. Users will be automatically logged of after this period.
+	   If set to 0 automated logout will be disabled.
 	*/
-	$_PJ_session_length			= 3600;
+	$_PJ_session_length			= 0;
 
 	/*
 	   define database table prefix for TIMEEFFECT.
 	   NOTE: you have to change the table names in 'sql/timeeffect.sql' according to the prefix
 	   A more comfortable installation routine is issue of future releases
 	*/
-	$_PJ_table_prefix 	= '';
+	$_PJ_table_prefix 	= 'te_';
 
 /* ******************************************************** */
 /* customizable variables - END                             */
@@ -141,6 +147,8 @@
 	$_PJ_user_script				= $_PJ_http_root . '/user/index.'	. $_PJ_php_suffix;
 	$_PJ_own_user_script			= $_PJ_http_root . '/user/own.'		. $_PJ_php_suffix;
 
+	$_PJ_group_script				= $_PJ_http_root . '/groups/index.'	. $_PJ_php_suffix;
+
 	if(!$last) {
 		$_PJ_last = date("YmdHis", time()-2*86400);
 	} else {
@@ -151,7 +159,7 @@
 
 	$_PJ_day_counts = array(
 							31,
-							29,
+							26,
 							31,
 							30,
 							31,
@@ -172,6 +180,7 @@
 	include_once($_PJ_include_path . '/statistics.inc.php');
 	include_once($_PJ_include_path . '/rates.inc.php');
 	include_once($_PJ_include_path . '/user.inc.php');
+	include_once($_PJ_include_path . '/group.inc.php');
 	include_once($_PJ_include_path . '/layout.inc.php');
 	include_once($_PJ_include_path . '/languages/' . $_PJ_language . '.inc.php');
 	include_once($_PJ_include_path . '/print.inc.php');

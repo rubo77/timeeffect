@@ -41,8 +41,8 @@
 				$data['project_id']		= $pid;
 				$data['date']			= "$year-$month-$day";
 				$data['begin']			= "$hour:$minute:$second";
-				$data['description']	= $description;
-				$data['note']			= $note;
+				$data['description']	= add_slashes($description);
+				$data['note']			= add_slashes($note);
 				$data['rate']			= $rate;
 				$data['user']			= $user;
 				$data['gid']			= $gid;

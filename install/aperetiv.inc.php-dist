@@ -1,5 +1,10 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
+	/* check whether register_globals is on or not */
+	if(!((bool) ini_get('register_globals'))) {
+		print "<font color=red><b>Please set the directive 'register_globals' in your php.ini to 'On'</b></font>";
+		exit;
+	}
 	@session_name('timeeffect');
 	@session_start();
 	session_register('expanded');
@@ -25,8 +30,8 @@
 	*/
 	$_PJ_default_language		= '<%language%>';
 
-	$_PJ_decimal_point			= ',';
-	$_PJ_thousands_seperator	= '.';
+	$_PJ_decimal_point			= '<%decimal_point%>';
+	$_PJ_thousands_seperator	= '<%thousands_seperator%>';
 	$_PJ_currency				= '<%currency%>';
 
 	/*
@@ -40,7 +45,7 @@
 	/*
 	   define maximum session length in seconds. Users will be automatically logged of after this period.
 	*/
-	$_PJ_session_length			= 3600;
+	$_PJ_session_length			= <%session_length%>;
 
 	/*
 	   define database table prefix for TIMEEFFECT.

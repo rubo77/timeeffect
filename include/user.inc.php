@@ -59,11 +59,10 @@
 			}
 			if(is_array($data)) {
 				$this->data = $data;
-				return;
+			} else {
+				$this->load($data);
 			}
-
-			$this->load($data);
-
+			$this->loadGroups();
 		}
 
 		function load($id = '') {
@@ -75,8 +74,23 @@
 			}
 		}
 
+		function loadGroups() {
+			if($this->data['gids'] == '') {
+				$this->data['group_names'] = '';
+				return;
+			}
+			$query = "SELECT name FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id IN (" . $this->data['gids'] . ")";;
+			$this->db->query($query);
+
+			while($this->db->next_record()) {
+				if($this->data['group_names']) {
+					$this->data['group_names'] .= ', ';
+				}
+				$this->data['group_names'] .= $this->db->f('name');
+			}
+		}
 		function exists($username) {
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username'";
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username' AND id <> '" . $this->data['id'] . "'";
 			$this->db->query($query);
 
 			if($this->db->next_record()) {
@@ -90,7 +104,7 @@
 			$this->db->query($query);
 
 			if($this->db->next_record()) {
-				return $this->db->f($value);;
+				return $this->db->f($value);
 			}
 			return NULL;
 		}
@@ -114,7 +128,7 @@
 	        	return $GLOBALS['_PJ_strings']['error_user_empty'];
 	        }
 
-			if($this->data['id'] == '' && $this->exists($this->data['username'])) {
+			if($this->exists($this->data['username'])) {
 	        	return $GLOBALS['_PJ_strings']['error_user_exists'];
 	        }
 
@@ -129,6 +143,18 @@
 	        	$password = md5($this->data['password']);
 	        } else if($this->data['id']) {
 				$password = $this->retrieve($this->data['id'], 'password');
+	        }
+
+			if($this->data['lastname'] == '') {
+	        	return $GLOBALS['_PJ_strings']['error_name_empty'];
+	        }
+
+			if($this->data['permissions'] == '') {
+	        	return $GLOBALS['_PJ_strings']['error_perm_empty'];
+	        }
+
+			if(strpos($this->data['permissions'], 'admin') === false && $this->data['gids'] == '') {
+	        	return $GLOBALS['_PJ_strings']['error_gids_empty'];
 	        }
 
 	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",

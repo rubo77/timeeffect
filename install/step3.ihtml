@@ -1,5 +1,19 @@
 				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
-				Please check the entered values and press 'finish'<br><br>
+				Please check the entered values and press 'finish &gt;&gt;'<br>
+<?php
+	if(file_exists('../include/aperetiv.inc.php')) {
+?>
+				<span class="warning"><b>Make sure the file '<?= dirname($SCRIPT_FILENAME) ?>/include/aperetiv.inc.php'<br>
+				is writeable by the web server process!</b></span>
+<?php
+} else {
+?>
+				<span class="warning"><b>Make sure the web server is allowed to write into the directory<br>
+				'<?= dirname($SCRIPT_FILENAME) ?>/include/'!</b></span>
+<?php
+}
+?>
+				<br><br>
 				<table cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
@@ -39,6 +53,15 @@
 						<td>currency:</td>
 						<td width="300"><?= $currency ?></td>
 					</tr><tr>
+						<td>decimal point:</td>
+						<td width="300"><?= $decimal_point ?></td>
+					</tr><tr>
+						<td>thousands seperator:</td>
+						<td width="300"><?= $thousands_seperator ?></td>
+					</tr><tr>
+						<td>session length:</td>
+						<td width="300"><?= $session_length ?></td>
+					</tr><tr>
 						<td>admin user:</td>
 						<td width="300"><?= $admin_user ?></td>
 					</tr><tr>
@@ -59,10 +82,13 @@
 <input type="hidden" name="db_user" value="<?= $db_user ?>">
 <input type="hidden" name="db_password" value="<?= $db_password ?>">
 <input type="hidden" name="currency" value="<?= $currency ?>">
+<input type="hidden" name="decimal_point" value="<?= $decimal_point ?>">
+<input type="hidden" name="thousands_seperator" value="<?= $thousands_seperator ?>">
+<input type="hidden" name="session_length" value="<?= $session_length ?>">
 <input type="hidden" name="language" value="<?= $language ?>">
 <input type="hidden" name="admin_user" value="<?= $admin_user ?>">
 <input type="hidden" name="admin_password" value="<?= $admin_password ?>">
-						<td colspan="2" align="right"><input type="submit" value="finish"></td>
+						<td colspan="2" align="right"><input type="submit" value="finish &gt;&gt;"></td>
 					</tr>
 </form>
 				</table>

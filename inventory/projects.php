@@ -34,8 +34,8 @@
 			$data = array();
 			$data['id']							= $pid;
 			$data['customer_id']				= $cid;
-			$data['project_name']				= addslashes($project_name);
-			$data['project_desc']				= addslashes($project_desc);
+			$data['project_name']				= add_slashes($project_name);
+			$data['project_desc']				= add_slashes($project_desc);
 			$data['project_budget']				= intval($project_budget);
 			$data['project_budget_currency']	= $project_budget_currency;
 			$data['closed']						= $closed;

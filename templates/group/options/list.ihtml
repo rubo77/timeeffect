@@ -1,4 +1,4 @@
-<!-- user/options/list.ihtml - START -->
+<!-- group/options/list.ihtml - START -->
 		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
 			<TR VALIGN="center">
 				<TD WIDTH="40"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="40" HEIGHT="60" BORDER="0"></TD>
@@ -14,4 +14,4 @@
 				</TABLE></TD>
 			</TR>
 		</TABLE>
-<!-- user/options/list.ihtml - END -->
+<!-- group/options/list.ihtml - END -->

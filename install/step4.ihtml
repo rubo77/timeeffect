@@ -14,8 +14,11 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	$a_buffer = str_replace('<%db_password%>', $db_password, $a_buffer);
 	$a_buffer = str_replace('<%language%>', $language, $a_buffer);
 	$a_buffer = str_replace('<%currency%>', $currency, $a_buffer);
+	$a_buffer = str_replace('<%decimal_point%>', $decimal_point, $a_buffer);
+	$a_buffer = str_replace('<%thousands_seperator%>', $thousands_seperator, $a_buffer);
+	$a_buffer = str_replace('<%session_length%>', $session_length, $a_buffer);
 	$a_buffer = str_replace('<%http_root%>', $http_root, $a_buffer);
-	if($a_file = fopen('../include/aperetiv.inc.php', 'w')) {
+	if($a_file = @fopen('../include/aperetiv.inc.php', 'w')) {
 		fputs($a_file, $a_buffer);
 		@fclose($a_file);
 	} else {
@@ -23,6 +26,14 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	}
 } else {
 	$error_message .= 'opening of file \'aperetiv.inc.php-dist\' failed!<br>';
+}
+
+if($error_message) {
+?>
+				<b>TIMEEFFECT Installation - failed!</b><br><br>
+				<span class="errorMessage"><b>ERROR(S): <?= $error_message ?></b></span><br>
+<?php
+	return;
 }
 
 if($sql_file = @fopen('timeeffect.sql', 'r')) {

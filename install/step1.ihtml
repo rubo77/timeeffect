@@ -16,7 +16,7 @@ if(!isset($db_password)) {
 }
 ?>
 				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
-				Please enter the appropriate values in the following fields and press 'next >>'<br><br>
+				Please enter the appropriate values in the following fields and press 'next &gt;&gt;'<br><br>
 				<table cellpadding="0" cellspacing="0" border="0">
 <form action="<?= $PHP_SELF ?>" method="POST">
 <input type="hidden" name="step" value="2">
@@ -25,7 +25,9 @@ if(!isset($db_password)) {
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2">Enter the prefix for the TIMEEFFECT database tables. You may use this option to make it easier to identify the TIMEEFFECT database tables:</td>
+						<td width="500" colspan="2">Enter the prefix for the TIMEEFFECT database tables.<br>
+						<span class="warning">You may use this value to make it easier to identify the TIMEEFFECT database tables and
+						to avoid conflicts with existng database tables:</span></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>
@@ -40,7 +42,9 @@ if(!isset($db_password)) {
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2">Enter the name of the TIMEEFFECT database:</td>
+						<td width="500" colspan="2">Enter the name of the TIMEEFFECT database.<br>
+						<span class="warning">Plaese make sure the database exists and the database user entered below has access rights to the database:</span>
+						</td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>
@@ -100,7 +104,7 @@ if(!isset($db_password)) {
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2" align="right"><input type="submit" value="next >>"></td>
+						<td width="500" colspan="2" align="right"><input type="submit" value="next &gt;&gt;"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>

@@ -56,4 +56,11 @@
 				return 0;
 		}
 	}
+
+	function add_slashes($string) {
+		if(((bool) ini_get('magic_quotes_gpc'))) {
+			return $string;
+		}
+		return addslashes($string);
+	}
 ?>

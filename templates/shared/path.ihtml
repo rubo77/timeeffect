@@ -13,5 +13,8 @@
 		case $GLOBALS['_PJ_reports_script']:
 			include("$_PJ_root/templates/shared/report/path.ihtml");
 			break;
+		default:
+			include("$_PJ_root/templates/shared/empty/path.ihtml");
+			break;
 	}
 ?>

@@ -114,8 +114,14 @@ if($GLOBALS['username'] != '') {
 						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
 						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+<?php
+if($GLOBALS['_PJ_session_length']) {
+?>
 					</TR><TR>
 						<TD COLSPAN="2"><?=$GLOBALS['_PJ_strings']['session-expire']?></TD>
+<?php
+}
+?>
 					</TR>
 				</TABLE></TD>
 			</TR><TR>

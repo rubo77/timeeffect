@@ -45,6 +45,14 @@
 	$GLOBALS['_PJ_strings']['edit_user']			= 'Benutzer bearbeiten';
 	$GLOBALS['_PJ_strings']['user_list']			= 'Benutzerliste';
 
+	$GLOBALS['_PJ_strings']['missing_groups']		= 'Um einen neune Benutzer anlegen zu k&ouml;nnen muss mindestens eine Gruppe existieren!<br>Bitte legen Sie eine neue Gruppe an.';
+	$GLOBALS['_PJ_strings']['new_group']			= 'Neue Gruppe hinzuf&uuml;gen';
+	$GLOBALS['_PJ_strings']['group']				= 'Gruppe';
+	$GLOBALS['_PJ_strings']['groups']				= 'Gruppen';
+	$GLOBALS['_PJ_strings']['group_basic_data']		= 'Gruppendaten';
+	$GLOBALS['_PJ_strings']['edit_group']			= 'Gruppe bearbeiten';
+	$GLOBALS['_PJ_strings']['group_list']			= 'Gruppenliste';
+
 	$GLOBALS['_PJ_strings']['report']				= 'Report';
 
 	$GLOBALS['_PJ_strings']['yes']					= 'ja';
@@ -138,7 +146,7 @@
 	$GLOBALS['_PJ_strings']['access_effort_r']		= 'Aufwand einsehen';
 
 	$GLOBALS['_PJ_strings']['access_na']			= 'kein Zugriff';
-	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agent darf fremde Aufw&auml;nde einsehen';
+	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agenten d&uuml;rfen fremde Aufw&auml;nde einsehen';
 
 	$GLOBALS['_PJ_strings']['cancel']				= 'Abbrechen';
 	$GLOBALS['_PJ_strings']['save']					= 'Speichern';
@@ -152,14 +160,20 @@
 	$GLOBALS['_PJ_strings']['ask_project_delete']	= '<B>ACHTUNG: Wenn Sie diese Aktion ausführen werden das Projekt und alle dazugeh&ouml;rigen Aufw&auml;nde unwiderruflich gel&ouml;scht!!</B><BR>Wollen Sie dieses Projekt wirklich l&ouml;schen?';
 	$GLOBALS['_PJ_strings']['ask_effort_delete']	= '<B>ACHTUNG: Wenn Sie diese Aktion ausführen wird der Aufwand unwiderruflich gel&ouml;scht!!</B><BR>Wollen Sie diesen Aufwand wirklich l&ouml;schen?';
 	$GLOBALS['_PJ_strings']['ask_user_delete']		= '<B>ACHTUNG: Wenn Sie diese Aktion ausführen wird der Benutzer unwiderruflich gel&ouml;scht!!</B><BR>Wollen Sie diesen Benutzer wirklich l&ouml;schen?';
+	$GLOBALS['_PJ_strings']['ask_group_delete']		= '<B>ACHTUNG: Wenn Sie diese Aktion ausführen wird die Gruppe unwiderruflich gel&ouml;scht!!</B><BR>Wollen Sie diese Gruppe wirklich l&ouml;schen?';
 	$GLOBALS['_PJ_strings']['login-welcome']		= '<B>Herzlich willkommen bei TimeEffect!</B><BR>Um sich anzumelden, tragen Sie bitte Ihren Benutzernamen und Ihr Passowrt ein. Klicken Sie anschie&szlig;end auf "' . $GLOBALS['_PJ_strings']['login'] . '&nbsp;>>"';
 	$GLOBALS['_PJ_strings']['session-expire']		= '<FONT COLOR="red"><B>HINWEIS:</B></FONT> Aus Sicherheitsgr&uuml;nden ist die L&auml;nge Ihrer Sitzung auf ' . formatNumber($GLOBALS['_PJ_session_length']/60) . ' Minuten begrenzt. Nach Ablauf dieser Zeit m&uuml;ssen Sie sich erneut anmelden!';
 	$GLOBALS['_PJ_strings']['login_error_msg']		= $GLOBALS['_PJ_strings']['username'] . ' oder ' . $GLOBALS['_PJ_strings']['password'] . ' sind nicht korrekt! Bitte versuchen Sie es erneut:';
 	$GLOBALS['_PJ_strings']['error_pw_retype']		= 'Das eingegebene Passwort und die Passwort-Wiederholung stimmen nicht überein!';
 	$GLOBALS['_PJ_strings']['error_pw_empty']		= 'Sie m&uuml;ssen ein Passwort eingeben!';
 	$GLOBALS['_PJ_strings']['error_user_empty']		= 'Sie m&uuml;ssen einen Benutzernamen eingeben!';
-	$GLOBALS['_PJ_strings']['error_user_exists']	= 'Der eingegebene Benutzernamen existiert bereits!';
+	$GLOBALS['_PJ_strings']['error_user_exists']	= 'Der eingegebene Benutzername existiert bereits!';
+	$GLOBALS['_PJ_strings']['error_group_empty']	= 'Sie m&uuml;ssen einen Gruppennamen eingeben!';
+	$GLOBALS['_PJ_strings']['error_group_exists']	= 'Der eingegebene Gruppenname existiert bereits!';
 	$GLOBALS['_PJ_strings']['error_access']			= 'Sie haben nicht die notwendigen Benutzerrechte, um diese Aktion auszuf&uuml;hren!!';
+	$GLOBALS['_PJ_strings']['error_perm_empty']		= 'Bitte wählen Sie mindestens eine Nutzerrolle f&uuml;r diesen Benutzer!';
+	$GLOBALS['_PJ_strings']['error_gids_empty']		= 'Bitte wählen Sie mindestens eine Gruppe f&uuml;r diesen Benutzer!';
+	$GLOBALS['_PJ_strings']['error_name_empty']		= 'Bitte geben Sie den Nachname dieses Benutzers ein!';
 
 	$GLOBALS['_PJ_strings']['error']				= 'FEHLER';
 	$GLOBALS['_PJ_strings']['line']					= 'Zeile';
@@ -183,6 +197,12 @@
 						'Dez'
 						);
 
+	$_PJ_permission_names	= array (
+							 'admin'	=> 'Administrator',
+							 'agent'	=> 'Bearbeiter',
+							 'client'	=> 'Kunde',
+							 );
+
 	$_PJ_weekdays		= array (
 						 '0' => 'Sonntag',
 						 '1' => 'Montag',
@@ -190,7 +210,8 @@
 						 '3' => 'Mittwoch',
 						 '4' => 'Donnerstag',
 						 '5' => 'Freitag',
-						 '6' => 'Samstag');
+						 '6' => 'Samstag'
+						 );
 
 	$_PJ_weekdays_abbr	= array (
 						 '0' => 'So',
@@ -199,7 +220,8 @@
 						 '3' => 'Mi',
 						 '4' => 'Do',
 						 '5' => 'Fr',
-						 '6' => 'Sa');
+						 '6' => 'Sa'
+						 );
 	$_PJ_days = array (
 						 'Sun' => 'So',
 						 'Mon' => 'Mo',

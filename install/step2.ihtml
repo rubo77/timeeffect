@@ -1,6 +1,23 @@
 <?php
+$locale_info = localeconv();
 if(!isset($currency)) {
 	$currency = '€';
+}
+if(!isset($decimal_point)) {
+	$decimal_point = $locale_info['decimal_point'];
+}
+if(!isset($thousands_seperator)) {
+	$thousands_seperator = $locale_info['thousands_sep'];
+}
+if($thousands_seperator == '') {
+	if($decimal_point == '.') {
+		$thousands_seperator = ',';
+	} else {
+		$thousands_seperator = '.';
+	}
+}
+if(!isset($session_length)) {
+	$session_length = 3600;
 }
 if(!isset($admin_user)) {
 	$admin_user = 'admin';
@@ -10,7 +27,7 @@ if(!isset($admin_password)) {
 }
 ?>
 				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
-				Please enter the appropriate values in the following fields and press 'next >>'<br><br>
+				Please enter the appropriate values in the following fields and press 'next &gt;&gt;'<br><br>
 				<table cellpadding="0" cellspacing="0" border="0">
 <form action="<?= $PHP_SELF ?>" method="POST">
 <input type="hidden" name="step" value="3">
@@ -24,7 +41,9 @@ if(!isset($admin_password)) {
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2">Select the TIMEEFFECT interface language:</td>
+						<td width="500" colspan="2">Select the TIMEEFFECT default interface language.<br>
+						<span class="warning">This determines the default interface language. You will be able to select
+						a different language at login time:</span></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>
@@ -52,12 +71,54 @@ while($file = readdir($dir)) {
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2">Select the TIMEEFFECT currency:</td>
+						<td width="500" colspan="2">Enter the TIMEEFFECT currency:</td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td class="FormFieldName" width="200">currency:</td>
 						<td class="FormFieldName"><input class="FormField" name="currency" value="<?= $currency ?>"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter decimal point:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td class="FormFieldName" width="200">decimal point:</td>
+						<td class="FormFieldName"><input class="FormField" name="decimal_point" value="<?= $decimal_point ?>"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter thousands seperator:</td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td class="FormFieldName" width="200">thousands seperator:</td>
+						<td class="FormFieldName"><input class="FormField" name="thousands_seperator" value="<?= $thousands_seperator ?>"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td width="500" colspan="2">Enter session length in seconds.<br>
+						<span class="warning">The 'session length' value enables a security feature of TIMEEFFECT.
+						Users will be automatically logged off after the numbers of seconds entered for 'session length'.<br>
+						<b>If set to '0' automated logoff will be disabled!</b></td>
+					</tr><tr>
+						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
+					</tr><tr>
+						<td class="FormFieldName" width="200">session length:</td>
+						<td class="FormFieldName"><input class="FormField" name="session_length" value="<?= $session_length ?>"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
@@ -87,15 +148,14 @@ while($file = readdir($dir)) {
 					<tr>
 						<td class="FormFieldName">admin password:</td>
 						<td class="FormFieldName"><input class="FormField" name="admin_password" value="<?= $admin_password ?>"></td>
-					</tr>
-					<tr>
+					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-						<td width="500" colspan="2" align="right"><input type="submit" value="next >>"></td>
+						<td width="500" colspan="2" align="right"><input type="submit" value="next &gt;&gt;"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr>

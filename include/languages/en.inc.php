@@ -45,6 +45,15 @@
 	$GLOBALS['_PJ_strings']['edit_user']			= 'edit user';
 	$GLOBALS['_PJ_strings']['user_list']			= 'User list';
 
+	$GLOBALS['_PJ_strings']['missing_groups']		= 'To create a new user there must exists at least one group. Please creta a new group first!';
+	$GLOBALS['_PJ_strings']['new_group']			= 'Add new group';
+	$GLOBALS['_PJ_strings']['group']				= 'Group';
+	$GLOBALS['_PJ_strings']['groups']				= 'Groups';
+	$GLOBALS['_PJ_strings']['group_basic_data']		= 'group data';
+	$GLOBALS['_PJ_strings']['edit_group']			= 'edit group';
+	$GLOBALS['_PJ_strings']['group_list']			= 'Group list';
+
+
 	$GLOBALS['_PJ_strings']['report']				= 'Report';
 
 	$GLOBALS['_PJ_strings']['yes']					= 'yes';
@@ -130,8 +139,9 @@
 	$GLOBALS['_PJ_strings']['access_customer_rx']	= 'Read projects and create new projects';
 	$GLOBALS['_PJ_strings']['access_customer_rw']	= 'Edit customers and read projects';
 	$GLOBALS['_PJ_strings']['access_customer_r']	= 'Read projects';
+
 	$GLOBALS['_PJ_strings']['access_na']			= 'no access';
-	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agent is allowed to see foreign efforts';
+	$GLOBALS['_PJ_strings']['readforeignefforts']	= 'Agents are allowed to see foreign efforts';
 
 	$GLOBALS['_PJ_strings']['cancel']				= 'Cancel';
 	$GLOBALS['_PJ_strings']['save']					= 'Save';
@@ -145,6 +155,7 @@
 	$GLOBALS['_PJ_strings']['ask_project_delete']	= '<B>WARNING: If you complete this action this project and all related efforts will be deleted!</b><br>Do you really want to delete this project?';
 	$GLOBALS['_PJ_strings']['ask_effort_delete']	= '<B>WARNING: If you complete this action this effort will be deleted!</B><BR>Do you really want to delete this effort?';
 	$GLOBALS['_PJ_strings']['ask_user_delete']		= '<B>WARNING: If you complete this action this user wil be deleted!!</B><BR>Do you really want to delete this user?';
+	$GLOBALS['_PJ_strings']['ask_group_delete']		= '<B>WARNING: If you complete this action this group wil be deleted!!</B><BR>Do you really want to delete this group?';
 	$GLOBALS['_PJ_strings']['login-welcome']		= '<B>Welcome to TIMEEFFECT!</B><BR>Please enter user username and password to logon. Click on "' . $GLOBALS['_PJ_strings']['login'] . '&nbsp;>>" afterwards.';
 	$GLOBALS['_PJ_strings']['session-expire']		= '<FONT COLOR="red"><B>NOTE:</B></FONT> for security reasons your session will end after ' . formatNumber($GLOBALS['_PJ_session_length']/60) . ' minutes. Please logon again after this period.';
 	$GLOBALS['_PJ_strings']['login_error_msg']		= 'Username or password are not correct! Please try again:';
@@ -152,7 +163,12 @@
 	$GLOBALS['_PJ_strings']['error_pw_empty']		= 'You have to enter a password!';
 	$GLOBALS['_PJ_strings']['error_user_empty']		= 'You have to enter a username!';
 	$GLOBALS['_PJ_strings']['error_user_exists']	= 'The entered username already exists!';
+	$GLOBALS['_PJ_strings']['error_group_empty']	= 'Sie m&uuml;ssen einen Gruppennamen eingeben!';
+	$GLOBALS['_PJ_strings']['error_group_exists']	= 'Der eingegebene Gruppenname existiert bereits!';
 	$GLOBALS['_PJ_strings']['error_access']			= 'You don\'t have the appropriate user rights to complete this action!!';
+	$GLOBALS['_PJ_strings']['error_perm_empty']		= 'Please select at least one role for this user!';
+	$GLOBALS['_PJ_strings']['error_gids_empty']		= 'Please select at least one group for this user!';
+	$GLOBALS['_PJ_strings']['error_name_empty']		= 'Please enter the last name of this user!';
 
 	$GLOBALS['_PJ_strings']['error']				= 'ERROR';
 	$GLOBALS['_PJ_strings']['line']					= 'line';
@@ -175,6 +191,12 @@
 						'Nov',
 						'Dec'
 						);
+
+	$_PJ_permission_names	= array (
+							 'admin'	=> 'Administrator',
+							 'agent'	=> 'Agent',
+							 'client'	=> 'Customer',
+							 );
 
 	$_PJ_weekdays		= array (
 						 '0' => 'Sundday',

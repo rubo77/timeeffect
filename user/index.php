@@ -32,9 +32,9 @@
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
 			$data['gids']				= @implode(',', $gids);
-			$data['lastname']			= $lastname;
-			$data['firstname']			= $firstname;
-			$data['username']			= $login;
+			$data['lastname']			= add_slashes($lastname);
+			$data['firstname']			= add_slashes($firstname);
+			$data['username']			= add_slashes($login);
 			$data['permissions']		= @implode(',', $permissions);
 			$data['allow_nc']			= $allow_nc;
 
