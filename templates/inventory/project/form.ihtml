@@ -7,7 +7,7 @@
 		$u_gids						= explode(',', $_PJ_auth->giveValue('gids'));
 	}
 	$users			= $_PJ_auth->listUsers();
-	if(is_object($project) && !$new) {
+	if(is_object($project) && $project->giveValue('id')) {
 		$pid						= $project->giveValue('id');
 		$cid						= $project->giveValue('customer_id');
 		$closed						= $project->giveValue('closed');
@@ -23,6 +23,8 @@
 	} else {
 		$project_name				= $GLOBALS['_PJ_strings']['no_name'];
 		$user_access['write']		= true;
+		$user						= $_PJ_auth->giveValue('id');
+		$project_gid				= $customer->giveValue('gid');
 		$project_access_owner		= 'rwx';
 		$project_access_group		= 'r-x';
 		$project_access_world		= 'r--';
@@ -73,7 +75,7 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || $new || $user == $_PJ_auth->giveValue('id')) {
+if($_PJ_auth->checkPermission('admin') || !$project->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gid'] ?>:</TD>

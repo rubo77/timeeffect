@@ -15,6 +15,6 @@
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatDate($effort->giveValue('date')); ?></TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= $effort->formatTime($effort->giveValue('end'), "H:i"); ?></TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?= $effort->formatNumber($effort->giveValue('days'), true); ?></TD>
-						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;€'; ?></TD>
+						<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR>
 <!-- statistic/effort/row.ihtml - END -->

@@ -1,5 +1,6 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$customer 			= new Customer($cid, $_PJ_auth);
 	$project 			= new Project($customer, $_PJ_auth, $pid);
@@ -34,7 +35,7 @@
 		$eday = intval(date('d'));
 	}
 
-	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, ($mode));
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $$mode);
 	if($_PJ_auth->checkPermission('accountant') && is_array($charge)) {
 		$statistic->billEfforts(date('Y-m-d'), implode(',', array_keys($charge)));
 	}

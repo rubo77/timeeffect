@@ -1,7 +1,17 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$effort = new Effort($eid, $_PJ_auth);
+	if($stop) {
+		if($eid && !$effort->checkUserAccess('write')) {
+			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		$effort->stop();
+	}
 	if($pid == '') {
 		if(is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
@@ -39,7 +49,7 @@
 			$data['id']				= $eid;
 			$data['project_id']		= $pid;
 			$data['date']			= "$year-$month-$day";
-			$data['begin']			= "$hour:$minute:$second";
+			$data['begin']			= sprintf('%02d:%02d:%02d', intval($hour), intval($minute), intval($second));
 			$data['description']	= add_slashes($description);
 			$data['note']			= add_slashes($note);
 			$data['rate']			= $rate;
@@ -68,8 +78,13 @@
 			$new_effort->setEndTime("$hours:$minutes");
 			$message = $new_effort->save();
 			if($message != '') {
-				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
-				include("$_PJ_root/templates/edit.ihtml");
+				if(!$new_effort->giveValue('id')) {
+					$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_effort'];
+					include("$_PJ_root/templates/add.ihtml");
+				} else {
+					$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
+					include("$_PJ_root/templates/edit.ihtml");
+				}
 				include_once("$_PJ_include_path/degestiv.inc.php");
 				exit;
 			}

@@ -12,7 +12,8 @@
 		} else {
 		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
 		}
-		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if($customer->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?edit=1&cid=" . $customer->giveValue('id') ?>"><?php } ?><?= $customer->giveValue('customer_name') ?></A></TD>
+		?>&nbsp;<?php if($customer->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?edit=1&cid=" . $customer->giveValue('id') ?>"><?php } ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $customer->giveValue('customer_name') ?></A></TD>
+		<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php if($customer->checkUserAccess('new')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?new=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['create'] ?></A><?php } ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php
 if($customer->count()) {
@@ -20,7 +21,6 @@ if($customer->count()) {
 } else { ?>&nbsp;<?php
 } ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php if($customer->checkUserAccess('write') && ($_PJ_auth->checkPermission('admin') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?delete=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
-		</TD>
 	</TR><?php
 	if($expanded['cid'][$customer->giveValue('id')]) {
 		$projects	= new ProjectList($customer, $customer->user);

@@ -11,11 +11,12 @@
 		var	$effort_count = 0;
 		var $effort_cursor = -1;
 
-		function Statistics(&$user, $load = false, $customer = NULL, $project = NULL, $mode = NULL) {
+		function Statistics(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {
 			$this->customer	= $customer;
 			$this->project	= $project;
 			$this->mode		= $mode;
 			$this->user		= $user;
+			$this->users	= $users;
 			if(!$load) {
 				return;
 			}
@@ -42,7 +43,7 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
 					if($cids) {
 						$cids .= ',';
@@ -52,7 +53,7 @@
 				if(!$cids) {
 					return;
 				}
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
 					if($pids) {
 						$pids .= ',';
@@ -83,6 +84,10 @@
 			if(is_object($this->project) && $this->project->giveValue('id')) {
 				$query .= " AND " .
 						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project->giveValue('id') . "'";
+			}
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
 			}
 			if($this->mode != 'billed') {
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
@@ -140,7 +145,7 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
 					if($cids) {
 						$cids .= ',';
@@ -150,7 +155,7 @@
 				if(!$cids) {
 					return;
 				}
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
 					if($pids) {
 						$pids .= ',';
@@ -185,6 +190,10 @@
 			if(is_object($this->project) && $this->project->giveValue('id')) {
 				$query .= " AND " .
 						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->prjoect->giveValue('id') . "'";
+			}
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
 			}
 			$query .= " AND " .
 					  $GLOBALS['_PJ_effort_table'] . ".date >= '$year-$month-01'" .
@@ -233,7 +242,7 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
 					if($cids) {
 						$cids .= ',';
@@ -243,7 +252,7 @@
 				if(!$cids) {
 					return;
 				}
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
 					if($pids) {
 						$pids .= ',';
@@ -276,6 +285,10 @@
 					 ".date < '$next_date'" .
 					 " AND " .
 					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
+			}
 			if($this->mode != 'billed') {
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}
@@ -322,7 +335,7 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
 					if($cids) {
 						$cids .= ',';
@@ -332,7 +345,7 @@
 				if(!$cids) {
 					return;
 				}
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
 					if($pids) {
 						$pids .= ',';
@@ -366,6 +379,10 @@
 					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'";
 			if($this->mode != 'billed') {
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
+			}
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
 			}
 			if(!$this->user->checkPermission('admin')) {
 				$query .= " AND project_id IN ($pids)";
@@ -418,7 +435,7 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
 					if($cids) {
 						$cids .= ',';
@@ -428,7 +445,7 @@
 				if(!$cids) {
 					return;
 				}
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
 					if($pids) {
 						$pids .= ',';
@@ -460,11 +477,19 @@
 				$query .= " AND " .
 						  $GLOBALS['_PJ_effort_table'] . ".project_id='" . $this->project->giveValue('id') . "'";
 			}
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
+			}
 			$query .= " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".date >= '$start'" .
 					 " AND " .
 					 $GLOBALS['_PJ_effort_table'] . ".date <= '$end'";
 
+			if(is_array($this->users) && count($this->users)) {
+				$query .= " AND " .
+						  $GLOBALS['_PJ_effort_table'] . ".user  IN (" . implode(',', $this->users) . ")";
+			}
 			if($this->mode != 'billed') {
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".billed IS NULL";
 			}

@@ -1,11 +1,10 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$customer	= new Customer($cid, $_PJ_auth);
 
-	if(isset($pid)) {
-		$project = new Project($customer, $_PJ_auth, $pid);
-	}
+	$project = new Project($customer, $_PJ_auth, $pid);
 
 	if(isset($eid)) {
 		$effort = new Effort($eid, $_PJ_auth);

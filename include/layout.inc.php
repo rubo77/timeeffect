@@ -19,10 +19,11 @@
 	$_PJ_pdf_logo_height				= 17.5;
 	$_PJ_pdf_logo_top					= 46;
 
+	$_PJ_pdf_footer_string				= 'TIMEEFFECT';
+
 	// only used if PDF logo file does not exist
 	$_PJ_pdf_header_string				= 'TIMEEFFECT';
 	$_PJ_pdf_subheader_string			= 'IT Consulting';
-	$_PJ_pdf_footer_string				= 'TIMEEFFECT';
 
 	$_PJ_pdf_top_margin					= 80;
 	$_PJ_pdf_left_margin				= 50;

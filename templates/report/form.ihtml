@@ -1,6 +1,7 @@
 <!-- report/form.ihtml - START -->
 <?
 	include($GLOBALS['_PJ_root'] . '/templates/report/options/edit.ihtml');
+	$all_users			= $_PJ_auth->listUsers();
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
 	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $GLOBALS['_PJ_currency'] ?>">
@@ -44,6 +45,20 @@
 								print " SELECTED";
 							}
 							print ">" . $project->giveValue('project_name') . "\n";
+						}
+					?>
+					</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="users[]" multiple>
+					<?php
+						$a_user = $user;
+						reset($all_users);
+						while(list($cnt, $o_user) = each($all_users)) {
+?>
+						<OPTION VALUE="<?= $o_user['id'] ?>"<?php if(is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+<?php
 						}
 					?>
 					</SELECT>
@@ -134,11 +149,6 @@
 					</SELECT>
 					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
 					</TD>
-<!--
-				</TR><TR>
-					<TD CLASS="FormFieldName"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?>:</TD>
-					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="pdf" VALUE="1"></TD>
--->
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['usebilled'] ?>:</TD>
 					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="mode" VALUE="billed"></TD>

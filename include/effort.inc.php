@@ -74,7 +74,7 @@
 					return;
 				}
 				$query .= " AND project_id IN ($pids)";
-				$order_query = ' ORDER BY billed, last DESC, date, begin';
+				$order_query = ' ORDER BY billed, date, begin, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
 			if($limit) {
@@ -194,13 +194,17 @@
 			   (date("Y", $e_timestamp) <= 1970	))
 				return;
 
-			if($b_timestamp == $e_timestamp) {
-	        	return $GLOBALS['_PJ_strings']['error_zero_effort'];
-	        }
-			if(date("H", $b_timestamp) > date("H", $e_timestamp)) {
+			if($this->data['billed'] == '') {
+				$this->data['billed'] = 'NULL';
+			}
+			$timestamp_diff = $e_timestamp - $b_timestamp;
+			if($timestamp_diff < 0 && $this->data['end'] != '00:00:00') {
 				$b_time	= "00:00:00";
 				$date	= date("Y-m-d", $b_timestamp+86400);
 				$e_time	= date("H:i:s", $e_timestamp);
+				if($b_time == $e_time) {
+					$e_time	= date("H:i:s", $e_timestamp-1);
+				}
 
 				$query = "INSERT INTO " . $GLOBALS['_PJ_effort_table'] . " (project_id, gid, access, date, begin, end, description, note, rate, user, billed, last)";
 				$query .= " VALUES(";
@@ -223,6 +227,9 @@
 			} else {
 				$b_time = date("H:i:s", $b_timestamp);
 				$e_time = date("H:i:s", $e_timestamp);
+				if($b_time != '00:00:00' && $e_time == '00:00:00') {
+					$e_time = '23:59:59';
+				}
 			}
 
 			$query = "REPLACE INTO " . $GLOBALS['_PJ_effort_table'] . " (id, project_id, gid, access, date, begin, end, description, note, rate, user, billed)";
@@ -258,13 +265,40 @@
 			$this->db->query($query);
 		}
 
-		function setEndTime ($effort) {
+		function setEndTime($effort) {
 			list($year, $month, $day) = explode("-", $this->data['date']);
 			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
 			list($e_hour, $e_minute, $e_second) = explode(":", $effort);
 			$b_timestamp = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
 			$e_timestamp = $b_timestamp + $e_hour*3600 + $e_minute*60 + $e_second;
 			$this->data['end'] = date("H:i:s", $e_timestamp);
+		}
+
+		function stop() {
+			list($year, $month, $day) = explode("-", $this->data['date']);
+			list($hour, $minute, $second) = explode(":", $this->data['begin']);
+			$b_time 			= mktime($hour, $minute, $second, $month, $day, $year);
+			if($b_time > time() || $this->giveValue('begin') != $this->giveValue('end')) {
+				return;
+			}
+			$e_time 			= mktime(date('H'), date('i'), date('s'));
+			if($b_time > $e_time) {
+				$e_time = mktime(date('H'), date('i'), date('s'), date('m', $b_time+86400), date('d', $b_time+86400), date('Y', $b_time+86400));
+			}
+			$diff_time 			= $e_time - $b_time;
+			$hours				= floor($diff_time / 3600);
+			$minutes			= floor($diff_time / 60 -(floor($diff_time / 3600)*60));
+			if($hours > 23) {
+				$hours = 23;
+				$minutes = 59;
+			}
+			if($minutes != 59) {
+				$minutes		= round($minutes/5)*5;
+			}
+			
+			$e_time = $b_time + $hours*3600 + $minutes*60;
+			$this->data['end'] = sprintf('%02d:%02d:00', date('H', $e_time), date('i', $e_time));
+			$this->save();
 		}
 	}
 ?>

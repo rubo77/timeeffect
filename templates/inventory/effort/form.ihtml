@@ -9,7 +9,7 @@
 	$users			= $_PJ_auth->listUsers();
 	$rates			= new Rates($customer->giveValue("id"));
 	$r_count		= $rates->giveCount();
-	if(is_object($effort) && !$new) {
+	if(is_object($effort) && $effort->giveValue('id')) {
 		$id				= $effort->giveValue('id');
 		$project_id		= $effort->giveValue('project_id');
 		$date			= $effort->giveValue('date');
@@ -19,15 +19,28 @@
 		list($hour, $minute, $second) = explode(":", $begin);
 	
 		$end			= $effort->giveValue('end');
-		if($effort->giveValue('billed') == '') {
+		$b_time = mktime($hour, $minute, $second, $month, $day, $year);
+		$e_time = mktime(date('H'), date('i'), date('s'));
+		if($b_time < time() && $effort->giveValue('begin') == $effort->giveValue('end')) {
+			if($b_time > $e_time) {
+				$e_time = mktime(date('H'), date('i'), date('s'), date('m', $b_time+86400), date('d', $b_time+86400), date('Y', $b_time+86400));
+			}
+			$diff_time = $e_time - $b_time;
+			$hours			= floor($diff_time / 3600);
+			$minutes		= floor($diff_time / 60 -(floor($diff_time / 3600)*60));
+			if($hours > 23) {
+				$hours = 23;
+				$minutes = 59;
+			}
+			$duration_message = $GLOBALS['_PJ_strings']['calculated_duration'];
+		} else {
 			$hours			= floor($effort->giveValue('hours'));
 			$minutes		= floor($effort->giveValue('minutes')-($hours*60));
-			$seconds		= $effort->giveValue('seconds')-($hours*3600)-($minutes*60);
-		} else {
-			$hours			= floor($effort->giveValue('billed_hours'));
-			$minutes		= floor($effort->giveValue('billed_minutes')-($hours*60));
-			$seconds		= $effort->giveValue('billed_seconds')-($hours*3600)-($minutes*60);
 		}
+		if($minutes != 59) {
+			$minutes		= round($minutes/5)*5;
+		}
+
 		$description				= $effort->giveValue('description');
 		$note						= $effort->giveValue('note');
 		$billed						= $effort->giveValue('billed');
@@ -41,6 +54,8 @@
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
 	} else {
 		$description	= $GLOBALS['_PJ_strings']['no_description'];
+		$user						= $_PJ_auth->giveValue('id');
+		$effort_gid					= $project->giveValue('gid');
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';
 		$effort_access_group		= 'r--';
@@ -169,7 +184,7 @@
 					<?php
 						$a_hours = $hours;
 	
-						for($i=0; $i <= 24; $i++) {
+						for($i=0; $i < 24; $i++) {
 							print "<OPTION ";
 							if($a_hours == $i)
 								print " SELECTED";
@@ -183,13 +198,22 @@
 	
 						for($i=0; $i <= 11; $i++) {
 							print "<OPTION ";
-							if(floor($a_minutes/5) == $i)
+							if($a_minutes != 59 && floor($a_minutes/5) == $i)
 								print " SELECTED";
-							printf(" VALUE='%02d'>%02d", $i*5, $i*5);
+							printf(' VALUE="%02d">%02d' ."\n", $i*5, $i*5);
 						}
+						print '<OPTION ';
+						if($a_minutes == 59)
+								print " SELECTED";
+						print ' VALUE="59">59' . "\n";
 					?>
 					</SELECT>
 					(<?= $GLOBALS['_PJ_strings']['hours'] ?>, <?= $GLOBALS['_PJ_strings']['minutes'] ?>)
+					<?php
+						if($duration_message) {
+							print '&nbsp;<span class="warning">' . $duration_message . '<span>';
+						}
+					?>
 					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['rate'] ?>:</TD>
@@ -205,7 +229,7 @@
 								print " SELECTED";
 								$rate_found = true;
 							}
-							printf(' VALUE="%02d">%s (%s %s)' , $data['price'], $data['name'], $data['currency'], formatNumber($data['price']));
+							printf(' VALUE="%s">%s (%s %s)' . "\n" , $data['price'], $data['name'], $GLOBALS['_PJ_currency'], formatNumber($data['price'], true));
 						}
 						if($rate != '' && !$rate_found) {
 							printf('<OPTION VALUE="%s" SELECTED>%s %s' , $rate, $GLOBALS['_PJ_currency'], formatNumber($rate));
@@ -284,7 +308,7 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || $new || $user == $_PJ_auth->giveValue('id')) {
+if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
@@ -293,7 +317,7 @@ if($_PJ_auth->checkPermission('admin') || $new || $user == $_PJ_auth->giveValue(
 	reset($u_gids);
 	foreach($u_gids as $id) {
 ?>
-						<OPTION<?php if($id == $project_gid) print ' SELECTED'; ?> value="<?= $id ?>"><?= $a_gids[$id] ?>
+						<OPTION<?php if($id == $effort_gid) print ' SELECTED'; ?> value="<?= $id ?>"><?= $a_gids[$id] ?>
 <?php
 	}
 ?>

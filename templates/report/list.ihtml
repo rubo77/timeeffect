@@ -19,7 +19,17 @@
 							<TR>
 								<TH CLASS="list"><?php
 if($statistic->count()) {
-?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_pdf_statistics_script'] . "?mode=$mode&cid=$cid&pid=$pid&syear=$syear&smonth=$smonth&sday=$sday&eyear=$eyear&emonth=$emonth&eday=$eday" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?></A><?php
+$qs = '';
+if(is_array($users)) {
+	foreach($users as $a_user) {
+		$qs .= '&users[]=' . $a_user;
+	}
+}
+?>
+<A CLASS="list" HREF="<?= $GLOBALS['_PJ_pdf_statistics_script'] . "?mode=$mode&cid=$cid&pid=$pid&syear=$syear&smonth=$smonth&sday=$sday&eyear=$eyear&emonth=$emonth&eday=$eday$qs" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?></A>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<A CLASS="list" HREF="<?= $GLOBALS['_PJ_csv_statistics_script'] . "?mode=$mode&cid=$cid&pid=$pid&syear=$syear&smonth=$smonth&sday=$sday&eyear=$eyear&emonth=$emonth&eday=$eday$qs" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/csv.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createcsv'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createcsv'] ?></A>
+<?php
 } else { ?>&nbsp;<?php
 } ?></TH>
 							</TR>

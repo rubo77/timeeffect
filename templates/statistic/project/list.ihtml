@@ -15,7 +15,11 @@
 							<TR VALIGN="center">
 								<TH CLASS="list"><?php
 if($customer->count()) {
-?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_pdf_statistics_script'] . "?cid=$cid" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?></A><?php
+?>
+<A CLASS="list" HREF="<?= $GLOBALS['_PJ_pdf_statistics_script'] . "?cid=$cid" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/acrobat.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createpdf'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createpdf'] ?></A>
+&nbsp;&nbsp;&nbsp;
+<A CLASS="list" HREF="<?= $GLOBALS['_PJ_csv_statistics_script'] . "?cid=$cid" ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/csv.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['createcsv'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['createcsv'] ?></A>
+<?php
 } else { ?>&nbsp;<?php
 } ?></TH>
 							</TR>
@@ -57,9 +61,9 @@ if($customer->count()) {
 						<TD>&nbsp;</TD>
 						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
 						<TD CLASS="listSumNumeric"><?php if($sum_project_days) print formatNumber($sum_project_days, true); ?></TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_project_costs) print formatNumber($sum_project_costs, true) . '&nbsp;€'; ?></TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_project_full_budget) print formatNumber($sum_project_full_budget, true) . '&nbsp;€'; ?></TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_project_full_budget && $sum_project_remaining_budget) print formatNumber($sum_project_remaining_budget, true) . '&nbsp;€'; ?></TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_project_costs) print formatNumber($sum_project_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_project_full_budget) print formatNumber($sum_project_full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+						<TD CLASS="listSumNumeric"><?php if($sum_project_full_budget && $sum_project_remaining_budget) print formatNumber($sum_project_remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>

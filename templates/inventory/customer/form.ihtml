@@ -10,7 +10,7 @@
 	if(!isset($rates)) {
 		$basic = 1;
 	}
-	if(is_object($customer)) {
+	if(is_object($customer) && $customer->giveValue('id')) {
 		$cid						= $customer->giveValue('id');
 		$active						= $customer->giveValue('active');
 		$user						= $customer->giveValue('user');
@@ -28,6 +28,7 @@
 		$active						= 'yes';
 		$customer_name				= $GLOBALS['_PJ_strings']['no_name'];
 		$user_access['write']		= true;
+		$user						= $_PJ_auth->giveValue('id');
 		$customer_access_owner		= 'rwx';
 		$customer_access_group		= 'r-x';
 		$customer_access_world		= 'r--';
@@ -78,7 +79,7 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || !is_object($customer) || $user == $_PJ_auth->giveValue('id')) {
+if($_PJ_auth->checkPermission('admin') || !$customer->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gid'] ?>:</TD>

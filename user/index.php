@@ -1,5 +1,6 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$center_template	= "user";
 	$center_title		= $GLOBALS['_PJ_strings']['user'];

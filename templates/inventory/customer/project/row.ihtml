@@ -13,7 +13,8 @@
 		} else {
 		?><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
 		}
-		?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if($project->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?edit=1&cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') ?>"><?php } ?><?= $project->giveValue('project_name') ?></A></TD>
+		?>&nbsp;<?php if($project->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?edit=1&cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') ?>"><?php } ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $project->giveValue('project_name') ?></A></TD>
+		<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('new')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['create'] ?></A><?php } ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php
 if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {

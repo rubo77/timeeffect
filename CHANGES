@@ -33,3 +33,14 @@
    - added UNIX like user model
    - added mechanism to charge efforts
 
+###################################
+2004-10-26:
+  release: beta 1.1.f, RC 1
+  changes:
+   - minor bug fixes
+
+###################################
+2004-10-27:
+  release: beta 1.1.g, RC 1
+  changes:
+   - minor bug fixes

@@ -1,5 +1,6 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	if(isset($cid)) {
 		$customer 			= new Customer($cid, $_PJ_auth);

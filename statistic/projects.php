@@ -1,5 +1,6 @@
 <?php
 	include_once("../include/aperetiv.inc.php");
+	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$customer	= new Customer($cid, $_PJ_auth);
 	$project	= new Project($cutomer, $_PJ_auth, $pid);
