@@ -1,0 +1,6 @@
+This release adds a UNIX like user model and a mechanism to charge efforts
+
+######################################
+Since we made major changes to the TIMEEFFECT data model there is no accurate way to
+update from any prior versions of TIMEEFFECT.
+Please install TIMEEFFECT from scratch.
