@@ -1,0 +1,29 @@
+This release adds an installation routine to TIMEEFFECT and offers the possibilty to
+display a logo image on top of each page of an PDF report. Furthermore the PDF
+layout control has been enhanced and centralized in on file.
+
+######################################
+There are two different possibilties to update to from beta 1.1 or beta 1.1.b to beta 1.1.c:
+
++++++++++++++++++++++++++++++++++
+A.
+ - download the appropriate patch file ('timeeffect.patch.beta_1_1-beta_1_1_c.gz' or
+   'timeeffect.patch.beta_1_1_b-beta_1_1_c.gz').
+ - Copy it to the directory beneath the timeeffect install directory (e.g. if your
+   TIMEEFFECT is located in 'srv/www/htdocs/timeeffect' copy the file to '/srv/www/htdocs').
+ - gunzip and apply the patch.
+
++++++++++++++++++++++++++++++++++
+B.
+ - download the file 'timeeffect_beta_1_1_c.tgz'.
+ - Copy the file 'timeeffect_beta_1_1_c.tgz' to the directory beneath the timeeffect
+   install directory (e.g. if your TIMEEFFECT is located in 'srv/www/htdocs/timeeffect'
+   copy the file to '/srv/www/htdocs')
+ - untar the file.
+ - copy your local copy of 'timeeffect/include/aperetiv.inc.php' to 'timeeffect_beta_1_1_c/include'.
+ - remove the sub folder 'timeeffect_beta_1_1_c/install'.
+ - the new release is located in the new subfolder 'timeeffect_beta_1_1_c'. To restore your old system
+   rename or remove the subfolder where your old installtion was located. Then rename the new subfolder
+   'timeeffect_beta_1_1_c' to the name of the prior renamed/removed old subfolder.
+ - you may have to redo layout changes you did to your TIMEEFFECT installation (e.g. in
+   include/layout.inc.php)
