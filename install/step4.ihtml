@@ -47,7 +47,7 @@ if($sql_file = @fopen('timeeffect.sql', 'r')) {
 } else {
 	$error_message .= 'opening of file \'timeeffect.sql\' failed!<br>';
 }
-if(!$error_message) {
+if($error_message) {
 ?>
 				<b>TIMEEFFECT Installation - failed!</b><br><br>
 				<span class="errorMessage"><b>ERROR(S): <?= $error_message ?></b></span><br>
@@ -58,5 +58,5 @@ if(!$error_message) {
 				<b>TIMEEFFECT Installation - finished</b><br><br>
 				The installation process has been successfully finished.<br><br>
 				<b>NOTE:</b> For security reasons please remove the 'install' directory and change the access rights for
-				your web server process of the file 'include/aperetive.inc.php' to read only.<br><br>
+				your web server process of the file 'include/aperetiv.inc.php' to read only.<br><br>
 				You can access your TIMEEFFECT installation <a href="../index.html"><b>>> here</b></a>;
