@@ -93,33 +93,8 @@ $GLOBALS['fields'] = array(
 		'price'			=> $GLOBALS['_PJ_strings']['costs']
 );
 
-$GLOBALS['field_widths'] = array(
-//		<field name>	=> <width>
-		'count'			=> 22,
-		'customer'		=> 0,
-		'project'		=> 0,
-		'agent' 		=> 100,
-		'date'			=> 55,
-		'time' 			=> 65,
-		'billed' 		=> 55,
-		'description'	=> -1,
-		'effort'		=> 45,
-		'price'			=> 70
-		);
-
-$GLOBALS['field_aligns'] = array(
-//		<field name>	=> <align>
-		'count'			=> 'R',
-		'customer'		=> 'L',
-		'project'		=> 'L',
-		'agent' 		=> 'L',
-		'date'			=> 'C',
-		'billed'		=> 'C',
-		'time' 			=> 'C',
-		'description'	=> 'L',
-		'effort'		=> 'R',
-		'price'			=> 'R'
-		);
+$GLOBALS['field_widths'] = $GLOBALS['_PJ_pdf_field_widths'];
+$GLOBALS['field_aligns'] = $GLOBALS['_PJ_pdf_field_aligns'];
 
 $rates		= new Rates();
 
@@ -152,12 +127,11 @@ $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetAutoPageBreak(false, 0);
-if(!$cid) {
-	$GLOBALS['field_widths']['count'] = 0;
-	$GLOBALS['field_widths']['customer'] = 100;
+if($cid) {
+	$GLOBALS['field_widths']['customer'] = 0;
 }
-if(!$pid) {
-	$GLOBALS['field_widths']['project'] = 120;
+if($pid) {
+	$GLOBALS['field_widths']['project'] = 0;
 }
 if($mode != 'billed') {
 	$GLOBALS['field_widths']['billed'] = 0;
@@ -171,6 +145,9 @@ tableHead();
 
 $i = 0;
 $note_count = 0;
+$e_count = $statistic->count(($mode == 'billed'));
+for($Fiii = 0; $Fiii < 1; $Fiii++) {
+$statistic->reset();
 while($statistic->nextEffort()) {
 	$i++;
 	$effort = $statistic->giveEffort();
@@ -214,7 +191,9 @@ while($statistic->nextEffort()) {
 		$pdf->SetX($GLOBALS['field_lefts']['customer']);
 		$pdf->Cell($GLOBALS['field_widths']['customer'], ($y_next_line-$y_line), $effort->giveValue('customer_name'), 0, 0, $GLOBALS['field_aligns']['customer'], 1);
 		$pdf->SetY($y_line);
-	} else {
+	}
+
+	if($GLOBALS['field_widths']['count']) {
 		$pdf->SetX($GLOBALS['field_lefts']['count']);
 		$pdf->Cell($GLOBALS['field_widths']['count'], ($y_next_line-$y_line), "$i.", 0, 0, $GLOBALS['field_aligns']['count'], 1);
 		$pdf->SetY($y_line);
@@ -228,7 +207,7 @@ while($statistic->nextEffort()) {
 
 	$pdf->SetX($GLOBALS['field_lefts']['agent']);
 	$agent = $_PJ_auth->giveUserById($effort->giveValue('user'));
-	$pdf->Cell($GLOBALS['field_widths']['agent'], ($y_next_line-$y_line), $agent['firstname'] . ' ' . $agent['lastname'], 0, 0, $GLOBALS['field_aligns']['agent'], 1);
+	$pdf->Cell($GLOBALS['field_widths']['agent'], ($y_next_line-$y_line), trim($agent['firstname'] . ' ' . $agent['lastname']), 0, 0, $GLOBALS['field_aligns']['agent'], 1);
 	$pdf->SetY($y_line);
 
 	$pdf->SetX($GLOBALS['field_lefts']['date']);
@@ -274,7 +253,7 @@ while($statistic->nextEffort()) {
 		$filled = false;
 	}
 }
-
+}
 $pdf->SetTextColor($GLOBALS['_PJ_pdf_table_sum_fg_r'], $GLOBALS['_PJ_pdf_table_sum_fg_g'], $GLOBALS['_PJ_pdf_table_sum_fg_b']);
 $y_line = $pdf->GetY();
 $y_line += $GLOBALS['_PJ_pdf_sum_spacing'];
