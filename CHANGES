@@ -51,3 +51,11 @@
   changes:
    - adding CSV reports
    - filter reports by user
+
+###################################
+2006-01-27:
+  release: 1.1.0, Rev. 12
+  changes:
+   - minor bug fixes
+   - adding french translation
+   - adding stop and continue button

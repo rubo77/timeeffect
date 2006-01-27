@@ -310,5 +310,5 @@
 	$_PJ_now		= date('H:i:s');
 
 	$_PJ_format_date		= 'm/d/Y';
-	$_PJ_format_datetime	= 'm/d/Y h:i:s';
+	$_PJ_format_datetime	= 'm/d/Y H:i:s';
 ?>

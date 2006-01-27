@@ -8,7 +8,7 @@ function documentHead() {
 	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 	$y_line = $pdf->GetY();
 	$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-	$head = $GLOBALS['_PJ_strings']['accounting'];
+	$head = unhtmlentities($GLOBALS['_PJ_strings']['accounting']);
 	$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 1, 'L', 0);
 	$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 
@@ -16,7 +16,7 @@ function documentHead() {
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$y_line = $pdf->GetY();
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['customer'] . ": ";
+		$head = unhtmlentities($GLOBALS['_PJ_strings']['customer']) . ": ";
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($pdf->GetStringWidth($customer->giveValue("customer_name")), $GLOBALS['_PJ_pdf_header_font_size']+2, $customer->giveValue("customer_name"), 0, 1, 'L', 0);
@@ -24,7 +24,7 @@ function documentHead() {
 
 	if($project->giveValue("project_name")) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['project'] . ": ";
+		$head = unhtmlentities($GLOBALS['_PJ_strings']['project']) . ": ";
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
@@ -40,7 +40,7 @@ function documentHead() {
 
 	if(intval($year) && intval($month)) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
+		$head = unhtmlentities($GLOBALS['_PJ_strings']['period']) . ": ";
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
@@ -49,7 +49,7 @@ function documentHead() {
 
 	if(intval($syear) && intval($eyear)) {
 		$pdf->SetX($GLOBALS['_PJ_pdf_left_margin']-3);
-		$head = $GLOBALS['_PJ_strings']['period'] . ": ";
+		$head = unhtmlentities($GLOBALS['_PJ_strings']['period']) . ": ";
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_header_font_size']);
 		$pdf->Cell($GLOBALS['_PJ_pdf_head_right'], $GLOBALS['_PJ_pdf_header_font_size']+2, $head, 0, 0, 'L', 0);
 		$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_header_font_size']);
@@ -81,16 +81,16 @@ function tableHead() {
 
 $GLOBALS['fields'] = array(
 //		<field name>	=> <string>
-		'count'			=> $GLOBALS['_PJ_strings']['numbershort'],
-		'customer'		=> $GLOBALS['_PJ_strings']['customer'],
-		'project'		=> $GLOBALS['_PJ_strings']['project'],
-		'agent'			=> $GLOBALS['_PJ_strings']['agent'],
-		'date'			=> $GLOBALS['_PJ_strings']['date'],
-		'billed'		=> $GLOBALS['_PJ_strings']['billed'],
-		'time' 			=> $GLOBALS['_PJ_strings']['from_to'],
-		'description'	=> $GLOBALS['_PJ_strings']['description'],
-		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-		'price'			=> $GLOBALS['_PJ_strings']['costs']
+		'count'			=> unhtmlentities($GLOBALS['_PJ_strings']['numbershort']),
+		'customer'		=> unhtmlentities($GLOBALS['_PJ_strings']['customer']),
+		'project'		=> unhtmlentities($GLOBALS['_PJ_strings']['project']),
+		'agent'			=> unhtmlentities($GLOBALS['_PJ_strings']['agent']),
+		'date'			=> unhtmlentities($GLOBALS['_PJ_strings']['date']),
+		'billed'		=> unhtmlentities($GLOBALS['_PJ_strings']['billed']),
+		'time' 			=> unhtmlentities($GLOBALS['_PJ_strings']['from_to']),
+		'description'	=> unhtmlentities($GLOBALS['_PJ_strings']['description']),
+		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
 
 $GLOBALS['field_widths'] = $GLOBALS['_PJ_pdf_field_widths'];
@@ -266,7 +266,7 @@ $pdf->SetFillColor($GLOBALS['_PJ_pdf_table_sum_bg_r'], $GLOBALS['_PJ_pdf_table_s
 $pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'B',$GLOBALS['_PJ_pdf_small_font_size']);
 $pdf->SetX($GLOBALS['_PJ_pdf_left_margin'] + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 $sum_width = $GLOBALS['field_lefts']['effort'] - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_table_cell_spacing']*2;
-$pdf->Cell($sum_width, $GLOBALS['_PJ_pdf_small_font_size']+2, $GLOBALS['_PJ_strings']['sum'] . ":", 0, 0, 'R', 1);
+$pdf->Cell($sum_width, $GLOBALS['_PJ_pdf_small_font_size']+2, unhtmlentities($GLOBALS['_PJ_strings']['sum']) . ":", 0, 0, 'R', 1);
 $y_next_line = $pdf->GetY();
 $pdf->SetY($y_line);
 

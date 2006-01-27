@@ -11,16 +11,16 @@ function tableHead($fields) {
 
 $GLOBALS['fields'] = array(
 //		<field name>	=> <string>
-		'count'			=> $GLOBALS['_PJ_strings']['numbershort'],
-		'customer'		=> $GLOBALS['_PJ_strings']['customer'],
-		'project'		=> $GLOBALS['_PJ_strings']['project'],
-		'agent'			=> $GLOBALS['_PJ_strings']['agent'],
-		'date'			=> $GLOBALS['_PJ_strings']['date'],
-		'billed'		=> $GLOBALS['_PJ_strings']['billed'],
-		'time' 			=> $GLOBALS['_PJ_strings']['from_to'],
-		'description'	=> $GLOBALS['_PJ_strings']['description'],
-		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-		'price'			=> $GLOBALS['_PJ_strings']['costs']
+		'count'			=> unhtmlentities($GLOBALS['_PJ_strings']['numbershort']),
+		'customer'		=> unhtmlentities($GLOBALS['_PJ_strings']['customer']),
+		'project'		=> unhtmlentities($GLOBALS['_PJ_strings']['project']),
+		'agent'			=> unhtmlentities($GLOBALS['_PJ_strings']['agent']),
+		'date'			=> unhtmlentities($GLOBALS['_PJ_strings']['date']),
+		'billed'		=> unhtmlentities($GLOBALS['_PJ_strings']['billed']),
+		'time' 			=> unhtmlentities($GLOBALS['_PJ_strings']['from_to']),
+		'description'	=> unhtmlentities($GLOBALS['_PJ_strings']['description']),
+		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
 
 
@@ -139,13 +139,13 @@ if(isset($HTTP_ENV_VARS['HTTP_USER_AGENT']) and strpos($HTTP_ENV_VARS['HTTP_USER
 Header('Pragma: no-cache');
 
 print $output;
-print "\n\n" . $GLOBALS['_PJ_strings']['subtotals'] . ';' . $GLOBALS['_PJ_strings']['projects'] . "\n";
+print "\n\n" . unhtmlentities($GLOBALS['_PJ_strings']['subtotals']) . ';' . unhtmlentities($GLOBALS['_PJ_strings']['projects']) . "\n";
 
 $GLOBALS['fields'] = array(
-		'customer'		=> $GLOBALS['_PJ_strings']['customer'],
-		'project'		=> $GLOBALS['_PJ_strings']['project'],
-		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-		'price'			=> $GLOBALS['_PJ_strings']['costs']
+		'customer'		=> unhtmlentities($GLOBALS['_PJ_strings']['customer']),
+		'project'		=> unhtmlentities($GLOBALS['_PJ_strings']['project']),
+		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
 if($cid) {
 	unset($GLOBALS['fields']['customer']);
@@ -166,12 +166,12 @@ foreach($PROJECT_SUM as $project_id => $project_values) {
 print $output;
 
 if(!$pid) {
-	print "\n\n" . $GLOBALS['_PJ_strings']['subtotals'] . ';' . $GLOBALS['_PJ_strings']['customers'] . "\n";
+	print "\n\n" . unhtmlentities($GLOBALS['_PJ_strings']['subtotals']) . ';' . unhtmlentities($GLOBALS['_PJ_strings']['customers']) . "\n";
 	
 	$GLOBALS['fields'] = array(
-			'customer'		=> $GLOBALS['_PJ_strings']['customer'],
-			'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-			'price'			=> $GLOBALS['_PJ_strings']['costs']
+			'customer'		=> unhtmlentities($GLOBALS['_PJ_strings']['customer']),
+			'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+			'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 	);
 	if($cid) {
 		unset($GLOBALS['fields']['customer']);
@@ -189,14 +189,14 @@ if(!$pid) {
 	
 	print $output;
 }
-print "\n\n" . $GLOBALS['_PJ_strings']['subtotals'] . ';' . $GLOBALS['_PJ_strings']['projects'] . '/' . $GLOBALS['_PJ_strings']['agent'] . "\n";
+print "\n\n" . unhtmlentities($GLOBALS['_PJ_strings']['subtotals']) . ';' . unhtmlentities($GLOBALS['_PJ_strings']['projects']) . '/' . unhtmlentities($GLOBALS['_PJ_strings']['agent']) . "\n";
 
 $GLOBALS['fields'] = array(
-		'customer'		=> $GLOBALS['_PJ_strings']['customer'],
-		'project'		=> $GLOBALS['_PJ_strings']['project'],
-		'agent'			=> $GLOBALS['_PJ_strings']['agent'],
-		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-		'price'			=> $GLOBALS['_PJ_strings']['costs']
+		'customer'		=> unhtmlentities($GLOBALS['_PJ_strings']['customer']),
+		'project'		=> unhtmlentities($GLOBALS['_PJ_strings']['project']),
+		'agent'			=> unhtmlentities($GLOBALS['_PJ_strings']['agent']),
+		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
 if($cid) {
 	unset($GLOBALS['fields']['customer']);
@@ -222,12 +222,12 @@ foreach($AGENT_PROJECT_SUM as $project_id => $project_values) {
 }
 
 print $output;
-print "\n\n" . $GLOBALS['_PJ_strings']['subtotals'] . ';' . $GLOBALS['_PJ_strings']['agent'] . "\n";
+print "\n\n" . unhtmlentities($GLOBALS['_PJ_strings']['subtotals']) . ';' . unhtmlentities($GLOBALS['_PJ_strings']['agent']) . "\n";
 
 $GLOBALS['fields'] = array(
-		'agent'			=> $GLOBALS['_PJ_strings']['agent'],
-		'effort'		=> $GLOBALS['_PJ_strings']['hours_short'],
-		'price'			=> $GLOBALS['_PJ_strings']['costs']
+		'agent'			=> unhtmlentities($GLOBALS['_PJ_strings']['agent']),
+		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
+		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
 $output = tableHead($GLOBALS['fields']);
 foreach($AGENT_SUM as $agent_id => $agent_values) {
