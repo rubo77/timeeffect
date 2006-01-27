@@ -51,7 +51,7 @@ CREATE TABLE `<%db_prefix%>effort` (
   `description` text,
   `note` text,
   `billed` date default NULL,
-  `rate` int(32) unsigned NOT NULL default '1',
+  `rate` float NOT NULL default '0',
   `user` int(32) unsigned default NULL,
   `last` timestamp(14) NOT NULL,
   PRIMARY KEY  (`id`),

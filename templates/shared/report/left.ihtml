@@ -28,7 +28,7 @@
 		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] ?>?cid=<?= $cid ?>&pid=<?= $pid ?>"><?= $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
 		} ?>&nbsp;</TD>
 			</TR><?php
-		if(is_object($customer) && $customer->giveValue('id')) {
+		if($_PJ_auth->checkPermission('agent') && is_object($customer) && $customer->giveValue('id')) {
 		?><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
 			</TR><TR>

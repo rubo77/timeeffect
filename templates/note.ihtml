@@ -19,7 +19,7 @@
 		</TD>
 <!-- END - content -->
 	</TR><TR>
-		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?></td>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?> (Revision: <?= $_PJ_timeeffect_revision ?>, <?= date($_PJ_format_datetime, strtotime($_PJ_timeeffect_date)) ?>)</td>
 	</TR>
 </TABLE>
 </BODY>

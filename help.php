@@ -24,6 +24,11 @@
 			</TR><TR>
 				<TD><b><?= $GLOBALS['_PJ_strings']['not_implemented'] ?>!</b></TD>
 			</TR><TR>
+				<TD><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="20" WIDTH="1" BORDER="0">
+				<HR SIZE="1"></TD>
+			</TR><TR>
+				<TD><?= $GLOBALS['_PJ_strings']['translations'] ?></TD>
+			</TR><TR>
 				<TD><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
 			</TR><TR>
 				<TD ALIGN="center"><A CLASS="note" HREF="JavaScript:self.close()"><IMG src="<?= $GLOBALS['_PJ_icon_path'] ?>/close_window.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['close_window'] ?></A></TD>

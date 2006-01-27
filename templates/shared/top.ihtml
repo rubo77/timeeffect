@@ -1,7 +1,7 @@
-<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100">
-	<TR HEIGHT="100">
-		<TD CLASS="mainOptionFrame" VALIGN="bottom"><?php include("$_PJ_root/templates/shared/main-options.ihtml"); ?></TD>
-		<TD CLASS="topInfo" VALIGN="bottom"><?= $GLOBALS['_PJ_strings']['logged_in_as'] ?> <A CLASS="topNav" HREF="<?= $GLOBALS['_PJ_own_user_script'] ?>"><B><?= $_PJ_auth->giveValue('firstname') ?> <?= $_PJ_auth->giveValue('lastname') ?></B></A></TD>
-		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><?php include("$_PJ_root/templates/shared/topnav.ihtml"); ?></TD>
-	</TR>
-</TABLE>
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+	<TR HEIGHT="50">
+		<TD CLASS="mainOptionFrame" VALIGN="bottom"><?php include("$_PJ_root/templates/shared/main-options.ihtml"); ?></TD>
+		<TD CLASS="topInfo" VALIGN="bottom"><?= $GLOBALS['_PJ_strings']['logged_in_as'] ?> <A CLASS="topNav" HREF="<?= $GLOBALS['_PJ_own_user_script'] ?>"><B><?= $_PJ_auth->giveValue('firstname') ?> <?= $_PJ_auth->giveValue('lastname') ?></B></A></TD>
+		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><?php include("$_PJ_root/templates/shared/topnav.ihtml"); ?></TD>
+	</TR>
+</TABLE>

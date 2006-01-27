@@ -211,6 +211,9 @@
 		exit;
 	}
 
+	if($no_login) {
+		return;
+	}
 	$_PJ_auth = new PJAuth();
 	if(!$_PJ_auth->getAuth()) {
 		exit;

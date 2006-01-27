@@ -146,6 +146,9 @@ tableHead();
 $i = 0;
 $note_count = 0;
 $e_count = $statistic->count(($mode == 'billed'));
+if(($mode == 'billed')) {
+	$e_count += $statistic->count(true);
+}
 for($Fiii = 0; $Fiii < 1; $Fiii++) {
 $statistic->reset();
 while($statistic->nextEffort()) {

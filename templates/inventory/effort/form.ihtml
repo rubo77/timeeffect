@@ -1,5 +1,6 @@
 <!-- inventory/effort/form.ihtml - START -->
 <?php
+
 	$a_gids						= $_PJ_auth->gids;
 	if($_PJ_auth->checkPermission('admin')) {
 		$u_gids						= @array_keys($a_gids);
@@ -9,7 +10,28 @@
 	$users			= $_PJ_auth->listUsers();
 	$rates			= new Rates($customer->giveValue("id"));
 	$r_count		= $rates->giveCount();
+	$project_input	= '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
 	if(is_object($effort) && $effort->giveValue('id')) {
+		if($_PJ_auth->checkPermission('accountant')) {
+			$__projects = new ProjectList($cid, $_PJ_auth, $shown['cp']);
+			$project_input = '<SELECT NAME="pid">' . "\n";
+			$__cid_buffer = NULL;
+			while($__projects->nextProject()) {
+				$__project = $__projects->giveProject();
+				$project_input .= "\t\t\t\t\t\t<OPTION VALUE=\"" . $__project->giveValue('id') . "\"";
+				if($__project->giveValue('id') == $pid) {
+					$project_input .= ' SELECTED';
+				}
+				$project_input .= '>';
+				if($__cid_buffer != $__project->giveValue('customer_id')) {
+					$__customer = new Customer($__project->giveValue('customer_id'), $_PJ_auth);
+					$__cid_buffer = $__project->giveValue('customer_id');
+				}
+				$project_input .= $__customer->giveValue('customer_name') . ':&nbsp;';
+				$project_input .= $__project->giveValue('project_name') . "\n";
+			}
+			$project_input .=  "\n" . '</SELECT>' . "\n";
+		}
 		$id				= $effort->giveValue('id');
 		$project_id		= $effort->giveValue('project_id');
 		$date			= $effort->giveValue('date');
@@ -67,7 +89,6 @@
 <FORM ACTION="<? print $PHP_SELF; ?>" METHOD="<? print $_PJ_form_method; ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
-<INPUT TYPE="hidden" NAME="pid" VALUE="<?= $pid ?>">
 <INPUT TYPE="hidden" NAME="cid" VALUE="<?= $cid ?>">
 <INPUT TYPE="hidden" NAME="eid" VALUE="<?= $eid ?>">
 <INPUT TYPE="hidden" NAME="id" VALUE="<?= $id ?>">
@@ -84,7 +105,7 @@
 					<TD CLASS="Error" COLSPAN="2"><?= $message ?></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><b><?= $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><b><?php print $project->giveValue('project_name'); ?></b></TD>
+					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><?= $project_input ?></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>

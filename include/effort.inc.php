@@ -4,6 +4,85 @@
 		exit;
 	}
 
+	class OpenEfforts {
+		var $__effort_count	= 0;
+		var $__effort_cursor	= -1;
+
+		function OpenEfforts(&$_user) {
+			$this->__user		= $_user;
+			$this->__db = new Database;
+			if(!$_user->checkPermission('admin')) {
+				$access_query  = " AND (";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $_user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $_user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
+				$access_query .= " OR ";
+				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
+				$access_query .= " ) ";
+				$raw_access_query  = " AND (";
+				$raw_access_query .= " (user = '" . $_user->giveValue('id') . "' AND access LIKE 'r________')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (gid IN (" . $_user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$raw_access_query .= " OR ";
+				$raw_access_query .= " (access LIKE '______r__')";
+				$raw_access_query .= " ) ";
+			}
+			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+			while($this->__db->next_record()) {
+				if($cids) {
+					$cids .= ',';
+				}
+				$cids .= $this->__db->f('id');
+			}
+			if(!$cids) {
+				return;
+			}
+			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+			while($this->__db->next_record()) {
+				if($pids) {
+					$pids .= ',';
+				}
+				$pids .= $this->__db->f('id');
+			}
+			if(!$pids) {
+				return;
+			}
+			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
+			$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
+			$query .= " WHERE project_id IN ($pids)";
+			$query .= " AND `billed` IS NULL";
+			$query .= " AND `begin` = `END`";
+			$order_query = ' ORDER BY date DESC, begin, last DESC';
+			$limit_query = ' LIMIT 1000';
+
+			$this->__db->query($query);
+			$this->__efforts = array();
+			while($this->__db->next_record()) {
+				$this->__efforts[] = new Effort($this->__db->Record, $this->__user);
+				$this->__effort_count++;
+			}
+		}
+
+		function nextEffort() {
+			$this->__effort_cursor++;
+			if($this->__effort_count == $this->__effort_cursor)
+				return false;
+			return true;
+		}
+
+		function reset() {
+			$this->__effort_cursor = -1;
+		}
+
+		function effortCount() {
+			return $this->__effort_count;
+		}
+
+		function giveEffort() {
+			return $this->__efforts[$this->__effort_cursor];
+		}
+
+	}
 	class EffortList {
 		var $db;
 		var $data;
@@ -300,5 +379,18 @@
 			$this->data['end'] = sprintf('%02d:%02d:00', date('H', $e_time), date('i', $e_time));
 			$this->save();
 		}
+
+		function copy(&$user) {
+			$__effort = new Effort($this->data, $user);
+			$__effort->data['id']		= 0;
+			$__effort->data['user']		= $user->giveValue('id');
+			$__effort->data['date']		= date('Y-m-d');
+			$__effort->data['begin']	= date('H:i:00');
+			$__effort->data['end']		= $__effort->data['begin'];
+			$__effort->data['billed']	= '';
+
+			return $__effort;
+		}
+
 	}
 ?>

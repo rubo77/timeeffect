@@ -31,6 +31,17 @@
 	$customer = new Customer($cid, $_PJ_auth);
 	$center_template	= "inventory/effort";
 
+	if($cont) {
+		if($eid && !$project->checkUserAccess('new')) {
+			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		$new_effort = $effort->copy($_PJ_auth);
+		$new_effort->save();
+	}
+
 	if(isset($new)) {
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_effort'];
 		include("$_PJ_root/templates/add.ihtml");

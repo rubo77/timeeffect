@@ -28,7 +28,7 @@
 		?><A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] ?>"><?= $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
 		} ?>&nbsp;</TD>
 			</TR><?php
-		if(is_object($customer) && $customer->giveValue('id')) {
+		if($_PJ_auth->checkPermission('agent') && is_object($customer) && $customer->giveValue('id')) {
 		?><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
 			</TR><TR>
@@ -53,13 +53,13 @@
 			</TR><TR>
 				<TD><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?= $nav_width ?>" HEIGHT="1" BORDER="0"></TD>
 			</TR><TR>
-				<TD><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+				<TD><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=$cid" ?>"><?php
 		print $customer->giveValue('customer_name');
 		?></A>&nbsp;</TD>
 			</TR><TR>
 				<TD><?php
 			if(is_object($project) && $project->giveValue('id')) {
-		?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+		?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=$cid&pid=$pid" ?>"><?php
 		print $project->giveValue('project_name');
 		?></A>&nbsp;</TD>
 			</TR><?php

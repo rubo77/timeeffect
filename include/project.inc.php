@@ -45,7 +45,11 @@
 					return;
 				}
 				$query .= " WHERE customer_id IN ($cids)";
-				$order = " ORDER BY closed, last DESC, project_name";
+				if(isset($customer)) {
+					$order = " ORDER BY customer_id, last DESC, project_name";
+				} else {
+					$order = " ORDER BY closed, last DESC, project_name";
+				}
 				if($limit) {
 					$sql_limit = " LIMIT $limit";
 				}
