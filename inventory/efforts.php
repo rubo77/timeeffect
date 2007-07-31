@@ -56,6 +56,10 @@
 			exit;
 		}
 		if(isset($altered)) {
+			// last_description mod by Ruben Barkow -- START
+			$_SESSION['last_description'] = $description;
+			// last_description mod by Ruben Barkow -- END
+
 			$data = array();
 			$data['id']				= $eid;
 			$data['project_id']		= $pid;

@@ -1,0 +1,19 @@
+TIMEEFFECT 1.1.0, Rev. 13
+
+This release is the first official production release.
+
+######################################
+UPDATE:
+
+Beta 1.1.g and 1.1.h:
+simply make a backup copy of the files
+	'include/aperetiv.inc.php'
+and 
+	'include/layout.inc.php'
+Untar the TIMEEFFECT package to the appropriate directory.
+
+
+Former releases:
+Since we made major changes to the TIMEEFFECT data model there is no accurate way to
+update from any prior versions of TIMEEFFECT.
+Please install TIMEEFFECT from scratch.

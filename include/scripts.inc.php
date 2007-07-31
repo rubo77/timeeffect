@@ -1,7 +1,7 @@
 <?php
-	$GLOBALS['_PJ_timeeffect_version']			= '1.1.0';
-	$GLOBALS['_PJ_timeeffect_revision']			= '13';
-	$GLOBALS['_PJ_timeeffect_date']				= '01/27/2006 14:14:02';
+	$GLOBALS['_PJ_timeeffect_version']			= '1.1.1';
+	$GLOBALS['_PJ_timeeffect_revision']			= '23';
+	$GLOBALS['_PJ_timeeffect_date']				= '07/31/2007 10:19:32';
 
 	$GLOBALS['_PJ_customer_inventory_script']	= $GLOBALS['_PJ_http_root'] . '/inventory/customer.'	. $GLOBALS['_PJ_php_suffix'];
 	$GLOBALS['_PJ_projects_inventory_script']	= $GLOBALS['_PJ_http_root'] . '/inventory/projects.'	. $GLOBALS['_PJ_php_suffix'];

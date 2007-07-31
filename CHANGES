@@ -59,3 +59,17 @@
    - minor bug fixes
    - adding french translation
    - adding stop and continue button
+
+###################################
+2006-04-12:
+  release: 1.1.0, Rev. 13
+  changes:
+   - minor bug fixes
+
+###################################
+2007-07-31:
+  release: 1.1.1, Rev. 23
+  changes:
+   - minor bug fixes
+   - adding effort copy function
+   - adding 'description' stored into session (by Ruben Barkow)

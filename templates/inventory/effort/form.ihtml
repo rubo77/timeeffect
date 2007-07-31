@@ -75,7 +75,14 @@
 		list($billing_year, $billing_month, $billing_day) = explode("-", $billed);
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
 	} else {
-		$description	= $GLOBALS['_PJ_strings']['no_description'];
+		// last_description mod by Ruben Barkow -- START
+		//$description				= $GLOBALS['_PJ_strings']['no_description'];
+		if(isset($_SESSION['last_description'])) {
+			$description	= $_SESSION['last_description'];
+		} else {
+			$description	= $GLOBALS['_PJ_strings']['no_description'];
+		}
+		// last_description mod by Ruben Barkow -- END
 		$user						= $_PJ_auth->giveValue('id');
 		$effort_gid					= $project->giveValue('gid');
 		$user_access['write']		= true;
