@@ -1,31 +1,9 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
 
-/* *********************************************************
-	 uncomment this block to see error messages throuout the app
-*/
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-/* ********************************************************* */
-
-require_once('fix_mysql.inc.php');
-
-if(!empty($_POST)) foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
-if(!empty($_GET)) foreach($_GET as $get_k=>$get_v) $$get_k=$get_v;
-if(!empty($_SESSION)) foreach($_SESSION as $sess_k=>$sess_v) $$get_k=$get_v;
-
-# on new apache installations everything is stored in $_SERVER, so
-#this is the fix for that:
-if (isset($_SERVER)) foreach($_SERVER as $s_k=>$s_v) $$s_k=$s_v;
-
-$PHP_SELF=$_SERVER['PHP_SELF'];
+require_once('fix_php7.php');
 
 session_name('timeeffect');
-	#session_start();
-	#session_register('expanded');
-	#session_register('shown');
-	#session_register('_PJ_language');
 
 /* ******************************************************** */
 /* customizable variables - START                           */
@@ -48,7 +26,7 @@ session_name('timeeffect');
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';
-	$_PJ_currency				= 'EUR';
+	$_PJ_currency				= chr(128);
 
 	/*
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
@@ -155,19 +133,7 @@ session_name('timeeffect');
 
 	$_PJ_budget_security_percentage		= 10;
 
-	$_PJ_day_counts = array(
-							31,
-							29,
-							31,
-							30,
-							31,
-							30,
-							31,
-							31,
-							30,
-							31,
-							30,
-							31);
+	$_PJ_day_counts = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
 	include_once($_PJ_include_path . '/database.inc.php');
 	include_once($_PJ_include_path . '/functions.inc.php');
@@ -215,5 +181,3 @@ session_name('timeeffect');
  	} else if(isset($sbe) && $sbe == 0) {
  		unset($shown['be']);
  	}
-
-?>

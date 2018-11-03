@@ -1,9 +1,6 @@
 <?php
-if(ini_get('register_globals') != 1) {
-	print '<font face="Verdana,Arial,Helvetica" color="red"><b>FATAL ERROR:</b><br>The configuration directive "register_globals" within your php.ini file is not activated!<br><br><b>TIMEEFFECT will not run on this system!!</b><br><br>Please set the appropriate driective to "On" (without slashes) and retry installation!</font>';
-	exit;
-}
-include_once('../include/db_mysql.inc.php');
+require_once('../include/fix_php7.php');
+require_once('../include/db_mysql.inc.php');
 $db = new DB_Sql();
 
 if(!isset($step)) {

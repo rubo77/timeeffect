@@ -152,7 +152,7 @@
 			}
 		}
 
-		function assembleFormFields($array = NULL, $name_default = NULL, $excludes = NULL) {
+		static function assembleFormFields($array = NULL, $name_default = NULL, $excludes = NULL) {
 			if(!is_array($array)) {
 				$array = array();
 				if(is_array($_POST)) {
@@ -175,7 +175,8 @@
 			// iterate through array
 			$form_string = '';
 			$i_count = 0;
-			while(list($name, $content) = each($array)) {
+			
+			while(list($name, $content) = @each($array)) {
 				// if $content is array
 				if(is_array($content)) {
 					// start recursion
