@@ -1,6 +1,9 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
 
+# set debug true to get error output on the site:
+$GLOBALS['debug']=false;
+
 require_once('fix_php7.php');
 
 session_name('timeeffect');

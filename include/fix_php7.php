@@ -1,12 +1,13 @@
 <?php
 
 /* *********************************************************
-	 uncomment this block to see error messages throuout the app
-*/
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-/* ********************************************************* */
+ see error messages throuout the app                      */
+if($GLOBALS['debug']){
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+}
+/* ****************************************************** */
 
 
 if(!empty($_POST)) foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
