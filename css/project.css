@@ -346,3 +346,7 @@ TD.version {
 	text-align:			center;
 	vertical-align:		bottom;
 }
+input, select, button {
+font-family:inherit;
+font-size:100%;
+}

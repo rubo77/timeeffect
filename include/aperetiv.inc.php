@@ -2,9 +2,9 @@
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
 /* check whether register_globals is on or not */
 #if(!((bool) ini_get('register_globals'))) {
-foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
-foreach($_GET as $get_k=>$get_v) $$get_k=$get_v;
-foreach($_SESSION as $sess_k=>$sess_v) $$get_k=$get_v;
+if(!empty($_POST)) foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
+if(!empty($_GET)) foreach($_GET as $get_k=>$get_v) $$get_k=$get_v;
+if(!empty($_SESSION)) foreach($_SESSION as $sess_k=>$sess_v) $$get_k=$get_v;
 #}
 # on new apache installations everything is stored in $_SERVER, so
 #this is the fix for that:
