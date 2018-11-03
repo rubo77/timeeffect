@@ -86,8 +86,10 @@ class DB_Sql {
         $this->halt("cannot use database ".$this->Database);
         return 0;
       }
+      
+      mysqli_set_charset ( $this->Link_ID , $GLOBALS['mysql_charset'] );
     }
-    
+
     return $this->Link_ID;
   }
 

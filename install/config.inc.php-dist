@@ -55,6 +55,11 @@
 	*/
 	$_PJ_agents_allow_delete 	= <%allow_delete%>;
 
+	/*
+	   Database charset encoding
+	*/
+	$GLOBALS['mysql_charset']='utf8';
+
 /* ******************************************************** */
 /* customizable variables - END                             */
 /* ******************************************************** */

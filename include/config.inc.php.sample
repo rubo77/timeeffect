@@ -54,6 +54,11 @@
 	   agents are allow to delete efforts
 	*/
 	$_PJ_agents_allow_delete 	= 1;
+	
+	/*
+		 Database charset encoding
+	*/
+	$GLOBALS['mysql_charset']='utf8';
 
 /* ******************************************************** */
 /* customizable variables - END                             */
