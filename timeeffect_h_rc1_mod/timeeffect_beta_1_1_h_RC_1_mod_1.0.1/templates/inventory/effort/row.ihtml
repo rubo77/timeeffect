@@ -3,34 +3,34 @@
 ?>
 <!-- inventory/effort/row.ihtml - START -->
 					<TR>
-						<TD COLSPAN="6"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 					<TR HEIGHT="25" onclick="o=this.firstChild.firstChild.firstChild.firstChild.firstChild.firstChild;if(o.checked==true){o.checked=false;}else{o.checked=true;}">
-						<TD CLASS="list<?= $rowclass ?>"><TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"><TR><TD><input type="checkbox" name="check_effort[<?= $effort->giveValue('id'); ?>]" value="1" onclick="if(document.all){o=this;if(o.checked==true){o.checked=false;}else{o.checked=true;}}"></td><td>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort<?php 
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0"><TR><TD><input type="checkbox" name="check_effort[<?= $effort->giveValue('id'); ?>]" value="1" onclick="if(document.all){o=this;if(o.checked==true){o.checked=false;}else{o.checked=true;}}"></td><td>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort<?php 
 							if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b';
 							?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;</td><td><?php 
 							if($effort->checkUserAccess('write')) { 
 								?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?edit=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><?php 
 							} 
 							?><?= $effort->giveValue('description') ?></A></TD></TR></TABLE></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
-						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('hours')) ?></TD>
-						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
-						<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id')) && ($effort->giveValue('billed') == '') && ($effort->giveValue('hours') == 0)) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?stop=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/stop.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['stop'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['stop'] ?></A><?php } ?></TD>
-						<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
+						<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= formatNumber($effort->giveValue('hours')) ?></TD>
+						<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id')) && ($effort->giveValue('billed') == '') && ($effort->giveValue('hours') == 0)) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?stop=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/stop.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?></A><?php } ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 					</TR>
 <?php
 if($effort->giveValue('note') != '') {
 ?>
 					<TR>
-						<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
-						<TD COLSPAN="5"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="5"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD CLASS="list<?= $rowclass ?>"></TD>
-						<TD COLSPAN="5" CLASS="list<?= $rowclass ?>"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"></TD>
+						<TD COLSPAN="5" CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 							<TR>
-								<TD CLASS="listDetail<?= $rowclass ?>" WIDTH="1%"><?= $GLOBALS['_PJ_strings']['note'] ?>:</TD>
-								<TD CLASS="listDetail<?= $rowclass ?>"><?= $effort->giveValue('note') ?></TD>
+								<TD CLASS="listDetail<? if(!empty($rowclass)) echo $rowclass; ?>" WIDTH="1%"><? if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
+								<TD CLASS="listDetail<? if(!empty($rowclass)) echo $rowclass; ?>"><?= $effort->giveValue('note') ?></TD>
 							</TR>
 						</TABLE></TD>
 					</TR>

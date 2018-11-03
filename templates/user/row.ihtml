@@ -1,20 +1,20 @@
 <!-- user/row.ihtml - START -->
 					<TR>
-						<TD COLSPAN="5"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="5"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 					<TR HEIGHT="25">
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?edit=1&uid=" . $user->giveValue('id') ?>"><?= $user->giveValue('username') ?></A></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('firstname') ?> <?= $user->giveValue('lastname') ?></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('perm_names') ?></TD>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $user->giveValue('group_names') ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?edit=1&uid=" . $user->giveValue('id') ?>"><?= $user->giveValue('username') ?></A></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('firstname') ?> <?= $user->giveValue('lastname') ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('perm_names') ?></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('group_names') ?></TD>
 <?php
 if($user->giveValue('id') != '1') {
 ?>
-						<TD CLASS="list<?= $rowclass ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?delete=1&uid=" . $user->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?delete=1&uid=" . $user->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
 <?php
 } else {
 ?>
-						<TD CLASS="list<?= $rowclass ?>">&nbsp;</TD>
+						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
 <?php
 }
 ?>

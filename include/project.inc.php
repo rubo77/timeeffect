@@ -33,7 +33,7 @@
 			}
 
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'];
-			if(is_object($customer) && $customer->giveValue('id')) {
+			if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 				$query .= " WHERE customer_id = '" . $customer->giveValue('id') . "'";
 				$order = " ORDER BY closed, project_name";
 				$limit = "";
@@ -140,7 +140,7 @@
 		}
 
 		function load($id) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -152,7 +152,7 @@
 		}
 
 		function count($billed = false) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -170,7 +170,7 @@
 		}
 
 		function loadEffort () {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -194,7 +194,7 @@
 		}
 
 		function save () {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -223,7 +223,7 @@
 		}
 
 		function delete() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

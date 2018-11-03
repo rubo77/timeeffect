@@ -38,7 +38,7 @@
 					$r_cnt = count($r_keys);
 					for($i=0;$i<$r_cnt;$i++) {
 						$id = $r_keys[$i];
-						if($id == 'new') {
+						if(!empty($id) and $id == 'new') {
 							$id = '';
 						}
 						if($id != '' || $name[$r_keys[$i]] != '') {

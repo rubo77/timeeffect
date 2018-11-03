@@ -249,7 +249,7 @@ while($statistic->nextEffort()) {
 	$data[$i]['agent']			= $agent['firstname'] . ' ' . $agent['lastname'];
 	$data[$i]['date']			= formatDate($effort->giveValue('date'), $GLOBALS['_PJ_format_date']);
 	$data[$i]['from_to']		= formatTime($effort->giveValue('begin'), "H:i") . " - " . formatTime($effort->giveValue('end'), "H:i");
-	if($mode == 'billed') {
+	if(!empty($mode) and $mode == 'billed') {
 		if($effort->giveValue('billed')) {
 			$formatted_billed = formatDate($effort->giveValue('billed'), $GLOBALS['_PJ_format_date']);
 		} else {

@@ -54,7 +54,7 @@
 		var $data = array();
 
 		function User($data = '') {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 			if(is_array($data)) {
@@ -132,7 +132,7 @@
 		}
 
 		function save() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

@@ -4,7 +4,7 @@
 		var $data		= array();
 
 		function Rates($data = '') {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -52,7 +52,7 @@
 		}
 
 		function save () {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -74,7 +74,7 @@
 		}
 
 		function delete() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

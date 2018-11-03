@@ -15,10 +15,10 @@ if(!isset($db_password)) {
 	$db_password = 'very_unsecure_timeeffect_PW1';
 }
 ?>
-				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>
+				<b>TIMEEFFECT Installation - Step <? if(!empty($step)) echo $step; ?></b><br><br>
 				Please enter the appropriate values in the following fields and press 'next &gt;&gt;'<br><br>
 				<table cellpadding="0" cellspacing="0" border="0">
-<form action="<?= $PHP_SELF ?>" method="POST">
+<form action="<? if(!empty($PHP_SELF)) echo $PHP_SELF; ?>" method="POST">
 <input type="hidden" name="step" value="2">
 					<tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
@@ -33,7 +33,7 @@ if(!isset($db_password)) {
 					</tr>
 					<tr>
 						<td class="FormFieldName" width="200">table prefix:</td>
-						<td class="FormField" width="300"><input class="FormField" name="db_prefix" value="<?= $db_prefix ?>"></td>
+						<td class="FormField" width="300"><input class="FormField" name="db_prefix" value="<? if(!empty($db_prefix)) echo $db_prefix; ?>"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
@@ -50,7 +50,7 @@ if(!isset($db_password)) {
 					</tr>
 					<tr>
 						<td class="FormFieldName">database name:</td>
-						<td class="FormFieldName"><input class="FormField" name="db_name" value="<?= $db_name ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="db_name" value="<? if(!empty($db_name)) echo $db_name; ?>"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
@@ -65,7 +65,7 @@ if(!isset($db_password)) {
 					</tr>
 					<tr>
 						<td class="FormFieldName">database host:</td>
-						<td class="FormFieldName"><input class="FormField" name="db_host" value="<?= $db_host ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="db_host" value="<? if(!empty($db_host)) echo $db_host; ?>"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
@@ -80,7 +80,7 @@ if(!isset($db_password)) {
 					</tr>
 					<tr>
 						<td class="FormFieldName">database user:</td>
-						<td class="FormFieldName"><input class="FormField" name="db_user" value="<?= $db_user ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="db_user" value="<? if(!empty($db_user)) echo $db_user; ?>"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
@@ -95,7 +95,7 @@ if(!isset($db_password)) {
 					</tr>
 					<tr>
 						<td class="FormFieldName">database password:</td>
-						<td class="FormFieldName"><input class="FormField" name="db_password" value="<?= $db_password ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="db_password" value="<? if(!empty($db_password)) echo $db_password; ?>"></td>
 					</tr>
 					<tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>

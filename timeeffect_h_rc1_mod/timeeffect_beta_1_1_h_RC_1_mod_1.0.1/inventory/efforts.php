@@ -13,7 +13,7 @@
 		$effort->stop();
 	}
 	if($pid == '') {
-		if(is_object($effort)) {
+		if(isset($effort) && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
 		} else {
 			exit;
@@ -22,7 +22,7 @@
 	$project = new Project($customer, $_PJ_auth, $pid);
 
 	if($cid == '') {
-		if(is_object($project)) {
+		if(isset($project) && is_object($project)) {
 			$cid = $project->giveValue('customer_id');
 		} else {
 			exit;

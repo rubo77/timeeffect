@@ -9,7 +9,7 @@
 	}
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_group_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
-	<INPUT TYPE="hidden" NAME="gid" VALUE="<?=$gid?>">
+	<INPUT TYPE="hidden" NAME="gid" VALUE="<? if(!empty($gid)) echo $gid; ?>">
 	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
 	<CENTER>
 	<TABLE	WIDTH="90%"
@@ -20,10 +20,10 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
 				<TR>
-					<TD CLASS="MessageAsk" COLSPAN="2"><?= $GLOBALS['_PJ_strings']['ask_group_delete'] ?></TD>
+					<TD CLASS="MessageAsk" COLSPAN="2"><? if(!empty($GLOBALS['_PJ_strings']['ask_group_delete'])) echo $GLOBALS['_PJ_strings']['ask_group_delete'] ?></TD>
 				</TR><TR>
-					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <?= $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
-					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<?= $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
+					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <? if(!empty($GLOBALS['_PJ_strings']['cancel'])) echo $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
+					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
 				</TR>
 			</TABLE></TD>
 		</TR>

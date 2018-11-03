@@ -135,11 +135,11 @@
 			$query .= $GLOBALS['_PJ_project_table'] . ".id";
 			$query .= " AND "	. $GLOBALS['_PJ_project_table'] . ".customer_id=";
 			$query .= $GLOBALS['_PJ_customer_table'] . ".id";
-			if(is_object($project) && $project->giveValue('id')) {
+			if(isset($project) && is_object($project) && $project->giveValue('id')) {
 				$query .= " AND project_id='" . $project->giveValue('id') . "'";
 				$order_query = ' ORDER BY billed, date, begin';
 				$limit_query = '';
-			} else if(is_object($customer) && $customer->giveValue('id')) {
+			} else if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='" . $customer->giveValue('id') . "'";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
 				$limit_query = ' LIMIT 1000';
@@ -214,7 +214,7 @@
 		}
 
 		function billEfforts($date, $ids) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 			$query = "UPDATE " . $GLOBALS['_PJ_effort_table'] . " SET BILLED = '$date' WHERE id IN ($ids)";
@@ -241,7 +241,7 @@
 		}
 
 		function load($id) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -273,7 +273,7 @@
 		}
 
 		function save () {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -348,7 +348,7 @@
 		}
 
 		function delete() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

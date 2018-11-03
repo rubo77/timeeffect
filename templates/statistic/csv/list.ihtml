@@ -78,7 +78,7 @@ while($statistic->nextEffort()) {
 	$output .= str_replace(';', ',', $agent['firstname'] . ' ' . $agent['lastname']) . ";";
 	$output .= formatDate($effort->giveValue('date'), $GLOBALS['_PJ_format_date']) . ";";
 
-	if($mode == 'billed') {
+	if(!empty($mode) and $mode == 'billed') {
 		if($effort->giveValue('billed')) {
 			$formatted_billed = formatDate($effort->giveValue('billed'), $GLOBALS['_PJ_format_date']);
 		} else {

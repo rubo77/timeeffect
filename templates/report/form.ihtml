@@ -4,7 +4,7 @@
 	$all_users			= $_PJ_auth->listUsers();
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
-	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<?= $GLOBALS['_PJ_currency'] ?>">
+	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<? if(!empty($GLOBALS['_PJ_currency'])) echo $GLOBALS['_PJ_currency'] ?>">
 	<INPUT TYPE="hidden" NAME="report" VALUE="1">
 
 	<CENTER>
@@ -16,7 +16,7 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><?= $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
+					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
 					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
 					<SELECT NAME="cid" onChange="document.location.href='<?= $GLOBALS['PHP_SELF'] . "?cid=" ?>' + this.value;">
 						<OPTION VALUE="">--
@@ -33,7 +33,7 @@
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['project'] ?>:</TD>
+					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT NAME="pid">
 						<OPTION VALUE="">--
@@ -50,21 +50,21 @@
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
+					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="users[]" multiple>
 					<?php
 						$a_user = $user;
 						reset($all_users);
 						while(list($cnt, $o_user) = each($all_users)) {
 ?>
-						<OPTION VALUE="<?= $o_user['id'] ?>"<?php if(is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+						<OPTION VALUE="<? if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if(is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
 						}
 					?>
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['start_date'] ?>:</TD>
+					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['start_date'])) echo $GLOBALS['_PJ_strings']['start_date'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT NAME="syear">
 					<?php
@@ -104,10 +104,10 @@
 						}
 					?>
 					</SELECT>
-					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
+					(<? if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>)
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['end_date'] ?>:</TD>
+					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['end_date'])) echo $GLOBALS['_PJ_strings']['end_date'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT NAME="eyear">
 					<?php
@@ -147,16 +147,16 @@
 						}
 					?>
 					</SELECT>
-					(<?= $GLOBALS['_PJ_strings']['year'] ?>, <?= $GLOBALS['_PJ_strings']['month'] ?>, <?= $GLOBALS['_PJ_strings']['day'] ?>)
+					(<? if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>)
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['usebilled'] ?>:</TD>
+					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['usebilled'])) echo $GLOBALS['_PJ_strings']['usebilled'] ?>:</TD>
 					<TD CLASS="FormField"><INPUT TYPE="checkbox" NAME="mode" VALUE="billed"></TD>
 				</TR><TR>
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>
 				</TR><TR>
-					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?= $GLOBALS['_PJ_strings']['next'] ?> >>"></TD>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['next'])) echo $GLOBALS['_PJ_strings']['next'] ?> >>"></TD>
 				</TR>
 			</TABLE></TD>
 		</TR>

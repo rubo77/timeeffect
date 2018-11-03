@@ -21,7 +21,7 @@
 										<TR VALIGN="center">
 											<TH CLASS="list"><?php
 if($pid && $project->checkUserAccess('new')) {
-?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=$pid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?= $GLOBALS['_PJ_strings']['new_effort'] ?>" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['new_effort'] ?></A><?php
+?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=$pid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<? if(!empty($GLOBALS['_PJ_strings']['new_effort'])) echo $GLOBALS['_PJ_strings']['new_effort'] ?>" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['new_effort'])) echo $GLOBALS['_PJ_strings']['new_effort'] ?></A><?php
 } else { ?>&nbsp;<?php
 } 
 											?></TH>
@@ -31,7 +31,7 @@ if($pid && $project->checkUserAccess('new')) {
 							</TR><TR>
 								<TD>&nbsp;</TD>
 							</TR><TR>
-								<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
+								<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
 							</TR><TR>
 								<TD>&nbsp;</TD>
 							</TR>
@@ -41,7 +41,7 @@ if($pid && $project->checkUserAccess('new')) {
 					<TD ALIGN="center">
 						<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR>
-								<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['description'] ?></TH>
+								<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?></TH>
 								<TH CLASS="list"><? print $GLOBALS['_PJ_strings']['agent'] ?></TD>
 								<TH CLASS="listNumeric"><? print $GLOBALS['_PJ_strings']['workinghours'] ?></TD>
 								<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
@@ -62,7 +62,7 @@ if($pid && $project->checkUserAccess('new')) {
 	}
 ?>
 							<TR>
-								<TD COLSPAN="6"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+								<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 							</TR>
 						</TABLE>
 					</TD>
@@ -96,14 +96,14 @@ if($pid && $project->checkUserAccess('new')) {
 						</TABLE><br>
 						<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR>
-								<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="3" WIDTH="1" BORDER="0"></TD>
+								<TD COLSPAN="2"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="3" WIDTH="1" BORDER="0"></TD>
 							</TR>
 							<TR>
 								<TD CLASS="listFoot" ALIGN="left"><?php
-if(!$shown['be']) {
-								?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?sbe=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['show_closed_efforts'] ?></A><?php
+if(empty($shown['be'])) {
+								?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?sbe=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['show_closed_efforts'])) echo $GLOBALS['_PJ_strings']['show_closed_efforts'] ?></A><?php
 } else {
-								?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?sbe=0&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['hide_closed_efforts'] ?></A><?php
+								?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?sbe=0&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['hide_closed_efforts'])) echo $GLOBALS['_PJ_strings']['hide_closed_efforts'] ?></A><?php
 }
 								?></TD>
 								<TD CLASS="listFoot" ALIGN="right">&nbsp;</TD>

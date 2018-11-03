@@ -16,13 +16,13 @@
 					</TR><TR>
 						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR>
-								<TH CLASS="list"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_group_script'] . "?new=1"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/group.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?= $GLOBALS['_PJ_strings']['new_group'] ?>" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['new_group'] ?></A></TH>
+								<TH CLASS="list"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_group_script'] . "?new=1"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/group.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<? if(!empty($GLOBALS['_PJ_strings']['new_group'])) echo $GLOBALS['_PJ_strings']['new_group'] ?>" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['new_group'])) echo $GLOBALS['_PJ_strings']['new_group'] ?></A></TH>
 							</TR>
 						</TABLE></TD>
 					</TR><TR>
 						<TD>&nbsp;</TD>
 					</TR><TR>
-						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
 					</TR><TR>
 						<TD>&nbsp;</TD>
 					</TR>
@@ -30,7 +30,7 @@
 			</TR><TR>
 				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 					<TR>
-						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['name'] ?></TH>
+						<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?></TH>
 					</TR>
 <?php
 	$rowclass = 1;
@@ -42,7 +42,7 @@
 	}
 ?>
 					<TR>
-						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 				</TABLE></TD>
 			</TR>

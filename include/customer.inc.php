@@ -73,7 +73,7 @@
 		}
 
 		function load($id) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -104,7 +104,7 @@
 			if($this->project_count != '') {
 //				return $this->project_count;
 			}
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -149,7 +149,7 @@
 		}
 
 		function save () {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -178,7 +178,7 @@
 		}
 
 		function delete() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -196,7 +196,7 @@
 		}
 
 		function bill($from, $to, $date) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -215,7 +215,7 @@
 		}
 
 		function unbill($from, $to) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

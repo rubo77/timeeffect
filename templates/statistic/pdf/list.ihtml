@@ -221,7 +221,7 @@ while($statistic->nextEffort()) {
 	$pdf->Cell($GLOBALS['field_widths']['time'], ($y_next_line-$y_line), formatTime($effort->giveValue('begin'), "H:i") . " - " . formatTime($effort->giveValue('end'), "H:i"), 0, 0, $GLOBALS['field_aligns']['time'], 1);
 	$pdf->SetY($y_line);
 
-	if($mode == 'billed') {
+	if(!empty($mode) and $mode == 'billed') {
 		if($effort->giveValue('billed')) {
 			$formatted_billed = formatDate($effort->giveValue('billed'), $GLOBALS['_PJ_format_date']);
 		} else {

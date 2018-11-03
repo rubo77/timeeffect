@@ -53,7 +53,7 @@
 		var $data = array();
 
 		function Group($data = '') {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 			if(is_array($data)) {
@@ -105,7 +105,7 @@
 		}
 
 		function save() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -117,9 +117,9 @@
 	        	return $GLOBALS['_PJ_strings']['error_group_exists'];
 	        }
 
-	        $query = sprintf("REPLACE INTO %s (id, name) VALUES('%s', '%s')",
+	        $query = sprintf("REPLACE INTO %s (id, name) VALUES(%s, '%s')",
 	                         $GLOBALS['_PJ_gid_table'],
-	                         $this->data['id'],
+	                         $this->data['id']?"'".$this->data['id']."'":"NULL",
 	                         $this->data['name']
 	                         );
 

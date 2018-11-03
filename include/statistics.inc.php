@@ -25,7 +25,7 @@
 		}
 
 		function load() {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -126,7 +126,7 @@
 		}
 
 		function loadMonth($year, $month) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 			$next_month = formatDate("$year-" . ($month+1) . "-01", "m");
@@ -233,7 +233,7 @@
 		}
 
 		function loadProject($year, $month, $pid) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 			if(!$this->user->checkPermission('admin')) {
@@ -332,7 +332,7 @@
 		}
 
 		function loadProjectTime($start, $end, $pid) {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 
@@ -431,7 +431,7 @@
 		}
 
 		function loadTime($start, $end = '') {
-			if(!is_object($this->db)) {
+			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
 

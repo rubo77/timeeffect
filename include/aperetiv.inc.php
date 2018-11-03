@@ -168,20 +168,20 @@ session_name('timeeffect');
 	if(isset($exc)) {
 		$expanded['cid'][$exc] = 1;
 	} else if(isset($coc)) {
-		unset($expanded['cid'][$coc]);
+		if(isset($expanded)) unset($expanded['cid'][$coc]);
 	} else if(isset($exp)) {
 		$expanded['pid'][$exp] = 1;
 	} else if(isset($cop)) {
-		unset($expanded['pid'][$cop]);
+		if(isset($expanded)) unset($expanded['pid'][$cop]);
 	} else if(isset($exca)) {
  		$expanded['cid']['all'] = 1;
  	} else if(isset($coca)) {
- 		unset($expanded['cid']);
- 		unset($expanded['pid']);
+ 		if(isset($expanded)) unset($expanded['cid']);
+ 		if(isset($expanded)) unset($expanded['pid']);
 	} else if(isset($expa)) {
  		$expanded['pid']['all'] = 1;
  	} else if(isset($copa)) {
- 		unset($expanded['pid']);
+ 		if(isset($expanded)) unset($expanded['pid']);
  	} else if(isset($sic) && $sic == 1) {
  		$shown['ic'] = 1;
  	} else if(isset($sic) && $sic == 0) {

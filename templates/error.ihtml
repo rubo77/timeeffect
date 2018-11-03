@@ -17,12 +17,12 @@
 				<TD CLASS="headFrame"><?php include("$_PJ_root/templates/shared/top.ihtml"); ?></TD>
 			</TR>
 <!-- START - content -->
-				<TD VALIGN="top" class="error"><?= $error_message ?></TD>
+				<TD VALIGN="top" class="error"><? if(!empty($error_message)) echo $error_message; ?></TD>
 <!-- END - content -->
 			</TR>
 		</TABLE></TD>
 	</TR><TR>
-		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?= $_PJ_timeeffect_version ?></td>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<? if(!empty($_PJ_timeeffect_version)) echo $_PJ_timeeffect_version; ?></td>
 	</TR>
 </TABLE>
 </BODY>

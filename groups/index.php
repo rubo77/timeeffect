@@ -12,7 +12,7 @@
 		exit;
 	}
 
-	if(intval($gid)) {
+	if(isset($gid) and intval($gid)) {
 		$group = new Group($gid);
 	}
 
