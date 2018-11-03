@@ -26,7 +26,7 @@ session_name('timeeffect');
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';
-	$_PJ_currency				= '€';
+	$_PJ_currency				= 'EUR';
 
 	/*
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only

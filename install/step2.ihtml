@@ -1,7 +1,7 @@
 <?php
 $locale_info = localeconv();
 if(!isset($currency)) {
-	$currency = '€';
+	$currency = 'EUR';
 }
 if(!isset($decimal_point)) {
 	$decimal_point = ',';
