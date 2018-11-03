@@ -1341,7 +1341,7 @@ class DB_common extends PEAR
             }
         }
         // modifyLimitQuery() would be nice here, but it causes BC issues
-        if (sizeof($params) > 0) {
+        if ((is_array($params) or is_object($params)) and sizeof($params) > 0) {
             $sth = $this->prepare($query);
             if (DB::isError($sth)) {
                 return $sth;

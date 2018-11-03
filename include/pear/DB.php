@@ -771,8 +771,7 @@ class DB
             $parsed['phptype']  = $str;
             $parsed['dbsyntax'] = $str;
         }
-
-        if (!count($dsn)) {
+        if (empty($dsn)) {
             return $parsed;
         }
 

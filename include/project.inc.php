@@ -11,8 +11,12 @@
 		var $show_closed = false;
 		var $project_count	= 0;
 		var $project_cursor	= -1;
-
+		
 		function ProjectList($customer, &$user, $show_closed = false, $limit = 1000) {
+			self::__construct($customer, $user, $show_closed, $limit);
+		}
+		
+		function __construct($customer, &$user, $show_closed = false, $limit = 1000) {
 			$this->customer	= $customer;
 			$this->user		= $user;
 			$this->db = new Database;
@@ -120,6 +124,10 @@
 		var $effort_cursor	= -1;
 
 		function Project(&$customer, &$user, $project = '') {
+			self::__construct($customer, $user, $project);
+		}
+		
+		function __construct(&$customer, &$user, $project = '') {
 			$this->customer	= $customer;
 			$this->user		= $user;
 			if(is_array($project)) {
