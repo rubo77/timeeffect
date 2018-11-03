@@ -103,16 +103,16 @@ if(intval($year) && intval($month)) {
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
 	$statistic->loadMonth($year, $month, $mode);
 } elseif(intval($syear) && intval($eyear)) {
-	if(!$smonth) {
+	if(empty($smonth)) {
 		$smonth = '01';
 	}
-	if(!$sday) {
+	if(empty($sday)) {
 		$sday = '01';
 	}
-	if(!$emonth) {
+	if(empty($emonth)) {
 		$emonth = date('m');
 	}
-	if(!$eday) {
+	if(empty($eday)) {
 		$eday = date('d');
 	}
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
@@ -127,10 +127,10 @@ $pdf->Open();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetAutoPageBreak(false, 0);
-if($cid) {
+if(!empty($cid)) {
 	$GLOBALS['field_widths']['customer'] = 0;
 }
-if($pid) {
+if(!empty($pid)) {
 	$GLOBALS['field_widths']['project'] = 0;
 }
 if($mode != 'billed') {
@@ -167,7 +167,7 @@ while($statistic->nextEffort()) {
 		$foot_notes[$foot_note_nmb] = $string;
 	}
 
-	if($filled) {
+	if(!empty($filled)) {
 		$pdf->SetFillColor($GLOBALS['_PJ_pdf_table_row0_bg_r'], $GLOBALS['_PJ_pdf_table_row0_bg_g'], $GLOBALS['_PJ_pdf_table_row0_bg_b']);
 		$pdf->SetTextColor($GLOBALS['_PJ_pdf_table_row0_fg_r'], $GLOBALS['_PJ_pdf_table_row0_fg_g'], $GLOBALS['_PJ_pdf_table_row0_fg_b']);
 		$filled = false;
@@ -182,7 +182,7 @@ while($statistic->nextEffort()) {
 	$string = preg_replace("/<br>/", "", $effort->giveValue('description'));
 	$string = preg_replace("/<li>/", " - ", $string);
 	$string = preg_replace("/<[^>]+>/", " - ", $string);
-	if($foot_note_nmb) {
+	if(!empty($foot_note_nmb)) {
 		$string .= " $foot_note_nmb)";
 	}
 	$pdf->SetX($GLOBALS['field_lefts']['description']);
@@ -190,7 +190,7 @@ while($statistic->nextEffort()) {
 	$y_next_line = $pdf->GetY();
 	$pdf->SetY($y_line);
 
-	if(!$cid) {
+	if(empty($cid)) {
 		$pdf->SetX($GLOBALS['field_lefts']['customer']);
 		$pdf->Cell($GLOBALS['field_widths']['customer'], ($y_next_line-$y_line), $effort->giveValue('customer_name'), 0, 0, $GLOBALS['field_aligns']['customer'], 1);
 		$pdf->SetY($y_line);
@@ -202,7 +202,7 @@ while($statistic->nextEffort()) {
 		$pdf->SetY($y_line);
 	}
 
-	if(!$pid) {
+	if(empty($pid)) {
 		$pdf->SetX($GLOBALS['field_lefts']['project']);
 		$pdf->Cell($GLOBALS['field_widths']['project'], ($y_next_line-$y_line), $effort->giveValue('project_name'), 0, 0, $GLOBALS['field_aligns']['project'], 1);
 		$pdf->SetY($y_line);

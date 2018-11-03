@@ -1219,7 +1219,7 @@ function checkAllHere(){
 */
 function output($debug=0){
 
-  if ($debug){
+  if(!empty($debug)){
     // turn compression off
     $this->options['compression']=0;
   }
@@ -1231,7 +1231,7 @@ function output($debug=0){
   $this->checkAllHere();
 
   $xref=array();
-  $content="%PDF-1.3\n%âãÏÓ\n";
+  $content="%PDF-1.3\n%ï¿½ï¿½ï¿½ï¿½\n";
 //  $content="%PDF-1.3\n";
   $pos=strlen($content);
   foreach($this->objects as $k=>$v){
@@ -1336,7 +1336,7 @@ function openFont($font){
     foreach ($file as $rowA){
       $row=trim($rowA);
       $pos=strpos($row,' ');
-      if ($pos){
+      if(!empty($pos)){
         // then there must be some keyword
         $key = substr($row,0,$pos);
         switch ($key){
@@ -1759,10 +1759,10 @@ function ellipse($x0,$y0,$r1,$r2=0,$angle=0,$nSeg=8,$astart=0,$afinish=360,$clos
     $c0=$c1;
     $d0=$d1;    
   }
-  if ($fill){
+  if(!empty($fill)){
     $this->objects[$this->currentContents]['c'].=' f';
   } else {
-    if ($close){
+    if(!empty($close)){
       $this->objects[$this->currentContents]['c'].=' s'; // small 's' signifies closing the path as well
     } else {
       $this->objects[$this->currentContents]['c'].=' S';
@@ -1860,7 +1860,7 @@ function newPage($insert=0,$id=0,$pos='after'){
   }
 
   $this->numObj++;
-  if ($insert){
+  if(!empty($insert)){
     // the id from the ezPdf class is the od of the contents of the page, not the page object itself
     // query that object to find the parent
     $rid = $this->objects[$id]['onPage'];
@@ -2051,7 +2051,7 @@ function PRVTcheckTextDirective1(&$text,$i,&$f,$final,&$x,&$y,$size=0,$angle=0,$
                 $directive=0;
               } else {
                 // only call the function if this is the final call
-                if ($final){
+                if(!empty($final)){
                   // need to assess the text position, calculate the text width to this point
                   // can use getTextWidth to find the text width I think
                   $tmp = $this->PRVTgetTextPosition($x,$y,$angle,$size,$wordSpaceAdjust,substr($text,0,$i));
@@ -2115,7 +2115,7 @@ function PRVTcheckTextDirective1(&$text,$i,&$f,$final,&$x,&$y,$size=0,$angle=0,$
             $directive=0;
           } else {
             // only call the function if this is the final call, ie, the one actually doing printing, not measurement
-            if ($final){
+            if(!empty($final)){
               // need to assess the text position, calculate the text width to this point
               // can use getTextWidth to find the text width I think
               // also add the text height and decender
@@ -2183,14 +2183,14 @@ function addText($x,$y,$size,$text,$angle=0,$wordSpaceAdjust=0){
   for ($i=0;$i<$len;$i++){
     $f=1;
     $directive = $this->PRVTcheckTextDirective($text,$i,$f);
-    if ($directive){
+    if(!empty($directive)){
       // then we should write what we need to
       if ($i>$start){
         $part = substr($text,$start,$i-$start);
         $this->objects[$this->currentContents]['c'].=' /F'.$this->currentFontNum.' '.sprintf('%.1f',$size).' Tf ';
         $this->objects[$this->currentContents]['c'].=' ('.$this->filterText($part).') Tj';
       }
-      if ($f){
+      if(!empty($f)){
         // then there was nothing drastic done here, restore the contents
         $this->setCurrentFont();
       } else {
@@ -2266,8 +2266,8 @@ function getTextWidth($size,$text){
   for ($i=0;$i<$len;$i++){
     $f=1;
     $directive = $this->PRVTcheckTextDirective($text,$i,$f);
-    if ($directive){
-      if ($f){
+    if(!empty($directive)){
+      if(!empty($f)){
         $this->setCurrentFont();
         $cf = $this->currentFont;
       }
@@ -2352,8 +2352,8 @@ function addTextWrap($x,$y,$width,$size,$text,$justification='left',$angle=0,$te
   for ($i=0;$i<$len;$i++){
     $f=1;
     $directive = $this->PRVTcheckTextDirective($text,$i,$f);
-    if ($directive){
-      if ($f){
+    if(!empty($directive)){
+      if(!empty($f)){
         $this->setCurrentFont();
         $cf = $this->currentFont;
       }
@@ -2385,7 +2385,7 @@ function addTextWrap($x,$y,$width,$size,$text,$justification='left',$angle=0,$te
           // reset the text state
           $this->currentTextState = $store_currentTextState;
           $this->setCurrentFont();
-          if (!$test){
+          if(empty($test)){
             $this->addText($x,$y,$size,$tmp,$angle,$adjust);
           }
           return substr($text,$break+1);
@@ -2402,7 +2402,7 @@ function addTextWrap($x,$y,$width,$size,$text,$justification='left',$angle=0,$te
           // reset the text state
           $this->currentTextState = $store_currentTextState;
           $this->setCurrentFont();
-          if (!$test){
+          if(empty($test)){
             $this->addText($x,$y,$size,$tmp,$angle,$adjust);
           }
           return substr($text,$i);
@@ -2432,7 +2432,7 @@ function addTextWrap($x,$y,$width,$size,$text,$justification='left',$angle=0,$te
   // reset the text state
   $this->currentTextState = $store_currentTextState;
   $this->setCurrentFont();
-  if (!$test){
+  if(empty($test)){
     $this->addText($x,$y,$size,$text,$angle,$adjust,$angle);
   }
   return '';
@@ -2445,7 +2445,7 @@ function addTextWrap($x,$y,$width,$size,$text,$justification='left',$angle=0,$te
 *
 */
 function saveState($pageEnd=0){
-  if ($pageEnd){
+  if(!empty($pageEnd)){
     // this will be called at a new page to return the state to what it was on the 
     // end of the previous page, before the stack was closed down
     // This is to get around not being able to have open 'q' across pages
@@ -2469,7 +2469,7 @@ function saveState($pageEnd=0){
 * restore a previously saved state
 */
 function restoreState($pageEnd=0){
-  if (!$pageEnd){
+  if(empty($pageEnd)){
     $n = $this->nStateStack;
     $this->currentColour = $this->stateStack[$n]['col'];
     $this->currentStrokeColour = $this->stateStack[$n]['str'];
@@ -2640,7 +2640,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
   $tmp = get_magic_quotes_runtime();
   set_magic_quotes_runtime(0);
   $fp = @fopen($file,'rb');
-  if ($fp){
+  if(!empty($fp)){
     $data='';
     while(!feof($fp)){
       $data .= fread($fp,1024);
@@ -2652,7 +2652,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
   }
   set_magic_quotes_runtime($tmp);
   
-  if (!$error){
+  if(empty($error)){
     $header = chr(137).chr(80).chr(78).chr(71).chr(13).chr(10).chr(26).chr(10);
     if (substr($data,0,8)!=$header){
       $error=1;
@@ -2660,7 +2660,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
     }
   }
 
-  if (!$error){
+  if(empty($error)){
     // set pointer
     $p = 8;
     $len = strlen($data);
@@ -2753,7 +2753,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
       $p += $chunkLen+12;
     }
     
-    if(!$haveHeader){
+    if(empty($haveHeader)){
       $error = 1;
       $errormsg = 'information header is missing';
     }
@@ -2768,7 +2768,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
     $errormsg = 'only bit depth of 8 or less is supported';
   }
 
-  if (!$error){
+  if(empty($error)){
     if ($info['colorType']!=2 && $info['colorType']!=0 && $info['colorType']!=3){
       $error = 1;
       $errormsg = 'transparancey alpha channel not supported, transparency only supported for palette images.';
@@ -2789,7 +2789,7 @@ function addPngFromFile($file,$x,$y,$w=0,$h=0){
       }
     }
   }
-  if ($error){
+  if(!empty($error)){
     $this->addMessage('PNG error - ('.$file.') '.$errormsg);
     return;
   }
@@ -2906,7 +2906,7 @@ function addImage(&$img,$x,$y,$w=0,$h=0,$quality=75){
   $tmp = get_magic_quotes_runtime();
   set_magic_quotes_runtime(0);
   $fp = @fopen($tmpName,'rb');
-  if ($fp){
+  if(!empty($fp)){
     $data='';
     while(!feof($fp)){
       $data .= fread($fp,1024);

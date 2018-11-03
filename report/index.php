@@ -17,21 +17,21 @@
 	} elseif(!$syear || !$eyear) {
 		include("$_PJ_root/templates/edit.ihtml");
 		exit;
-	} elseif($pdf) {
+	} elseif(!empty($pdf)) {
 		include("$_PJ_root/templates/statistic/pdf/list.ihtml");
 		exit;
 	}
 
-	if(!$smonth) {
+	if(empty($smonth)) {
 		$smonth = 1;
 	}
-	if(!$sday) {
+	if(empty($sday)) {
 		$sday = 1;
 	}
-	if(!$emonth) {
+	if(empty($emonth)) {
 		$emonth = intval(date('m'));
 	}
-	if(!$eday) {
+	if(empty($eday)) {
 		$eday = intval(date('d'));
 	}
 

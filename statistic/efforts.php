@@ -37,7 +37,7 @@
 
 	$efforts			= new EffortList($customer, $project, $_PJ_auth, $shown['be']);
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['efforts'];
-	if($pid) {
+	if(!empty($pid)) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['effort_for'] . " '" . $project->giveValue('project_name') . "'";
 	}
 	include("$_PJ_root/templates/list.ihtml");

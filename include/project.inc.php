@@ -36,12 +36,12 @@
 			} else {
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$query .= " WHERE customer_id IN ($cids)";
@@ -50,7 +50,7 @@
 				} else {
 					$order = " ORDER BY closed, last DESC, project_name";
 				}
-				if($limit) {
+				if(!empty($limit)) {
 					$sql_limit = " LIMIT $limit";
 				}
 			}
@@ -149,7 +149,7 @@
 			}
 
 			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE project_id='" . $this->data['id'] . "'";
-			if(!$billed) {
+			if(empty($billed)) {
 					$query .= " AND billed IS NULL";
 			}
 			if(!$this->user->checkPermission('admin') && !$this->customer->giveValue('readforeignefforts')) {

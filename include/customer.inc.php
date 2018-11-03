@@ -11,7 +11,7 @@
 
 			$this->db = new Database;
 			$query = "SELECT * FROM $_PJ_customer_table";
-			if(!$inactive) {
+			if(empty($inactive)) {
 				$query .= " WHERE active='yes'";
 			} else {
 				$query .= " WHERE 1";
@@ -116,7 +116,7 @@
 				$access_query .= " (access LIKE '______r__')";
 				$access_query .= " ) ";
 			}
-			if(!$closed) {
+			if(empty($closed)) {
 					$query .= " AND closed = 'No'";
 			}
 			$query .= $access_query;

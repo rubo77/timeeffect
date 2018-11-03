@@ -222,7 +222,7 @@ function ezNewPage(){
   }
 //echo 'left='.$this->ez['leftMargin'].'   right='.$this->ez['rightMargin'].'<br>';
 
-  if ($pageRequired){
+  if(!empty($pageRequired)){
     // make a new page, setting the writing point back to the top
     $this->y = $this->ez['pageHeight']-$this->ez['topMargin'];
     // make the new page with a call to the basic class.
@@ -337,18 +337,18 @@ function ezStopPageNumbers($stopTotal=0,$next=0,$i=0){
   if ($next && isset($this->ez['pageNumbering'][$i][$this->ezPageCount]) && is_array($this->ez['pageNumbering'][$i][$this->ezPageCount])){
     // then this has only just been started, this will over-write the start, and nothing will appear
     // add a special command to the start block, telling it to stop as well
-    if ($stopTotal){
+    if(!empty($stopTotal)){
       $this->ez['pageNumbering'][$i][$this->ezPageCount]['stoptn']=1;
     } else {
       $this->ez['pageNumbering'][$i][$this->ezPageCount]['stopn']=1;
     }
   } else {
-    if ($stopTotal){
+    if(!empty($stopTotal)){
       $this->ez['pageNumbering'][$i][$this->ezPageCount]='stopt';
     } else {
       $this->ez['pageNumbering'][$i][$this->ezPageCount]='stop';
     }
-    if ($next){
+    if(!empty($next)){
       $this->ez['pageNumbering'][$i][$this->ezPageCount].='n';
     }
   }
@@ -412,7 +412,7 @@ function ezPRVTaddPageNumbers(){
             $status=2;
           }
         }
-        if ($status){
+        if(!empty($status)){
           // then add the page numbering to this page
           if (strlen($info['num'])){
             $num=$pageNum+$info['dnum'];
@@ -1058,7 +1058,7 @@ function ezTable(&$data,$cols='',$title='',$options=''){
 
           while (strlen($line) || $start){
             $start=0;
-            if (!$colNewPage){
+            if(empty($colNewPage)){
               $this->y=$this->y-$height;
             }
             if ($this->y < $this->ez['bottomMargin']){
@@ -1066,7 +1066,7 @@ function ezTable(&$data,$cols='',$title='',$options=''){
               $newPage=1;  // whether a new page is required for any of the columns
               $colNewPage=1; // whether a new page is required for this column
             }
-            if ($colNewPage){
+            if(!empty($colNewPage)){
               if (isset($leftOvers[$colName])){
                 $leftOvers[$colName].="\n".$line;
               } else {
@@ -1113,7 +1113,7 @@ function ezTable(&$data,$cols='',$title='',$options=''){
         $this->saveState();
         $this->setStrokeColor($options['lineCol'][0],$options['lineCol'][1],$options['lineCol'][2],1);
 //        $this->line($x0-$options['gap']/2,$y+$decender+$height-$mx,$x1-$x0,$mx);
-        if ($firstLine){
+        if(!empty($firstLine)){
           $this->setLineStyle($options['outerLineThickness']);
           $firstLine=0;
         } else {
@@ -1155,7 +1155,7 @@ function ezTable(&$data,$cols='',$title='',$options=''){
     }
     
     }  // end of while to check for row splitting
-    if ($abortTable){
+    if(!empty($abortTable)){
       if ($ok==0){
         $this->transaction('abort');
       }
@@ -1266,7 +1266,7 @@ function ezText($text,$size=0,$options=array(),$test=0){
       $start=0;
       $this->y=$this->y-$height;
       if ($this->y < $this->ez['bottomMargin']){
-        if ($test){
+        if(!empty($test)){
           $newPage=true;
         } else {
           $this->ezNewPage();
@@ -1287,7 +1287,7 @@ function ezText($text,$size=0,$options=array(),$test=0){
     }
   }
 
-  if ($test){
+  if(!empty($test)){
     $this->y=$store_y;
     return $newPage;
   } else {
@@ -1497,7 +1497,7 @@ function alink($info,$internal=0){
       $i = $info['nCallback'];
       $start = $this->ez['links'][$i];
       // add underlining
-      if ($internal){
+      if(!empty($internal)){
         $this->addInternalLink($start['url'],$start['x'],$start['y']+$start['decender'],$info['x'],$start['y']+$start['decender']+$start['height']);
       } else {
         $a = deg2rad((float)$start['angle']-90.0);

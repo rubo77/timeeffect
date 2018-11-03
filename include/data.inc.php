@@ -7,7 +7,7 @@
 		function formatNumber($number, $force_float = false, $decimals = 2) {
 			$number = str_replace(',', '.', $number);
 			$number = number_format($number, $decimals, "," , ".");
-			if(!$force_float) {
+			if(empty($force_float)) {
 				$number = preg_replace("/[0]*$/", '', $number);
 				$number = preg_replace("/[\,]*$/", '', $number);
 			}
@@ -15,7 +15,7 @@
 		} /* End of function DataList::formatNumber() */
 
 		function formatDate($date, $format = NULL) {
-			if(!$format) {
+			if(empty($format)) {
 				$format = $GLOBALS['_PJ_format_date'];
 			}
 			if($date == '') {

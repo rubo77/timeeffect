@@ -79,7 +79,7 @@ if($step == 3) {
 <!-- START - content -->
 				<TD CLASS="content">
 <?php
-if($error_message) {
+if(!empty($error_message)) {
 	print '<span class="errorMessage"><b>ERROR: ' . $error_message . '</b></span><br><br>';
 }
 include("step$step.ihtml"); ?>

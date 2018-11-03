@@ -29,22 +29,22 @@
 			}
 			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
 			while($this->__db->next_record()) {
-				if($cids) {
+				if(!empty($cids)) {
 					$cids .= ',';
 				}
 				$cids .= $this->__db->f('id');
 			}
-			if(!$cids) {
+			if(empty($cids)) {
 				return;
 			}
 			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
 			while($this->__db->next_record()) {
-				if($pids) {
+				if(!empty($pids)) {
 					$pids .= ',';
 				}
 				$pids .= $this->__db->f('id');
 			}
-			if(!$pids) {
+			if(empty($pids)) {
 				return;
 			}
 			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
@@ -134,29 +134,29 @@
 			} else {
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 				$query .= " AND project_id IN ($pids)";
 				$order_query = ' ORDER BY billed, date, begin, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
-			if($limit) {
+			if(!empty($limit)) {
 				$limit_query = ' LIMIT ' . $limit;
 			}
 			if(!$this->show_billed) {

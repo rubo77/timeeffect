@@ -13,7 +13,7 @@ if(is_object($project) &&
 	((($SCRIPT_NAME == $GLOBALS['_PJ_projects_inventory_script']) && $list!=1) ||
 	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_inventory_script']))) {
 $p_id = $project->giveValue('id');
-if($c_id) {
+if(!empty($c_id)) {
 ?>&nbsp;<IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/arrow-r.gif" WIDTH="11" HEIGHT="7" BORDER="0">&nbsp;<?php
 } ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp<?php
 print "[ID: '$p_id']&nbsp;" . $project->giveValue('project_name');

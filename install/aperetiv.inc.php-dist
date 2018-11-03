@@ -133,7 +133,7 @@
 	$_PJ_password_dummy	= 'nOcHaNgEs';
 	$_PJ_php_suffix		= 'php';
 
-	if(!$last) {
+	if(empty($last)) {
 		$_PJ_last = date("YmdHis", time()-2*86400);
 	} else {
 		$_PJ_last = date("YmdHis", time()-$last*86400);

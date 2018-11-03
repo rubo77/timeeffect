@@ -49,10 +49,10 @@ if($_PJ_auth->checkPermission('accountant')) {
 						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['bill'] ?></TH>
 <?php
 }
-if(!$cid) { ?>
+if(empty($cid)) { ?>
 						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['customer'] ?></TH>
 <?php }
-	if(!$pid) { ?>
+	if(empty($pid)) { ?>
 				
 						<TH CLASS="list"><?= $GLOBALS['_PJ_strings']['project'] ?></TH>
 <?php } ?>
@@ -100,10 +100,10 @@ $colspan = 3;
 if($_PJ_auth->checkPermission('accountant')) {
 	$colspan++;
 }
-if(!$cid) {
+if(empty($cid)) {
 	$colspan++;
 }
-if(!$pid) {
+if(empty($pid)) {
 	$colspan++;
 }
 if($statistic->mode == 'billed') {
@@ -113,8 +113,8 @@ if($statistic->count()) {
 ?>
 						<TD COLSPAN="<?= $colspan ?>"></TD>
 						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_effort_hours) print formatNumber($sum_effort_hours, true); ?></TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+						<TD CLASS="listSumNumeric"><?php if(!empty($sum_effort_hours)) print formatNumber($sum_effort_hours, true); ?></TD>
+						<TD CLASS="listSumNumeric"><?php if(!empty($sum_effort_costs)) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
 <?php
 }

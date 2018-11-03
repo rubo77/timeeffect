@@ -1,14 +1,14 @@
 <?
 	function formatNumber($number, $force_float = false) {
 		$number = number_format($number, 2, $GLOBALS['_PJ_decimal_point'] , $GLOBALS['_PJ_thousands_seperator']);
-		if(!$force_float) {
+		if(empty($force_float)) {
 			$number = preg_replace("/\\" . $GLOBALS['_PJ_decimal_point'] . "00/", '', $number);
 		}
 		return $number;
 	}
 
 	function formatDate($date, $format = NULL) {
-		if(!$format) {
+		if(empty($format)) {
 			$format = $GLOBALS['_PJ_format_date'];
 		}
 		if($date == '') {

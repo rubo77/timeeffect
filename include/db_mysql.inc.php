@@ -147,7 +147,7 @@ class DB_Sql {
   /* public: position in result set */
   function seek($pos = 0) {
     $status = @mysql_data_seek($this->Query_ID, $pos);
-    if ($status)
+    if(!empty($status))
       $this->Row = $pos;
     else {
       $this->halt("seek($pos) failed: result has ".$this->num_rows()." rows");
@@ -182,7 +182,7 @@ class DB_Sql {
       $query.="$table $mode";
     }
     $res = @mysql_query($query, $this->Link_ID);
-    if (!$res) {
+    if(empty($res)) {
       $this->halt("lock($table, $mode) failed.");
       return 0;
     }
@@ -193,7 +193,7 @@ class DB_Sql {
     $this->connect();
 
     $res = @mysql_query("unlock tables", $this->Link_ID);
-    if (!$res) {
+    if(empty($res)) {
       $this->halt("unlock() failed.");
       return 0;
     }
@@ -307,21 +307,21 @@ class DB_Sql {
 
     // if no $table specified, assume that we are working with a query
     // result
-    if ($table) {
+    if(!empty($table)) {
       $this->connect();
       $id = @mysql_list_fields($this->Database, $table);
-      if (!$id)
+      if(empty($id))
         $this->halt("Metadata query failed.");
     } else {
       $id = $this->Query_ID; 
-      if (!$id)
+      if(empty($id))
         $this->halt("No query specified.");
     }
  
     $count = @mysql_num_fields($id);
 
     // made this IF due to performance (one if is faster than $count if's)
-    if (!$full) {
+    if(empty($full)) {
       for ($i=0; $i<$count; $i++) {
         $res[$i]["table"] = @mysql_field_table ($id, $i);
         $res[$i]["name"]  = @mysql_field_name  ($id, $i);
@@ -343,7 +343,7 @@ class DB_Sql {
     }
     
     // free the result only if we were called on a table
-    if ($table) @mysql_free_result($id);
+    if(!empty($table)) @mysql_free_result($id);
     return $res;
   }
 

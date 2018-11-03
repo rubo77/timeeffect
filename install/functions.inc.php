@@ -12,12 +12,12 @@ function splitSqlFile(&$ret, $sql, $release) {
 
 		// We are in a string, check for not escaped end of strings except for
 		// backquotes that can't be escaped
-		if ($in_string) {
+		if(!empty($in_string)) {
 			for (;;) {
 				$i		 = strpos($sql, $string_start, $i);
 				// No end of string found -> add the current substring to the
 				// returned array
-				if (!$i) {
+				if(empty($i)) {
 					$ret[] = $sql;
 					return TRUE;
 				}
@@ -39,7 +39,7 @@ function splitSqlFile(&$ret, $sql, $release) {
 					}
 					// ... if escaped backslashes: it's really the end of the
 					// string -> exit the loop
-					if ($escaped_backslash) {
+					if(!empty($escaped_backslash)) {
 						$string_start	= '';
 						$in_string		= FALSE;
 						break;
@@ -58,7 +58,7 @@ function splitSqlFile(&$ret, $sql, $release) {
 			$ret[]		= substr($sql, 0, $i);
 			$sql		= ltrim(substr($sql, min($i + 1, $sql_len)));
 			$sql_len	= strlen($sql);
-			if ($sql_len) {
+			if(!empty($sql_len)) {
 				$i = -1;
 			} else {
 				// The submited statement(s) end(s) here
@@ -82,7 +82,7 @@ function splitSqlFile(&$ret, $sql, $release) {
 			$end_of_comment	  = (strpos(' ' . $sql, "\012", $i+2))
 							  ? strpos(' ' . $sql, "\012", $i+2)
 							  : strpos(' ' . $sql, "\015", $i+2);
-			if (!$end_of_comment) {
+			if(empty($end_of_comment)) {
 				// no eol found after '#', add the parsed part to the returned
 				// array if required and exit
 				if ($start_of_comment > 0) {

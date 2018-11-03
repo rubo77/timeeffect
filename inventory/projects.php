@@ -88,7 +88,7 @@
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
-	if($expand) {
+	if(!empty($expand)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth);
 	}
 	$projects = new ProjectList($customer, $_PJ_auth, $shown['cp']);

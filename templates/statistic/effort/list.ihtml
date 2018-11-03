@@ -56,8 +56,8 @@ if($customer->count()) {
 					</TR><TR HEIGHT="25">
 						<TD COLSPAN="3"></TD>
 						<TD CLASS="listSum" ALIGN="right" valign="top"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
-						<TD CLASS="listSumNumeric" valign="top"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true).'<br>('.formatNumber($sum_effort_days*8, true).' h)'; ?></TD>
-						<TD CLASS="listSumNumeric" valign="top"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+						<TD CLASS="listSumNumeric" valign="top"><?php if(!empty($sum_effort_days)) print formatNumber($sum_effort_days, true).'<br>('.formatNumber($sum_effort_days*8, true).' h)'; ?></TD>
+						<TD CLASS="listSumNumeric" valign="top"><?php if(!empty($sum_effort_costs)) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>

@@ -22,10 +22,10 @@ if($_PJ_auth->checkPermission('accountant')) {
 	}
 }
 ?>
-<?php if(!$cid) { ?>
+<?php if(empty($cid)) { ?>
 						<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/customer.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('customer_name') ?></TD>
 <?php }
-	if(!$pid) { ?>
+	if(empty($pid)) { ?>
 				
 						<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('project_name') ?></TD>
 <?php } ?>

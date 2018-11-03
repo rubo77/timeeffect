@@ -183,7 +183,7 @@
 					$form_string .= PJAuth::assembleFormFields($content, $name, $excludes);
 				// if $content is scalar
 				} else {
-					if($name_default) {
+					if(!empty($name_default)) {
 						// use $name_default instead of $name
 						$form_string .= '<INPUT TYPE="hidden" NAME="' . $name_default . '[' . (++$i_count) . ']" VALUE="' . $content . '">' . "\n";
 					} else {

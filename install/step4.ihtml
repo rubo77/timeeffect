@@ -29,7 +29,7 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	$error_message .= 'opening of file \'aperetiv.inc.php-dist\' failed!<br>';
 }
 
-if($error_message) {
+if(!empty($error_message)) {
 ?>
 				<b>TIMEEFFECT Installation - failed!</b><br><br>
 				<span class="errorMessage"><b>ERROR(S): <?= $error_message ?></b></span><br>
@@ -59,7 +59,7 @@ if($sql_file = @fopen('timeeffect.sql', 'r')) {
 } else {
 	$error_message .= 'opening of file \'timeeffect.sql\' failed!<br>';
 }
-if($error_message) {
+if(!empty($error_message)) {
 ?>
 				<b>TIMEEFFECT Installation - failed!</b><br><br>
 				<span class="errorMessage"><b>ERROR(S): <?= $error_message ?></b></span><br>

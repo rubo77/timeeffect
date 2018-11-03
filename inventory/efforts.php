@@ -3,7 +3,7 @@
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$effort = new Effort($eid, $_PJ_auth);
-	if($stop) {
+	if(!empty($stop)) {
 		if($eid && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 			include("$_PJ_root/templates/error.ihtml");
@@ -31,7 +31,7 @@
 	$customer = new Customer($cid, $_PJ_auth);
 	$center_template	= "inventory/effort";
 
-	if($cont) {
+	if(!empty($cont)) {
 		if($eid && !$project->checkUserAccess('new')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 			include("$_PJ_root/templates/error.ihtml");

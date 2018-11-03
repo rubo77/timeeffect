@@ -11,7 +11,7 @@
 
 	$center_template	= "statistic/project";
 
-	if($expand) {
+	if(!empty($expand)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth);
 	}
 	$projects = new ProjectList($customer, $_PJ_auth, $shown['cp']);

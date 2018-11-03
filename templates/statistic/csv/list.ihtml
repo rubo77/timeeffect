@@ -1,7 +1,7 @@
 <?php
 function tableHead($fields) {
 	foreach($fields as $field_name) {
-		if($table_head) {
+		if(!empty($table_head)) {
 			$table_head .= ';';
 		}
 		$table_head .= "$field_name";
@@ -28,16 +28,16 @@ if(intval($year) && intval($month)) {
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
 	$statistic->loadMonth($year, $month, $mode);
 } elseif(intval($syear) && intval($eyear)) {
-	if(!$smonth) {
+	if(empty($smonth)) {
 		$smonth = '01';
 	}
-	if(!$sday) {
+	if(empty($sday)) {
 		$sday = '01';
 	}
-	if(!$emonth) {
+	if(empty($emonth)) {
 		$emonth = date('m');
 	}
-	if(!$eday) {
+	if(empty($eday)) {
 		$eday = date('d');
 	}
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
@@ -46,12 +46,12 @@ if(intval($year) && intval($month)) {
 	$statistic	= new Statistics($_PJ_auth, true, $customer, $project, $users, $mode);
 }
 
-if($cid) {
+if(!empty($cid)) {
 	unset($GLOBALS['fields']['customer']);
 } else {
 	unset($GLOBALS['fields']['count']);
 }
-if($pid) {
+if(!empty($pid)) {
 	unset($GLOBALS['fields']['project']);
 }
 if($mode != 'billed') {
@@ -64,13 +64,13 @@ while($statistic->nextEffort()) {
 	$i++;
 	$effort = $statistic->giveEffort();
 
-	if(!$cid) {
+	if(empty($cid)) {
 		$output .= str_replace(';', ',', $effort->giveValue('customer_name')) . ";";
 	} else {
 		$output .= $i . ";";
 	}
 
-	if(!$pid) {
+	if(empty($pid)) {
 		$output .= str_replace(';', ',', $effort->giveValue('project_name')) . ";";
 	}
 
@@ -147,15 +147,15 @@ $GLOBALS['fields'] = array(
 		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
 		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
-if($cid) {
+if(!empty($cid)) {
 	unset($GLOBALS['fields']['customer']);
 }
-if($pid) {
+if(!empty($pid)) {
 	unset($GLOBALS['fields']['project']);
 }
 $output = tableHead($GLOBALS['fields']);
 foreach($PROJECT_SUM as $project_id => $project_values) {
-	if(!$cid) {
+	if(empty($cid)) {
 		$output .= str_replace(';', ',', $project_values['customer']) . ';';
 	}
 	$output .= str_replace(';', ',', $project_values['project']) . ';';
@@ -165,7 +165,7 @@ foreach($PROJECT_SUM as $project_id => $project_values) {
 }
 print $output;
 
-if(!$pid) {
+if(empty($pid)) {
 	print "\n\n" . unhtmlentities($GLOBALS['_PJ_strings']['subtotals']) . ';' . unhtmlentities($GLOBALS['_PJ_strings']['customers']) . "\n";
 	
 	$GLOBALS['fields'] = array(
@@ -173,13 +173,13 @@ if(!$pid) {
 			'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
 			'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 	);
-	if($cid) {
+	if(!empty($cid)) {
 		unset($GLOBALS['fields']['customer']);
 	}
 	
 	$output = tableHead($GLOBALS['fields']);
 	foreach($CUSTOMER_SUM as $customer_id => $customer_values) {
-		if(!$cid) {
+		if(empty($cid)) {
 			$output .= str_replace(';', ',', $customer_values['customer']) . ';';
 		}
 		$output .= formatNumber($customer_values['hours'], true) . ';';
@@ -198,20 +198,20 @@ $GLOBALS['fields'] = array(
 		'effort'		=> unhtmlentities($GLOBALS['_PJ_strings']['hours_short']),
 		'price'			=> unhtmlentities($GLOBALS['_PJ_strings']['costs'])
 );
-if($cid) {
+if(!empty($cid)) {
 	unset($GLOBALS['fields']['customer']);
 }
-if($pid) {
+if(!empty($pid)) {
 	unset($GLOBALS['fields']['project']);
 }
 
 $output = tableHead($GLOBALS['fields']);
 foreach($AGENT_PROJECT_SUM as $project_id => $project_values) {
 	foreach($project_values as $agent_id => $agent_values) {
-		if(!$cid) {
+		if(empty($cid)) {
 			$output .= str_replace(';', ',', $agent_values['customer']) . ';';
 		}
-		if(!$pid) {
+		if(empty($pid)) {
 			$output .= str_replace(';', ',', $agent_values['project']) . ';';
 		}
 		$output .= $agent_values['agent'] . ';';

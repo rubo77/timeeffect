@@ -18,7 +18,7 @@
 			$this->mode		= $mode;
 			$this->user		= $user;
 			$this->users	= $users;
-			if(!$load) {
+			if(empty($load)) {
 				return;
 			}
 			$this->load();
@@ -46,22 +46,22 @@
 				$raw_access_query .= " ) ";
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 			}
@@ -149,22 +149,22 @@
 				$raw_access_query .= " ) ";
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 			}
@@ -253,22 +253,22 @@
 				$raw_access_query .= " ) ";
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 			}
@@ -353,22 +353,22 @@
 				$raw_access_query .= " ) ";
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 			}
@@ -460,22 +460,22 @@
 				$raw_access_query .= " ) ";
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE active = 'yes' $raw_access_query");
 				while($this->db->next_record()) {
-					if($cids) {
+					if(!empty($cids)) {
 						$cids .= ',';
 					}
 					$cids .= $this->db->f('id');
 				}
-				if(!$cids) {
+				if(empty($cids)) {
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE closed = 'No' AND customer_id IN ($cids) $raw_access_query");
 				while($this->db->next_record()) {
-					if($pids) {
+					if(!empty($pids)) {
 						$pids .= ',';
 					}
 					$pids .= $this->db->f('id');
 				}
-				if(!$pids) {
+				if(empty($pids)) {
 					return;
 				}
 			}
@@ -551,7 +551,7 @@
 		}
 
 		function count($billed = false) {
-			if($billed) {
+			if(!empty($billed)) {
 				return ($this->billed_effort_count);
 			}
 			return $this->effort_count;

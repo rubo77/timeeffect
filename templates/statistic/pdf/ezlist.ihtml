@@ -124,16 +124,16 @@ if(intval($year) && intval($month)) {
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
 	$statistic->loadMonth($year, $month, $mode);
 } elseif(intval($syear) && intval($eyear)) {
-	if(!$smonth) {
+	if(empty($smonth)) {
 		$smonth = '01';
 	}
-	if(!$sday) {
+	if(empty($sday)) {
 		$sday = '01';
 	}
-	if(!$emonth) {
+	if(empty($emonth)) {
 		$emonth = date('m');
 	}
-	if(!$eday) {
+	if(empty($eday)) {
 		$eday = date('d');
 	}
 	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
@@ -175,11 +175,11 @@ $pdf->closeObject();
 $pdf->addObject($head);
 $pdf->stopObject($head);
 
-if(!$cid) {
+if(empty($cid)) {
 	$GLOBALS['field_widths']['count'] = 0;
 	$GLOBALS['field_widths']['customer'] = 100;
 }
-if(!$pid) {
+if(empty($pid)) {
 	$GLOBALS['field_widths']['project'] = 70;
 }
 if($mode != 'billed') {
@@ -240,10 +240,10 @@ while($statistic->nextEffort()) {
 	$agent = $_PJ_auth->giveUserById($effort->giveValue('user'));
 
 	$data[$i]['numbershort']	= $i+1;
-	if(!$cid) {
+	if(empty($cid)) {
 		$data[$i]['customer'] = $effort->giveValue('customer_name');
 	}
-	if(!$pid) {
+	if(empty($pid)) {
 		$data[$i]['project'] = $effort->giveValue('project_name');
 	}
 	$data[$i]['agent']			= $agent['firstname'] . ' ' . $agent['lastname'];
@@ -330,7 +330,7 @@ $pdf->restoreState();
 $footnotes = $pdf->getFootnotes();
 $pdf->setStrokeColor(1,1,1);
 $f_count = count($footnotes);
-if($f_count) {
+if(!empty($f_count)) {
 		$pdf->ezText("\n", $GLOBALS['_PJ_pdf_mini_font_size']+2);
 }
 for($i = 1; $i <= $f_count; $i++) {
@@ -338,7 +338,7 @@ for($i = 1; $i <= $f_count; $i++) {
 }
 
 
-if($debug){
+if(!empty($debug)){
   $pdfcode = $pdf->ezOutput(1);
   $pdfcode = str_replace("\n","\n<br>",htmlspecialchars($pdfcode));
   echo '<html><body>';

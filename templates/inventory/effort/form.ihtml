@@ -125,7 +125,7 @@
 					<SELECT CLASS="FormSelect" NAME="day">
 					<?php
 						$a_day = $day;
-						if(!$day) {
+						if(empty($day)) {
 							$a_day = date("d");
 						}
 	
@@ -140,7 +140,7 @@
 					<SELECT CLASS="FormSelect" NAME="month">
 					<?php
 						$a_month = $month;
-						if(!$month) {
+						if(empty($month)) {
 							$a_month = date("m");
 						}
 	
@@ -155,7 +155,7 @@
 					<SELECT CLASS="FormSelect" NAME="year">
 					<?php
 						$a_year = $year;
-						if(!$year) {
+						if(empty($year)) {
 							$a_year = date("Y");
 						}
 						$max_year = date("Y");
@@ -176,7 +176,7 @@
 					<SELECT CLASS="FormSelect" NAME="hour">
 					<?php
 						$a_hour = $hour;
-						if(!$hour) {
+						if(empty($hour)) {
 							$a_hour = date("H");
 						}
 	
@@ -191,7 +191,7 @@
 					<SELECT CLASS="FormSelect" NAME="minute">
 					<?php
 						$a_minute = $minute;
-						if(!$minute) {
+						if(empty($minute)) {
 							$a_minute = date("i");
 						}
 	
@@ -238,7 +238,7 @@
 					</SELECT>
 					(<?= $GLOBALS['_PJ_strings']['hours'] ?>, <?= $GLOBALS['_PJ_strings']['minutes'] ?>)
 					<?php
-						if($duration_message) {
+						if(!empty($duration_message)) {
 							print '&nbsp;<span class="warning">' . $duration_message . '<span>';
 						}
 					?>
@@ -301,7 +301,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 						<OPTION VALUE="">
 					<?php
 						$a_billing_year = $billing_year;
-						if(!$billing_year) {
+						if(empty($billing_year)) {
 							$a_billing_year = date("Y");
 						}
 						$max_billing_year = date("Y");

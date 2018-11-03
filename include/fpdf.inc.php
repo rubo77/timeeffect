@@ -318,7 +318,7 @@ function AddPage($orientation='', $size='', $rotation=0)
 	$this->LineWidth = $lw;
 	$this->_out(sprintf('%.2F w',$lw*$this->k));
 	// Set font
-	if($family)
+	if(!empty($family))
 		$this->SetFont($family,$style,$fontsize);
 	// Set colors
 	$this->DrawColor = $dc;
@@ -340,7 +340,7 @@ function AddPage($orientation='', $size='', $rotation=0)
 		$this->_out(sprintf('%.2F w',$lw*$this->k));
 	}
 	// Restore font
-	if($family)
+	if(!empty($family))
 		$this->SetFont($family,$style,$fontsize);
 	// Restore colors
 	if($this->DrawColor!=$dc)
@@ -600,7 +600,7 @@ function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link
 	$s = '';
 	if($fill || $border==1)
 	{
-		if($fill)
+		if(!empty($fill))
 			$op = ($border==1) ? 'B' : 'f';
 		else
 			$op = 'S';
@@ -636,10 +636,10 @@ function Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link
 			$s .= ' '.$this->_dounderline($this->x+$dx,$this->y+.5*$h+.3*$this->FontSize,$txt);
 		if($this->ColorFlag)
 			$s .= ' Q';
-		if($link)
+		if(!empty($link))
 			$this->Link($this->x+$dx,$this->y+.5*$h-.5*$this->FontSize,$this->GetStringWidth($txt),$this->FontSize,$link);
 	}
-	if($s)
+	if(!empty($s))
 		$this->_out($s);
 	$this->lasth = $h;
 	if($ln>0)
@@ -667,7 +667,7 @@ function MultiCell($w, $h, $txt, $border=0, $align='J', $fill=false)
 	if($nb>0 && $s[$nb-1]=="\n")
 		$nb--;
 	$b = 0;
-	if($border)
+	if(!empty($border))
 	{
 		if($border==1)
 		{
@@ -872,7 +872,7 @@ function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
 		if($type=='')
 		{
 			$pos = strrpos($file,'.');
-			if(!$pos)
+			if(empty($pos))
 				$this->Error('Image file has no extension and no type was specified: '.$file);
 			$type = substr($file,$pos+1);
 		}
@@ -922,7 +922,7 @@ function Image($file, $x=null, $y=null, $w=0, $h=0, $type='', $link='')
 	if($x===null)
 		$x = $this->x;
 	$this->_out(sprintf('q %.2F 0 0 %.2F %.2F %.2F cm /I%d Do Q',$w*$this->k,$h*$this->k,$x*$this->k,($this->h-($y+$h))*$this->k,$info['i']));
-	if($link)
+	if(!empty($link))
 		$this->Link($x,$y,$w,$h,$link);
 }
 
@@ -966,7 +966,7 @@ function SetY($y, $resetX=true)
 		$this->y = $y;
 	else
 		$this->y = $this->h+$y;
-	if($resetX)
+	if(!empty($resetX))
 		$this->x = $this->lMargin;
 }
 
@@ -1167,7 +1167,7 @@ protected function _httpencode($param, $value, $isUTF8)
 	// Encode HTTP header field parameter
 	if($this->_isascii($value))
 		return $param.'="'.$value.'"';
-	if(!$isUTF8)
+	if(empty($isUTF8))
 		$value = utf8_encode($value);
 	if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE')!==false)
 		return $param.'="'.rawurlencode($value).'"';
@@ -1238,7 +1238,7 @@ protected function _parsejpg($file)
 {
 	// Extract info from a JPEG file
 	$a = getimagesize($file);
-	if(!$a)
+	if(empty($a))
 		$this->Error('Missing or incorrect image file: '.$file);
 	if($a[2]!=2)
 		$this->Error('Not a JPEG file: '.$file);
@@ -1257,7 +1257,7 @@ protected function _parsepng($file)
 {
 	// Extract info from a PNG file
 	$f = fopen($file,'rb');
-	if(!$f)
+	if(empty($f))
 		$this->Error('Can\'t open image file: '.$file);
 	$info = $this->_parsepngstream($f,$file);
 	fclose($f);
@@ -1414,15 +1414,15 @@ protected function _readint($f)
 	return $a['i'];
 }
 
-protected function _parsegif($file)
+protected function _parsegif(!empty($file))
 {
 	// Extract info from a GIF file (via PNG conversion)
 	if(!function_exists('imagepng'))
 		$this->Error('GD extension is required for GIF support');
 	if(!function_exists('imagecreatefromgif'))
 		$this->Error('GD has no GIF read support');
-	$im = imagecreatefromgif($file);
-	if(!$im)
+	$im = imagecreatefromgif(!empty($file));
+	if(empty($im))
 		$this->Error('Missing or incorrect image file: '.$file);
 	imageinterlace($im,0);
 	ob_start();
@@ -1430,7 +1430,7 @@ protected function _parsegif($file)
 	$data = ob_get_clean();
 	imagedestroy($im);
 	$f = fopen('php://temp','rb+');
-	if(!$f)
+	if(empty($f))
 		$this->Error('Unable to create memory stream');
 	fwrite($f,$data);
 	rewind($f);
@@ -1574,13 +1574,13 @@ protected function _putfonts()
 		$this->_newobj();
 		$this->FontFiles[$file]['n'] = $this->n;
 		$font = file_get_contents($this->fontpath.$file,true);
-		if(!$font)
+		if(empty($font))
 			$this->Error('Font file not found: '.$file);
 		$compressed = (substr($file,-2)=='.z');
 		if(!$compressed && isset($info['length2']))
 			$font = substr($font,6,$info['length1']).substr($font,6+$info['length1']+6,$info['length2']);
 		$this->_put('<</Length '.strlen($font));
-		if($compressed)
+		if(!empty($compressed))
 			$this->_put('/Filter /FlateDecode');
 		$this->_put('/Length1 '.$info['length1']);
 		if(isset($info['length2']))
