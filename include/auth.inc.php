@@ -21,8 +21,8 @@
 			if (!isset($this->data['permissions']) ) {
 				$this->data['permissions'] = '';
 			}
-			$pageperm = split(',', $permission);
-			$userperm = split(',', $this->data['permissions']);
+			$pageperm = explode(',', $permission);
+			$userperm = explode(',', $this->data['permissions']);
 			list($ok0, $pagebits) = $this->sumPermissions($pageperm);
 			list($ok1, $userbits) = $this->sumPermissions($userperm);
 
@@ -42,7 +42,7 @@
 
 			$r = 0;
 			reset($permissions);
-			while(list($key, $val) = each($permissions)) {
+			while(list($key, $val) = @each($permissions)) {
 				if (!isset($perms[$val])) {
 					return array(false, 0);
 				}
@@ -224,7 +224,7 @@
 		exit;
 	}
 
-	if ($logout == 1) {
+	if (isset($logout) and $logout == 1) {
 		$_PJ_auth->logout();
 		$_PJ_auth->start();
 		$_PJ_session_timeout = '';

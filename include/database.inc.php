@@ -4,7 +4,7 @@
 		exit;
 	}
 
-	include_once("$_PJ_include_path/db_$_PJ_db_type.inc.php");
+	include_once("$_PJ_include_path/db_mysql.inc.php");
 
 	class Database extends DB_Sql {
 		function Database($query = NULL) {

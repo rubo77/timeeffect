@@ -48,7 +48,7 @@ class DB_Sql {
   
   /* public: constructor */
   function DB_Sql($query = "") {
-    self::__construct();
+    self::__construct($query);
   }
 
   /* public: some trivial reporting */

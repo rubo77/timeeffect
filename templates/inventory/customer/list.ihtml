@@ -45,12 +45,12 @@ if($_PJ_auth->checkPermission('admin') || intval($_PJ_auth->giveValue('allow_nc'
 		$rowclass = !$rowclass;
 		$customer = $customer_list->giveCustomer();
 		$row_class = !$row_class;
-		if($expanded['cid']['all']) {
+		if(isset($expanded) && $expanded['cid']['all']) {
 			$expanded['cid'][$customer->giveValue('id')] = 1;
 		}
 		include("$_PJ_root/templates/inventory/customer/row.ihtml");
 	}
-	unset($expanded['cid']['all']);
+	if (isset($expanded)) unset($expanded['cid']['all']);
 ?>
 					<TR>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
@@ -62,7 +62,7 @@ if($_PJ_auth->checkPermission('admin') || intval($_PJ_auth->giveValue('allow_nc'
 						<TD COLSPAN="2"><IMG src="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="3" WIDTH="1" BORDER="0"></TD>
 					</TR><TR>
 						<TD ALIGN="left"><?php
-if(!$shown['ic']) {
+if(empty($shown['ic'])) {
 						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?sic=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['show_closed_customers'] ?></A>&nbsp;|&nbsp;<?= $customer_list->inactive_count . " " . $GLOBALS['_PJ_strings']['inactive_hidden'] ?><?php
 } else {
 						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?sic=0&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['hide_closed_customers'] ?></A><?php

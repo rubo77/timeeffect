@@ -16,6 +16,7 @@
 			} else {
 				$query .= " WHERE 1";
 			}
+			$access_query="";
 			if(!$user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
@@ -82,6 +83,7 @@
 				$this->data = $this->db->Record;
 			}
 			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id='$id'";
+			$access_query="";
 			if(!$this->user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
@@ -107,6 +109,7 @@
 			}
 
 			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id='" . $this->data['id'] . "'";
+			$access_query="";
 			if(!$this->user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";

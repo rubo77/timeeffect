@@ -10,7 +10,7 @@
 	$center_title		= $GLOBALS['_PJ_strings']['report'];
 
 	if(!isset($report)) {
-		$customers = new CustomerList($_PJ_auth, $shown['ic']);
+		$customers = new CustomerList($_PJ_auth, @$shown['ic']);
 		$projects = new ProjectList($customer, $_PJ_auth, $shown['cp'], 0);
 		include("$_PJ_root/templates/edit.ihtml");
 		exit;

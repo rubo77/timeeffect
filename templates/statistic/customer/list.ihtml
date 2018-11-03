@@ -42,7 +42,7 @@
 		$rowclass = !$rowclass;
 		$customer = $customer_list->giveCustomer();
 		$row_class = !$row_class;
-		if($expanded['cid']['all']) {
+		if(isset($expanded) && $expanded['cid']['all']) {
 			$expanded['cid'][$customer->giveValue('id')] = 1;
 		}
 		include("$_PJ_root/templates/statistic/customer/row.ihtml");

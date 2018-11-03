@@ -9,6 +9,9 @@
 		var $__effort_cursor	= -1;
 
 		function OpenEfforts(&$_user) {
+			self::__construct($_user);
+		}
+		function __construct(&$_user) {
 			$this->__user		= $_user;
 			$this->__db = new Database;
 			if(!$_user->checkPermission('admin')) {
@@ -26,6 +29,8 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
+			} else {
+				$raw_access_query="";
 			}
 			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
 			while($this->__db->next_record()) {
@@ -83,6 +88,7 @@
 		}
 
 	}
+
 	class EffortList {
 		var $db;
 		var $data;
@@ -92,6 +98,10 @@
 		var $effort_cursor	= -1;
 
 		function EffortList(&$customer, &$project, &$user, $show_billed = false, $limit = NULL) {
+			self::__construct($customer, $project, $user, $show_billed, $limit);
+		}
+		
+		function __construct(&$customer, &$project, &$user, $show_billed = false, $limit = NULL) {
 			$this->customer	= $customer;
 			$this->project	= $project;
 			$this->user		= $user;
@@ -113,6 +123,8 @@
 				$raw_access_query .= " OR ";
 				$raw_access_query .= " (access LIKE '______r__')";
 				$raw_access_query .= " ) ";
+			} else {
+				$raw_access_query="";
 			}
 
 			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
@@ -215,6 +227,9 @@
 		var $data;
 
 		function Effort($effort = '', &$user) {
+			self::__construct($effort,$user);
+		}
+		function __construct($effort = '', &$user) {
 			$this->user = $user;
 			if(is_array($effort)) {
 				$this->data = $effort;

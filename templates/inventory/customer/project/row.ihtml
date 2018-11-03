@@ -5,7 +5,7 @@
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<?= $rowclass ?>"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php
 		if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
-			if($expanded['pid'][$project->giveValue('id')] || $expanded['cid']['all']) {
+			if(isset($expanded) && ($expanded['pid'][$project->giveValue('id')] || $expanded['cid']['all'])) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -23,7 +23,7 @@ if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')
 } ?></TD>
 		<TD CLASS="list<?= $rowclass ?>"><?php if($project->checkUserAccess('write') && ($_PJ_auth->checkPermission('admin') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR><?php
-	if($expanded['pid'][$project->giveValue('id')]) {
+	if(isset($expanded) && $expanded['pid'][$project->giveValue('id')]) {
 		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();

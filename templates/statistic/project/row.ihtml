@@ -14,7 +14,7 @@
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<?= $rowclass ?>" WIDTH="35%"><?php
 		if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
-			if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
+			if(isset($expanded) && ($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all'])) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -29,7 +29,7 @@
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
-	if($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all']) {
+	if(isset($expanded) && ($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all'])) {
 		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();

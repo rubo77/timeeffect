@@ -2,7 +2,7 @@
 	include_once("../include/aperetiv.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	$customer 	= new Customer($cid, $_PJ_auth);
+	$customer 	= new Customer(@$cid, $_PJ_auth);
 
 	if(isset($pid)) {
 		$project = new Project($customer, $_PJ_auth, $pid);
@@ -125,7 +125,7 @@
 		}
 	}
 
-	$customer_list = new CustomerList($_PJ_auth, $shown['ic']);
+	$customer_list = new CustomerList($_PJ_auth, @$shown['ic']);
 	$center_template	= "inventory/customer";
 	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['customer_list'];
 

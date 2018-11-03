@@ -810,7 +810,7 @@ class Auth {
      * @param string Type of variable (server, session, post)
      * @return array
      */
-    function &_importGlobalVariable($variable)
+    static function &_importGlobalVariable($variable)
     {
         $var = null;
 

@@ -46,7 +46,10 @@ class Auth_Container
      *
      * @access public
      */
-    function Auth_Container()
+    function Auth_Container(){
+      self::__construct();
+    }
+    function __construct()
     {
     }
 
@@ -60,7 +63,7 @@ class Auth_Container
      *
      * @access public
      */
-    function fetchData() 
+    function fetchData($username, $password) 
     {
     }
 

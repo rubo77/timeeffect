@@ -15,10 +15,10 @@
 		}
 	}
 
-	$customer_list = new CustomerList($_PJ_auth, $shown['ic']);
+	$customer_list = new CustomerList($_PJ_auth, @$shown['ic']);
 	$center_template	= "statistic/customer";
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . 'Kundenliste';
 	include("$_PJ_root/templates/list.ihtml");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
-?>
+	

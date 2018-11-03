@@ -19,7 +19,7 @@
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<?= $rowclass ?>"><?php
 		if($customer->count() && $customer->checkUserAccess('read')) {
-			if($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all']) {
+			if(isset($expanded) && ($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all'])) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -34,12 +34,12 @@
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if(!empty($full_budget)) print formatNumber($full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 		<TD CLASS="listDetailNumeric<?= $rowclass ?>"><?php if(!empty($remaining_budget)) print formatNumber($remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
-	if($expanded['cid'][$customer->giveValue('id')]) {
+	if(isset($expanded) && $expanded['cid'][$customer->giveValue('id')]) {
 		$projects->reset();
 		while($projects->nextProject()) {
 			$project = $projects->giveProject();
 			$row_class = !$row_class;
-			if($expanded['cid']['all']) {
+			if(isset($expanded) && $expanded['cid']['all']) {
 				$expanded['pid'][$project->giveValue('id')] = 1;
 			}
 			include("$_PJ_root/templates/statistic/customer/project/row.ihtml");

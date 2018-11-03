@@ -71,7 +71,7 @@ session_name('timeeffect');
 	/*
 	   $_PJ_db_type is currently used for PEAR Module Auth only. Leave this untouched!
 	*/
-	$_PJ_db_type		= 'mysql';
+	$_PJ_db_type		= 'mysqli';
 	$_PJ_include_path	= $_PJ_root . '/include';
 
 	if(!isset($_PJ_root)) {
@@ -182,15 +182,15 @@ session_name('timeeffect');
  		$expanded['pid']['all'] = 1;
  	} else if(isset($copa)) {
  		unset($expanded['pid']);
- 	} else if($sic == 1) {
+ 	} else if(isset($sic) && $sic == 1) {
  		$shown['ic'] = 1;
  	} else if(isset($sic) && $sic == 0) {
  		unset($shown['ic']);
- 	} else if($scp == 1) {
+ 	} else if(isset($scp) and $scp == 1) {
  		$shown['cp'] = 1;
  	} else if(isset($scp) && $scp == 0) {
  		unset($shown['cp']);
- 	} else if($sbe == 1) {
+ 	} else if(isset($sbe) && $sbe == 1) {
  		$shown['be'] = 1;
  	} else if(isset($sbe) && $sbe == 0) {
  		unset($shown['be']);
