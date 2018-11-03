@@ -103,7 +103,7 @@
 		?>
 		</TABLE></TD>
 	</TR><TR>
-		<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net/projects/timeeffect/" target="_blank"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/sf.gif" border="0" alt="SourceForge.net Logo"></A><br><br></td>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>
