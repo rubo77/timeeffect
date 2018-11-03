@@ -32,7 +32,7 @@ class DB_Sql {
   var $Error    = "";
 
   /* public: this is an api revision, not a CVS revision. */
-  var $type     = "mysql";
+  var $type     = "mysqli";
   var $revision = "1.2";
 
   /* private: link and query handles */

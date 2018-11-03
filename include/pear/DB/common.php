@@ -1649,7 +1649,7 @@ class DB_common extends PEAR
             }
         }
 
-        if (sizeof($params) > 0) {
+        if ((is_array($params) or is_object($params) ) and sizeof($params) > 0) {
             $sth = $this->prepare($query);
 
             if (DB::isError($sth)) {
