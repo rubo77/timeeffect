@@ -1,14 +1,14 @@
 <!-- group/form.ihtml - START -->
 <?php
 	$permissions = array();
-	if($form_action == '') {
+	if(empty($form_action)) {
 		$form_action = $GLOBALS['_PJ_group_script'];
 	}
 	if(!$_PJ_auth->checkPermission('admin')) {
 		$ro_firstname	= ' READONLY';
 		$ro_lastname	= ' READONLY';
 	}
-	if(is_object($group) && !$new) {
+	if(isset($group) && is_object($group) && !$new) {
 		$id					= $group->giveValue('id');
 		$name				= $group->giveValue('name');
 	}

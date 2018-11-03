@@ -1,6 +1,6 @@
 <!-- group/delete.ihtml - START -->
 <?
-	if(is_object($group)) {
+	if(isset($group) && is_object($group)) {
 		$uid				= $group->giveValue('id');
 		$name				= $group->giveValue('name');
 		include($GLOBALS['_PJ_root'] . '/templates/group/options/delete.ihtml');

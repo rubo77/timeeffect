@@ -169,9 +169,9 @@
 	        	return $GLOBALS['_PJ_strings']['error_gids_empty'];
 	        }
 
-	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 	                         $GLOBALS['_PJ_auth_table'],
-	                         $this->data['id'],
+	                         $this->data['id']?"'".$this->data['id']."'":"NULL",
 	                         $this->data['username'],
 	                         $password,
 	                         $this->data['permissions'],

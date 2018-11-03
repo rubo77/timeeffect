@@ -63,7 +63,8 @@
 				} else {
 					$query = "REPLACE INTO " . $GLOBALS['_PJ_rate_table'] . " (id, customer_id, name, price, currency)";
 					$query .= " VALUES(";
-					$query .= "'" . $data['id'] . "', ";
+					if(empty($data['id'])) $query .= "NULL, ";
+					else $query .= "'" . $data['id'] . "', ";
 					$query .= $data['cid'] . ", ";
 					$query .= "'" . $data['name'] . "', ";
 					$query .= "'" . $data['price'] . "', ";

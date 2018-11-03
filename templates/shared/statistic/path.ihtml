@@ -1,7 +1,7 @@
 <?php
 if(isset($customer) && is_object($customer) &&
 	$customer->giveValue('id') &&
-	((($SCRIPT_NAME == $GLOBALS['_PJ_customer_statistics_script']) && $list!=1) ||
+	((($SCRIPT_NAME == $GLOBALS['_PJ_customer_statistics_script']) && isset($list) && $list!=1) ||
 	  ($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) ||
 	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script']))) {
 $c_id = $customer->giveValue('id');
@@ -10,7 +10,7 @@ print "[ID: '$c_id']&nbsp;" . $customer->giveValue('customer_name');
 }
 if(isset($project) && is_object($project) &&
 	$project->giveValue('id') &&
-	((($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) && $list!=1) ||
+	((($SCRIPT_NAME == $GLOBALS['_PJ_projects_statistics_script']) && isset($list) && $list!=1) ||
 	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_statistics_script']))) {
 $p_id = $project->giveValue('id');
 if(!empty($c_id)) {

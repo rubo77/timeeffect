@@ -1,6 +1,6 @@
 <!-- user/delete.ihtml - START -->
 <?
-	if(is_object($user)) {
+	if(isset($user) && is_object($user)) {
 		$uid				= $user->giveValue('id');
 		$username			= $user->giveValue('username');
 		include($GLOBALS['_PJ_root'] . '/templates/user/options/delete.ihtml');

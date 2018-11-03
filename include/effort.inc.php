@@ -328,7 +328,8 @@
 
 			$query = "REPLACE INTO " . $GLOBALS['_PJ_effort_table'] . " (id, project_id, gid, access, date, begin, end, description, note, rate, user, billed)";
 			$query .= " VALUES(";
-			$query .= "'" . $this->data['id'] . "', ";
+			if(empty($this->data['id'])) $query .= "NULL, ";
+			else $query .= "'" . $this->data['id'] . "', ";
 			$query .= "'" . $this->data['project_id'] . "', ";
 			$query .= "'" . $this->data['gid'] . "', ";
 			$query .= "'" . $this->data['access'] . "', ";
