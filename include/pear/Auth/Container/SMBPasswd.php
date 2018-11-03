@@ -1,26 +1,39 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.02 of the PHP license,      |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Michael Bretterklieber <michael@bretterklieber.com>         |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-//
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
 
+/**
+ * Storage driver for use against Samba password files
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.01 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Authentication
+ * @package    Auth
+ * @author     Michael Bretterklieber <michael@bretterklieber.com>
+ * @author     Adam Ashley <aashley@php.net>
+ * @copyright  2001-2006 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    CVS: $Id: SMBPasswd.php 237449 2007-06-12 03:11:27Z aashley $
+ * @link       http://pear.php.net/package/Auth
+ * @since      File available since Release 1.2.3
+ */
+
+/**
+ * Include PEAR File_SMBPasswd
+ */
 require_once "File/SMBPasswd.php";
+/**
+ * Include Auth_Container Base file
+ */
 require_once "Auth/Container.php";
+/**
+ * Include PEAR class for error handling
+ */
 require_once "PEAR.php";
 
 /**
@@ -36,19 +49,31 @@ require_once "PEAR.php";
  *     $a->logout();
  * }
  *
- * @author   Michael Bretterklieber <michael@bretterklieber.com>
- * @package  Auth
- * @version  $Revision$
+ * @category   Authentication
+ * @package    Auth
+ * @author     Michael Bretterklieber <michael@bretterklieber.com>
+ * @author     Adam Ashley <aashley@php.net>
+ * @package    Auth
+ * @copyright  2001-2006 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    Release: @package_version@  File: $Revision: 237449 $
+ * @link       http://pear.php.net/package/Auth
+ * @since      Class available since Release 1.2.3
  */
 class Auth_Container_SMBPasswd extends Auth_Container
 {
+
+    // {{{ properties
+
     /**
      * File_SMBPasswd object
      * @var object
      */
     var $pwfile;
 
-    // {{{ Constructor
+    // }}}
+
+    // {{{ Auth_Container_SMBPasswd() [constructor]
 
     /**
      * Constructor of the container class
@@ -79,14 +104,16 @@ class Auth_Container_SMBPasswd extends Auth_Container
      */
     function fetchData($username, $password)
     {
+        $this->log('Auth_Container_SMBPasswd::fetchData() called.', AUTH_LOG_DEBUG);
         return $this->pwfile->verifyAccount($username, $password);
     }
 
     // }}}
     // {{{ listUsers()
-    
+
     function listUsers()
     {
+        $this->log('Auth_Container_SMBPasswd::fetchData() called.', AUTH_LOG_DEBUG);
         return $this->pwfile->getAccounts();
     }
 
@@ -104,6 +131,7 @@ class Auth_Container_SMBPasswd extends Auth_Container
      */
     function addUser($username, $password, $additional = '')
     {
+        $this->log('Auth_Container_SMBPasswd::addUser() called.', AUTH_LOG_DEBUG);
         $res = $this->pwfile->addUser($user, $additional['userid'], $pass);
         if ($res === true) {
             return $this->pwfile->save();
@@ -121,7 +149,27 @@ class Auth_Container_SMBPasswd extends Auth_Container
      */
     function removeUser($username)
     {
+        $this->log('Auth_Container_SMBPasswd::removeUser() called.', AUTH_LOG_DEBUG);
         $res = $this->pwfile->delUser($username);
+        if ($res === true) {
+            return $this->pwfile->save();
+        }
+        return $res;
+    }
+
+    // }}}
+    // {{{ changePassword()
+
+    /**
+     * Change password for user in the storage container
+     *
+     * @param string Username
+     * @param string The new password
+     */
+    function changePassword($username, $password)
+    {
+        $this->log('Auth_Container_SMBPasswd::changePassword() called.', AUTH_LOG_DEBUG);
+        $res = $this->pwfile->modUser($username, '', $password);
         if ($res === true) {
             return $this->pwfile->save();
         }

@@ -1,34 +1,43 @@
 <?php
-//
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.02 of the PHP license,      |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Authors: Martin Jansen <mj@php.net>                                  |
-// +----------------------------------------------------------------------+
-//
-// $Id$
-//
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
 
-define("AUTH_METHOD_NOT_SUPPORTED", -4);
+/**
+ * Auth_Container Base Class
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This source file is subject to version 3.01 of the PHP license
+ * that is available through the world-wide-web at the following URI:
+ * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
+ * the PHP License and are unable to obtain it through the web, please
+ * send a note to license@php.net so we can mail you a copy immediately.
+ *
+ * @category   Authentication
+ * @package    Auth
+ * @author     Martin Jansen <mj@php.net>
+ * @author     Adam Ashley <aashley@php.net>
+ * @copyright  2001-2006 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    CVS: $Id: Container.php 294935 2010-02-12 00:05:45Z clockwerx $
+ * @link       http://pear.php.net/package/Auth
+ */
 
 /**
  * Storage class for fetching login data
  *
- * @author   Martin Jansen <mj@php.net>
- * @package  Auth
+ * @category   Authentication
+ * @package    Auth
+ * @author     Martin Jansen <mj@php.net>
+ * @author     Adam Ashley <aashley@php.net>
+ * @copyright  2001-2006 The PHP Group
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    Release: @package_version@  File: $Revision: 294935 $
+ * @link       http://pear.php.net/package/Auth
  */
 class Auth_Container
 {
+
+    // {{{ properties
 
     /**
      * User that is currently selected from the storage container.
@@ -37,7 +46,15 @@ class Auth_Container
      */
     var $activeUser = "";
 
-    // {{{ Constructor
+    /**
+     * The Auth object this container is attached to.
+     *
+     * @access public
+     */
+    var $_auth_obj = null;
+
+    // }}}
+    // {{{ Auth_Container() [constructor]
 
     /**
      * Constructor
@@ -60,8 +77,9 @@ class Auth_Container
      *
      * @access public
      */
-    function fetchData() 
+    function fetchData($username, $password, $isChallengeResponse=false)
     {
+        $this->log('Auth_Container::fetchData() called.', AUTH_LOG_DEBUG);
     }
 
     // }}}
@@ -80,32 +98,53 @@ class Auth_Container
      */
     function verifyPassword($password1, $password2, $cryptType = "md5")
     {
+        $this->log('Auth_Container::verifyPassword() called.', AUTH_LOG_DEBUG);
         switch ($cryptType) {
-        case "crypt" :
-            return (($password2 == "**" . $password1) ||
-                    (crypt($password1, $password2) == $password2)
-                    );
-            break;
-
-        case "none" :
-            return ($password1 == $password2);
-            break;
-
-        case "md5" :
-            return (md5($password1) == $password2);
-            break;
-
-        default :
-            if (function_exists($cryptType)) {
-                return ($cryptType($password1) == $password2);
-            }
-            else if (method_exists($this,$cryptType)) { 
-                return ($this->$cryptType($password1) == $password2);
-            } else {
-                return false;
-            }
-            break;
+            case "crypt" :
+                return ((string)crypt($password1, $password2) === (string)$password2);
+                break;
+            case "none" :
+            case "" :
+                return ((string)$password1 === (string)$password2);
+                break;
+            case "md5" :
+                return ((string)md5($password1) === (string)$password2);
+                break;
+            default :
+                if (function_exists($cryptType)) {
+                    return ((string)$cryptType($password1) === (string)$password2);
+                } elseif (method_exists($this,$cryptType)) {
+                    return ((string)$this->$cryptType($password1) === (string)$password2);
+                } else {
+                    return false;
+                }
+                break;
         }
+    }
+
+    // }}}
+    // {{{ supportsChallengeResponse()
+
+    /**
+      * Returns true if the container supports Challenge Response
+      * password authentication
+      */
+    function supportsChallengeResponse()
+    {
+        return(false);
+    }
+
+    // }}}
+    // {{{ getCryptType()
+
+    /**
+      * Returns the crypt current crypt type of the container
+      *
+      * @return string
+      */
+    function getCryptType()
+    {
+        return('');
     }
 
     // }}}
@@ -116,8 +155,12 @@ class Auth_Container
      */
     function listUsers()
     {
+        $this->log('Auth_Container::listUsers() called.', AUTH_LOG_DEBUG);
         return AUTH_METHOD_NOT_SUPPORTED;
     }
+
+    // }}}
+    // {{{ getUser()
 
     /**
      * Returns a user assoc array
@@ -128,17 +171,17 @@ class Auth_Container
      */
     function getUser($username)
     {
+        $this->log('Auth_Container::getUser() called.', AUTH_LOG_DEBUG);
         $users = $this->listUsers();
-        if($users === AUTH_METHOD_NOT_SUPPORTED){
-            return(AUTH_METHOD_NOT_SUPPORTED);
+        if ($users === AUTH_METHOD_NOT_SUPPORTED) {
+            return AUTH_METHOD_NOT_SUPPORTED;
         }
-        for($i=0;$c = count($users),$i<$c;$i++){
-            if($users[$i]['username'] == $username){
-                return($users[$i]);
+        for ($i=0; $c = count($users), $i<$c; $i++) {
+            if ($users[$i]['username'] == $username) {
+                return $users[$i];
             }
         }
-        return(false);
-        
+        return false;
     }
 
     // }}}
@@ -155,6 +198,7 @@ class Auth_Container
      */
     function addUser($username, $password, $additional=null)
     {
+        $this->log('Auth_Container::addUser() called.', AUTH_LOG_DEBUG);
         return AUTH_METHOD_NOT_SUPPORTED;
     }
 
@@ -168,10 +212,51 @@ class Auth_Container
      */
     function removeUser($username)
     {
+        $this->log('Auth_Container::removeUser() called.', AUTH_LOG_DEBUG);
         return AUTH_METHOD_NOT_SUPPORTED;
+    }
+
+    // }}}
+    // {{{ changePassword()
+
+    /**
+     * Change password for user in the storage container
+     *
+     * @param string Username
+     * @param string The new password
+     */
+    function changePassword($username, $password)
+    {
+        $this->log('Auth_Container::changePassword() called.', AUTH_LOG_DEBUG);
+        return AUTH_METHOD_NOT_SUPPORTED;
+    }
+
+    // }}}
+    // {{{ log()
+
+    /**
+     * Log a message to the Auth log
+     *
+     * @param string The message
+     * @param int
+     * @return boolean
+     */
+    function log($message, $level = AUTH_LOG_DEBUG) {
+
+        if (is_null($this->_auth_obj)) {
+
+            return false;
+
+        } else {
+
+            return $this->_auth_obj->log($message, $level);
+
+        }
+
     }
 
     // }}}
 
 }
+
 ?>
