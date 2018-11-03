@@ -1,11 +1,11 @@
-TIMEEFFECT 1.1.0, Rev. 13
+TIMEEFFECT 1.1.1, Rev. 23
 
 This release is the first official production release.
 
 ######################################
 UPDATE:
 
-Beta 1.1.g and 1.1.h:
+1.1.0, beta 1.1.g and beta 1.1.h:
 simply make a backup copy of the files
 	'include/aperetiv.inc.php'
 and 
