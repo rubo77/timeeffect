@@ -1,7 +1,8 @@
 <?php
 	class Data {
 		function giveValue($key) {
-			return $this->data[$key];
+			if(isset($this->data[$key])) return $this->data[$key];
+			else return null;
 		}
 
 		function formatNumber($number, $force_float = false, $decimals = 2) {

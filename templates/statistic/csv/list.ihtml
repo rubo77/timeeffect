@@ -1,5 +1,6 @@
 <?php
 function tableHead($fields) {
+	$table_head='';
 	foreach($fields as $field_name) {
 		if(!empty($table_head)) {
 			$table_head .= ';';
@@ -24,8 +25,8 @@ $GLOBALS['fields'] = array(
 );
 
 
-if(intval($year) && intval($month)) {
-	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
+if(intval(@$year) && intval(@$month)) {
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, @$users, $mode);
 	$statistic->loadMonth($year, $month, $mode);
 } elseif(intval($syear) && intval($eyear)) {
 	if(empty($smonth)) {
@@ -40,10 +41,10 @@ if(intval($year) && intval($month)) {
 	if(empty($eday)) {
 		$eday = date('d');
 	}
-	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, @$users, $mode);
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
 } else {
-	$statistic	= new Statistics($_PJ_auth, true, $customer, $project, $users, $mode);
+	$statistic	= new Statistics($_PJ_auth, true, $customer, $project, @$users, $mode);
 }
 
 if(!empty($cid)) {
@@ -100,22 +101,22 @@ while($statistic->nextEffort()) {
 
 	$PROJECT_SUM[$effort->giveValue('project_id')]['customer']	= $effort->giveValue('customer_name');
 	$PROJECT_SUM[$effort->giveValue('project_id')]['project']	= $effort->giveValue('project_name');
-	$PROJECT_SUM[$effort->giveValue('project_id')]['hours']		+= $effort->giveValue('hours');
-	$PROJECT_SUM[$effort->giveValue('project_id')]['costs']		+= $effort->giveValue('costs');
+	@$PROJECT_SUM[$effort->giveValue('project_id')]['hours']		+= $effort->giveValue('hours');
+	@$PROJECT_SUM[$effort->giveValue('project_id')]['costs']		+= $effort->giveValue('costs');
 
 	$CUSTOMER_SUM[$effort->giveValue('customer_id')]['customer']	= $effort->giveValue('customer_name');
-	$CUSTOMER_SUM[$effort->giveValue('customer_id')]['hours']		+= $effort->giveValue('hours');
-	$CUSTOMER_SUM[$effort->giveValue('customer_id')]['costs']		+= $effort->giveValue('costs');
+	@$CUSTOMER_SUM[$effort->giveValue('customer_id')]['hours']		+= $effort->giveValue('hours');
+	@$CUSTOMER_SUM[$effort->giveValue('customer_id')]['costs']		+= $effort->giveValue('costs');
 
 	$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['customer']	= $effort->giveValue('customer_name');
 	$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['project']		= $effort->giveValue('project_name');
 	$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['agent']		= str_replace(';', ',', $agent['firstname'] . ' ' . $agent['lastname']);
-	$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['hours']		+= $effort->giveValue('hours');
-	$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['costs']		+= $effort->giveValue('costs');
+	@$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['hours']		+= $effort->giveValue('hours');
+	@$AGENT_PROJECT_SUM[$effort->giveValue('project_id')][$effort->giveValue('user')]['costs']		+= $effort->giveValue('costs');
 
 	$AGENT_SUM[$effort->giveValue('user')]['agent']		= str_replace(';', ',', $agent['firstname'] . ' ' . $agent['lastname']);
-	$AGENT_SUM[$effort->giveValue('user')]['hours']		+= $effort->giveValue('hours');
-	$AGENT_SUM[$effort->giveValue('user')]['costs']		+= $effort->giveValue('costs');
+	@$AGENT_SUM[$effort->giveValue('user')]['hours']		+= $effort->giveValue('hours');
+	@$AGENT_SUM[$effort->giveValue('user')]['costs']		+= $effort->giveValue('costs');
 
 	$output .= formatNumber($effort->giveValue('hours'), true) . ";";
 	$output .= formatNumber($effort->giveValue('costs'), true);

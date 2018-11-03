@@ -24,7 +24,7 @@
 						while($customers->nextCustomer()) {
 							$customer = $customers->giveCustomer();
 							print "\t\t\t\t\t\t<OPTION VALUE=\"" . $customer->giveValue('id') . "\"";
-							if($customer->giveValue('id') == $cid) {
+							if(!empty($cid) and $customer->giveValue('id') == $cid) {
 								print " SELECTED";
 							}
 							print ">" . $customer->giveValue('customer_name') . "\n";
@@ -41,7 +41,7 @@
 						while($projects->nextProject()) {
 							$project = $projects->giveProject();
 							print "\t\t\t\t\t\t<OPTION VALUE=\"" . $project->giveValue('id') . "\"";
-							if($project->giveValue('id') == $pid) {
+							if(!empty($pid) and $project->giveValue('id') == $pid) {
 								print " SELECTED";
 							}
 							print ">" . $project->giveValue('project_name') . "\n";

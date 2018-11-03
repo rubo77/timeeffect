@@ -46,7 +46,8 @@
 		}
 
 		function giveValue($key) {
-			return $this->data[$key];
+			if(isset($this->data[$key])) return $this->data[$key];
+else return null;
 		}
 	}
 
@@ -197,7 +198,8 @@
 		}
 
 		function giveValue($key) {
-			return $this->data[$key];
+			if(isset($this->data[$key])) return $this->data[$key];
+else return null;
 		}
 	}
 ?>

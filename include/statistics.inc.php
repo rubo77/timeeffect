@@ -528,17 +528,17 @@
 				list($year, $month, $day) = explode("-", $this->db->Record['date']);
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
 				if($this->db->Record['billed'] != '') {
-					$this->data['billed_seconds']			+= $seconds;
-					$this->months['billed']["$year-$month"] += $seconds;
+					@$this->data['billed_seconds']			+= $seconds;
+					@$this->months['billed']["$year-$month"] += $seconds;
 					$this->billed_effort_count++;
 				} else {
-					$this->months['open']["$year-$month"]	+= $seconds;
+					@$this->months['open']["$year-$month"]	+= $seconds;
 				}
-				$this->data['seconds']	+= $seconds;
-				$this->days[$day]		+= $seconds;
+				@$this->data['seconds']	+= $seconds;
+				@$this->days[$day]		+= $seconds;
 				$this->db->Record['seconds'] = $seconds;
 				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
-				$this->effort_count++;
+				@$this->effort_count++;
 			}
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
@@ -547,7 +547,8 @@
 		}
 
 		function giveValue($key) {
-			return $this->data[$key];
+			if(isset($this->data[$key])) return $this->data[$key];
+else return null;
 		}
 
 		function count($billed = false) {
