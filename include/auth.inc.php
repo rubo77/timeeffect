@@ -84,7 +84,11 @@
 			return NULL;
 		}
 
-		function PJAuth() {
+		public function PJAuth()
+		{
+			self::__construct();
+		}
+		public function __construct() {
 			$database	= new Database();
 			$dsn		= "mysql://" . $database->User . ":" . $database->Password . "@" . $database->Host . "/" . $database->Database;
 			
@@ -211,7 +215,7 @@
 		exit;
 	}
 
-	if($no_login) {
+	if(!empty($no_login)) {
 		return;
 	}
 	$_PJ_auth = new PJAuth();

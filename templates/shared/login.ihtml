@@ -86,7 +86,7 @@ print PJAuth::assembleFormFields(NULL, NULL, array('password', 'username'));
 						<TD COLSPAN="2"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR>
 <?php
-if($GLOBALS['username'] != '') {
+if(!empty($GLOBALS['username'])) {
 ?>
 					<TR>
 						<TD COLSPAN="2" CLASS="ErrorMessage"><?= $GLOBALS['_PJ_strings']['login_error_msg'] ?></TD>
@@ -98,7 +98,7 @@ if($GLOBALS['username'] != '') {
 ?>
 					<TR>
 						<TD CLASS="FormFieldName" width="1%"><nobr><?=$GLOBALS['_PJ_strings']['username']?>:</nobr></TD>
-						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="text" NAME="username" VALUE="<?= $GLOBALS['username'] ?>"></TD>
+						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="text" NAME="username" VALUE="<?= @$GLOBALS['username'] ?>"></TD>
 					</TR><TR>
 						<TD CLASS="FormFieldName"><nobr><?=$GLOBALS['_PJ_strings']['password']?>:</nobr></TD>
 						<TD CLASS="FormField"><INPUT CLASS="SmallFormField" TYPE="password" NAME="password"></TD>
