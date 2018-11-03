@@ -34,20 +34,20 @@ $i = 0;
 while($data = $rates->giveNext()) {
 ?>
 				<TR>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_name_width ?>">
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
 					<INPUT TYPE="hidden" NAME="currency[<?=$data['id']?>]" VALUE="<? if(!empty($GLOBALS['_PJ_currency'])) echo $GLOBALS['_PJ_currency'] ?>">
 					<INPUT CLASS="FormField" TYPE='text' SIZE="10" name="name[<?=$data['id']?>]" VALUE="<?=$data['name']?>"></TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?= str_replace( '.', $GLOBALS['_PJ_decimal_point'], $data['price']); ?>"></TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?= str_replace( '.', $GLOBALS['_PJ_decimal_point'], $data['price']); ?>"></TD>
 				</TR>
 <?php
 $i++;
 }
 ?>
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
 					<INPUT TYPE="hidden" NAME="currency[new]" VALUE="<? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?>">
 					<INPUT CLASS="FormField" TYPE='text' SIZE="10" name="name[new]"></TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[new]"></TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[new]"></TD>
 				</TR><TR>
 					<TD CLASS="FormSubmit" COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
 				</TR>

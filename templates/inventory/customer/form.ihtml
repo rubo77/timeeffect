@@ -36,7 +36,7 @@
 	}
 	$customer_budget_currency	= $GLOBALS['_PJ_currency'];
 ?>
-	<FORM ACTION="<? print $GLOBALS['_PJ_customer_inventory_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<FORM ACTION="<? print $GLOBALS['_PJ_customer_inventory_script']; ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
 	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?>">
 	<INPUT TYPE="hidden" NAME="edit" VALUE="1">
 	<INPUT TYPE="hidden" NAME="altered" VALUE="1">
@@ -52,14 +52,14 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0" width="100%">
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_name" SIZE="30" MAXLENGTH="64" VALUE="<? print $customer_name ?>"></TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" NAME="customer_name" SIZE="30" MAXLENGTH="64" VALUE="<? if(!empty($customer_name)) echo $customer_name; ?>"></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['budget_in'])) echo $GLOBALS['_PJ_strings']['budget_in'] ?> <? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField" NAME="customer_budget" SIZE="30" MAXLENGTH="64" VALUE="<? print $customer_budget ?>"></TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['budget_in'])) echo $GLOBALS['_PJ_strings']['budget_in'] ?> <? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" NAME="customer_budget" SIZE="30" MAXLENGTH="64" VALUE="<? if(!empty($customer_budget)) echo $customer_budget; ?>"></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
-					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="customer_desc" ROWS="10" COLS="50"><? print $customer_desc ?></TEXTAREA></TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="customer_desc" ROWS="10" COLS="50"><? if(!empty($customer_desc)) echo $customer_desc; ?></TEXTAREA></TD>
 <?php
 if($_PJ_auth->checkPermission('admin')) {
 ?>
@@ -88,7 +88,7 @@ if($_PJ_auth->checkPermission('admin') || !$customer->giveValue('id') || $user =
 	reset($u_gids);
 	foreach($u_gids as $id) {
 ?>
-						<OPTION<?php if($id == $customer_gid) print ' SELECTED'; ?> value="<? if(!empty($id)) echo $id; ?>"><?= $a_gids[$id] ?>
+						<OPTION<?php if(isset($customer_gid) and $id == $customer_gid) print ' SELECTED'; ?> value="<? if(!empty($id)) echo $id; ?>"><?= $a_gids[$id] ?>
 <?php
 	}
 ?>
@@ -124,8 +124,8 @@ if($_PJ_auth->checkPermission('admin') || !$customer->giveValue('id') || $user =
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['readforeignefforts'])) echo $GLOBALS['_PJ_strings']['readforeignefforts'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['readforeignefforts'])) echo $GLOBALS['_PJ_strings']['readforeignefforts'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 					<SELECT NAME="readforeignefforts">
 						<OPTION VALUE="1"<?php if(!empty($readforeignefforts) and $readforeignefforts == '1') print ' SELECTED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
 						<OPTION VALUE="0"<?php if(!empty($readforeignefforts) and $readforeignefforts == '0') print ' SELECTED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
@@ -135,8 +135,8 @@ if($_PJ_auth->checkPermission('admin') || !$customer->giveValue('id') || $user =
 }
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['active'])) echo $GLOBALS['_PJ_strings']['active'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['active'])) echo $GLOBALS['_PJ_strings']['active'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 					<INPUT TYPE="radio" NAME="active" VALUE="yes"<?php if($active=='yes') print ' CHECKED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
 					<INPUT TYPE="radio" NAME="active" VALUE="no"<?php if($active=='no') print ' CHECKED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
 					</TD>

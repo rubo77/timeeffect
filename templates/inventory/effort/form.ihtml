@@ -111,8 +111,8 @@
 				<TR>
 					<TD CLASS="Error" COLSPAN="2"><? if(!empty($message)) echo $message; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><b><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><? if(!empty($project_input)) echo $project_input; ?></TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><? if(!empty($project_input)) echo $project_input; ?></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>

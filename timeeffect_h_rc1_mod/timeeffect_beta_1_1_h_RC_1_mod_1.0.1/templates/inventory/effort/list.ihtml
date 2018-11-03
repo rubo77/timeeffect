@@ -42,8 +42,8 @@ if($pid && $project->checkUserAccess('new')) {
 						<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR>
 								<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?></TH>
-								<TH CLASS="list"><? print $GLOBALS['_PJ_strings']['agent'] ?></TD>
-								<TH CLASS="listNumeric"><? print $GLOBALS['_PJ_strings']['workinghours'] ?></TD>
+								<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent']; ?></TD>
+								<TH CLASS="listNumeric"><? if(!empty($GLOBALS['_PJ_strings']['workinghours'])) echo $GLOBALS['_PJ_strings']['workinghours']; ?></TD>
 								<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 								<TH CLASS="list">&nbsp;</TD>
 							</TR>

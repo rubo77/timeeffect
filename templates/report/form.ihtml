@@ -3,7 +3,7 @@
 	include($GLOBALS['_PJ_root'] . '/templates/report/options/edit.ihtml');
 	$all_users			= $_PJ_auth->listUsers();
 ?>
-	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? print $GLOBALS['_PJ_form_method'] ?>">
+	<FORM ACTION="<? print $GLOBALS['_PJ_reports_script']; ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
 	<INPUT TYPE="hidden" NAME="customer_budget_currency" VALUE="<? if(!empty($GLOBALS['_PJ_currency'])) echo $GLOBALS['_PJ_currency'] ?>">
 	<INPUT TYPE="hidden" NAME="report" VALUE="1">
 
@@ -16,8 +16,8 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 					<SELECT NAME="cid" onChange="document.location.href='<?= $GLOBALS['PHP_SELF'] . "?cid=" ?>' + this.value;">
 						<OPTION VALUE="">--
 					<?php

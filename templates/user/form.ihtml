@@ -65,10 +65,10 @@
 					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['password_retype'])) echo $GLOBALS['_PJ_strings']['password_retype'] ?>*:</TD>
 					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="<? if(!empty($password_retype)) echo $password_retype; ?>"></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['firstname'])) echo $GLOBALS['_PJ_strings']['firstname'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? print $_PJ_form_field_width ?>"><INPUT CLASS="FormField<? if(!empty($ro_css_firstname)) echo $ro_css_firstname; ?>" NAME="firstname" VALUE="<? if(!empty($firstname)) echo $firstname; ?>"<? if(!empty($ro_firstname)) echo $ro_firstname; ?>></TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['firstname'])) echo $GLOBALS['_PJ_strings']['firstname'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField<? if(!empty($ro_css_firstname)) echo $ro_css_firstname; ?>" NAME="firstname" VALUE="<? if(!empty($firstname)) echo $firstname; ?>"<? if(!empty($ro_firstname)) echo $ro_firstname; ?>></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? print $_PJ_form_field_name_width ?>"><? if(!empty($GLOBALS['_PJ_strings']['lastname'])) echo $GLOBALS['_PJ_strings']['lastname'] ?>*:</TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['lastname'])) echo $GLOBALS['_PJ_strings']['lastname'] ?>*:</TD>
 					<TD CLASS="FormField"><INPUT CLASS="FormField<? if(!empty($ro_css_lastname)) echo $ro_css_lastname; ?>" NAME="lastname" VALUE="<? if(!empty($lastname)) echo $lastname; ?>"<? if(!empty($ro_lastname)) echo $ro_lastname; ?>></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['email'])) echo $GLOBALS['_PJ_strings']['email'] ?>:</TD>
