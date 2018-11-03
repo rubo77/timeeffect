@@ -1,9 +1,0 @@
-This is the first official beta release of TIMEEFFECT.
-
-There is currently only installation documentation.
-
-#################################
-KNOWN ISSUES:
-- logon as agent does not show the desired results.
-  There are some strange effects when logging on as
-  user who only belongs to the group 'agent'.

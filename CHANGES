@@ -1,4 +1,11 @@
 ###################################
+2013-10-21:
+  release: 1.4
+  changes:
+   - show hours in statistics too
+   - adapt to PHP 5
+   
+###################################
 2004-03-18:
   release: beta 1.1
   changes:
