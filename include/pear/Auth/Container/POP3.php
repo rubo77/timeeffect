@@ -1,62 +1,40 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
+/* vim: set expandtab tabstop=4 shiftwidth=4: */
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2002 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Stefan Ekman <stekman@sedata.org>                           |
+// |          Martin Jansen <mj@php.net>                                  |
+// |          Mika Tuupola <tuupola@appelsiini.net>                       |
+// +----------------------------------------------------------------------+
+//
+// $Id: POP3.php,v 1.2 2004/04/07 07:36:32 jkrogma Exp $
+//
 
-/**
- * Storage driver for use against a POP3 server
- *
- * PHP versions 4 and 5
- *
- * LICENSE: This source file is subject to version 3.01 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
- * @category   Authentication
- * @package    Auth
- * @author     Stefan Ekman <stekman@sedata.org>
- * @author     Martin Jansen <mj@php.net>
- * @author     Mika Tuupola <tuupola@appelsiini.net>
- * @author     Adam Ashley <aashley@php.net>
- * @copyright  2001-2006 The PHP Group
- * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: POP3.php 237449 2007-06-12 03:11:27Z aashley $
- * @link       http://pear.php.net/package/Auth
- * @since      File available since Release 1.2.0
- */
 
-/**
- * Include Auth_Container base class
- */
-require_once 'Auth/Container.php';
-/**
- * Include PEAR package for error handling
- */
-require_once 'PEAR.php';
-/**
- * Include PEAR Net_POP3 package
- */
-require_once 'Net/POP3.php';
+require_once('Auth/Container.php');
+require_once('PEAR.php');
+require_once('Net/POP3.php');
 
 /**
  * Storage driver for Authentication on a POP3 server.
  *
- * @category   Authentication
- * @package    Auth
- * @author     Martin Jansen <mj@php.net>
- * @author     Mika Tuupola <tuupola@appelsiini.net>
- * @author     Adam Ashley <aashley@php.net>
- * @copyright  2001-2006 The PHP Group
- * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    Release: @package_version@  File: $Revision: 237449 $
- * @link       http://pear.php.net/package/Auth
- * @since      Class available since Release 1.2.0
+ * @author   Yavor Shahpasov <yavo@netsmart.com.cy>
+ * @package  Auth
+ * @version  $Revision: 1.2 $
  */
 class Auth_Container_POP3 extends Auth_Container
 {
-
-    // {{{ properties
-
     /**
      * POP3 Server
      * @var string
@@ -69,20 +47,7 @@ class Auth_Container_POP3 extends Auth_Container
      */
     var $port='110';
 
-    /**
-     * POP3 Authentication method
-     *
-     * Prefered POP3 authentication method. Acceptable values:
-     *      Boolean TRUE    - Use Net_POP3's autodetection
-     *      String 'DIGEST-MD5','CRAM-MD5','LOGIN','PLAIN','APOP','USER'
-     *                      - Attempt this authentication style first
-     *                        then fallback to autodetection.
-     * @var mixed
-     */
-    var $method=true;
-
-    // }}}
-    // {{{ Auth_Container_POP3() [constructor]
+    // {{{ Constructor
 
     /**
      * Constructor of the container class
@@ -92,23 +57,23 @@ class Auth_Container_POP3 extends Auth_Container
      */
     function Auth_Container_POP3($server=null)
     {
-        if (isset($server) && !is_null($server)) {
-            if (is_array($server)) {
-                if (isset($server['host'])) {
+        if(isset($server)){
+            if(is_array($server)){
+                if(isset($server['host'])){
                     $this->server = $server['host'];
                 }
-                if (isset($server['port'])) {
+                if(isset($server['port'])){
                     $this->port = $server['port'];
                 }
-                if (isset($server['method'])) {
-                    $this->method = $server['method'];
-                }
-            } else {
-                if (strstr($server, ':')) {
+            }
+            else{
+                if(strstr($server, ':')){
                     $serverparts = explode(':', trim($server));
                     $this->server = $serverparts[0];
                     $this->port = $serverparts[1];
-                } else {
+                }
+                else
+                {
                     $this->server = $server;
                 }
             }
@@ -127,12 +92,10 @@ class Auth_Container_POP3 extends Auth_Container
      */
     function fetchData($username, $password)
     {
-        $this->log('Auth_Container_POP3::fetchData() called.', AUTH_LOG_DEBUG);
         $pop3 =& new Net_POP3();
-        $res = $pop3->connect($this->server, $this->port, $this->method);
-        if (!$res) {
-            $this->log('Connection to POP3 server failed.', AUTH_LOG_DEBUG);
-            return $res;
+        $res = $pop3->connect($this->server, $this->port);
+        if(!$res){
+            return($res);
         }
         $result = $pop3->login($username, $password);
         $pop3->disconnect();
@@ -140,6 +103,5 @@ class Auth_Container_POP3 extends Auth_Container
     }
 
     // }}}
-
 }
 ?>

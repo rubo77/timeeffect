@@ -1,39 +1,26 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4 foldmethod=marker: */
+//
+// +----------------------------------------------------------------------+
+// | PHP Version 4                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright (c) 1997-2002 The PHP Group                                |
+// +----------------------------------------------------------------------+
+// | This source file is subject to version 2.02 of the PHP license,      |
+// | that is bundled with this package in the file LICENSE, and is        |
+// | available at through the world-wide-web at                           |
+// | http://www.php.net/license/2_02.txt.                                 |
+// | If you did not receive a copy of the PHP license and are unable to   |
+// | obtain it through the world-wide-web, please send a note to          |
+// | license@php.net so we can mail you a copy immediately.               |
+// +----------------------------------------------------------------------+
+// | Authors: Bruno Pedro <bpedro@co.sapo.pt>                             |
+// +----------------------------------------------------------------------+
+//
+// $Id: SOAP.php,v 1.2 2004/04/07 07:36:32 jkrogma Exp $
+//
 
-/**
- * Storage driver for use against a SOAP service
- *
- * PHP versions 4 and 5
- *
- * LICENSE: This source file is subject to version 3.01 of the PHP license
- * that is available through the world-wide-web at the following URI:
- * http://www.php.net/license/3_01.txt.  If you did not receive a copy of
- * the PHP License and are unable to obtain it through the web, please
- * send a note to license@php.net so we can mail you a copy immediately.
- *
- * @category   Authentication
- * @package    Auth
- * @author     Bruno Pedro <bpedro@co.sapo.pt>
- * @author     Adam Ashley <aashley@php.net>
- * @copyright  2001-2006 The PHP Group
- * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    CVS: $Id: SOAP.php 237449 2007-06-12 03:11:27Z aashley $
- * @link       http://pear.php.net/package/Auth
- * @since      File available since Release 1.2.0
- */
-
-/**
- * Include Auth_Container base class
- */
 require_once "Auth/Container.php";
-/**
- * Include PEAR package for error handling
- */
 require_once "PEAR.php";
-/**
- * Include PEAR SOAP_Client
- */
 require_once 'SOAP/Client.php';
 
 /**
@@ -77,34 +64,19 @@ require_once 'SOAP/Client.php';
  *
  * ?>
  *
- * @category   Authentication
- * @package    Auth
- * @author     Bruno Pedro <bpedro@co.sapo.pt>
- * @author     Adam Ashley <aashley@php.net>
- * @copyright  2001-2006 The PHP Group
- * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
- * @version    Release: @package_version@  File: $Revision: 237449 $
- * @link       http://pear.php.net/package/Auth
- * @since      Class available since Release 1.2.0
+ * @author   Bruno Pedro <bpedro@co.sapo.pt>
+ * @package  Auth
+ * @version  $Revision: 1.2 $
  */
 class Auth_Container_SOAP extends Auth_Container
 {
-
-    // {{{ properties
 
     /**
      * Required options for the class
      * @var array
      * @access private
      */
-    var $_requiredOptions = array(
-            'endpoint',
-            'namespace',
-            'method',
-            'encoding',
-            'usernamefield',
-            'passwordfield',
-            );
+    var $_requiredOptions = array('endpoint', 'namespace', 'method', 'encoding', 'usernamefield', 'passwordfield');
 
     /**
      * Options for the class
@@ -128,16 +100,6 @@ class Auth_Container_SOAP extends Auth_Container
      var $soapResponse = array();
 
     /**
-     * The SOAP client
-     * @var mixed
-     * @access public
-     */
-     var $soapClient = null;
-
-    // }}}
-    // {{{ Auth_Container_SOAP() [constructor]
-
-    /**
      * Constructor of the container class
      *
      * @param  $options, associative array with endpoint, namespace, method,
@@ -155,9 +117,6 @@ class Auth_Container_SOAP extends Auth_Container
         }
     }
 
-    // }}}
-    // {{{ fetchData()
-
     /**
      * Fetch data from SOAP service
      *
@@ -170,43 +129,28 @@ class Auth_Container_SOAP extends Auth_Container
      */
     function fetchData($username, $password)
     {
-        $this->log('Auth_Container_SOAP::fetchData() called.', AUTH_LOG_DEBUG);
         // check if all required options are set
         if (array_intersect($this->_requiredOptions, array_keys($this->_options)) != $this->_requiredOptions) {
             return false;
         } else {
             // create a SOAP client and set encoding
-            $this->soapClient = new SOAP_Client($this->_options['endpoint']);
-            $this->soapClient->setEncoding($this->_options['encoding']);
+            $soapClient = new SOAP_Client($this->_options['endpoint']);
+            $soapClient->setEncoding($this->_options['encoding']);
         }
-
-        // set the trace option if requested
-        if (isset($this->_options['trace'])) {
-            $this->soapClient->__options['trace'] = true;
-        }
-
-        // set the timeout option if requested
-        if (isset($this->_options['timeout'])) {
-            $this->soapClient->__options['timeout'] = $this->_options['timeout'];
-        }
-
         // assign username and password fields
         $usernameField = new SOAP_Value($this->_options['usernamefield'],'string', $username);
         $passwordField = new SOAP_Value($this->_options['passwordfield'],'string', $password);
         $SOAPParams = array($usernameField, $passwordField);
-
         // assign optional features
         foreach ($this->_features as $fieldName => $fieldValue) {
             $SOAPParams[] = new SOAP_Value($fieldName, 'string', $fieldValue);
         }
-
         // make SOAP call
-        $this->soapResponse = $this->soapClient->call(
-                $this->_options['method'],
-                $SOAPParams,
-                array('namespace' => $this->_options['namespace'])
-                );
-
+        $this->soapResponse = $soapClient->call(
+                                  $this->_options['method'],
+                                  $SOAPParams,
+                                  array('namespace' => $this->_options['namespace'])
+                                               );
         if (!PEAR::isError($this->soapResponse)) {
             if ($this->_options['matchpasswords']) {
                 // check if passwords match
@@ -222,8 +166,5 @@ class Auth_Container_SOAP extends Auth_Container
             return false;
         }
     }
-
-    // }}}
-
 }
 ?>
