@@ -29,6 +29,7 @@ if($step == 3) {
 <TITLE>TIMEEFFECT - Installation</TITLE>
 <LINK REL="stylesheet" HREF="../css/project.css" TYPE="text/css">
 <SCRIPT LANGUAGE="Javascript1.2" SRC="../include/functions.js" type="text/javascript"></SCRIPT>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </HEAD>
 
 <BODY>
@@ -44,10 +45,6 @@ if($step == 3) {
 					</TR>
 				</TABLE></TD>
 			</TR>
-			<tr>
-				<td VALIGN="bottom" CLASS="leftNavi" align="center"><A href="http://sourceforge.net" target="_blank"><IMG src="http://sourceforge.net/sflogo.php?group_id=104682&type=4" border="0" alt="SourceForge.net Logo"></A>
-				<br><br></td>
-			</tr>
 		</TABLE>
 		</TD>
 <!-- END - left navigation -->
@@ -82,7 +79,8 @@ if($step == 3) {
 if(!empty($error_message)) {
 	print '<span class="errorMessage"><b>ERROR: ' . $error_message . '</b></span><br><br>';
 }
-include("step$step.ihtml"); ?>
+include("step$step.ihtml"); //step1 till step4
+?>
 				</TD>
 <!-- END - content -->
 				<TD rowspan="3" ALIGN="right"><IMG SRC="../images/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>

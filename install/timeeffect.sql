@@ -13,7 +13,7 @@ CREATE TABLE `<%db_prefix%>auth` (
   PRIMARY KEY  (`id`),
   KEY `gids` (`gids`),
   KEY `username` (`username`,`password`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin', '', 1, '<%admin_user%>', '<%admin_password%>', '', 'Administrator', '', '', '');
 
@@ -27,7 +27,7 @@ CREATE TABLE `<%db_prefix%>customer` (
   `customer_name` varchar(64) NOT NULL default '',
   `customer_desc` text,
   `customer_budget` int(10) unsigned NOT NULL default '0',
-  `customer_budget_currency` enum('€','EUR','USD') NOT NULL default '€',
+  `customer_budget_currency` enum('$','EUR','USD') NOT NULL default '$',
   `customer_logo` varchar(255) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
@@ -38,43 +38,43 @@ CREATE TABLE `<%db_prefix%>customer` (
   KEY `user` (`user`),
   KEY `readforeignefforts` (`readforeignefforts`),
   FULLTEXT KEY `description` (`customer_desc`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 CREATE TABLE `<%db_prefix%>effort` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `gid` int(32) unsigned NOT NULL default '0',
   `access` varchar(9) NOT NULL default 'rw-rw-r--',
   `project_id` int(32) unsigned NOT NULL default '0',
-  `date` date NOT NULL default '0000-00-00',
+  `date` date NULL,
   `begin` time NOT NULL default '00:00:00',
   `end` time NOT NULL default '00:00:00',
   `description` text,
   `note` text,
-  `billed` date default NULL,
+  `billed` date NULL,
   `rate` decimal(10, 2) NOT NULL DEFAULT '0',
   `user` int(32) unsigned default NULL,
-  `last` timestamp(14) NOT NULL,
+  `last` timestamp NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`,`project_id`,`date`,`begin`,`end`,`billed`,`rate`,`user`),
   KEY `gid` (`gid`),
   KEY `access` (`access`),
   FULLTEXT KEY `note` (`note`,`description`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 CREATE TABLE `<%db_prefix%>gids` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `name` varchar(25) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 CREATE TABLE `<%db_prefix%>group` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `level` smallint(1) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO `<%db_prefix%>group` VALUES (1, 65535, 'admin');
@@ -92,8 +92,8 @@ CREATE TABLE `<%db_prefix%>project` (
   `project_name` varchar(64) NOT NULL default '',
   `project_desc` text,
   `project_budget` int(10) unsigned NOT NULL default '0',
-  `project_budget_currency` enum('€','EUR','USD') NOT NULL default '€',
-  `last` timestamp(14) NOT NULL,
+  `project_budget_currency` enum('$','EUR','USD') NOT NULL default '$',
+  `last` timestamp NOT NULL,
   `closed` enum('No','Yes') NOT NULL default 'No',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
@@ -102,15 +102,14 @@ CREATE TABLE `<%db_prefix%>project` (
   KEY `access` (`access`),
   KEY `user` (`user`),
   FULLTEXT KEY `description` (`project_desc`)
-) TYPE=MyISAM AUTO_INCREMENT=1;
+) ENGINE=MyISAM AUTO_INCREMENT=1;
 
 CREATE TABLE `<%db_prefix%>rate` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `customer_id` int(32) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
   `price` decimal(10, 2) NOT NULL DEFAULT '0',
-  `currency` enum('€','EUR','USD') NOT NULL default '€',
+  `currency` enum('$','EUR','USD') NOT NULL default '$',
   PRIMARY KEY  (`id`),
   KEY `id` (`id`,`customer_id`,`name`,`price`,`currency`)
-) TYPE=MyISAM AUTO_INCREMENT=1;
-
+) ENGINE=MyISAM AUTO_INCREMENT=1;

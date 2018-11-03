@@ -1,6 +1,10 @@
 <?php
 include_once('functions.inc.php');
 
+$a_buffer="";
+$sql_buffer="";
+$error_message="";
+
 if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	while(!feof($a_file)) {
 		$a_buffer .= fread($a_file, 4096);

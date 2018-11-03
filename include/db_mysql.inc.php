@@ -39,11 +39,16 @@ class DB_Sql {
   var $Link_ID  = 0;
   var $Query_ID = 0;
   
-
-
+  
+  
+  /* public: constructor */
+  function __construct($query = "") {
+    $this->query($query);
+  }
+  
   /* public: constructor */
   function DB_Sql($query = "") {
-      $this->query($query);
+    self::__construct();
   }
 
   /* public: some trivial reporting */
@@ -68,11 +73,12 @@ class DB_Sql {
       $Password = $this->Password;
       
     /* establish connection, select database */
-    if ( 0 == $this->Link_ID ) {
+    if ( empty($this->Link_ID) ) {
     
-      $this->Link_ID=mysql_pconnect($Host, $User, $Password);
+      $this->Link_ID=@mysqli_connect($Host, $User, $Password);
       if (!$this->Link_ID) {
-        $this->halt("pconnect($Host, $User, \$Password) failed.");
+        $this->Halt_On_Error="report";
+        $this->halt("connect($Host, $User, \$Password) failed.");
         return 0;
       }
 
@@ -115,8 +121,8 @@ class DB_Sql {
 
     $this->Query_ID = @mysql_query($Query_String,$this->Link_ID);
     $this->Row   = 0;
-    $this->Errno = mysql_errno();
-    $this->Error = mysql_error();
+    $this->Errno = mysqli_errno($this->Link_ID);
+    $this->Error = mysqli_error($this->Link_ID);
     if (!$this->Query_ID) {
       $this->halt("Invalid SQL: ".$Query_String);
     }
@@ -134,8 +140,8 @@ class DB_Sql {
 
     $this->Record = @mysql_fetch_array($this->Query_ID);
     $this->Row   += 1;
-    $this->Errno  = mysql_errno();
-    $this->Error  = mysql_error();
+    $this->Errno  = mysqli_errno($this->Link_ID);
+    $this->Error  = mysqli_error($this->Link_ID);
 
     $stat = is_array($this->Record);
     if (!$stat && $this->Auto_Free) {

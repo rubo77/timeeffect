@@ -12,7 +12,7 @@ if(!isset($db_host)) {
 	$db_host = 'localhost';
 }
 if(!isset($db_password)) {
-	$db_password = 'PfTe04';
+	$db_password = 'very_unsecure_timeeffect_PW1';
 }
 ?>
 				<b>TIMEEFFECT Installation - Step <?= $step ?></b><br><br>

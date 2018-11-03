@@ -1,13 +1,13 @@
 <?php
 $locale_info = localeconv();
 if(!isset($currency)) {
-	$currency = '€';
+	$currency = 'â‚¬';
 }
 if(!isset($decimal_point)) {
-	$decimal_point = $locale_info['decimal_point'];
+	$decimal_point = ',';
 }
 if(!isset($thousands_seperator)) {
-	$thousands_seperator = $locale_info['thousands_sep'];
+	$thousands_seperator = '.';
 }
 if($thousands_seperator == '') {
 	if($decimal_point == '.') {
@@ -52,6 +52,7 @@ if(!isset($admin_password)) {
 						<td class="FormField" width="300"><select class="FormField" name="language">
 <?php
 $dir = opendir('../include/languages');
+if(!isset($language)) $language="de";
 while($file = readdir($dir)) {
 	if(strstr($file, 'inc.php')) {
 		$lang = str_replace('.inc.php', '', $file);
@@ -76,7 +77,7 @@ while($file = readdir($dir)) {
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td class="FormFieldName" width="200">currency:</td>
-						<td class="FormFieldName"><input class="FormField" name="currency" value="<?= $currency ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="currency" value="<?= ($currency) ?>"></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>

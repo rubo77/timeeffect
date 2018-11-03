@@ -26,7 +26,7 @@ session_name('timeeffect');
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';
-	$_PJ_currency				= chr(128);
+	$_PJ_currency				= '€';
 
 	/*
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
@@ -34,7 +34,7 @@ session_name('timeeffect');
 	$_PJ_db_host		= 'localhost';
 	$_PJ_db_database	= 'timeeffect';
 	$_PJ_db_user		= 'timeeffect';
-	$_PJ_db_password	= 'PfTe04';
+	$_PJ_db_password	= 'very_unsecure_timeeffect_PW1';
 
 	/*
 	   define maximum session length in seconds. Users will be automatically logged of after this period.
@@ -102,6 +102,8 @@ session_name('timeeffect');
 	ini_set('include_path', $_PJ_include_path . '/pear/:./:' . $include_path);
 
 	require_once ('PEAR.php');
+	// let timeefect complain when any PEAR error occurs
+	PEAR::setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 
 	define('FPDF_FONTPATH', $_PJ_include_path . '/font/');
 
@@ -133,7 +135,19 @@ session_name('timeeffect');
 
 	$_PJ_budget_security_percentage		= 10;
 
-	$_PJ_day_counts = array( 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+	$_PJ_day_counts = array(
+							31,
+							29,
+							31,
+							30,
+							31,
+							30,
+							31,
+							31,
+							30,
+							31,
+							30,
+							31);
 
 	include_once($_PJ_include_path . '/database.inc.php');
 	include_once($_PJ_include_path . '/functions.inc.php');

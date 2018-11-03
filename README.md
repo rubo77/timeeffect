@@ -11,7 +11,7 @@ Furthermore you need a running a webserver with PHP 5 support.
 Before you actually install the TIMEEFFECT package you have to create a new database and a database user with
 SELECT, INSERT, UPDATE, DELETE rights on the created database within your MySQL system .
 By default the prepared database name is `timeffect`, the appropriate user
-is `timeeffect` with the password `PfTe04`. If you stick to those parameters you won't have to
+is `timeeffect` with the password `very_unsecure_timeeffect_PW1`. If you stick to those parameters you won't have to
 change the data during the installation of the system.
 
 ## 2.2	PHP

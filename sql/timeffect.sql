@@ -10,7 +10,7 @@
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `auth`
+# Tabellenstruktur fuer Tabelle `auth`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -32,10 +32,10 @@ CREATE TABLE `auth` (
   PRIMARY KEY  (`id`),
   KEY `gids` (`gids`),
   KEY `username` (`username`,`password`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `auth`
+# Daten fuer Tabelle `auth`
 #
 
 INSERT INTO `auth` VALUES (1, 'admin,agent', '', 1, '<%admin_user%>', '<%admin_password%>', 'Administrator', '', '', '', '');
@@ -43,7 +43,7 @@ INSERT INTO `auth` VALUES (1, 'admin,agent', '', 1, '<%admin_user%>', '<%admin_p
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `customer`
+# Tabellenstruktur fuer Tabelle `customer`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -60,7 +60,7 @@ CREATE TABLE `customer` (
   `customer_name` varchar(64) NOT NULL default '',
   `customer_desc` text,
   `customer_budget` int(10) unsigned NOT NULL default '0',
-  `customer_budget_currency` enum('€','EUR','USD') NOT NULL default '€',
+  `customer_budget_currency` enum('$','EUR','USD') NOT NULL default '$',
   `customer_logo` varchar(255) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
@@ -71,16 +71,16 @@ CREATE TABLE `customer` (
   KEY `user` (`user`),
   KEY `readforeignefforts` (`readforeignefforts`),
   FULLTEXT KEY `description` (`customer_desc`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `customer`
+# Daten fuer Tabelle `customer`
 #
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `effort`
+# Tabellenstruktur fuer Tabelle `effort`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -92,31 +92,31 @@ CREATE TABLE `effort` (
   `gid` int(32) unsigned NOT NULL default '0',
   `access` varchar(9) NOT NULL default 'rw-rw-r--',
   `project_id` int(32) unsigned NOT NULL default '0',
-  `date` date NOT NULL default '0000-00-00',
+  `date` date NULL,
   `begin` time NOT NULL default '00:00:00',
   `end` time NOT NULL default '00:00:00',
   `description` text,
   `note` text,
-  `billed` date default NULL,
-  `rate` float NOT NULL default '0',
+  `billed` date NULL,
+  `rate` decimal(10, 2) NOT NULL default '0',
   `user` int(32) unsigned default NULL,
-  `last` timestamp(14) NOT NULL,
+  `last` timestamp NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `id_2` (`id`,`project_id`,`date`,`begin`,`end`,`billed`,`rate`,`user`),
   KEY `gid` (`gid`),
   KEY `access` (`access`),
   FULLTEXT KEY `note` (`note`,`description`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `effort`
+# Daten fuer Tabelle `effort`
 #
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `gids`
+# Tabellenstruktur fuer Tabelle `gids`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -128,16 +128,16 @@ CREATE TABLE `gids` (
   `name` varchar(25) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `gids`
+# Daten fuer Tabelle `gids`
 #
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `group`
+# Tabellenstruktur fuer Tabelle `group`
 #
 # Erzeugt am: 22. Oktober 2004 um 15:49
 # Aktualisiert am: 22. Oktober 2004 um 15:49
@@ -149,10 +149,10 @@ CREATE TABLE `group` (
   `level` smallint(1) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
   PRIMARY KEY  (`id`)
-) TYPE=MyISAM AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM AUTO_INCREMENT=4 ;
 
 #
-# Daten für Tabelle `group`
+# Daten fuer Tabelle `group`
 #
 
 INSERT INTO `group` VALUES (1, 65535, 'admin');
@@ -161,7 +161,7 @@ INSERT INTO `group` VALUES (3, 4, 'client');
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `project`
+# Tabellenstruktur fuer Tabelle `project`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -177,8 +177,8 @@ CREATE TABLE `project` (
   `project_name` varchar(64) NOT NULL default '',
   `project_desc` text,
   `project_budget` int(10) unsigned NOT NULL default '0',
-  `project_budget_currency` enum('€','EUR','USD') NOT NULL default '€',
-  `last` timestamp(14) NOT NULL,
+  `project_budget_currency` enum('$','EUR','USD') NOT NULL default '$',
+  `last` timestamp(6) NOT NULL,
   `closed` enum('No','Yes') NOT NULL default 'No',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
@@ -187,16 +187,16 @@ CREATE TABLE `project` (
   KEY `access` (`access`),
   KEY `user` (`user`),
   FULLTEXT KEY `description` (`project_desc`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `project`
+# Daten fuer Tabelle `project`
 #
 
 # --------------------------------------------------------
 
 #
-# Tabellenstruktur für Tabelle `rate`
+# Tabellenstruktur fuer Tabelle `rate`
 #
 # Erzeugt am: 23. Oktober 2004 um 20:37
 # Aktualisiert am: 23. Oktober 2004 um 20:37
@@ -207,14 +207,12 @@ CREATE TABLE `rate` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `customer_id` int(32) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
-  `price` float NOT NULL default '0',
-  `currency` enum('€','EUR','USD') NOT NULL default '€',
+  `price` decimal(10, 2) NOT NULL default '0',
+  `currency` enum('$','EUR','USD') NOT NULL default '$',
   PRIMARY KEY  (`id`),
   KEY `id` (`id`,`customer_id`,`name`,`price`,`currency`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #
-# Daten für Tabelle `rate`
+# Daten fuer Tabelle `rate`
 #
-
-

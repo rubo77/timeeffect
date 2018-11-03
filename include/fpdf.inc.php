@@ -1414,7 +1414,7 @@ protected function _readint($f)
 	return $a['i'];
 }
 
-protected function _parsegif(!empty($file))
+protected function _parsegif($file)
 {
 	// Extract info from a GIF file (via PNG conversion)
 	if(!function_exists('imagepng'))

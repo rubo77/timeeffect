@@ -1,15 +1,9 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
-	/* check whether register_globals is on or not */
-	if(!((bool) ini_get('register_globals'))) {
-		print "<font color=red><b>Please set the directive 'register_globals' in your php.ini to 'On'</b></font>";
-		exit;
-	}
-	@session_name('timeeffect');
-	@session_start();
-	session_register('expanded');
-	session_register('shown');
-	session_register('_PJ_language');
+
+require_once('fix_php7.php');
+
+session_name('timeeffect');
 
 /* ******************************************************** */
 /* customizable variables - START                           */
@@ -201,4 +195,3 @@
  	} else if(isset($sbe) && $sbe == 0) {
  		unset($shown['be']);
  	}
-?>

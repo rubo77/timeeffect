@@ -68,7 +68,7 @@
 	$GLOBALS['_PJ_strings']['end_date']					= 'End-Datum';
 	$GLOBALS['_PJ_strings']['error']					= 'FEHLER';
 	$GLOBALS['_PJ_strings']['error_access']				= 'Sie haben nicht die notwendigen Benutzerrechte, um diese Aktion auszuf&uuml;hren!!';
-	$GLOBALS['_PJ_strings']['error_fopen']				= 'Das Öffnen der Datei ist fehlgeschlagen!';
+	$GLOBALS['_PJ_strings']['error_fopen']				= 'Das oeffnen der Datei ist fehlgeschlagen!';
 	$GLOBALS['_PJ_strings']['error_gids_empty']			= 'Bitte w&auml;hlen Sie mindestens eine Gruppe f&uuml;r diesen Benutzer!';
 	$GLOBALS['_PJ_strings']['error_group_empty']		= 'Sie m&uuml;ssen einen Gruppennamen eingeben!';
 	$GLOBALS['_PJ_strings']['error_group_exists']		= 'Der eingegebene Gruppenname existiert bereits!';
@@ -172,7 +172,7 @@
 	$GLOBALS['_PJ_strings']['telephone']				= 'Telefon';
 	$GLOBALS['_PJ_strings']['time']						= $GLOBALS['_PJ_strings']['from_to'];
 	$GLOBALS['_PJ_strings']['time_of_beginning']		= 'Startzeit';
-	$GLOBALS['_PJ_strings']['translations']				= '<b>Übersetzungsteam</b><br>&nbsp;&nbsp;&nbsp;Franz&ouml;sisch:&nbsp;Yann Laviolette';
+	$GLOBALS['_PJ_strings']['translations']				= '<b>Uebersetzungsteam</b><br>&nbsp;&nbsp;&nbsp;Franz&ouml;sisch:&nbsp;Yann Laviolette';
 	$GLOBALS['_PJ_strings']['usebilled']				= 'berechnete Aufw&auml;nde verwenden';
 	$GLOBALS['_PJ_strings']['user']						= 'Benutzer';
 	$GLOBALS['_PJ_strings']['user_basic_data']			= 'Benutzerdaten';
@@ -251,22 +251,9 @@
 	$GLOBALS['_PJ_strings']['pdf_table_sum_fg_r']		= 'Schrift-Farbe Summenzeile (rot, gr&uuml;n, blau zwischen 0 und 255)';
 	$GLOBALS['_PJ_strings']['pdf_top_margin']			= 'Seitenrand oben (in pt)';
 
-	$_PJ_months = array ('', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
+	$_PJ_months = array ('', 'Januar', 'Februar', 'M'.chr(132).'rz', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember');
 
-	$_PJ_months_abr = array ('',
-						'Jan',
-						'Feb',
-						'Mär',
-						'Apr',
-						'Mai',
-						'Jun',
-						'Jul',
-						'Aug',
-						'Sep',
-						'Okt',
-						'Nov',
-						'Dez'
-						);
+	$_PJ_months_abr = array ('', 'Jan', 'Feb', 'M'.chr(132).'r', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez' );
 
 	$_PJ_permission_names	= array (
 							 'admin'		=> 'Administrator',
@@ -311,4 +298,3 @@
 
 	$_PJ_format_date		= 'd.m.Y';
 	$_PJ_format_datetime	= 'd.m.Y, H:i:s';
-?>
