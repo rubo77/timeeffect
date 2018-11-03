@@ -1,14 +1,25 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
-/* check whether register_globals is on or not */
-#if(!((bool) ini_get('register_globals'))) {
+
+/* *********************************************************
+	 uncomment this block to see error messages throuout the app
+*/
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+/* ********************************************************* */
+
+require_once('fix_mysql.inc.php');
+
 if(!empty($_POST)) foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
 if(!empty($_GET)) foreach($_GET as $get_k=>$get_v) $$get_k=$get_v;
 if(!empty($_SESSION)) foreach($_SESSION as $sess_k=>$sess_v) $$get_k=$get_v;
-#}
+
 # on new apache installations everything is stored in $_SERVER, so
 #this is the fix for that:
 if (isset($_SERVER)) foreach($_SERVER as $s_k=>$s_v) $$s_k=$s_v;
+
+$PHP_SELF=$_SERVER['PHP_SELF'];
 
 session_name('timeeffect');
 	#session_start();
@@ -113,8 +124,6 @@ session_name('timeeffect');
 	ini_set('include_path', $_PJ_include_path . '/pear/:./:' . $include_path);
 
 	require_once ('PEAR.php');
-	// let timeefect complain when any PEAR error occurs
-	PEAR::setErrorHandling(PEAR_ERROR_TRIGGER, E_USER_WARNING);
 
 	define('FPDF_FONTPATH', $_PJ_include_path . '/font/');
 
@@ -138,7 +147,7 @@ session_name('timeeffect');
 	$_PJ_password_dummy	= 'nOcHaNgEs';
 	$_PJ_php_suffix		= 'php';
 
-	if(!$last) {
+	if(empty($last)) {
 		$_PJ_last = date("YmdHis", time()-2*86400);
 	} else {
 		$_PJ_last = date("YmdHis", time()-$last*86400);

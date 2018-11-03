@@ -37,9 +37,6 @@ class PJPDF extends FPDF {
 				default:
 					$logo_left	= $this->w/2 - $GLOBALS['_PJ_pdf_logo_width']/2;
 					break;
-				default:
-					$logo_left	= $GLOBALS['_PJ_pdf_logo_left'];
-					break;
 			}
 			$this->Image($GLOBALS['_PJ_root'] . '/images/' . $GLOBALS['_PJ_pdf_logo'],
 						 $logo_left,
