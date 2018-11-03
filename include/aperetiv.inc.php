@@ -1,15 +1,20 @@
 <?php
 /* vim: set expandtab shiftwidth=4 softtabstop=4 tabstop=4: */
-	/* check whether register_globals is on or not */
-	if(!((bool) ini_get('register_globals'))) {
-		print "<font color=red><b>Please set the directive 'register_globals' in your php.ini to 'On'</b></font>";
-		exit;
-	}
-	@session_name('timeeffect');
-	@session_start();
-	session_register('expanded');
-	session_register('shown');
-	session_register('_PJ_language');
+/* check whether register_globals is on or not */
+#if(!((bool) ini_get('register_globals'))) {
+foreach($_POST as $p_k=>$p_v) $$p_k=$p_v;
+foreach($_GET as $get_k=>$get_v) $$get_k=$get_v;
+foreach($_SESSION as $sess_k=>$sess_v) $$get_k=$get_v;
+#}
+# on new apache installations everything is stored in $_SERVER, so
+#this is the fix for that:
+if (isset($_SERVER)) foreach($_SERVER as $s_k=>$s_v) $$s_k=$s_v;
+
+session_name('timeeffect');
+	#session_start();
+	#session_register('expanded');
+	#session_register('shown');
+	#session_register('_PJ_language');
 
 /* ******************************************************** */
 /* customizable variables - START                           */
@@ -32,7 +37,7 @@
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';
-	$_PJ_currency				= '€';
+	$_PJ_currency				= 'EUR';
 
 	/*
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
@@ -46,7 +51,7 @@
 	   define maximum session length in seconds. Users will be automatically logged of after this period.
 	   If set to 0 automated logout will be disabled.
 	*/
-	$_PJ_session_length			= 0;
+	$_PJ_session_length			= 3600;
 
 	/*
 	   define database table prefix for TIMEEFFECT.
