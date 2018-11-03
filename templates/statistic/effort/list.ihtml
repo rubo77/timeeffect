@@ -37,7 +37,7 @@ if($customer->count()) {
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['agent'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['date'] ?></TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['from_to'] ?></TH>
-						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workingdays'] ?></TH>
+						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['workingdays'] ?> (h)</TH>
 						<TH CLASS="listNumeric"><?= $GLOBALS['_PJ_strings']['costs'] ?></TH>
 					</TR>
 <?php
@@ -55,9 +55,9 @@ if($customer->count()) {
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
 					</TR><TR HEIGHT="25">
 						<TD COLSPAN="3"></TD>
-						<TD CLASS="listSum" ALIGN="right"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true); ?></TD>
-						<TD CLASS="listSumNumeric"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+						<TD CLASS="listSum" ALIGN="right" valign="top"><?= $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
+						<TD CLASS="listSumNumeric" valign="top"><?php if($sum_effort_days) print formatNumber($sum_effort_days, true).'<br>('.formatNumber($sum_effort_days*8, true).' h)'; ?></TD>
+						<TD CLASS="listSumNumeric" valign="top"><?php if($sum_effort_costs) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 					</TR><TR>
 						<TD COLSPAN="10"><IMG SRC="<?= $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>

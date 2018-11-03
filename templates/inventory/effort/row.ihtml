@@ -8,12 +8,17 @@
 					<TR HEIGHT="25">
 						<TD CLASS="list<?= $rowclass ?>" WIDTH="35%">&nbsp;<?php if($effort->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?edit=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><?php } ?><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></A></TD>
 						<TD CLASS="list<?= $rowclass ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
-						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?= formatNumber($effort->giveValue('hours'), true) ?></TD>
+						<TD CLASS="listDetailNumeric<?= $rowclass ?>">&nbsp;<?
+#echo formatNumber(floor($effort->giveValue('hours')), true)
+echo (floor($effort->giveValue('hours')))."h, ".sprintf("%2.0f",round( ($effort->giveValue('hours')-floor($effort->giveValue('hours') ))*60))." min"; ?>&nbsp;&nbsp;
+(<?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= 
+$effort->formatTime($effort->giveValue('end'), "H:i"); ?>)</TD>
 						<TD CLASS="listDetailNumeric<?= $rowclass ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
 						<TD CLASS="list<?= $rowclass ?>"><?php
 if($effort->checkUserAccess('write') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id')) && ($effort->giveValue('billed') == '') && ($effort->giveValue('hours') == 0)) {
-?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?stop=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/stop.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['stop'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['stop'] ?></A><?php
-} else if($project->checkUserAccess('new') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id'))) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?cont=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/continue.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['continue'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['continue'] ?></A><?php
+	?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?stop=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/stop.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['stop'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['stop'] ?></A><?php
+} else if($project->checkUserAccess('new') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id'))) { 
+	?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?cont=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/continue.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['continue'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['continue'] ?></A><?php
 } ?>&nbsp;</TD>
 						<TD CLASS="list<?= $rowclass ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<?= $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?= $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?>&nbsp;</TD>
 					</TR>
