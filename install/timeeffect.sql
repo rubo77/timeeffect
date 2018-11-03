@@ -51,7 +51,7 @@ CREATE TABLE `<%db_prefix%>effort` (
   `description` text,
   `note` text,
   `billed` date default NULL,
-  `rate` float NOT NULL default '0',
+  `rate` decimal(10, 2) NOT NULL DEFAULT '0',
   `user` int(32) unsigned default NULL,
   `last` timestamp(14) NOT NULL,
   PRIMARY KEY  (`id`),
@@ -102,15 +102,15 @@ CREATE TABLE `<%db_prefix%>project` (
   KEY `access` (`access`),
   KEY `user` (`user`),
   FULLTEXT KEY `description` (`project_desc`)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM AUTO_INCREMENT=1;
 
 CREATE TABLE `<%db_prefix%>rate` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `customer_id` int(32) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
-  `price` float NOT NULL default '0',
-  `currency` enum('€','EUR','USD') NOT NULL,
+  `price` decimal(10, 2) NOT NULL DEFAULT '0',
+  `currency` enum('€','EUR','USD') NOT NULL default '€',
   PRIMARY KEY  (`id`),
   KEY `id` (`id`,`customer_id`,`name`,`price`,`currency`)
-) TYPE=MyISAM;
+) TYPE=MyISAM AUTO_INCREMENT=1;
 

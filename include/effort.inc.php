@@ -241,8 +241,8 @@
 			list($year, $month, $day) = explode("-", $this->data['date']);
 			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
 			list($e_hour, $e_minute, $e_second) = explode(":", $this->data['end']);
-			$b_time = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
-			$e_time = mktime($e_hour, $e_minute, $e_second, $month, $day, $year);
+			$b_time = mktime($b_hour+1-1, $b_minute, $b_second, $month, $day, $year+1-1);
+			$e_time = mktime($e_hour+1-1, $e_minute, $e_second, $month, $day, $year+1-1);
 
 			if($this->data['billed'] != '') {
 				$this->data['billed_seconds']	= ($e_time - $b_time);
@@ -266,8 +266,8 @@
 			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
 			list($e_hour, $e_minute, $e_second) = explode(":", $this->data['end']);
 
-			$b_timestamp = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
-			$e_timestamp = mktime($e_hour, $e_minute, $e_second, $month, $day, $year);
+			$b_timestamp = mktime($b_hour+1-1, $b_minute, $b_second, $month, $day, $year+1-1);
+			$e_timestamp = mktime($e_hour+1-1, $e_minute, $e_second, $month, $day, $year+1-1);
 
 			if((date("Y", $b_timestamp) <= 1970) ||
 			   (date("Y", $e_timestamp) <= 1970	))
