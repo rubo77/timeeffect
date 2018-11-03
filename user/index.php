@@ -12,7 +12,7 @@
 		exit;
 	}
 
-	if(intval($uid)) {
+	if(isset($uid) && intval($uid)) {
 		$user = new User($uid);
 	}
 

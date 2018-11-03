@@ -85,9 +85,9 @@ else return null;
 			$this->db->query($query);
 
 			while($this->db->next_record()) {
-				if($this->data['group_names']) {
+				if(isset($this->data['group_names'])) {
 					$this->data['group_names'] .= ', ';
-				}
+				}else $this->data['group_names']='';
 				$this->data['group_names'] .= $this->db->f('name');
 			}
 		}
@@ -95,9 +95,9 @@ else return null;
 		function loadPermissionNames() {
 			$user_perms = explode(',', $this->giveValue('permissions'));
 			foreach($user_perms as $user_perm) {
-				if($this->data['perm_names']) {
+				if(!empty($this->data['perm_names'])) {
 					$this->data['perm_names'] .= ', ';
-				}
+				} else $this->data['perm_names']='';
 				$this->data['perm_names'] .= $GLOBALS['_PJ_permission_names'][$user_perm];
 			}
 		}
