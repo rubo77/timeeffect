@@ -26,5 +26,5 @@ is located under the document root of your web server.
 Now open the installation script `http://www.somedoain.com/timeeffect/install/` in your web-browser.
 
 # 4. Customizing
-After Installation you should edit the file `aperetiv.inc.php` which is located in the directory `include`.
+After Installation you should edit the file `config.inc.php` which is located in the directory `include`.
 Enter the data that matches your local installation.

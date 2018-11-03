@@ -1,9 +1,9 @@
 				<b>TIMEEFFECT Installation - Step <? if(!empty($step)) echo $step; ?></b><br><br>
 				Please check the entered values and press 'finish &gt;&gt;'<br>
 <?php
-	if(file_exists('../include/aperetiv.inc.php')) {
+	if(file_exists('../include/config.inc.php')) {
 ?>
-				<span class="warning"><b>Make sure the file '<?= dirname($SCRIPT_FILENAME) ?>/include/aperetiv.inc.php'<br>
+				<span class="warning"><b>Make sure the file '<?= dirname($SCRIPT_FILENAME) ?>/include/config.inc.php'<br>
 				is writeable by the web server process!</b></span>
 <?php
 } else {

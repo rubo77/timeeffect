@@ -1,6 +1,6 @@
 <?php
 	$no_login = 1;
-	include_once("include/aperetiv.inc.php");
+	include_once("include/config.inc.php");
 ?>
 <HTML>
 <HEAD>

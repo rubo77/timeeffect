@@ -10,7 +10,7 @@ UPDATE:
 
 Beta 1.1.g and 1.1.h:
 simply make a backup copy of the files
-	'include/aperetiv.inc.php'
+	'include/config.inc.php'
 and 
 	'include/layout.inc.php'
 Untar the TIMEEFFECT package to the appropriate directory.
@@ -34,7 +34,7 @@ UPDATE:
 
 1.1.0, beta 1.1.g and beta 1.1.h:
 simply make a backup copy of the files
-	'include/aperetiv.inc.php'
+	'include/config.inc.php'
 and 
 	'include/layout.inc.php'
 Untar the TIMEEFFECT package to the appropriate directory.
@@ -81,7 +81,7 @@ A.
 B.
  - download the file timeeffect.PEAR.tgz. Copy it to the TIMEEFFECT
    include directory (timeeffect/include) untar it.
- - edit the file 'aperetiv.inc.php' and add the following changes
+ - edit the file 'config.inc.php' and add the following changes
    (where '-' means remove the appropriate lines and '+' means add the lines):
 ```
 *** 71,87 ****
@@ -147,7 +147,7 @@ B.
    install directory (e.g. if your TIMEEFFECT is located in 'srv/www/htdocs/timeeffect'
    copy the file to '/srv/www/htdocs')
  - untar the file.
- - copy your local copy of 'timeeffect/include/aperetiv.inc.php' to 'timeeffect_beta_1_1_c/include'.
+ - copy your local copy of 'timeeffect/include/config.inc.php' to 'timeeffect_beta_1_1_c/include'.
  - remove the sub folder 'timeeffect_beta_1_1_c/install'.
  - the new release is located in the new subfolder 'timeeffect_beta_1_1_c'. To restore your old system
    rename or remove the subfolder where your old installtion was located. Then rename the new subfolder
@@ -179,7 +179,7 @@ B. updating all files (recommended)
    install directory (e.g. if your TIMEEFFECT is located in 'srv/www/htdocs/timeeffect'
    copy the file to '/srv/www/htdocs')
  - untar the file.
- - copy your local copy of 'timeeffect/include/aperetiv.inc.php' and 'timeeffect/include/layout.inc.php' to
+ - copy your local copy of 'timeeffect/include/config.inc.php' and 'timeeffect/include/layout.inc.php' to
    'timeeffect_beta_1_1_d/include'.
  - remove the sub folder 'timeeffect_beta_1_1_d/install'.
  - the new release is located in the new subfolder 'timeeffect_beta_1_1_d'. To restore your old system
@@ -231,7 +231,7 @@ UPDATE:
 
 Beta 1.1.g:
 simply make a backup copy of the files
-	'include/aperetiv.inc.php'
+	'include/config.inc.php'
 and 
 	'include/layout.inc.php'
 Untar the TIMEEFFECT package to the appropriate directory and restore the backup copies.

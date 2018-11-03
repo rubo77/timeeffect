@@ -5,7 +5,7 @@ $a_buffer="";
 $sql_buffer="";
 $error_message="";
 
-if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
+if($a_file = @fopen('config.inc.php-dist', 'r')) {
 	while(!feof($a_file)) {
 		$a_buffer .= fread($a_file, 4096);
 	}
@@ -23,14 +23,14 @@ if($a_file = @fopen('aperetiv.inc.php-dist', 'r')) {
 	$a_buffer = str_replace('<%session_length%>', $session_length, $a_buffer);
 	$a_buffer = str_replace('<%http_root%>', $http_root, $a_buffer);
 	$a_buffer = str_replace('<%allow_delete%>', $allow_delete, $a_buffer);
-	if($a_file = @fopen('../include/aperetiv.inc.php', 'w')) {
+	if($a_file = @fopen('../include/config.inc.php', 'w')) {
 		fputs($a_file, $a_buffer);
 		@fclose($a_file);
 	} else {
-		$error_message .= 'opening of file \'aperetiv.inc.php\' for writing failed!<br>';
+		$error_message .= 'opening of file \'config.inc.php\' for writing failed!<br>';
 	}
 } else {
-	$error_message .= 'opening of file \'aperetiv.inc.php-dist\' failed!<br>';
+	$error_message .= 'opening of file \'config.inc.php-dist\' failed!<br>';
 }
 
 if(!empty($error_message)) {
@@ -74,7 +74,7 @@ if(!empty($error_message)) {
 				<b>TIMEEFFECT Installation - finished</b><br><br>
 				The installation process has been successfully finished.<br><br>
 				<b>NOTE:</b> For security reasons please remove the 'install' directory and change the access rights for
-				your web server process of the file 'include/aperetiv.inc.php' to read only.<br><br>
+				your web server process of the file 'include/config.inc.php' to read only.<br><br>
 				<b>NOTE:</b> Please make sure to set the access rights to file 'include/pdflayout.inc.php' to writeable to your
 				web server process!<br><br>
 				You can access your TIMEEFFECT installation <a href="../index.html"><b>>> here</b></a>;

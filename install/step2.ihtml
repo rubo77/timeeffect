@@ -77,7 +77,7 @@ while($file = readdir($dir)) {
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td class="FormFieldName" width="200">currency:</td>
-						<td class="FormFieldName"><input class="FormField" name="currency" value="<?= ($currency) ?>"></td>
+						<td class="FormFieldName"><input class="FormField" name="currency" value="<?= ($currency) ?>"> ('$', 'USD' or 'EUR')</td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
