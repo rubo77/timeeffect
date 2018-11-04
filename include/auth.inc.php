@@ -15,7 +15,7 @@
 
 		function giveValue($key) {
 			if(isset($this->data[$key])) return $this->data[$key];
-else return null;
+			else return null;
 		}
 
 		function checkPermission($permission) {
@@ -43,7 +43,7 @@ else return null;
 
 			$r = 0;
 			reset($permissions);
-			while(list($key, $val) = @each($permissions)) {
+			foreach($permissions as $val) {
 				if (!isset($perms[$val])) {
 					return array(false, 0);
 				}
@@ -152,16 +152,25 @@ else return null;
 				$this->gids[$row['id']] = $row['name'];
 			}
 		}
-
-		static function assembleFormFields($array = NULL, $name_default = NULL, $excludes = NULL) {
-			if(!is_array($array)) {
-				$array = array();
+		
+		/**
+		 * creates a string with hidden input fields from an array of input names and content values
+		 * if the array has more dimensions, start a recursion
+		 * 
+		 * @param  array $inputfields        of name and content
+		 * @param  string $name_default if set, overrides the names of the array and creates an array of this name
+		 * @param  array $excludes     if set, exclude those elements from $inputfields
+		 * @return string with HTML form
+		 */
+		static function assembleFormFields($inputfields = NULL, $name_default = NULL, $excludes = NULL) {
+			if(!is_array($inputfields)) {
+				$inputfields = array();
 				if(is_array($_POST)) {
 					// put any POSTed content into link string
-					$array = $_POST;
+					$inputfields = $_POST;
 				}
 				if(is_array($_GET)) {
-					$array = array_merge($array, $_GET);
+					$inputfields = array_merge($inputfields, $_GET);
 				}
 			}
 
@@ -169,7 +178,7 @@ else return null;
 			if(is_array($excludes)) {
 				$e_count = count($excludes);
 				for($e = 0; $e < $e_count; $e++) {
-					unset($array[$excludes[$e]]);
+					unset($inputfields[$excludes[$e]]);
 				}
 			}
 
@@ -177,7 +186,7 @@ else return null;
 			$form_string = '';
 			$i_count = 0;
 			
-			while(list($name, $content) = @each($array)) {
+			foreach($inputfields as $name => $content) {
 				// if $content is array
 				if(is_array($content)) {
 					// start recursion

@@ -9,10 +9,10 @@
 		if($full_budget > 0) {
 			$remaining_budget = $full_budget - $projects->giveValue('costs');
 		}
-		$sum_customer_costs				+= $costs;
-		$sum_customer_days				+= $days;
-		$sum_customer_full_budget		+= $full_budget;
-		$sum_customer_remaining_budget	+= $remaining_budget;
+		@$sum_customer_costs				+= $costs;
+		@$sum_customer_days				+= $days;
+		@$sum_customer_full_budget		+= $full_budget;
+		@$sum_customer_remaining_budget	+= $remaining_budget;
 ?>
 	<TR>
 		<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0" ALIGN="absmiddle"></TD>

@@ -36,7 +36,7 @@
 			while($this->__db->next_record()) {
 				if(!empty($cids)) {
 					$cids .= ',';
-				}
+				} else $cids='';
 				$cids .= $this->__db->f('id');
 			}
 			if(empty($cids)) {
@@ -46,7 +46,7 @@
 			while($this->__db->next_record()) {
 				if(!empty($pids)) {
 					$pids .= ',';
-				}
+				} else $pids='';
 				$pids .= $this->__db->f('id');
 			}
 			if(empty($pids)) {
@@ -108,6 +108,7 @@
 			$this->db = new Database;
 			$this->showBilled($show_billed);
 
+			$access_query='';
 			if(!$user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
