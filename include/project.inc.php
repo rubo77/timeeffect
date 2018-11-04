@@ -22,6 +22,7 @@
 			$this->db = new Database;
 			$this->showClosed($show_closed);
 
+			$access_query='';
 			if(!$user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
@@ -33,6 +34,7 @@
 			}
 
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'];
+			$sql_limit='';
 			if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 				$query .= " WHERE customer_id = '" . $customer->giveValue('id') . "'";
 				$order = " ORDER BY closed, project_name";
@@ -70,22 +72,22 @@
 				$this->projects[] = new Project($customer, $user, $this->db->Record);
 				$this->project_count++;
 				$project = $this->projects[$this->project_count-1];
-				$this->data['seconds']			+= $project->giveValue('seconds');
-				$this->data['minutes']			+= $project->giveValue('minutes');
-				$this->data['hours']			+= $project->giveValue('hours');
-				$this->data['days']				+= $project->giveValue('days');
-				$this->data['billed_seconds']	+= $project->giveValue('billed_seconds');
-				$this->data['billed_minutes']	+= $project->giveValue('billed_minutes');
-				$this->data['billed_hours']		+= $project->giveValue('billed_hours');
-				$this->data['billed_days']		+= $project->giveValue('billed_days');
+				@$this->data['seconds']			+= $project->giveValue('seconds');
+				@$this->data['minutes']			+= $project->giveValue('minutes');
+				@$this->data['hours']			+= $project->giveValue('hours');
+				@$this->data['days']				+= $project->giveValue('days');
+				@$this->data['billed_seconds']	+= $project->giveValue('billed_seconds');
+				@$this->data['billed_minutes']	+= $project->giveValue('billed_minutes');
+				@$this->data['billed_hours']		+= $project->giveValue('billed_hours');
+				@$this->data['billed_days']		+= $project->giveValue('billed_days');
 				if($project->giveValue('project_budget')) {
-					$this->data['budget']				+= $project->giveValue('project_budget');
-					$this->data['remaining_budget']		+= ($project->giveValue('project_budget')-$project->giveValue('costs'));
-					$this->data['costs_within_budget']	+= $project->giveValue('costs');
+					@$this->data['budget']				+= $project->giveValue('project_budget');
+					@$this->data['remaining_budget']		+= ($project->giveValue('project_budget')-$project->giveValue('costs'));
+					@$this->data['costs_within_budget']	+= $project->giveValue('costs');
 				} else {
-					$this->data['additional_costs']		+= $project->giveValue('costs');
+					@$this->data['additional_costs']		+= $project->giveValue('costs');
 				}
-				$this->data['costs']			+= $project->giveValue('costs');
+				@$this->data['costs']			+= $project->giveValue('costs');
 			}
 		}
 
@@ -182,15 +184,15 @@ else return null;
 			$effort_list	= new EffortList($this->customer, $this, $this->user);
 			while($effort_list->nextEffort()) {
 				$effort = $effort_list->giveEffort();
-				$this->data['seconds']			+= $effort->giveValue('seconds');
-				$this->data['minutes']			+= $effort->giveValue('minutes');
-				$this->data['hours']			+= $effort->giveValue('hours');
-				$this->data['days']				+= $effort->giveValue('days');
-				$this->data['billed_seconds']	+= $effort->giveValue('billed_seconds');
-				$this->data['billed_minutes']	+= $effort->giveValue('billed_minutes');
-				$this->data['billed_hours']		+= $effort->giveValue('billed_hours');
-				$this->data['billed_days']		+= $effort->giveValue('billed_days');
-				$this->data['costs']			+= $effort->giveValue('hours') * $effort->giveValue('rate');
+				@$this->data['seconds']			+= $effort->giveValue('seconds');
+				@$this->data['minutes']			+= $effort->giveValue('minutes');
+				@$this->data['hours']			+= $effort->giveValue('hours');
+				@$this->data['days']				+= $effort->giveValue('days');
+				@$this->data['billed_seconds']	+= $effort->giveValue('billed_seconds');
+				@$this->data['billed_minutes']	+= $effort->giveValue('billed_minutes');
+				@$this->data['billed_hours']		+= $effort->giveValue('billed_hours');
+				@$this->data['billed_days']		+= $effort->giveValue('billed_days');
+				@$this->data['costs']			+= $effort->giveValue('hours') * $effort->giveValue('rate');
 			}
 		}
 
