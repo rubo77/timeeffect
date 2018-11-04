@@ -33,3 +33,7 @@ Then open the installation script `https://www.yourdomain.com/timeeffect/install
 
 # 4. Customizing
 After Installation you can further edit the file `config.inc.php` which is located in the directory `include`.
+
+-----
+
+mported from https://sourceforge.net/projects/timeeffect/ with - https://gist.github.com/rubo77/8f22193cf940837d000a996c7132dae0
