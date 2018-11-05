@@ -9,11 +9,11 @@
 		<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>" WIDTH="35%"><?php
-		if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
-			if(($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all'])) {
-		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&cop=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+		if($project->count(@$GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
+			if((!empty($expanded['pid'][$project->giveValue('id')]) || !empty($expanded['pid']['all']))) {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&cop=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
-		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid&exp=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&exp=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			}
 		} else {
 		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
@@ -22,7 +22,7 @@
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($project->checkUserAccess('new')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['create'])) echo $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['create'])) echo $GLOBALS['_PJ_strings']['create'] ?></A><?php } ?></TD>
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php
-if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
+if($project->count(@$GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
 ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/list.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['overview'])) echo $GLOBALS['_PJ_strings']['overview'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['overview'])) echo $GLOBALS['_PJ_strings']['overview'] ?></A><?php
 } else {
 ?>&nbsp;<?php
@@ -31,7 +31,7 @@ if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($project->checkUserAccess('write') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&cid=$cid&pid=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR><?php
-	if(isset($expanded) && ($expanded['pid'][$project->giveValue('id')] || $expanded['pid']['all'])) {
+	if(isset($expanded) && (!empty($expanded['pid'][$project->giveValue('id')]) || !empty($expanded['pid']['all']))) {
 		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();

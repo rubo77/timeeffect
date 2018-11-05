@@ -36,13 +36,13 @@
 			</TR><TR>
 				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<? if(!empty($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
 			</TR><TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 		print $customer->giveValue('customer_name');
 		?></A>&nbsp;</TD>
 			</TR><TR>
 				<TD><?php
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 		print $project->giveValue('project_name');
 		?></A>&nbsp;</TD>
 			</TR><?php
@@ -67,7 +67,7 @@
 		}?>
 		</TABLE></TD>
 	</TR><TR>
-		<td VALIGN="bottom" CLASS="leftNavi" align="center"><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><br><br><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

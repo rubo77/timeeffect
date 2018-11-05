@@ -20,9 +20,9 @@
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php
 		if($customer->count() && $customer->checkUserAccess('read')) {
 			if(isset($expanded) && ($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all'])) {
-		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
-		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=$cid&pid=$pid&eid=$eid&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			}
 		} else {
 		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
@@ -39,7 +39,7 @@
 		while($projects->nextProject()) {
 			$project = $projects->giveProject();
 			$row_class = !$row_class;
-			if(isset($expanded) && $expanded['cid']['all']) {
+			if(!empty($expanded['cid']['all'])) {
 				$expanded['pid'][$project->giveValue('id')] = 1;
 			}
 			include("$_PJ_root/templates/statistic/customer/project/row.ihtml");

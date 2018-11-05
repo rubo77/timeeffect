@@ -13,6 +13,9 @@
 		var $user_cursor	= -1;
 
 		function UserList() {
+			self::__construct();
+		}
+		function __construct() {
 			$this->db = new Database;
 
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'];
@@ -55,6 +58,9 @@ else return null;
 		var $data = array();
 
 		function User($data = '') {
+			self::__construct($data);
+		}
+		function __construct($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}

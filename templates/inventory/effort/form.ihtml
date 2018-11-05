@@ -239,7 +239,9 @@
 					(<? if(!empty($GLOBALS['_PJ_strings']['hours'])) echo $GLOBALS['_PJ_strings']['hours'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['minutes'])) echo $GLOBALS['_PJ_strings']['minutes'] ?>)
 					<?php
 						if(!empty($duration_message)) {
-							print '&nbsp;<span class="warning">' . $duration_message . '<span>';
+							?>&nbsp;<span class="warning"><?=$duration_message?><span>
+								&nbsp;<input type="button" value="reset" onclick="document.getElementsByName('hours')[0].value='00'; document.getElementsByName('minutes')[0].value='00'; return false" id="reset_time">
+							<?php
 						}
 					?>
 					</TD>

@@ -4,8 +4,8 @@
 		<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0" ALIGN="absmiddle"></TD>
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php
-		if($project->count($GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
-			if(isset($expanded) && ($expanded['pid'][$project->giveValue('id')] || $expanded['cid']['all'])) {
+		if($project->count(@$GLOBALS['shown']['be']) && $project->checkUserAccess('read')) {
+			if(isset($expanded) && (!empty($expanded['pid'][$project->giveValue('id')]) || !empty($expanded['cid']['all']))) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') . "&cop=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=" . $project->giveValue('customer_id') . "&pid=" . $project->giveValue('id') . "&exp=" . $project->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
