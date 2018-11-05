@@ -12,7 +12,7 @@
 	}
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_customer_inventory_script']; ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
-	<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(!empty($cid)) echo $cid; ?>">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
 	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
 	<CENTER>
 	<TABLE	WIDTH="90%"

@@ -17,8 +17,8 @@
 	<INPUT TYPE="hidden" NAME="rates" VALUE="1">
 	<INPUT TYPE="hidden" NAME="edit" VALUE="1">
 	<INPUT TYPE="hidden" NAME="altered" VALUE="1">
-	<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(!empty($cid)) echo $cid; ?>">
-	<INPUT TYPE="hidden" NAME="show_closed" VALUE="<? if(!empty($show_closed)) echo $show_closed; ?>">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
+	<INPUT TYPE="hidden" NAME="show_closed" VALUE="<? if(isset($show_closed)) echo $show_closed; ?>">
 
 	<CENTER>
 	<TABLE	WIDTH="90%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
@@ -27,27 +27,27 @@
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
 					<TD CLASS="FormFieldHeader"><? if(!empty($GLOBALS['_PJ_strings']['rate_name'])) echo $GLOBALS['_PJ_strings']['rate_name'] ?></TD>
-					<TD CLASS="FormFieldHeader"><? if(!empty($GLOBALS['_PJ_strings']['price_in'])) echo $GLOBALS['_PJ_strings']['price_in'] ?> <? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?></TD>
+					<TD CLASS="FormFieldHeader"><? if(!empty($GLOBALS['_PJ_strings']['price_in'])) echo $GLOBALS['_PJ_strings']['price_in'] ?> <? if(isset($customer_budget_currency)) echo $customer_budget_currency; ?></TD>
 				</TR>
 <?php
 $i = 0;
 while($data = $rates->giveNext()) {
 ?>
 				<TR>
-					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
+					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
 					<INPUT TYPE="hidden" NAME="currency[<?=$data['id']?>]" VALUE="<? if(!empty($GLOBALS['_PJ_currency'])) echo $GLOBALS['_PJ_currency'] ?>">
 					<INPUT CLASS="FormField" TYPE='text' SIZE="10" name="name[<?=$data['id']?>]" VALUE="<?=$data['name']?>"></TD>
-					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?= str_replace( '.', $GLOBALS['_PJ_decimal_point'], $data['price']); ?>"></TD>
+					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[<?=$data['id']?>]" VALUE="<?= str_replace( '.', $GLOBALS['_PJ_decimal_point'], $data['price']); ?>"></TD>
 				</TR>
 <?php
 $i++;
 }
 ?>
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
-					<INPUT TYPE="hidden" NAME="currency[new]" VALUE="<? if(!empty($customer_budget_currency)) echo $customer_budget_currency; ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>">
+					<INPUT TYPE="hidden" NAME="currency[new]" VALUE="<? if(isset($customer_budget_currency)) echo $customer_budget_currency; ?>">
 					<INPUT CLASS="FormField" TYPE='text' SIZE="10" name="name[new]"></TD>
-					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[new]"></TD>
+					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField" TYPE='text' SIZE="10" name="price[new]"></TD>
 				</TR><TR>
 					<TD CLASS="FormSubmit" COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
 				</TR>

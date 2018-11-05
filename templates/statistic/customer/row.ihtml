@@ -17,7 +17,7 @@
 	<TR>
 		<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0" ALIGN="absmiddle"></TD>
 	</TR><TR HEIGHT="25">
-		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php
+		<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><?php
 		if($customer->count() && $customer->checkUserAccess('read')) {
 			if(isset($expanded) && ($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all'])) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -28,11 +28,11 @@
 		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
 		}
 		?>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if($customer->checkUserAccess('read')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=" . $customer->giveValue('id') ?>"><?php } ?><?= $customer->giveValue('customer_name') ?></A></TD>
-		<TD CLASS="listDetail<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if(!empty($days)) print formatNumber($days, true); ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if(!empty($costs)) print formatNumber($costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if(!empty($full_budget)) print formatNumber($full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if(!empty($remaining_budget)) print formatNumber($remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetail<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($days)) print formatNumber($days, true); ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($costs)) print formatNumber($costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($full_budget)) print formatNumber($full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($remaining_budget)) print formatNumber($remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
 	if(isset($expanded) && $expanded['cid'][$customer->giveValue('id')]) {
 		$projects->reset();

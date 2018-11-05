@@ -72,14 +72,14 @@ if(!empty($mode) and $mode == 'billed') {
 					</TR>
 <FORM ACTION="<? if(!empty($GLOBALS['_PJ_reports_script'])) echo $GLOBALS['_PJ_reports_script'] ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method'] ?>">
 <INPUT TYPE="hidden" NAME="report" VALUE="1">
-<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(!empty($cid)) echo $cid; ?>">
-<INPUT TYPE="hidden" NAME="pid" VALUE="<? if(!empty($pid)) echo $pid; ?>">
-<INPUT TYPE="hidden" NAME="syear" VALUE="<? if(!empty($syear)) echo $syear; ?>">
-<INPUT TYPE="hidden" NAME="smonth" VALUE="<? if(!empty($smonth)) echo $smonth; ?>">
-<INPUT TYPE="hidden" NAME="sday" VALUE="<? if(!empty($sday)) echo $sday; ?>">
-<INPUT TYPE="hidden" NAME="eyear" VALUE="<? if(!empty($eyear)) echo $eyear; ?>">
-<INPUT TYPE="hidden" NAME="emonth" VALUE="<? if(!empty($emonth)) echo $emonth; ?>">
-<INPUT TYPE="hidden" NAME="eday" VALUE="<? if(!empty($eday)) echo $eday; ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
+<INPUT TYPE="hidden" NAME="pid" VALUE="<? if(isset($pid)) echo $pid; ?>">
+<INPUT TYPE="hidden" NAME="syear" VALUE="<? if(isset($syear)) echo $syear; ?>">
+<INPUT TYPE="hidden" NAME="smonth" VALUE="<? if(isset($smonth)) echo $smonth; ?>">
+<INPUT TYPE="hidden" NAME="sday" VALUE="<? if(isset($sday)) echo $sday; ?>">
+<INPUT TYPE="hidden" NAME="eyear" VALUE="<? if(isset($eyear)) echo $eyear; ?>">
+<INPUT TYPE="hidden" NAME="emonth" VALUE="<? if(isset($emonth)) echo $emonth; ?>">
+<INPUT TYPE="hidden" NAME="eday" VALUE="<? if(isset($eday)) echo $eday; ?>">
 <INPUT TYPE="hidden" NAME="mode" VALUE="billed">
 <?php
 	$rowclass = 1;
@@ -111,7 +111,7 @@ if($statistic->mode == 'billed') {
 }
 if($statistic->count()) {
 ?>
-						<TD COLSPAN="<? if(!empty($colspan)) echo $colspan; ?>"></TD>
+						<TD COLSPAN="<? if(isset($colspan)) echo $colspan; ?>"></TD>
 						<TD CLASS="listSum" ALIGN="right"><? if(!empty($GLOBALS['_PJ_strings']['sum'])) echo $GLOBALS['_PJ_strings']['sum'] ?>:</TD>
 						<TD CLASS="listSumNumeric"><?php if(!empty($sum_effort_hours)) print formatNumber($sum_effort_hours, true); ?></TD>
 						<TD CLASS="listSumNumeric"><?php if(!empty($sum_effort_costs)) print formatNumber($sum_effort_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>

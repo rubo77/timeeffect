@@ -14,7 +14,7 @@
 	}
 	include($GLOBALS['_PJ_root'] . '/templates/group/options/edit.ihtml');
 ?>
-<FORM ACTION="<? if(!empty($form_action)) echo $form_action; ?>" METHOD="<? if(!empty($_PJ_form_method)) echo $_PJ_form_method; ?>">
+<FORM ACTION="<? if(isset($form_action)) echo $form_action; ?>" METHOD="<? if(isset($_PJ_form_method)) echo $_PJ_form_method; ?>">
 <INPUT TYPE="hidden" NAME="id" VALUE="<? if(!empty($id)) echo $id ?>">
 <INPUT TYPE="hidden" NAME="own" VALUE="<? if(!empty($own)) echo $own ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">

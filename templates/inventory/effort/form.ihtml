@@ -96,23 +96,23 @@
 <FORM ACTION="<? print $PHP_SELF; ?>" METHOD="<? print $_PJ_form_method; ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
-<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(!empty($cid)) echo $cid; ?>">
-<INPUT TYPE="hidden" NAME="eid" VALUE="<? if(!empty($eid)) echo $eid; ?>">
-<INPUT TYPE="hidden" NAME="id" VALUE="<? if(!empty($id)) echo $id; ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
+<INPUT TYPE="hidden" NAME="eid" VALUE="<? if(isset($eid)) echo $eid; ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<? if(isset($id)) echo $id; ?>">
 
 	<CENTER>
 	<TABLE	WIDTH="90%"
-			BORDER="<? if(!empty($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
-			CELLPADDING="<? if(!empty($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
-			CELLSPACING="<? if(!empty($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
+			BORDER="<? if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
+			CELLPADDING="<? if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
+			CELLSPACING="<? if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
 		<TR>
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="Error" COLSPAN="2"><? if(!empty($message)) echo $message; ?></TD>
+					<TD CLASS="Error" COLSPAN="2"><? if(isset($message)) echo $message; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><? if(!empty($project_input)) echo $project_input; ?></TD>
+					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><? if(isset($project_input)) echo $project_input; ?></TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>
@@ -347,7 +347,7 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 	reset($u_gids);
 	foreach($u_gids as $id) {
 ?>
-						<OPTION<?php if($id == $effort_gid) print ' SELECTED'; ?> value="<? if(!empty($id)) echo $id; ?>"><?= $a_gids[$id] ?>
+						<OPTION<?php if($id == $effort_gid) print ' SELECTED'; ?> value="<? if(isset($id)) echo $id; ?>"><?= $a_gids[$id] ?>
 <?php
 	}
 ?>
