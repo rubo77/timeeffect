@@ -6,34 +6,34 @@
 						<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
 					<TR HEIGHT="25">
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>" WIDTH="35%">&nbsp;<?php if($effort->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?edit=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><?php } ?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></A></TD>
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
-						<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>">&nbsp;<?
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>" WIDTH="35%">&nbsp;<?php if($effort->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?edit=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><?php } ?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></A></TD>
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
+						<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?
 #echo formatNumber(floor($effort->giveValue('hours')), true)
 echo (floor($effort->giveValue('hours')))."h, ".sprintf("%2.0f",round( ($effort->giveValue('hours')-floor($effort->giveValue('hours') ))*60))." min"; ?>&nbsp;&nbsp;
 (<?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= 
 $effort->formatTime($effort->giveValue('end'), "H:i"); ?>)</TD>
-						<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php
+						<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>" WIDTH="200">&nbsp;<?= formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></TD>
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><?php
 if($effort->checkUserAccess('write') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id')) && ($effort->giveValue('billed') == '') && ($effort->giveValue('hours') == 0)) {
 	?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?stop=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/stop.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?></A><?php
 } else if($project->checkUserAccess('new') && ($effort->giveValue('user') == $_PJ_auth->giveValue('id'))) { 
 	?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?cont=1&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/continue.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['continue'])) echo $GLOBALS['_PJ_strings']['continue'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['continue'])) echo $GLOBALS['_PJ_strings']['continue'] ?></A><?php
 } ?>&nbsp;</TD>
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?>&nbsp;</TD>
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><?php if($effort->checkUserAccess('write') && ($effort->giveValue('billed') == '') && ($_PJ_auth->checkPermission('accountant') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?delete=1&cid=$cid&pid=$pid&eid=" . $effort->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?>&nbsp;</TD>
 					</TR>
 <?php
 if($effort->giveValue('note') != '') {
 ?>
 					<TR>
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 						<TD COLSPAN="5"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"></TD>
-						<TD COLSPAN="5" CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"></TD>
+						<TD COLSPAN="5" CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 							<TR>
-								<TD CLASS="listDetail<? if(!empty($rowclass)) echo $rowclass; ?>" WIDTH="1%" valign="top"><? if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
-								<TD CLASS="listDetail<? if(!empty($rowclass)) echo $rowclass; ?>"><?= $effort->giveValue('note') ?></TD>
+								<TD CLASS="listDetail<? if(isset($rowclass)) echo $rowclass; ?>" WIDTH="1%" valign="top"><? if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
+								<TD CLASS="listDetail<? if(isset($rowclass)) echo $rowclass; ?>"><?= $effort->giveValue('note') ?></TD>
 							</TR>
 						</TABLE></TD>
 					</TR>

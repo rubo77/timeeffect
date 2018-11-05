@@ -9,7 +9,7 @@
 			<TR>
 				<TD COLSPAN="2"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
 			</TR><TR VALIGN="top">
-				<TH CLASS="note" COLSPAN="2"><IMG src="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($center_title)) echo $center_title; ?></TD>
+				<TH CLASS="note" COLSPAN="2"><IMG src="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" HEIGHT="16" WIDTH="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(isset($center_title)) echo $center_title; ?></TD>
 			</TR><TR>
 				<TD COLSPAN="2"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="20" WIDTH="1" BORDER="0"></TD>
 			</TR><TR>

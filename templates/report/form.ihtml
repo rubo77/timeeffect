@@ -16,8 +16,8 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(!empty($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? if(!empty($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
+					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 					<SELECT NAME="cid" onChange="document.location.href='<?= $GLOBALS['PHP_SELF'] . "?cid=" ?>' + this.value;">
 						<OPTION VALUE="">--
 					<?php

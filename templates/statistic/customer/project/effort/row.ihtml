@@ -3,13 +3,13 @@
 ?>
 <!-- statistic/customer/project/effort/row.ihtml - START -->
 	<TR>
-		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+		<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 		<TD COLSPAN="10"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/light-gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 	</TR><TR HEIGHT="25">
-		<TD CLASS="list<? if(!empty($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?= formatNumber($effort->giveValue('days'), true); ?></TD>
-		<TD CLASS="listDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
-		<TD CLASS="listSubDetailNumeric<? if(!empty($rowclass)) echo $rowclass; ?>" COLSPAN="2"><?= $effort->formatDate($effort->giveValue('date')); ?>, <?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= $effort->formatTime($effort->giveValue('end'), "H:i"); ?></TD>
+		<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort<?php if(!($effort->giveValue('billed') == '' || $effort->giveValue('billed') == '0000-00-00')) print 'b' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $effort->giveValue('description') ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?= $agent['firstname'] . ' ' . $agent['lastname']; ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?= formatNumber($effort->giveValue('days'), true); ?></TD>
+		<TD CLASS="listDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>"><?php if($effort->giveValue('costs')) print formatNumber($effort->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
+		<TD CLASS="listSubDetailNumeric<? if(isset($rowclass)) echo $rowclass; ?>" COLSPAN="2"><?= $effort->formatDate($effort->giveValue('date')); ?>, <?= $effort->formatTime($effort->giveValue('begin'), "H:i"); ?> - <?= $effort->formatTime($effort->giveValue('end'), "H:i"); ?></TD>
 	</TR>
 <!-- statistic/customer/project/effort/row.ihtml - END -->

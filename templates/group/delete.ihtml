@@ -9,7 +9,7 @@
 	}
 ?>
 	<FORM ACTION="<? print $GLOBALS['_PJ_group_script']; ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
-	<INPUT TYPE="hidden" NAME="gid" VALUE="<? if(!empty($gid)) echo $gid; ?>">
+	<INPUT TYPE="hidden" NAME="gid" VALUE="<? if(isset($gid)) echo $gid; ?>">
 	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
 	<CENTER>
 	<TABLE	WIDTH="90%"
