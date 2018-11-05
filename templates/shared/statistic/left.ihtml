@@ -67,7 +67,7 @@
 		}?>
 		</TABLE></TD>
 	</TR><TR>
-		<td VALIGN="bottom" CLASS="leftNavi" align="center"><br><br><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><br><br><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT on GitHub</a><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>
