@@ -58,14 +58,14 @@ if($cid && $customer->checkUserAccess('new')) {
 					</TR><TR>
 						<TD ALIGN="left"><?php
 if(empty($shown['cp'])) {
-						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?scp=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['show_closed_projects'])) echo $GLOBALS['_PJ_strings']['show_closed_projects'] ?></A><?php
+						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?scp=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid.""; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/show-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['show_closed_projects'])) echo $GLOBALS['_PJ_strings']['show_closed_projects'] ?></A><?php
 } else {
-						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?scp=0&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['hide_closed_projects'])) echo $GLOBALS['_PJ_strings']['hide_closed_projects'] ?></A><?php
+						?><A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?scp=0&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid.""; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/hide-closed.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['hide_closed_projects'])) echo $GLOBALS['_PJ_strings']['hide_closed_projects'] ?></A><?php
 }
 						?></TD>
 						<TD ALIGN="right">
-						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?expa=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['expand_all'])) echo $GLOBALS['_PJ_strings']['expand_all'] ?></A> |
-						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?copa=1&cid=$cid&pid=$pid&eid=$eid"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['collapse_all'])) echo $GLOBALS['_PJ_strings']['collapse_all'] ?>
+						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?expa=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid.""; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['expand_all'])) echo $GLOBALS['_PJ_strings']['expand_all'] ?></A> |
+						<A CLASS="listFoot" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?copa=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid.""; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['collapse_all'])) echo $GLOBALS['_PJ_strings']['collapse_all'] ?>
 						</TD>
 					</TR>
 				</TABLE></TD>

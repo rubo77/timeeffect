@@ -4,6 +4,9 @@
 		var $data		= array();
 
 		function Rates($data = '') {
+			self::__construct($data);
+		}
+		function __construct($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
@@ -38,6 +41,7 @@
 		}
 
 		function giveNext() {
+			// TODO: each is depricated:
 			list($key, $val) = each($this->data);
 			return $val;
 		}
@@ -56,8 +60,7 @@
 				$this->db = new Database;
 			}
 
-			reset($this->data);
-			while(list($id, $data) = each($this->data)) {
+			foreach ($this->data as $id=>$data) {
 				if($data['name'] == '') {
 					$query = "DELETE FROM " . $GLOBALS['_PJ_rate_table'] . " WHERE id='" . $data['id'] . "'";
 				} else {

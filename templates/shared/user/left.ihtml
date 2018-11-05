@@ -36,21 +36,21 @@
 			</TR><TR>
 				<TD><?php
 		if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 		print $customer->giveValue('customer_name');
 		?></A><?php
 		} ?>&nbsp;</TD>
 			</TR><TR>
 				<TD><?php
 		if(isset($project) && is_object($project) && $project->giveValue('id')) {
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 		print $project->giveValue('project_name');
 		?></A><?php
 		} ?>&nbsp;</TD>
 			</TR><TR>
 				<TD><?php
 		if(isset($effort) && is_object($effort) && $effort->giveValue('id')) {
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?edit=1&cid=$cid&pid=$pid&eid=$eid" ?>"><?php
+		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?edit=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 		if(strlen($effort->giveValue('description')) > $max_length) {
 			print substr($effort->giveValue('description'), 0, $max_length-3) . '...';
 		} else {
@@ -61,7 +61,7 @@
 			</TR>
 		</TABLE></TD>
 	</TR><TR>
-		<td VALIGN="bottom" CLASS="leftNavi" align="center"><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
+		<td VALIGN="bottom" CLASS="leftNavi" align="center"><br><br><a href="https://github.com/rubo77/timeeffect" target="_blank">TIMEEFFECT auf GitHub</a><br><br></td>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

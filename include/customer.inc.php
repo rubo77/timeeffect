@@ -7,6 +7,9 @@
 		var $customer_cursor	= -1;
 
 		function CustomerList(&$user, $inactive = '') {
+			self::__construct($user, $inactive);
+		}
+		function __construct(&$user, $inactive = '') {
 			global $_PJ_customer_table;
 
 			$this->db = new Database;
@@ -63,6 +66,9 @@
 		var $project_count	= '';
 
 		function Customer($customer = '', &$user) {
+			self::__construct($customer, $user);
+		}
+		function __construct($customer = '', &$user) {
 			$this->user = $user;
 			if(is_array($customer)) {
 				$this->data = $customer;
