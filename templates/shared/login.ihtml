@@ -94,6 +94,15 @@ if(!empty($GLOBALS['username'])) {
 						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR>
 <?php
+}else {
+	// select the username of the last added effort
+	$db = new Database;
+	$query = sprintf("SELECT username FROM `%s` left join `%s` on h_auth.id=h_effort.user
+	ORDER BY `%s`.`date` DESC limit 1", $GLOBALS['_PJ_auth_table'], $GLOBALS['_PJ_effort_table'], $GLOBALS['_PJ_effort_table']);
+	$res = $db->query($query);
+	if($row = mysqli_fetch_assoc($res)) {
+		$GLOBALS['username']=$row['username'];
+	}
 }
 ?>
 					<TR>
