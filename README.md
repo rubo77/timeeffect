@@ -15,7 +15,7 @@ To run TIMEEFFECT you need a working MySQL database server (version 3.23 or high
 Furthermore you need a running a webserver with PHP 7 support.
 
 # 2. Preparation
-##2.1 MySQL
+## 2.1 MySQL
 Before you actually install the TIMEEFFECT package you have to create a new
 database and a database user with SELECT, INSERT, UPDATE and DELETE rights on
 the created database within your MySQL system.
