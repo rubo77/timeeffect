@@ -24,8 +24,7 @@ if($step == 3) {
 	}
 }
 ?>
-<!DOCTYPE html>
-<html lang="de">
+<HTML>
 <HEAD>
 <TITLE>TIMEEFFECT - Installation</TITLE>
 <LINK REL="stylesheet" HREF="../css/project.css" TYPE="text/css">
