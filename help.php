@@ -2,8 +2,7 @@
 	$no_login = 1;
 	include_once("include/config.inc.php");
 ?>
-<!DOCTYPE html>
-<html lang="de">
+<HTML>
 <HEAD>
 <TITLE>TIMEEFFECT - <? if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></TITLE>
 <LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/project.css" type="text/css">

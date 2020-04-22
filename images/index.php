@@ -1,8 +1,7 @@
 <?php
 	$num_cols = 4;
 ?>
-<!DOCTYPE html>
-<html lang="de">
+<HTML>
 <HEAD>
 <TITLE>Image-Browser</TITLE>
 </HEAD>

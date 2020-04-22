@@ -1,6 +1,5 @@
 <!-- list.ihtml - START -->
-<!DOCTYPE html>
-<html lang="de">
+<HTML>
 <HEAD>
 <TITLE>TIMEEFFECT - <?= $center_title; ?></TITLE>
 <LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/project.css" TYPE="text/css">
