@@ -337,7 +337,7 @@
 			$query .= "'" . $this->data['date'] . "', ";
 			$query .= "'" . $b_time . "', ";
 			$query .= "'" . $e_time . "', ";
-			$query .= "'" . $this->data['description'] . "', ";
+			$query .= "'" . addslashes($this->data['description']) . "', ";
 			$query .= "'" . $this->data['note'] . "', ";
 			$query .= "'" . $this->data['rate'] . "', ";
 			$query .= "'" . $this->data['user'] . "', ";
