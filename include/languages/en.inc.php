@@ -78,6 +78,7 @@
 	$GLOBALS['_PJ_strings']['error_pw_retype']			= 'The entered password does not match the retype!';
 	$GLOBALS['_PJ_strings']['error_user_empty']			= 'You have to enter a username!';
 	$GLOBALS['_PJ_strings']['error_user_exists']		= 'The entered username already exists!';
+	$GLOBALS['_PJ_strings']['error_effort_duplicate']	= 'An identical effort for this project and time already exists!';
 	$GLOBALS['_PJ_strings']['error_zero_effort']		= 'Please select a duration!';
 	$GLOBALS['_PJ_strings']['expand_all']				= 'expand all';
 	$GLOBALS['_PJ_strings']['facsimile']				= 'Fax';
