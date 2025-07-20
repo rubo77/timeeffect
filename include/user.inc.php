@@ -56,6 +56,8 @@ else return null;
 
 	class User {
 		var $data = array();
+		var $data_keys = array();
+		var $data_pointer = 0;
 
 		function User($data = '') {
 			self::__construct($data);
@@ -66,6 +68,8 @@ else return null;
 			}
 			if(is_array($data)) {
 				$this->data = $data;
+				$this->data_keys = array_keys($this->data);
+				$this->data_pointer = 0;
 			} else {
 				$this->load($data);
 			}
@@ -79,6 +83,8 @@ else return null;
 
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
+				$this->data_keys = array_keys($this->data);
+				$this->data_pointer = 0;
 			}
 		}
 
@@ -196,10 +202,18 @@ else return null;
 
 		function reset() {
 			reset($this->data);
+			$this->data_keys = array_keys($this->data);
+			$this->data_pointer = 0;
 		}
 
 		function giveNext() {
-			list($key, $val) = each($this->data);
+			// Fixed: replaced deprecated each() function with array iteration
+			if ($this->data_pointer >= count($this->data_keys)) {
+				return false;
+			}
+			$key = $this->data_keys[$this->data_pointer];
+			$val = $this->data[$key];
+			$this->data_pointer++;
 			return $val;
 		}
 
