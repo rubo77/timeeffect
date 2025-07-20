@@ -221,6 +221,22 @@
 			$query = "UPDATE " . $GLOBALS['_PJ_effort_table'] . " SET BILLED = '$date' WHERE id IN ($ids)";
 			$this->db->query($query);
 		}
+
+		function getTotalHours() {
+			$total_hours = 0;
+			foreach($this->efforts as $effort) {
+				$total_hours += $effort->giveValue('hours');
+			}
+			return $total_hours;
+		}
+
+		function getTotalCosts() {
+			$total_costs = 0;
+			foreach($this->efforts as $effort) {
+				$total_costs += $effort->giveValue('costs');
+			}
+			return $total_costs;
+		}
 	}
 
 	class Effort extends Data {
