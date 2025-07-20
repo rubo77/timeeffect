@@ -52,6 +52,30 @@ if($pid && $project->checkUserAccess('new')) {
 					<TR>
 						<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR>
+<?php
+	// Calculate and display totals
+	$total_hours = $efforts->getTotalHours();
+	$total_costs = $efforts->getTotalCosts();
+	if($total_hours > 0 || $total_costs > 0) {
+?>
+					<TR>
+						<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="2" BORDER="0"></TD>
+					</TR>
+					<TR HEIGHT="25">
+						<TD CLASS="listSum" WIDTH="35%">&nbsp;<B><?= $GLOBALS['_PJ_strings']['sum'] ?>:</B></TD>
+						<TD CLASS="listSum">&nbsp;</TD>
+						<TD CLASS="listSumNumeric">&nbsp;<B><?
+echo (floor($total_hours))."h, ".sprintf("%2.0f",round( ($total_hours-floor($total_hours ))*60))." min"; ?></B>&nbsp;</TD>
+						<TD CLASS="listSumNumeric" WIDTH="200">&nbsp;<B><?= formatNumber($total_costs, true) . '&nbsp;' . $GLOBALS['_PJ_currency'] ?></B></TD>
+						<TD CLASS="listSum">&nbsp;</TD>
+						<TD CLASS="listSum">&nbsp;</TD>
+					</TR>
+<?php
+	}
+?>
+					<TR>
+						<TD COLSPAN="6"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+					</TR>
 				</TABLE></TD>
 			</TR><TR>
 				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
