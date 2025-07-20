@@ -289,9 +289,40 @@
 			$this->data['costs']	= $this->data['hours'] * $this->data['rate'];
 		}
 
+		function checkDuplicate() {
+			if(!isset($this->db) or !is_object($this->db)) {
+				$this->db = new Database;
+			}
+
+			// Only check for duplicates when creating a new effort (no ID yet)
+			if(!empty($this->data['id'])) {
+				return false;
+			}
+
+			$query = "SELECT id FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE ";
+			$query .= "project_id = '" . addslashes($this->data['project_id']) . "' AND ";
+			$query .= "date = '" . addslashes($this->data['date']) . "' AND ";
+			$query .= "begin = '" . addslashes($this->data['begin']) . "' AND ";
+			$query .= "description = '" . addslashes($this->data['description']) . "' AND ";
+			$query .= "user = '" . addslashes($this->data['user']) . "'";
+
+			$this->db->query($query);
+			
+			if($this->db->next_record()) {
+				return true; // Duplicate found
+			}
+			
+			return false; // No duplicate found
+		}
+
 		function save () {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
+			}
+
+			// Check for duplicates before saving
+			if($this->checkDuplicate()) {
+				return $GLOBALS['_PJ_strings']['error_effort_duplicate'];
 			}
 
 			list($year, $month, $day) = explode("-", $this->data['date']);
@@ -303,7 +334,7 @@
 
 			if((date("Y", $b_timestamp) <= 1970) ||
 			   (date("Y", $e_timestamp) <= 1970	))
-				return;
+				return '';
 
 			if($this->data['billed'] == '') {
 				$this->data['billed'] = 'NULL';
@@ -363,6 +394,8 @@
 
 			$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
 			$this->db->query($query);
+			
+			return ''; // Success - no error message
 		}
 
 		function delete() {

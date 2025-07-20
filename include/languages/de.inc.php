@@ -78,6 +78,7 @@
 	$GLOBALS['_PJ_strings']['error_pw_retype']			= 'Das eingegebene Passwort und die Passwort-Wiederholung stimmen nicht &uuml;berein!';
 	$GLOBALS['_PJ_strings']['error_user_empty']			= 'Sie m&uuml;ssen einen Benutzernamen eingeben!';
 	$GLOBALS['_PJ_strings']['error_user_exists']		= 'Der eingegebene Benutzername existiert bereits!';
+	$GLOBALS['_PJ_strings']['error_effort_duplicate']	= 'Ein identischer Aufwand f&uuml;r dieses Projekt und diese Zeit existiert bereits!';
 	$GLOBALS['_PJ_strings']['error_zero_effort']		= 'Bitte w&auml;hlen Sie eine Dauer!';
 	$GLOBALS['_PJ_strings']['expand_all']				= 'Alle aufklappen';
 	$GLOBALS['_PJ_strings']['facsimile']				= 'Fax';
