@@ -85,7 +85,7 @@
 					<?php
 						for($i = 1; $i <= 12; $i++) {
 							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
-							if($i == $this_year) {
+							if($i == 1) {
 								print " SELECTED";
 							}
 							print ">" . $GLOBALS['_PJ_months'][$i] . "\n";
@@ -97,7 +97,7 @@
 					<?php
 						for($i = 1; $i <= 31; $i++) {
 							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
-							if($i == $this_year) {
+							if($i == 1) {
 								print " SELECTED";
 							}
 							print ">" . sprintf("%02d", $i) . "\n";
@@ -128,7 +128,7 @@
 					<?php
 						for($i = 1; $i <= 12; $i++) {
 							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
-							if($i == $this_year) {
+							if($i == 12) {
 								print " SELECTED";
 							}
 							print ">" . $GLOBALS['_PJ_months'][$i] . "\n";
@@ -140,7 +140,7 @@
 					<?php
 						for($i = 1; $i <= 31; $i++) {
 							print "\t\t\t\t\t\t<OPTION VALUE=\"$i\"";
-							if($i == $this_year) {
+							if($i == 31) {
 								print " SELECTED";
 							}
 							print ">" . sprintf("%02d", $i) . "\n";
