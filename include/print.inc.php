@@ -95,7 +95,7 @@ class PJPDF extends FPDF {
 	function calculateLeft(&$field_widths) {
 		$spare_space = $this->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'] - $GLOBALS['_PJ_pdf_table_cell_spacing'];
 		$open_count = 0;
-		while(list($name, $width) = each($field_widths)) {
+		foreach($field_widths as $name => $width) {
 			if($width < 0) {
 				++$open_count;
 				$spare_space -= $GLOBALS['_PJ_pdf_table_cell_spacing'];
@@ -109,7 +109,7 @@ class PJPDF extends FPDF {
 
 		$left = $GLOBALS['_PJ_pdf_left_margin'] + $GLOBALS['_PJ_pdf_table_cell_spacing'];
 		reset($field_widths);
-		while(list($name, $width) = each($field_widths)) {
+		foreach($field_widths as $name => $width) {
 			if($width == 0) {
 				$field_lefts[$name] = -1;
 				continue;

@@ -9,9 +9,11 @@
 <BODY BGCOLOR="CCCCCC">
 <TABLE CELLPADDING="10" CELLSPACING="0" BORDER="1">
 	<TR>
-<?
+<?php
 	if(!($DIR = opendir("./")))
-		error_death("Konnte Verzeichnis nicht &ouml;ffnen");
+		exit("Konnte Verzeichnis nicht öffnen");
+
+	$FILES = array();
 
 	while ($file = readdir($DIR)) {
 		if(($type= preg_match("/.gif$/i", $file)) ||
@@ -25,6 +27,7 @@
 
 	sort($FILES);
 	$count = count($FILES);
+	$j = 0;
 	for ($i=0;$i < $count; $i++) {
 		$file = $FILES[$i];
 		if($j == $num_cols) {?>
