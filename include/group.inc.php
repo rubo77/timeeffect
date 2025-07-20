@@ -10,6 +10,7 @@
 		var $groups;
 		var $group_count	= 0;
 		var $group_cursor	= -1;
+		// Properties added for PHP 8.4 compatibility - replace deprecated each() function
 		var $data_keys = array();
 		var $data_pointer = 0;
 
@@ -54,6 +55,7 @@ else return null;
 
 	class Group {
 		var $data = array();
+		// Properties added for PHP 8.4 compatibility - replace deprecated each() function
 		var $data_keys = array();
 		var $data_pointer = 0;
 
@@ -63,6 +65,7 @@ else return null;
 			}
 			if(is_array($data)) {
 				$this->data = $data;
+				// Initialize array iteration variables for each() replacement
 				$this->data_keys = array_keys($this->data);
 				$this->data_pointer = 0;
 				return;
@@ -78,6 +81,7 @@ else return null;
 
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
+				// Initialize array iteration variables for each() replacement
 				$this->data_keys = array_keys($this->data);
 				$this->data_pointer = 0;
 			}
@@ -137,6 +141,7 @@ else return null;
 
 		function reset() {
 			reset($this->data);
+			// Reset array iteration variables for each() replacement
 			$this->data_keys = array_keys($this->data);
 			$this->data_pointer = 0;
 		}
