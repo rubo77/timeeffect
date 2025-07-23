@@ -3,13 +3,14 @@ if(!isset($db_prefix)) {
 	$db_prefix = 'te_';
 }
 if(!isset($db_name)) {
-	$db_name = 'timeeffect';
+	$db_name = 'timeeffect_db';
 }
 if(!isset($db_user)) {
 	$db_user = 'timeeffect';
 }
 if(!isset($db_host)) {
-	$db_host = 'localhost';
+	// Docker-compatible default: use 'db' service name
+	$db_host = 'db';
 }
 if(!isset($db_password)) {
 	$db_password = 'very_unsecure_timeeffect_PW1';
