@@ -13,14 +13,16 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=very_unsecure_timeeffect_PW1 
       - MYSQL_PASSWORD=very_unsecure_timeeffect_PW1 
-      - MYSQL_DATABASE=very_unsecure_timeeffect_PW1 
-      - MYSQL_USER=very_unsecure_timeeffect_PW1 
+      - MYSQL_DATABASE=timeeffect_db
+      - MYSQL_USER=timeeffect 
 
   app:
-    # hosted on docker hub built from https://github.com/caplod/docker-php-apache
-    #image: tan3/php-apache:latest
-    #image: tan3/php-apache:7.4
-    image: tan3/php-apache:8.1
+    # Custom TimeEffect PHP 8.4 image with all configurations
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Fallback to base image if build fails:
+    # image: webdevops/php-apache:8.4
     ports:
       - 80:80
       - 443:443 
@@ -28,3 +30,17 @@ services:
       - db
     volumes:
       - /var/www/timeeffect:/var/www/html
+    environment:
+      # PHP configuration for TimeEffect
+      - PHP_DISPLAY_ERRORS=1
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_MAX_EXECUTION_TIME=300
+      - PHP_POST_MAX_SIZE=64M
+      - PHP_UPLOAD_MAX_FILESIZE=64M
+      - PHP_SHORT_OPEN_TAG=1
+      # MySQL connection settings
+      - MYSQL_HOST=db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=timeeffect_db
+      - MYSQL_USER=timeeffect
+      - MYSQL_PASSWORD=very_unsecure_timeeffect_PW1
