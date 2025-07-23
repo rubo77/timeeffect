@@ -16,27 +16,50 @@ To get the app up and running in docker, follow these 3 steps:
     # just in case you have it running:
     systemctl stop mysql
     systemctl stop nginx
-    # maybe:
+    # 1. Automated Setup (RECOMMENDED):
+
+    cd /var/www/timeeffect/docker/
+    ./setup.sh
+
+# OR Manual start:
+
     #systemctl disable mysql
     #systemctl disable nginx
     # now start the docker container:
     cd /var/www/timeeffect/docker/
-    sudo docker-compose up
+    sudo docker-compose up --build
 
-# 2. import mysql tables:
+# 2. install fresh:
 
-    mysql timeeffect -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp < db.sql
-    mysql timeeffect -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp < objectives.sql
-    echo "CREATE database timeeffect;"|mysql timeeffect -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp
-    # minimal tables so the game runs:
-    for SQL in ../database/timeeffect_db.*.sql; do
+    sudo docker exec -i -t docker_app_1 bash -l
+    # workaround:
+    apt update; apt install php-cli php-mysql
+
+**Note**: Updated to PHP 8.4 with modern infrastructure!
+- Composer dependencies are automatically available
+- Modern logging to `/var/www/html/logs/app.log`
+- PEAR DB compatibility layer active
+
+open in webbrowser:
+
+http://localhost/install
+
+# or import mysql tables:
+
+
+    # install downloaded database:
+    cd /var/www/html/dev/db
+    echo "CREATE database timeeffect_db;"|mysql -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp
+    mysql timeeffect_db -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp < db.sql
+    # minimal tables so the app runs:
+    for SQL in timeeffect*.sql; do
       echo "importing $SQL ...";
       mysql timeeffect_db -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp < $SQL
     done
     # better download an actual db and then:
-    # mysql timeeffect -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp</var/tmp/timeeffect.sql
+    # mysql timeeffect_db -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp</var/tmp/timeeffect.sql
 
-    echo "GRANT ALL PRIVILEGES ON timeeffect_db.* TO 'timeeffect'@'%' WITH GRANT OPTION;GRANT ALL PRIVILEGES ON timeeffect.* TO 'timeeffect'@'%' WITH GRANT OPTION;"|mysql timeeffect -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp
+    echo "GRANT ALL PRIVILEGES ON timeeffect_db.* TO 'timeeffect'@'%' WITH GRANT OPTION;GRANT ALL PRIVILEGES ON timeeffect_db.* TO 'timeeffect'@'%' WITH GRANT OPTION;"|mysql timeeffect_db -u root -pvery_unsecure_timeeffect_PW1 --protocol tcp
     
 ## alternative: mysql import
     
@@ -72,7 +95,6 @@ http://timeeffect.lvh.me
 login as user: pirates, pass: vt8yhnan and build its diplomatic vessel and move it into fleet 1
 
 # Now everything is set up!
-create a new account and play the tutorial SUPERFAST!!! ;)
 
 # next time start
 next time, you can simply start 

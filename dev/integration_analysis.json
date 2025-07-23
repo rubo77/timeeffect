@@ -1,0 +1,35 @@
+{
+    "timestamp": "2025-07-23 08:24:43",
+    "files_found": 23,
+    "files_list": [
+        "\/var\/www\/timeeffect\/include\/auth.inc.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/oci8.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/msql.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/mssql.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/sqlite.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/pgsql.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/odbc.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/sybase.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/mysql.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/storage.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/ibase.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/dbase.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/common.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/mysqli.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/ifx.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB\/fbsql.php",
+        "\/var\/www\/timeeffect\/include\/pear\/DB.php",
+        "\/var\/www\/timeeffect\/include\/pear\/Auth\/Container\/MDB.php",
+        "\/var\/www\/timeeffect\/include\/pear\/Auth\/Container\/DBLite.php",
+        "\/var\/www\/timeeffect\/include\/pear\/Auth\/Container\/DB.php",
+        "\/var\/www\/timeeffect\/include\/pear\/PEAR\/Registry.php",
+        "\/var\/www\/timeeffect\/include\/pear\/PEAR\/Dependency2.php",
+        "\/var\/www\/timeeffect\/dev\/migrate_to_doctrine.php"
+    ],
+    "recommendations": [
+        "Add bootstrap.php include to main entry points",
+        "Test PEAR DB compatibility layer",
+        "Monitor logs for any compatibility issues",
+        "Consider gradual migration to pure Doctrine DBAL"
+    ]
+}
