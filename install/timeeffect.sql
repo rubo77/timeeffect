@@ -1,4 +1,4 @@
-CREATE TABLE `<%db_prefix%>auth` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>auth` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `permissions` varchar(255) NOT NULL default '',
   `gids` varchar(255) NOT NULL default '',
@@ -17,7 +17,7 @@ CREATE TABLE `<%db_prefix%>auth` (
 
 INSERT INTO `<%db_prefix%>auth` VALUES (1, 'admin', '', 1, '<%admin_user%>', '<%admin_password%>', '', 'Administrator', '', '', '');
 
-CREATE TABLE `<%db_prefix%>customer` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>customer` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `gid` int(32) unsigned NOT NULL default '0',
   `access` varchar(9) NOT NULL default 'rwxrwxr--',
@@ -40,7 +40,7 @@ CREATE TABLE `<%db_prefix%>customer` (
   FULLTEXT KEY `description` (`customer_desc`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
-CREATE TABLE `<%db_prefix%>effort` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>effort` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `gid` int(32) unsigned NOT NULL default '0',
   `access` varchar(9) NOT NULL default 'rw-rw-r--',
@@ -62,14 +62,14 @@ CREATE TABLE `<%db_prefix%>effort` (
   FULLTEXT KEY `note` (`note`,`description`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
-CREATE TABLE `<%db_prefix%>gids` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>gids` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `name` varchar(25) NOT NULL default '',
   PRIMARY KEY  (`id`),
   KEY `name` (`name`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
-CREATE TABLE `<%db_prefix%>group` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>group` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `level` smallint(1) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',
@@ -83,7 +83,7 @@ INSERT INTO `<%db_prefix%>group` VALUES (3, 4, 'agent');
 INSERT INTO `<%db_prefix%>group` VALUES (4, 2, 'client');
 
 
-CREATE TABLE `<%db_prefix%>project` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>project` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `gid` int(32) unsigned NOT NULL default '0',
   `access` varchar(9) NOT NULL default 'rwxrwxr--',
@@ -104,7 +104,7 @@ CREATE TABLE `<%db_prefix%>project` (
   FULLTEXT KEY `description` (`project_desc`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1;
 
-CREATE TABLE `<%db_prefix%>rate` (
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>rate` (
   `id` int(32) unsigned NOT NULL auto_increment,
   `customer_id` int(32) unsigned NOT NULL default '1',
   `name` varchar(64) NOT NULL default '',

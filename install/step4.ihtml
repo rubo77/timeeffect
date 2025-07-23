@@ -5,6 +5,22 @@ $a_buffer="";
 $sql_buffer="";
 $error_message="";
 
+// Check if installation was already completed
+$db_check = new DB_Sql();
+$db_check->Halt_On_Error = 'no';
+$db_check->Database = $db_name;
+$db_check->Host = $db_host;
+$db_check->User = $db_user;
+$db_check->Password = $db_password;
+if($db_check->connect()) {
+    // Check if tables already exist
+    $db_check->query("SHOW TABLES LIKE '{$db_prefix}auth'");
+    if($db_check->num_rows() > 0) {
+        $error_message .= 'Installation already completed! Tables already exist.<br>';
+        $error_message .= 'If you want to reinstall, please drop the existing tables first.<br>';
+    }
+}
+
 if($a_file = @fopen('config.inc.php-dist', 'r')) {
 	while(!feof($a_file)) {
 		$a_buffer .= fread($a_file, 4096);
