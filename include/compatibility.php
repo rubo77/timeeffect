@@ -219,35 +219,5 @@ class ModernDBResult {
     }
 }
 
-// Create compatibility aliases for old PEAR classes
-if (!class_exists('DB')) {
-    class DB extends ModernDB {}
-}
-
-// Simple PEAR_Error class for compatibility
-if (!class_exists('PEAR_Error')) {
-    class PEAR_Error {
-        private $message;
-        private $code;
-        
-        public function __construct($message = '', $code = null) {
-            $this->message = $message;
-            $this->code = $code;
-        }
-        
-        public function getMessage() {
-            return $this->message;
-        }
-        
-        public function getCode() {
-            return $this->code;
-        }
-        
-        public function __toString() {
-            return $this->message;
-        }
-    }
-}
-
 // Log compatibility layer activation
 error_log("PEAR DB Compatibility Layer activated - using Doctrine DBAL backend");
