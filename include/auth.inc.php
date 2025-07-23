@@ -90,8 +90,22 @@
 			self::__construct();
 		}
 		public function __construct() {
-			$database	= new Database();
-			$dsn		= "mysql://" . $database->User . ":" . $database->Password . "@" . $database->Host . "/" . $database->Database;
+			// Use global variables directly to ensure valid DSN
+			$user = $GLOBALS['_PJ_db_user'];
+			$password = $GLOBALS['_PJ_db_password'];
+			$host = $GLOBALS['_PJ_db_host'];
+			$database_name = $GLOBALS['_PJ_db_database'];
+			
+			// Ensure we have valid connection parameters
+			if (empty($host) || $host == 'mysql' || $host == 'localhost') {
+				$host = 'db';
+			}
+			
+			// Construct DSN with known good values
+			$dsn = "mysql://" . $user . ":" . $password . "@" . $host . "/" . $database_name;
+			
+			// Debug log to track what DSN is being used (mask password)
+			error_log("Auth DSN constructed: " . preg_replace('/:[^@]*@/', ':***@', $dsn));
 			
 			$parent = get_parent_class($this);
 			$options = array(
