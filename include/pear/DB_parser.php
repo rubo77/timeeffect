@@ -151,6 +151,35 @@ class MySQLiPEARCompat {
     }
     
     /**
+     * Get all rows from a result set
+     * 
+     * @param string $query SQL query
+     * @param array $params Not used in this implementation
+     * @param int $fetchmode Fetch mode (DB_FETCHMODE_ASSOC for associative array)
+     * @return array Array of result rows
+     */
+    public function getAll($query, $params = null, $fetchmode = null) {
+        $result = $this->mysqli->query($query);
+        if (!$result) {
+            return [];
+        }
+        
+        $rows = [];
+        if ($fetchmode == DB_FETCHMODE_ASSOC) {
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+        } else {
+            while ($row = $result->fetch_array()) {
+                $rows[] = $row;
+            }
+        }
+        
+        $result->free();
+        return $rows;
+    }
+    
+    /**
      * Execute a query and return a wrapped result
      * 
      * @param string $query SQL query
