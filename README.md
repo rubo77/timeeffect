@@ -34,8 +34,7 @@ PHP settings.
 
 # 3. Installation
 extract the contents of this repository in a directory which is located under
-the document root of your web server. Then open the installation script
-`https://www.yourdomain.com/timeeffect/install/` in your web-browser.
+the document root of your web server. Then follow [DEPLOYMENT.md](../DEPLOYMENT.md)
 
 # 4. Customizing
 After Installation you can further edit the generated file `config.inc.php`
