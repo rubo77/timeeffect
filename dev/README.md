@@ -54,5 +54,4 @@ The following files remain in the root directory as they are needed for producti
 
 # Install
 
-```bash
-cd /var/www/html && composer install --no-dev --optimize-autoloader
+see [DEPLOYMENT.md](../DEPLOYMENT.md)
