@@ -517,6 +517,12 @@ class DB
      */
     public static function connect($dsn, $options = array())
     {
+        // Use our DB_Connect function for better DSN parsing
+        $result = DB_Connect($dsn);
+        if (!empty($result) && !DB::isError($result)) {
+            return $result;
+        }
+
         $dsninfo = DB::parseDSN($dsn);
         $type = $dsninfo['phptype'];
 

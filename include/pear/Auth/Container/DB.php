@@ -21,6 +21,8 @@
 
 require_once 'Auth/Container.php';
 require_once 'DB.php';
+// Include the modern DB parser with fixed DSN handling
+require_once __DIR__ . '/../../DB_parser.php';
 
 /**
  * Storage driver for fetching login data from a database
