@@ -75,6 +75,42 @@ class DB_Sql {
     /* establish connection, select database */
     if ( empty($this->Link_ID) ) {
     
+      // Try to get config values from GLOBALS if available (used by Database class)
+      if (empty($Host) && isset($GLOBALS['_PJ_db_host'])) {
+        $Host = $GLOBALS['_PJ_db_host'];
+      }
+      
+      if (empty($Database) && isset($GLOBALS['_PJ_db_database'])) {
+        $Database = $GLOBALS['_PJ_db_database'];
+      }
+      
+      if (empty($User) && isset($GLOBALS['_PJ_db_user'])) {
+        $User = $GLOBALS['_PJ_db_user'];
+      }
+      
+      if (empty($Password) && isset($GLOBALS['_PJ_db_password'])) {
+        $Password = $GLOBALS['_PJ_db_password'];
+      }
+      
+      // Override host if empty or mysql/localhost (Docker environment fix)
+      if (empty($Host) || $Host == 'mysql' || $Host == 'localhost') {
+        error_log("HINT: this is a problem only on docker: Host was empty or 'mysql' in DSN, should be set to 'db'");
+      }
+      
+      // Use default credentials if still empty
+      if (empty($User)) {
+        $User = 'timeeffect';
+      }
+      
+      if (empty($Password)) {
+        $Password = 'very_unsecure_timeeffect_PW1';
+      }
+      
+      // Fix database name if still empty or using old value
+      if (empty($Database) || $Database == 'timeeffect') {
+        $Database = 'timeeffect_db';
+      }
+      
       $this->Link_ID=@mysqli_connect($Host, $User, $Password);
       if (!$this->Link_ID) {
         $this->Halt_On_Error="report";

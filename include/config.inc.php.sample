@@ -33,7 +33,7 @@
 	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
 	*/
 	$_PJ_db_host		= 'localhost';
-	$_PJ_db_database	= 'timeeffect';
+	$_PJ_db_database	= 'timeeffect_db';
 	$_PJ_db_user		= 'timeeffect';
 	$_PJ_db_password	= 'very_unsecure_timeeffect_PW1';
 
