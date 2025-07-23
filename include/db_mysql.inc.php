@@ -99,7 +99,9 @@ class DB_Sql {
 
   /* public: discard the query result */
   function free() {
-      @mysqli_free_result($this->Query_ID);
+      if ($this->Query_ID && is_object($this->Query_ID)) {
+          @mysqli_free_result($this->Query_ID);
+      }
       $this->Query_ID = 0;
   }
 
