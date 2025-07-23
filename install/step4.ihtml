@@ -6,6 +6,9 @@ $sql_buffer="";
 $error_message="";
 
 // Check if installation was already completed
+$tables_exist = false;
+$config_exists = file_exists('../include/config.inc.php');
+
 $db_check = new DB_Sql();
 $db_check->Halt_On_Error = 'no';
 $db_check->Database = $db_name;
@@ -16,8 +19,13 @@ if($db_check->connect()) {
     // Check if tables already exist
     $db_check->query("SHOW TABLES LIKE '{$db_prefix}auth'");
     if($db_check->num_rows() > 0) {
+        $tables_exist = true;
         $error_message .= 'Installation already completed! Tables already exist.<br>';
-        $error_message .= 'If you want to reinstall, please drop the existing tables first.<br>';
+        if ($config_exists) {
+            $error_message .= 'If you want to reinstall, please drop the existing tables first.<br>';
+        } else {
+            $error_message .= 'Config file missing - will be recreated, but tables exist.<br>';
+        }
     }
 }
 
@@ -49,15 +57,24 @@ if($a_file = @fopen('config.inc.php-dist', 'r')) {
 	$error_message .= 'opening of file \'config.inc.php-dist\' failed!<br>';
 }
 
-if(!empty($error_message)) {
+// Check if we should stop installation (only if tables exist AND config exists)
+if(!empty($error_message) && $tables_exist && $config_exists) {
 ?>
 				<b>TIMEEFFECT Installation - failed!</b><br><br>
 				<span class="errorMessage"><b>ERROR(S): <? if(isset($error_message)) echo $error_message; ?></b></span><br>
 <?php
 	return;
+} elseif (!empty($error_message)) {
+	// Show warning but continue if only tables exist (config will be recreated)
+?>
+				<b>TIMEEFFECT Installation - Warning</b><br><br>
+				<span class="warning"><b>WARNING: <? if(isset($error_message)) echo $error_message; ?></b></span><br>
+				<span style="color: green;"><b>Continuing with config file creation...</b></span><br><br>
+<?php
 }
 
-if($sql_file = @fopen('timeeffect.sql', 'r')) {
+// Only create tables if they don't exist yet
+if (!$tables_exist && $sql_file = @fopen('timeeffect.sql', 'r')) {
 	while(!feof($sql_file)) {
 		$sql_buffer .= fread($sql_file, 4096);
 	}
@@ -79,6 +96,11 @@ if($sql_file = @fopen('timeeffect.sql', 'r')) {
 } else {
 	$error_message .= 'opening of file \'timeeffect.sql\' failed!<br>';
 }
+} elseif ($tables_exist) {
+	// Tables already exist, skip SQL execution
+	echo "<span style='color: orange;'><b>Tables already exist - skipping SQL execution</b></span><br><br>";
+}
+
 if(!empty($error_message)) {
 ?>
 				<b>TIMEEFFECT Installation - failed!</b><br><br>
