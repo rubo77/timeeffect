@@ -55,6 +55,12 @@ class Auth_Container_DB extends Auth_Container
      * @var string
      */
     var $activeUser = '';
+    
+    /**
+     * Reference to the Auth object
+     * @var object
+     */
+    var $_auth_obj = null;
 
     // {{{ Constructor
 
