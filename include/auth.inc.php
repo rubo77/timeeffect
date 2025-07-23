@@ -9,6 +9,7 @@
 	class PJAuth extends Auth {
 		// global permissions for checking user access rights
 		var $permissions;
+		var $user_list = array(); // Deklaration der vorher dynamischen Property
 
 		// user data (e.g. name, id, personal permissions)
 		var $data = array();

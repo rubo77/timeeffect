@@ -126,4 +126,3 @@ if(isset($exc)) {
 } else if(isset($sbe) && $sbe == 0) {
 	unset($shown['be']);
 }
-die("aperetiv.inc.php Ende erreicht");
