@@ -10,8 +10,13 @@ LABEL description="TimeEffect PHP 8.4 with Apache and MySQL support"
 # Copy custom Apache VHost configuration
 COPY vhost-fix.conf /opt/docker/etc/httpd/vhost.conf
 
-# Enable PHP short tags
-RUN echo "short_open_tag = On" >> /usr/local/etc/php/conf.d/timeeffect.ini
+# Enable PHP short tags for legacy compatibility and error logging
+RUN echo "short_open_tag = On" >> /opt/docker/etc/php/php.ini && \
+    echo "log_errors = On" >> /opt/docker/etc/php/php.ini && \
+    echo "error_log = /docker.stderr" >> /opt/docker/etc/php/php.ini && \
+    echo "display_errors = On" >> /opt/docker/etc/php/php.ini && \
+    echo "display_startup_errors = On" >> /opt/docker/etc/php/php.ini && \
+    echo "error_reporting = E_ALL" >> /opt/docker/etc/php/php.ini
 
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/html/logs \
