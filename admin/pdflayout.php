@@ -22,9 +22,6 @@
 					$pdflayout .= "\t\$_PJ_" . $pname . "['" . $ppname . "'] = '$ppvalue';" . "\n";
 				}
 			} else {
-				if(!get_magic_quotes_gpc()) {
-					$pvalue = addslashes($pvalue);
-				}
 				$pvalue = str_replace('\"', '"', $pvalue);
 				$pdflayout .= "\t\$_PJ_$pname = '$pvalue';" . "\n";
 			}

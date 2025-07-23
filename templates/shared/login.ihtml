@@ -99,8 +99,11 @@ if(!empty($GLOBALS['username'])) {
 }else {
 	// select the username of the last added effort
 	$db = new Database;
-	$query = sprintf("SELECT username FROM `%s` left join `%s` on h_auth.id=h_effort.user
-	ORDER BY `%s`.`date` DESC limit 1", $GLOBALS['_PJ_auth_table'], $GLOBALS['_PJ_effort_table'], $GLOBALS['_PJ_effort_table']);
+	// Fix SQL Join syntax - use table aliases properly
+	$auth_table = $GLOBALS['_PJ_auth_table'];
+	$effort_table = $GLOBALS['_PJ_effort_table'];
+	$query = sprintf("SELECT username FROM `%s` AS auth LEFT JOIN `%s` AS effort ON auth.id=effort.user
+	ORDER BY effort.date DESC LIMIT 1", $auth_table, $effort_table);
 	$res = $db->query($query);
 	if($row = mysqli_fetch_assoc($res)) {
 		$GLOBALS['username']=$row['username'];
