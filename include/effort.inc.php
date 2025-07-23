@@ -223,11 +223,9 @@
 		}
 
 		function getTotalHours() {
-			$total_hours = 0;
-			foreach($this->efforts as $effort) {
-				$total_hours += $effort->giveValue('hours');
-			}
-			return $total_hours;
+			// Calculate hours using the same method as statistics view: sum days * 8
+			$total_days = $this->getTotalDays();
+			return $total_days * 8;
 		}
 
 		function getTotalCosts() {
@@ -239,6 +237,7 @@
 		}
 
 		function getTotalDays() {
+			// Sum individual day values like statistics view does
 			$total_days = 0;
 			foreach($this->efforts as $effort) {
 				$total_days += $effort->giveValue('days');
