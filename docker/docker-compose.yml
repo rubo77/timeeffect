@@ -1,0 +1,30 @@
+version: '2'
+
+volumes:
+  db:
+
+services:
+  db:
+    image: mariadb:10.5
+    volumes:
+      - db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=very_unsecure_timeeffect_PW1 
+      - MYSQL_PASSWORD=very_unsecure_timeeffect_PW1 
+      - MYSQL_DATABASE=very_unsecure_timeeffect_PW1 
+      - MYSQL_USER=very_unsecure_timeeffect_PW1 
+
+  app:
+    # hosted on docker hub built from https://github.com/caplod/docker-php-apache
+    #image: tan3/php-apache:latest
+    #image: tan3/php-apache:7.4
+    image: tan3/php-apache:8.1
+    ports:
+      - 80:80
+      - 443:443 
+    links:
+      - db
+    volumes:
+      - /var/www/timeeffect:/var/www/html
