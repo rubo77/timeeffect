@@ -96,7 +96,8 @@ if (!$tables_exist && $sql_file = @fopen('timeeffect.sql', 'r')) {
 } else {
 	$error_message .= 'opening of file \'timeeffect.sql\' failed!<br>';
 }
-} elseif ($tables_exist) {
+
+if ($tables_exist) {
 	// Tables already exist, skip SQL execution
 	echo "<span style='color: orange;'><b>Tables already exist - skipping SQL execution</b></span><br><br>";
 }

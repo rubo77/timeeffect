@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $_PJ_budget_security_percentage		= 10;
 /*
    if $lang is set set language to value of $lang. Otherwise select default language
@@ -125,3 +126,4 @@ if(isset($exc)) {
 } else if(isset($sbe) && $sbe == 0) {
 	unset($shown['be']);
 }
+die("aperetiv.inc.php Ende erreicht");
