@@ -68,10 +68,10 @@
 		var $user; // Deklaration der vorher dynamischen Property
 		var $user_access; // Deklaration der vorher dynamischen Property
 
-		function Customer($customer = '', &$user) {
-			self::__construct($customer, $user);
+		function Customer(&$user, $customer = '') {
+			self::__construct($user, $customer);
 		}
-		function __construct($customer = '', &$user) {
+		function __construct(&$user, $customer = '') {
 			$this->user = $user;
 			if(is_array($customer)) {
 				$this->data = $customer;
