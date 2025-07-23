@@ -16,7 +16,8 @@ To get the app up and running in docker, follow these 3 steps:
     # just in case you have it running:
     systemctl stop mysql
     systemctl stop nginx
-    # 1. Automated Setup (RECOMMENDED):
+
+# 1. Automated Setup (RECOMMENDED):
 
     cd /var/www/timeeffect/docker/
     ./setup.sh
