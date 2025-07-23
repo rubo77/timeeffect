@@ -20,7 +20,6 @@ if (!defined('PEAR_ERROR_DIE')) {
 if (!defined('PEAR_ERROR_CALLBACK')) {
     define('PEAR_ERROR_CALLBACK', 16);
 }
-
 /**
  * Modern PEAR base class
  */
@@ -131,10 +130,9 @@ class PEAR_Error
     
     public function __toString()
     {
-        return $this->toString();
+        return $this->message;
     }
 }
-
 // Global PEAR functions
 function &PEAR_Singleton($class = 'PEAR', $params = array())
 {
@@ -154,4 +152,3 @@ function PEAR_isError($data)
 }
 
 echo "<!-- Modern PEAR Compatibility Layer loaded -->\n";
-?>
