@@ -92,23 +92,19 @@ class DB_Sql {
         $Password = $GLOBALS['_PJ_db_password'];
       }
       
-      // Override host if empty or mysql/localhost (Docker environment fix)
+      // if host if empty or mysql/localhost (Docker environment)
       if (empty($Host) || $Host == 'mysql' || $Host == 'localhost') {
         error_log("HINT: this is a problem only on docker: Host was empty or 'mysql' in DSN, should be set to 'db'");
       }
       
-      // Use default credentials if still empty
+      // if user is empty
       if (empty($User)) {
-        $User = 'timeeffect';
+        die('no database user given');
       }
       
-      if (empty($Password)) {
-        $Password = 'very_unsecure_timeeffect_PW1';
-      }
-      
-      // Fix database name if still empty or using old value
-      if (empty($Database) || $Database == 'timeeffect') {
-        $Database = 'timeeffect_db';
+      // if database is empty
+      if (empty($Database)) {
+        die('no database name given');
       }
       
       $this->Link_ID=@mysqli_connect($Host, $User, $Password);
