@@ -20,6 +20,17 @@ composer install --no-dev --optimize-autoloader
 ```
 
 ### Schritt 3: Environment konfigurieren
+
+#### Option A: Aus bestehender Konfiguration generieren (EMPFOHLEN)
+```bash
+# .env aus bestehender config.inc.php generieren
+php dev/generate_env_from_config.php
+
+# Generierte .env prüfen und anpassen
+nano .env
+```
+
+#### Option B: Manuell erstellen
 ```bash
 # .env Datei erstellen
 cp .env.example .env
@@ -35,6 +46,7 @@ DB_HOST=localhost
 DB_DATABASE=your_database_name
 DB_USERNAME=your_db_user
 DB_PASSWORD=your_db_password
+DB_PREFIX=te_
 
 # Application Settings
 APP_ENV=production
