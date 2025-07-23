@@ -1,5 +1,7 @@
 <?php
-	include_once("../include/config.inc.php");
+	// Modern PHP 8.4 compatibility and Composer autoloading
+	require_once(__DIR__ . "/../bootstrap.php");
+	include_once(__DIR__ . "/../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	$customer 	= new Customer(@$cid, $_PJ_auth);
