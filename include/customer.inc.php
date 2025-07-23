@@ -5,6 +5,7 @@
 		var $customers;
 		var $customer_count	= 0;
 		var $customer_cursor	= -1;
+		var $inactive_count = 0; // Deklaration der vorher dynamischen Property
 
 		function CustomerList(&$user, $inactive = '') {
 			self::__construct($user, $inactive);
@@ -64,6 +65,8 @@
 		var $db;
 		var $data;
 		var $project_count	= '';
+		var $user; // Deklaration der vorher dynamischen Property
+		var $user_access; // Deklaration der vorher dynamischen Property
 
 		function Customer($customer = '', &$user) {
 			self::__construct($customer, $user);

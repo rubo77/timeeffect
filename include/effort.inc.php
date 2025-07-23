@@ -7,6 +7,8 @@
 	class OpenEfforts {
 		var $__effort_count	= 0;
 		var $__effort_cursor	= -1;
+		var $__user; // Deklaration der vorher dynamischen Property
+		var $__db; // Deklaration der vorher dynamischen Property
 
 		function OpenEfforts(&$_user) {
 			self::__construct($_user);
