@@ -237,6 +237,14 @@
 			}
 			return $total_costs;
 		}
+
+		function getTotalDays() {
+			$total_days = 0;
+			foreach($this->efforts as $effort) {
+				$total_days += $effort->giveValue('days');
+			}
+			return $total_days;
+		}
 	}
 
 	class Effort extends Data {
