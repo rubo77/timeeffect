@@ -8,7 +8,7 @@
 		$ro_firstname	= ' READONLY';
 		$ro_lastname	= ' READONLY';
 	}
-	if(isset($group) && is_object($group) && !$new) {
+	if(isset($group) && is_object($group) && !isset($new)) {
 		$id					= $group->giveValue('id');
 		$name				= $group->giveValue('name');
 	}

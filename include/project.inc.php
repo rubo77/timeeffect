@@ -11,6 +11,8 @@
 		var $show_closed = false;
 		var $project_count	= 0;
 		var $project_cursor	= -1;
+		var $customer;
+		var $user;
 		
 		function ProjectList($customer, &$user, $show_closed = false, $limit = 1000) {
 			self::__construct($customer, $user, $show_closed, $limit);

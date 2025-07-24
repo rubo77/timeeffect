@@ -20,7 +20,7 @@
 
 	if(!isset($report)) {
 		$customers = new CustomerList($_PJ_auth, @$shown['ic']);
-		$projects = new ProjectList($customer, $_PJ_auth, $shown['cp'], 0);
+		$projects = new ProjectList($customer, $_PJ_auth, isset($shown['cp']) ? $shown['cp'] : false, 0);
 		include("$_PJ_root/templates/edit.ihtml");
 		exit;
 	} elseif(!$syear || !$eyear) {
