@@ -126,3 +126,9 @@ if(isset($exc)) {
 } else if(isset($sbe) && $sbe == 0) {
 	unset($shown['be']);
 }
+
+// Fix: Default expand all when no specific arguments are provided
+if(!isset($exc) && !isset($coc) && !isset($exp) && !isset($cop) && !isset($exca) && !isset($coca) && !isset($expa) && !isset($copa) && empty($_GET['cid']) && empty($_GET['pid']) && empty($_GET['eid'])) {
+	$expanded['cid']['all'] = 1;
+	$expanded['pid']['all'] = 1;
+}

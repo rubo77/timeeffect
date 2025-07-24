@@ -41,19 +41,36 @@
 			if($time == '') {
 				return NULL;
 			}
-			list($hour, $minute, $second) = explode(":", $time);
-			/* workaround for Windows because Windows does not support dates before 1.1.1970 */
-			if(strstr(PHP_OS, "WIN")) {
-				$date = str_replace("H", $hour, $format);
-				$date = str_replace("i", $minute, $date);
-				$date = str_replace("s", $second, $date);
+			// Fix: Handle both date (YYYY-MM-DD) and time (HH:MM:SS) formats
+			if(strpos($time, '-') !== false) {
+				// Date format (YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)
+				$timestamp = strtotime($time);
+				if($timestamp === false) {
+					return NULL;
+				}
+				return date($format, $timestamp);
+			} else if(strpos($time, ':') !== false) {
+				// Time format (HH:MM:SS)
+				$time_parts = explode(":", $time);
+				$hour = isset($time_parts[0]) ? (int)$time_parts[0] : 0;
+				$minute = isset($time_parts[1]) ? (int)$time_parts[1] : 0;
+				$second = isset($time_parts[2]) ? (int)$time_parts[2] : 0;
+				/* workaround for Windows because Windows does not support dates before 1.1.1970 */
+				if(strstr(PHP_OS, "WIN")) {
+					$date = str_replace("H", sprintf("%02d", $hour), $format);
+					$date = str_replace("i", sprintf("%02d", $minute), $date);
+					$date = str_replace("s", sprintf("%02d", $second), $date);
+					return $date;
+				}
+				$timestamp = mktime($hour, $minute, $second, 1, 1, 2002);
+				$error_reporting = error_reporting(0);
+				$date = date($format, $timestamp);
+				error_reporting($error_reporting);
 				return $date;
+			} else {
+				// Invalid format
+				return NULL;
 			}
-			$timestamp = mktime($hour, $minute, $second, 1, 1, 2002);
-			$error_reporting = error_reporting(0);
-			$date = date($format, $timestamp);
-			error_reporting($error_reporting);
-			return $date;
 		} /* End of function DataList::formatTime() */
 
 		function checkUserAccess($mode = 'read') {
