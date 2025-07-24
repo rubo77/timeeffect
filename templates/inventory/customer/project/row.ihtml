@@ -24,7 +24,7 @@ if($project->count(@$GLOBALS['shown']['be']) && $project->checkUserAccess('read'
 		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if($project->checkUserAccess('write') && ($_PJ_auth->checkPermission('admin') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?delete=1&pid=" . $project->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
 	</TR><?php
 	if(isset($expanded) && $expanded['pid'][$project->giveValue('id')]) {
-		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
+		$efforts	= new EffortList($customer, $project, $project->user, isset($GLOBALS['shown']['be']) ? $GLOBALS['shown']['be'] : false);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();
 			$row_class = !$row_class;
