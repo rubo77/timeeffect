@@ -1,6 +1,6 @@
 <?php
 	$no_login = 1;
-    require_once(__DIR__ . "/../bootstrap.php"); // Modern PHP 8.4 compatibility
+    require_once(__DIR__ . "/bootstrap.php"); // Modern PHP 8.4 compatibility
 	include_once("include/config.inc.php");
 ?>
 <HTML>
