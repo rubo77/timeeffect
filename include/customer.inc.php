@@ -8,6 +8,13 @@
 		var $inactive_count = 0; // Deklaration der vorher dynamischen Property
 
 		function __construct(&$user, $inactive = '') {
+			$debugmessage=false;
+			if($debugmessage) {
+				// DEBUG: Ausgabe für Customer-Listen-Problem
+				echo '<div style="background-color: #fff3cd; color: #856404; padding: 10px; margin: 10px; border: 1px solid #ffeaa7; border-radius: 4px;">';
+				echo '<strong>CustomerList Debug - Constructor called!</strong><br>';
+			}
+		
 			global $_PJ_customer_table;
 
 			$this->db = new Database;
@@ -29,13 +36,30 @@
 			}
 			$query .= $access_query;
 			$query .= " ORDER BY customer_name";
+		
+			if($debugmessage) {
+				echo 'Query: ' . htmlspecialchars($query) . '<br>';
+				echo 'Table: ' . htmlspecialchars($_PJ_customer_table) . '<br>';
+			}
 
 			$this->db->query($query);
 			$this->customers = array();
 			while($this->db->next_record()) {
-				$this->customers[] = new Customer($this->db->Record, $user);
+				if($debugmessage) {
+					echo 'Raw DB Record: <pre>' . print_r($this->db->Record, true) . '</pre>';
+				}
+				$customer = new Customer($user, $this->db->Record);
+				$this->customers[] = $customer;
+				$name = $customer->giveValue('customer_name');
+				$id = $customer->giveValue('id');
+				if($debugmessage) {
+					echo 'Loaded customer: "' . ($name ? htmlspecialchars($name) : 'NULL/EMPTY') . '" (ID: "' . ($id ? htmlspecialchars($id) : 'NULL/EMPTY') . '")<br>';
+				}
 				$this->customer_count++;
-				$customer = $this->customers[$this->customer_count-1];
+			}
+			if($debugmessage) {
+				echo 'Total customers loaded: ' . $this->customer_count . '<br>';
+				echo '</div>';
 			}
 
 			$this->inactive_count = 0;
@@ -66,11 +90,22 @@
 		var $user_access; // Deklaration der vorher dynamischen Property
 
 		function __construct(&$user, $customer = '') {
+			$debugmessage=false;
 			$this->user = $user;
 			if(is_array($customer)) {
 				$this->data = $customer;
+				if($debugmessage) {
+					echo 'Customer constructor: Data set from array. customer_name=' . (isset($customer['customer_name']) ? $customer['customer_name'] : 'NOT_SET') . ', id=' . (isset($customer['id']) ? $customer['id'] : 'NOT_SET') . '<br>';
+				}
 			} else if(is_string($customer) && $customer != '') {
 				$this->load($customer);
+				if($debugmessage) {
+					echo 'Customer constructor: Data loaded from DB for ID=' . $customer . '<br>';
+				}
+			} else {
+				if($debugmessage) {
+					echo 'Customer constructor: No data provided<br>';
+				}
 			}
 			$this->user_access				= $this->getUserAccess();
 		}
