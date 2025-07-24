@@ -13,9 +13,6 @@
 		var $user_cursor	= -1;
 		var $projects = array();
 
-		function UserList() {
-			self::__construct();
-		}
 		function __construct() {
 			$this->db = new Database;
 
@@ -62,9 +59,6 @@ else return null;
 		var $db; // Datenbankobjekt
 		var $debug_exists; // Property für Debug-Ausgabe von exists()
 
-		function User($data = '') {
-			self::__construct($data);
-		}
 		function __construct($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;

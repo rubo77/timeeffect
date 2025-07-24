@@ -14,7 +14,7 @@
 		var $data_keys = array();
 		var $data_pointer = 0;
 
-		function GroupList() {
+		function __construct() {
 			// DEBUG: Ausgabe für Gruppenübersicht-Problem (ganz am Anfang)
 			echo '<div style="background-color: #fff3cd; color: #856404; padding: 10px; margin: 10px; border: 1px solid #ffeaa7; border-radius: 4px;">';
 			echo '<strong>GroupList Debug - Constructor called!</strong><br>';
@@ -75,7 +75,7 @@ else return null;
 		var $db; // Datenbankobjekt
 		var $debug_exists; // Property für Debug-Ausgabe von exists()
 
-		function Group($data = '') {
+		function __construct($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
