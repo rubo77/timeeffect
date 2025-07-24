@@ -48,10 +48,10 @@ if($project->count(@$GLOBALS['shown']['be']) && $project->checkUserAccess('read'
 		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>" COLSPAN="10"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 			<TR>
 				<TD CLASS="listDetail<?php if(isset($rowclass)) echo $rowclass; ?>"><?= $project->giveValue('project_desc') ?></TD>
-				<TD CLASS="listDetail<?php if(isset($rowclass)) echo $rowclass; ?>" WIDTH="200"><?
+				<TD CLASS="listDetail<?php if(isset($rowclass)) echo $rowclass; ?>" WIDTH="200"><?php
 				if($project->giveValue('days')) {
 						print $GLOBALS['_PJ_strings']['workingdays'] . ":&nbsp;" . formatNumber($project->giveValue('days'));
-				}?><BR><?
+				}?><BR><?php
 					if($project->giveValue('costs')) {
 						print $GLOBALS['_PJ_strings']['costs'] . ":&nbsp;" . formatNumber($project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency'];
 					} ?>

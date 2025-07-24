@@ -1,5 +1,5 @@
 <!-- group/delete.ihtml - START -->
-<?
+<?php
 	if(isset($group) && is_object($group)) {
 		$uid				= $group->giveValue('id');
 		$name				= $group->giveValue('name');

@@ -1,5 +1,5 @@
 <!-- inventory/effort/delete.ihtml - START -->
-<?
+<?php
 	if(isset($effort) && is_object($effort)) {
 		$eid				= $effort->giveValue('id');
 		$description		= $effort->giveValue('description');

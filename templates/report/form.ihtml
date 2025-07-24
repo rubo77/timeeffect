@@ -1,5 +1,5 @@
 <!-- report/form.ihtml - START -->
-<?
+<?php
 	include($GLOBALS['_PJ_root'] . '/templates/report/options/edit.ihtml');
 	$all_users			= $_PJ_auth->listUsers();
 ?>
