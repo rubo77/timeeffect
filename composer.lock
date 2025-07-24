@@ -183,7 +183,7 @@
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4"
+                "php": "^8.1"
             },
             "conflict": {
                 "doctrine/common": "<2.9"
