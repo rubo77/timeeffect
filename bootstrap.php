@@ -82,4 +82,7 @@ $logger->info('TimeEffect application bootstrap completed', [
     'max_execution_time' => ini_get('max_execution_time')
 ]);
 
+// Load Session/Auth compatibility layer for PHP 8.4
+require_once __DIR__ . '/include/auth_compatibility.php';
+
 // Legacy PEAR compatibility is automatically loaded via composer.json files section
