@@ -3,7 +3,6 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	// Variablen-Initialisierungen zur Vermeidung von PHP 8.4 Warnungen
 	$eid = $_REQUEST['eid'] ?? null;
 	$stop = $_REQUEST['stop'] ?? null;
 	$pid = $_REQUEST['pid'] ?? '';
