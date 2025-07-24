@@ -53,14 +53,15 @@
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="users[]" multiple>
 					<?php
-						$a_user = $user;
-						reset($all_users);
-						while(list($cnt, $o_user) = each($all_users)) {
+						$a_user = isset($user) ? $user : null;
+					if(isset($all_users) && is_array($all_users)) {
+						foreach($all_users as $cnt => $o_user) {
 ?>
 						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if(isset($users) && is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
 						}
-					?>
+					}
+?>
 					</SELECT>
 					</TD>
 				</TR><TR>
