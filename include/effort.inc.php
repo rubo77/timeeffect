@@ -107,7 +107,7 @@
 			self::__construct($customer, $project, $user, $show_billed, $limit);
 		}
 		
-		function __construct(&$customer, &$project, &$user, $show_billed = false, $limit = NULL) {
+		function __construct(&$customer, &$project, &$user, $show_billed = false, $limit = NULL, $sort_order = 'desc') {
 			$this->customer	= $customer;
 			$this->project	= $project;
 			$this->user		= $user;
@@ -144,7 +144,8 @@
 			$query .= $GLOBALS['_PJ_customer_table'] . ".id";
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
 				$query .= " AND project_id='" . $project->giveValue('id') . "'";
-				$order_query = ' ORDER BY billed, date, begin';
+				$sort_direction = ($sort_order === 'asc') ? 'ASC' : 'DESC';
+				$order_query = " ORDER BY billed, date $sort_direction, begin $sort_direction";
 				$limit_query = '';
 			} else if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='" . $customer->giveValue('id') . "'";
@@ -174,7 +175,7 @@
 					return;
 				}
 				$query .= " AND project_id IN ($pids)";
-				$order_query = ' ORDER BY billed, date, begin, last DESC';
+				$order_query = ' ORDER BY billed, date DESC, begin DESC, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
 			if(!empty($limit)) {

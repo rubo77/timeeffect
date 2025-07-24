@@ -11,6 +11,9 @@
 		var	$effort_count			= 0;
 		var $effort_cursor			= -1;
 		var $billed_effort_count	= 0;
+		// Fix: Explicit property declarations for PHP 8.4 compatibility
+		var $mode;
+		var $users;
 
 		// Fix: Replace deprecated PHP4-style constructor with modern __construct for PHP 8.4 compatibility
 	function __construct(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {

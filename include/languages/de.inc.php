@@ -36,7 +36,7 @@
 	$GLOBALS['_PJ_strings']['close_window']				= 'Fenster schlie&szlig;en';
 	$GLOBALS['_PJ_strings']['closed']					= 'abgeschlossen';
 	$GLOBALS['_PJ_strings']['collapse_all']				= 'Alle zuklappen';
-	$GLOBALS['_PJ_strings']['continue']					= 'Kopieren';
+	$GLOBALS['_PJ_strings']['continue']					= 'Fortsetzen';
 	$GLOBALS['_PJ_strings']['costs']					= 'Kosten';
 	$GLOBALS['_PJ_strings']['count']					= 'laufende Nummer';
 	$GLOBALS['_PJ_strings']['create']					= 'Anlegen';

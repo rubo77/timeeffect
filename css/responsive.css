@@ -4,8 +4,24 @@
  */
 
 /* ========================================
-   RESPONSIVE BREAKPOINTS
+   GENERAL RESPONSIVE IMPROVEMENTS
    ======================================== */
+
+/* Continue button with green play icon */
+.continue-button {
+    color: #28a745 !important;
+    text-decoration: none;
+}
+
+.continue-button:hover {
+    color: #1e7e34 !important;
+}
+
+.play-icon {
+    color: #28a745;
+    font-size: 14px;
+    margin-right: 4px;
+}
 
 /* Conservative Mobile Approach - Only modify explicitly marked elements */
 /* Preserve TimeEffect's existing table-based layout */
