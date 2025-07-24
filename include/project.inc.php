@@ -120,6 +120,9 @@ else return null;
 	}
 
 	class Project extends Data {
+		var $customer; // Customer-Objekt Referenz
+		var $user; // User-Objekt Referenz
+		var $user_access; // Zugriffsrechte des Users
 		var $db;
 		var $data;
 		var $efforts;

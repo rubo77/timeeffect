@@ -4,6 +4,7 @@
 		var $data		= array();
 		var $data_keys = array();
 		var $data_pointer = 0;
+		var $db; // Datenbankverbindung
 
 		function Rates($data = '') {
 			self::__construct($data);

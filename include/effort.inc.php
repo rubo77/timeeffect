@@ -9,6 +9,7 @@
 		var $__effort_cursor	= -1;
 		var $__user; // Deklaration der vorher dynamischen Property
 		var $__db; // Deklaration der vorher dynamischen Property
+		var $__efforts = array(); // Array für Efforts
 
 		function OpenEfforts(&$_user) {
 			self::__construct($_user);
@@ -98,6 +99,9 @@
 		var $show_billed = false;
 		var $effort_count	= 0;
 		var $effort_cursor	= -1;
+		var $customer; // Customer-Objekt Referenz
+		var $project; // Project-Objekt Referenz
+		var $user; // User-Objekt Referenz
 
 		function EffortList(&$customer, &$project, &$user, $show_billed = false, $limit = NULL) {
 			self::__construct($customer, $project, $user, $show_billed, $limit);
@@ -313,12 +317,22 @@
 			$b_time = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
 			$e_time = mktime($e_hour, $e_minute, $e_second, $month, $day, $year);
 
+			// Sicherstellen, dass der 'billed' Schlüssel existiert
+			if(!isset($this->data['billed'])) {
+				$this->data['billed'] = '';
+			}
+
 			if($this->data['billed'] != '') {
 				$this->data['billed_seconds']	= ($e_time - $b_time);
 				$this->data['billed_minutes']	= round($this->data['billed_seconds']	/ 60, 0);
 				$this->data['billed_hours']		= round($this->data['billed_seconds']	/ 3600, 2);
 				$this->data['billed_days']		= round($this->data['billed_seconds']	/ 28800, 2);
 			}
+			// Sicherstellen, dass der 'rate' Schlüssel existiert
+			if(!isset($this->data['rate'])) {
+				$this->data['rate'] = 0;
+			}
+
 			$this->data['seconds']	= ($e_time - $b_time);
 			$this->data['minutes']	= round($this->data['seconds']	/ 60, 0);
 			$this->data['hours']	= round($this->data['seconds']	/ 3600, 2);

@@ -11,6 +11,7 @@
 		var $show_closed = false;
 		var $user_count	= 0;
 		var $user_cursor	= -1;
+		var $projects = array();
 
 		function UserList() {
 			self::__construct();
@@ -58,6 +59,7 @@ else return null;
 		var $data = array();
 		var $data_keys = array();
 		var $data_pointer = 0;
+		var $db; // Datenbankobjekt
 
 		function User($data = '') {
 			self::__construct($data);
