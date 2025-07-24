@@ -21,7 +21,7 @@
 			$query .= " ORDER BY name";
 
 			$this->db->query($query);
-			$this->projects = array();
+			$this->groups = array(); // FIX: Korrektes Array initialisieren (war vorher falsch projects)
 			while($this->db->next_record()) {
 				$this->groups[] = new Group($this->db->Record);
 				$this->group_count++;
@@ -59,6 +59,7 @@ else return null;
 		var $data_keys = array();
 		var $data_pointer = 0;
 		var $db; // Datenbankobjekt
+		var $debug_exists; // Property für Debug-Ausgabe von exists()
 
 		function Group($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
@@ -89,8 +90,34 @@ else return null;
 		}
 
 		function exists($name) {
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='$name' AND id <> '" . $this->data['id'] . "'";
+			// Variable für Debug-Ausgabe
+			$debug_output = "";
+			
+			// Debug-Informationen sammeln
+			$debug_output .= "<pre style=\"background:#eee;padding:10px;margin:10px;border:1px solid #999;\">";
+			$debug_output .= "<b>[Group::exists] Name:</b> " . htmlspecialchars($name) . "<br>";
+			$debug_output .= "<b>REQUEST data:</b> ";
+			$debug_output .= htmlspecialchars(print_r($_REQUEST, true));
+			$debug_output .= "<b>this->data BEFORE fix:</b> ";
+			$debug_output .= htmlspecialchars(print_r($this->data, true));
+			
+			// FIX: Fehlende Formularfelder aus REQUEST übernehmen
+			if (isset($_REQUEST['id']) && !isset($this->data['id'])) {
+				$this->data['id'] = $_REQUEST['id'];
+			}
+			
+			$debug_output .= "<b>this->data AFTER fix:</b> ";
+			$debug_output .= htmlspecialchars(print_r($this->data, true));
+			
+			// Bei leerer ID einen sicheren WHERE-Teil verwenden
+			$id_condition = !empty($this->data['id']) ? " AND id <> '" . $this->data['id'] . "'" : "";
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='$name'" . $id_condition;
+			$debug_output .= "<b>SQL Query:</b> " . htmlspecialchars($query);
+			$debug_output .= "</pre>";
 			$this->db->query($query);
+			
+			// Debug-Ausgabe in Klassenvariable speichern für spätere Verwendung im Fehlerfall
+			$this->debug_exists = $debug_output;
 
 			if($this->db->next_record()) {
 				return true;
@@ -119,6 +146,32 @@ else return null;
 		}
 
 		function save() {
+			// Debug-Logging für Request und Session
+			$log_dir = __DIR__ . '/../logs';
+			if (!is_dir($log_dir)) {
+				mkdir($log_dir, 0755, true);
+			}
+			
+			$log_file = $log_dir . '/group_debug.log';
+			$timestamp = date('Y-m-d H:i:s');
+			$log_data = [
+				'POST' => $_POST,
+				'GET' => $_GET,
+				'REQUEST' => $_REQUEST,
+				'this_data' => $this->data,
+				'session_status' => session_status(),
+				'session_id' => session_id(),
+				'cookies' => $_COOKIE
+			];
+			$log_entry = "[$timestamp] Group save() method called | " . json_encode($log_data, JSON_UNESCAPED_SLASHES) . "\n";
+			file_put_contents($log_file, $log_entry, FILE_APPEND);
+			
+			// Versuch, Daten aus dem Request direkt zu holen, wenn sie nicht in $this->data sind
+			if ((!isset($this->data['name']) || $this->data['name'] == '') && isset($_REQUEST['name']) && $_REQUEST['name'] != '') {
+				$this->data['name'] = $_REQUEST['name'];
+				file_put_contents($log_file, "[$timestamp] Fixed: Set name from REQUEST: {$this->data['name']}\n", FILE_APPEND);
+			}
+
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
@@ -128,16 +181,58 @@ else return null;
 	        }
 
 			if($this->exists($this->data['name'])) {
-	        	return $GLOBALS['_PJ_strings']['error_group_exists'];
-	        }
-
+				return $GLOBALS['_PJ_strings']['error_group_exists'];
+			}
+			
+			// Variable für Debug-Ausgabe
+			$debug_output = "";
+			
+			// Debug-Informationen sammeln
+			$debug_output .= "<pre style=\"background:#eee;padding:10px;margin:10px;border:1px solid #999;\">";
+			$debug_output .= "<b>[Group::save] Before query build</b><br>";
+			$debug_output .= "<b>REQUEST data:</b> ";
+			$debug_output .= htmlspecialchars(print_r($_REQUEST, true));
+			$debug_output .= "<b>POST data:</b> ";
+			$debug_output .= htmlspecialchars(print_r($_POST, true));
+			$debug_output .= "<b>this->data BEFORE fix:</b> ";
+			$debug_output .= htmlspecialchars(print_r($this->data, true));
+			
+			// FIX: Fehlende Formularfelder aus REQUEST übernehmen
+			if (isset($_REQUEST['id']) && !isset($this->data['id'])) {
+				$this->data['id'] = $_REQUEST['id'];
+			}
+			
+			$debug_output .= "<b>this->data AFTER fix:</b> ";
+			$debug_output .= htmlspecialchars(print_r($this->data, true));
+			        
 	        $query = sprintf("REPLACE INTO %s (id, name) VALUES(%s, '%s')",
 	                         $GLOBALS['_PJ_gid_table'],
 	                         $this->data['id']?"'".$this->data['id']."'":"NULL",
 	                         $this->data['name']
 	                         );
+	        $debug_output .= "<b>SQL Query:</b> " . htmlspecialchars($query) . "</pre>";
 
 			$this->db->query($query);
+			
+			// Debug-Ausgabe nur im Fehlerfall anzeigen
+			// Prüfen, ob die Gruppe erfolgreich gespeichert wurde
+			$success = false;
+			$check_query = "SELECT COUNT(*) AS count FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='" . $this->data['name'] . "'";
+			$this->db->query($check_query);
+			if ($this->db->next_record() && $this->db->Record[0] > 0) {
+				$success = true;
+			}
+			
+			if (!$success) {
+				// Fehler beim Speichern - Debug-Ausgaben anzeigen
+				echo isset($this->debug_exists) ? $this->debug_exists : '';
+				echo $debug_output;
+			} else {
+				// Erfolgs-Nachricht anzeigen
+				echo '<div style="background-color: #dff0d8; color: #3c763d; padding: 10px; margin: 10px; border: 1px solid #d6e9c6; border-radius: 4px;">';
+				echo '<strong>Erfolg!</strong> Die Gruppe "' . htmlspecialchars($this->data['name']) . '" wurde erfolgreich gespeichert.';
+				echo '</div>';
+			}
 		}
 
 		function reset() {
