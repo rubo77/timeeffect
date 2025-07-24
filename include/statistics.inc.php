@@ -8,6 +8,7 @@
 		var $db;
 		var $data;
 		var $stats;
+		var $months;
 		var	$effort_count			= 0;
 		var $effort_cursor			= -1;
 		var $billed_effort_count	= 0;
@@ -22,6 +23,9 @@
 			$this->mode		= $mode;
 			$this->user		= $user;
 			$this->users	= $users;
+			// Fix: Initialize arrays to prevent undefined array key warnings
+			$this->data = array('seconds' => 0, 'billed_seconds' => 0);
+			$this->months = array('open' => array(), 'billed' => array());
 			if(empty($load)) {
 				return;
 			}
@@ -544,6 +548,7 @@
 				$this->efforts[]		 = new Effort($this->db->Record, $this->user);
 				@$this->effort_count++;
 			}
+			if(!isset($this->data['seconds'])) $this->data['seconds'] = 0;
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);

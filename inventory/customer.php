@@ -17,6 +17,20 @@
 	$confirm = $_REQUEST['confirm'] ?? null;
 	$name = $_REQUEST['name'] ?? [];
 	$customer_logo = $_REQUEST['customer_logo'] ?? '';
+	
+	// Fix: Initialize customer data variables from request
+	$id = $_REQUEST['id'] ?? '';
+	$active = $_REQUEST['active'] ?? '';
+	$customer_name = $_REQUEST['customer_name'] ?? '';
+	$customer_desc = $_REQUEST['customer_desc'] ?? '';
+	$customer_budget = $_REQUEST['customer_budget'] ?? '';
+	$customer_budget_currency = $_REQUEST['customer_budget_currency'] ?? '';
+	$user = $_REQUEST['user'] ?? '';
+	$gid = $_REQUEST['gid'] ?? '';
+	$access_owner = $_REQUEST['access_owner'] ?? '';
+	$access_group = $_REQUEST['access_group'] ?? '';
+	$access_world = $_REQUEST['access_world'] ?? '';
+	$readforeignefforts = $_REQUEST['readforeignefforts'] ?? '';
 
 	$customer 	= new Customer($_PJ_auth, $cid);
 
@@ -79,18 +93,17 @@
 			}
 			exit;
 		} else {
-			if(isset($altered)) {
+			if(!empty($altered)) {
 				if($customer_name != '') {
 					$data = array();
 					$data['id']							= intval($id);
 					$data['active']						= $active;
 					$data['customer_name']				= add_slashes($customer_name);
 					$data['customer_desc']				= add_slashes($customer_desc);
-					$data['customer_desc']				= add_slashes($customer_desc);
 					$data['customer_budget']			= add_slashes($customer_budget);
 					$data['customer_budget_currency']	= add_slashes($customer_budget_currency);
 					// FIX: customer_logo Variable initialisieren falls nicht gesetzt
-					$data['customer_logo']				= add_slashes(isset($customer_logo) ? $customer_logo : '');
+					$data['customer_logo']				= add_slashes(!empty($customer_logo) ? $customer_logo : '');
 					$data['user']						= $user;
 					$data['gid']						= $gid;
 					$data['access']						= $access_owner . $access_group . $access_world;
@@ -110,7 +123,7 @@
 					if($data['readforeignefforts'] == '') {
 						$data['readforeignefforts']	= $customer->giveValue('readforeignefforts');
 					}
-					$customer = new Customer($data,  $_PJ_auth);
+					$customer = new Customer($_PJ_auth, $data);
 					$customer->save();
 					
 					// Nach erfolgreichem Speichern zur Kundenliste weiterleiten

@@ -14,24 +14,24 @@ if(isset($GLOBALS['debug']) && $GLOBALS['debug']){
 // Only allow safe variable names (alphanumeric + underscore)
 // Log rejected variable names for security monitoring
 $rejected_vars = [];
-if(!empty($_POST)) {
-    foreach($_POST as $p_k=>$p_v) {
-        if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $p_k)) {
-            $$p_k=$p_v;
-        } else {
-            $rejected_vars[] = 'POST:' . $p_k;
-        }
-    }
-}
-if(!empty($_GET)) {
-    foreach($_GET as $get_k=>$get_v) {
-        if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $get_k)) {
-            $$get_k=$get_v;
-        } else {
-            $rejected_vars[] = 'GET:' . $get_k;
-        }
-    }
-}
+// if(!empty($_POST)) {
+//     foreach($_POST as $p_k=>$p_v) {
+//         if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $p_k)) {
+//             $$p_k=$p_v;
+//         } else {
+//             $rejected_vars[] = 'POST:' . $p_k;
+//         }
+//     }
+// }
+// if(!empty($_GET)) {
+//     foreach($_GET as $get_k=>$get_v) {
+//         if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $get_k)) {
+//             $$get_k=$get_v;
+//         } else {
+//             $rejected_vars[] = 'GET:' . $get_k;
+//         }
+//     }
+// }
 if(!empty($_SESSION)) {
     foreach($_SESSION as $sess_k=>$sess_v) {
         if(preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $sess_k)) {

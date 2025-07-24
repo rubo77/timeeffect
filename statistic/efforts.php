@@ -13,7 +13,7 @@
 
 	$customer = new Customer($_PJ_auth, $cid);
 
-	$effort = new Effort($_PJ_auth, $eid);
+	$effort = new Effort($eid, $_PJ_auth);
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
@@ -32,13 +32,13 @@
 	}
 	$center_template	= "statistic/effort";
 
-	if(isset($detail)) {
+	if(!empty($detail)) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $effort->giveValue('description');
 		include("$_PJ_root/templates/note.ihtml");
 		exit;
 	}
 
-	if(isset($pdf)) {
+	if(!empty($pdf)) {
 		// Fix: Add isset check for array key 'be' to prevent array offset warning
 		$be_value = isset($shown['be']) ? $shown['be'] : false;
 		$efforts = new EffortList($customer, $project, $_PJ_auth, $be_value);
