@@ -13,6 +13,11 @@
 	$mode = $_REQUEST['mode'] ?? null;
 	$charge = $_REQUEST['charge'] ?? null;
 	$users = $_REQUEST['users'] ?? null;
+	$pdf = $_REQUEST['pdf'] ?? null;
+	$smonth = $_REQUEST['smonth'] ?? null;
+	$sday = $_REQUEST['sday'] ?? null;
+	$emonth = $_REQUEST['emonth'] ?? null;
+	$eday = $_REQUEST['eday'] ?? null;
 
 	$customer 			= new Customer($_PJ_auth, $cid);
 	$project 			= new Project($customer, $_PJ_auth, $pid);

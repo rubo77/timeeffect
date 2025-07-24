@@ -1,7 +1,23 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 ini_set('display_errors', 1);
 $_PJ_budget_security_percentage		= 10;
+
+// Initialize variables from request data to ensure strict mode compatibility
+$lang = $_REQUEST['lang'] ?? null;
+$last = $_REQUEST['last'] ?? null;
+$exc = $_REQUEST['exc'] ?? null;
+$coc = $_REQUEST['coc'] ?? null;
+$exp = $_REQUEST['exp'] ?? null;
+$cop = $_REQUEST['cop'] ?? null;
+$exca = $_REQUEST['exca'] ?? null;
+$coca = $_REQUEST['coca'] ?? null;
+$expa = $_REQUEST['expa'] ?? null;
+$copa = $_REQUEST['copa'] ?? null;
+$sic = $_REQUEST['sic'] ?? null;
+$scp = $_REQUEST['scp'] ?? null;
+$sbe = $_REQUEST['sbe'] ?? null;
+
 /*
    if $lang is set set language to value of $lang. Otherwise select default language
 */
@@ -95,6 +111,10 @@ include_once($_PJ_include_path . '/languages/' . $_PJ_language . '.inc.php');
 include_once($_PJ_include_path . '/print.inc.php');
 
 include_once($_PJ_include_path . '/auth.inc.php');
+
+// Initialize expanded array to avoid strict mode warnings
+$expanded = $_SESSION['expanded'] ?? [];
+$shown = $_SESSION['shown'] ?? [];
 
 if(isset($exc)) {
 	$expanded['cid'][$exc] = 1;
