@@ -15,17 +15,31 @@
 		var $data_pointer = 0;
 
 		function GroupList() {
+			// DEBUG: Ausgabe für Gruppenübersicht-Problem (ganz am Anfang)
+			echo '<div style="background-color: #fff3cd; color: #856404; padding: 10px; margin: 10px; border: 1px solid #ffeaa7; border-radius: 4px;">';
+			echo '<strong>GroupList Debug - Constructor called!</strong><br>';
+			
 			$this->db = new Database;
 
 			$query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'];
 			$query .= " ORDER BY name";
 
+			echo 'Query: ' . htmlspecialchars($query) . '<br>';
+			echo 'Table: ' . htmlspecialchars($GLOBALS['_PJ_gid_table']) . '<br>';
+			
 			$this->db->query($query);
 			$this->groups = array(); // FIX: Korrektes Array initialisieren (war vorher falsch projects)
+			
+			echo 'DB Error: ' . ($this->db->Errno ? $this->db->Error : 'None') . '<br>';
+			
 			while($this->db->next_record()) {
 				$this->groups[] = new Group($this->db->Record);
 				$this->group_count++;
+				echo 'Loaded group: ' . htmlspecialchars($this->db->Record['name']) . '<br>';
 			}
+			
+			echo 'Total groups loaded: ' . $this->group_count . '<br>';
+			echo '</div>';
 		}
 
 		function reset() {
