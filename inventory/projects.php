@@ -3,6 +3,29 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$cid = $_REQUEST['cid'] ?? '';
+	$pid = $_REQUEST['pid'] ?? '';
+	$eid = $_REQUEST['eid'] ?? '';
+	$shown = $_REQUEST['shown'] ?? [];
+	$new = $_REQUEST['new'] ?? null;
+	$edit = $_REQUEST['edit'] ?? null;
+	$delete = $_REQUEST['delete'] ?? null;
+	$cancel = $_REQUEST['cancel'] ?? null;
+	$confirm = $_REQUEST['confirm'] ?? null;
+	$altered = $_REQUEST['altered'] ?? null;
+	$project_name = $_REQUEST['project_name'] ?? '';
+	$project_desc = $_REQUEST['project_desc'] ?? '';
+	$project_budget = $_REQUEST['project_budget'] ?? '';
+	$project_budget_currency = $_REQUEST['project_budget_currency'] ?? '';
+	$closed = $_REQUEST['closed'] ?? '';
+	$gid = $_REQUEST['gid'] ?? '';
+	$user = $_REQUEST['user'] ?? '';
+	$access_owner = $_REQUEST['access_owner'] ?? '';
+	$access_group = $_REQUEST['access_group'] ?? '';
+	$access_world = $_REQUEST['access_world'] ?? '';
+	$expand = $_REQUEST['expand'] ?? '';
+
 	$customer	= new Customer($_PJ_auth, $cid);
 
 	$project = new Project($customer, $_PJ_auth, $pid);
@@ -92,7 +115,7 @@
 	if(!empty($expand)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth);
 	}
-	$projects = new ProjectList($customer, $_PJ_auth, $shown['cp']);
+	$projects = new ProjectList($customer, $_PJ_auth, isset($shown['cp']) ? $shown['cp'] : false);
 
 	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['project_list'] . " " . $customer->giveValue('customer_name');
 	include("$_PJ_root/templates/list.ihtml");
