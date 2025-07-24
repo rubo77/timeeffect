@@ -10,17 +10,18 @@
 		if($full_budget > 0) {
 			$remaining_budget = $full_budget - $projects->giveValue('costs');
 		}
-		@$sum_customer_costs				+= $costs;
-		@$sum_customer_days				+= $days;
-		@$sum_customer_full_budget		+= $full_budget;
-		@$sum_customer_remaining_budget	+= $remaining_budget;
+		// Fix: Ensure numeric values before addition to prevent float + string errors
+		@$sum_customer_costs				+= (float)$costs;
+		@$sum_customer_days				+= (float)$days;
+		@$sum_customer_full_budget		+= (float)$full_budget;
+		@$sum_customer_remaining_budget	+= (float)$remaining_budget;
 ?>
 	<TR>
 		<TD COLSPAN="10"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0" ALIGN="absmiddle"></TD>
 	</TR><TR HEIGHT="25">
 		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php
 		if($customer->count() && $customer->checkUserAccess('read')) {
-			if(isset($expanded) && ($expanded['cid'][$customer->giveValue('id')] || $expanded['cid']['all'])) {
+			if(isset($expanded) && (isset($expanded['cid'][$customer->giveValue('id')]) || isset($expanded['cid']['all']))) {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
 			} else {
 		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
@@ -35,7 +36,7 @@
 		<TD CLASS="listDetailNumeric<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($full_budget)) print formatNumber($full_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 		<TD CLASS="listDetailNumeric<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if(!empty($remaining_budget)) print formatNumber($remaining_budget, true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
-	if(isset($expanded) && $expanded['cid'][$customer->giveValue('id')]) {
+	if(isset($expanded) && isset($expanded['cid'][$customer->giveValue('id')])) {
 		$projects->reset();
 		while($projects->nextProject()) {
 			$project = $projects->giveProject();

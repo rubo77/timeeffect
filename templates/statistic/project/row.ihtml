@@ -37,7 +37,9 @@
 		<TD CLASS="listDetailNumeric<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if($project->giveValue('project_budget')) print formatNumber($project->giveValue('project_budget')-$project->giveValue('costs'), true) . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
 	</TR><?php
 	if(isset($expanded) && (!empty($expanded['pid'][$project->giveValue('id')]) || !empty($expanded['pid']['all']))) {
-		$efforts	= new EffortList($customer, $project, $project->user, $GLOBALS['shown']['be']);
+		// Fix: Check if 'be' key exists to prevent undefined array key warning
+		$be_filter = isset($GLOBALS['shown']['be']) ? $GLOBALS['shown']['be'] : '';
+		$efforts	= new EffortList($customer, $project, $project->user, $be_filter);
 		while($efforts->nextEffort()) {
 			$effort = $efforts->giveEffort();
 			$row_class = !$row_class;

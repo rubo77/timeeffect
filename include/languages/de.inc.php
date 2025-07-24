@@ -48,6 +48,7 @@
 	$GLOBALS['_PJ_strings']['customer_rates_data']		= 'Tarife';
 	$GLOBALS['_PJ_strings']['customers']				= 'Kunden';
 	$GLOBALS['_PJ_strings']['data']						= 'Daten';
+	$GLOBALS['_PJ_strings']['no_efforts_found']		= 'Keine Aufwände gefunden';
 	$GLOBALS['_PJ_strings']['date']						= 'Datum';
 	$GLOBALS['_PJ_strings']['day']						= 'Tag';
 	$GLOBALS['_PJ_strings']['delete']					= 'L&ouml;schen';

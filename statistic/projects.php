@@ -23,7 +23,7 @@
 	if(!empty($expand)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth);
 	}
-	$projects = new ProjectList($customer, $_PJ_auth, $shown['cp']);
+	$projects = new ProjectList($customer, $_PJ_auth, isset($shown['cp']) ? $shown['cp'] : false);
 
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . 'Projektliste';
 	if($customer->giveValue('id')) {
