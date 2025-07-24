@@ -152,6 +152,7 @@
 				$limit_query = ' LIMIT 1000';
 			} else {
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$cids = '';
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
 						$cids .= ',';
@@ -162,6 +163,7 @@
 					return;
 				}
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id IN ($cids) $raw_access_query");
+				$pids = '';
 				while($this->db->next_record()) {
 					if(!empty($pids)) {
 						$pids .= ',';

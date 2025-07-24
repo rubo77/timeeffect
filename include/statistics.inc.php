@@ -12,7 +12,8 @@
 		var $effort_cursor			= -1;
 		var $billed_effort_count	= 0;
 
-		function Statistics(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {
+		// Fix: Replace deprecated PHP4-style constructor with modern __construct for PHP 8.4 compatibility
+	function __construct(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {
 			$this->customer	= $customer;
 			$this->project	= $project;
 			$this->mode		= $mode;
