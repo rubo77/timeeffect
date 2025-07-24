@@ -32,7 +32,7 @@
 	}
 ?>
 <!-- shared/main-options.ihtml - START -->
-<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+<TABLE id="mainOptions" CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
 	<TR>
 		<TD><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
 			<TR>

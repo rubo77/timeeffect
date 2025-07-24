@@ -37,11 +37,11 @@ if($step == 3) {
 	<TR HEIGHT="100">
 <!-- START - left navigation -->
 		<TD WIDTH="160" ROWSPAN="2">
-		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
+		<TABLE ID="leftNavigation" CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
 			<TR>
 				<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
 					<TR>
-						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><a href="../"><IMG SRC="../images/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></a></TD>
+						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top" id="logo"><a href="../"><IMG SRC="../images/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></a></TD>
 					</TR>
 				</TABLE></TD>
 			</TR>
