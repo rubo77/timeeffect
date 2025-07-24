@@ -8,9 +8,6 @@
 		var $inactive_count = 0; // Deklaration der vorher dynamischen Property
 
 		function __construct(&$user, $inactive = '') {
-			self::__construct($user, $inactive);
-		}
-		function __construct(&$user, $inactive = '') {
 			global $_PJ_customer_table;
 
 			$this->db = new Database;
@@ -68,9 +65,6 @@
 		var $user; // Deklaration der vorher dynamischen Property
 		var $user_access; // Deklaration der vorher dynamischen Property
 
-		function Customer(&$user, $customer = '') {
-			self::__construct($user, $customer);
-		}
 		function __construct(&$user, $customer = '') {
 			$this->user = $user;
 			if(is_array($customer)) {
