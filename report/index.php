@@ -11,7 +11,7 @@
 	$syear = $_REQUEST['syear'] ?? null;
 	$eyear = $_REQUEST['eyear'] ?? null;
 
-	$customer 			= new Customer($cid, $_PJ_auth);
+	$customer 			= new Customer($_PJ_auth, $cid);
 	$project 			= new Project($customer, $_PJ_auth, $pid);
 
 	$center_template	= "report";

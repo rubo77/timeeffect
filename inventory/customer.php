@@ -4,6 +4,11 @@
 	include_once(__DIR__ . "/../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$cid = $_REQUEST['cid'] ?? '';
+	$pid = $_REQUEST['pid'] ?? '';
+	$eid = $_REQUEST['eid'] ?? '';
+
 	$customer 	= new Customer($_PJ_auth, $cid);
 
 	if(isset($pid)) {
