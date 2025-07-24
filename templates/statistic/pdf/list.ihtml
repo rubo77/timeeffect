@@ -1,4 +1,19 @@
 <?php
+// Fix: Initialize variables to prevent undefined variable warnings
+$year = isset($year) ? $year : '';
+$month = isset($month) ? $month : '';
+$syear = isset($syear) ? $syear : '';
+$smonth = isset($smonth) ? $smonth : '';
+$sday = isset($sday) ? $sday : '';
+$eyear = isset($eyear) ? $eyear : '';
+$emonth = isset($emonth) ? $emonth : '';
+$eday = isset($eday) ? $eday : '';
+$mode = isset($mode) ? $mode : '';
+$users = isset($users) ? $users : '';
+// Fix: Initialize sum variables to prevent undefined variable warnings
+$effort_sum = 0;
+$price_sum = 0;
+
 function documentHead() {
 	global $pdf, $customer, $project, $year, $month, $_PJ_auth;
 	global $syear, $smonth, $sday, $eyear, $emonth, $eday, $mode;
@@ -34,7 +49,8 @@ function documentHead() {
 		$pdf->SetX($x_align);
 		if($project->giveValue("project_desc")) {
 			$pdf->SetFont($GLOBALS['_PJ_pdf_font_face'],'',$GLOBALS['_PJ_pdf_small_font_size']-1);
-			$pdf->MultiCell($pdf->w - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
+			// Fix: Use GetPageWidth() method instead of protected property $w
+			$pdf->MultiCell($pdf->GetPageWidth() - $GLOBALS['_PJ_pdf_left_margin'] - $GLOBALS['_PJ_pdf_right_margin'], $GLOBALS['_PJ_pdf_header_font_size']+2, "(" . $project->giveValue("project_desc") . ")", 0, "LT", 0);
 		}
 	}
 
@@ -124,7 +140,7 @@ if(intval($year) && intval($month)) {
 $menge		= $statistic->effortCount();
 
 $pdf = new PJPDF('L', 'pt');
-$pdf->Open();
+// Fix: Open() method removed in modern FPDF - not needed
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetAutoPageBreak(false, 0);
@@ -246,7 +262,8 @@ while($statistic->nextEffort()) {
 	$pdf->SetY($y_next_line + $GLOBALS['_PJ_pdf_table_cell_spacing']);
 
 	// end of page?
-	if($pdf->GetY() >= ($pdf->h - $GLOBALS['_PJ_pdf_bottom_margin'] - ($GLOBALS['_PJ_pdf_small_font_size']+2)*2)) {
+	// Fix: Use GetPageHeight() method instead of protected property $h
+	if($pdf->GetY() >= ($pdf->GetPageHeight() - $GLOBALS['_PJ_pdf_bottom_margin'] - ($GLOBALS['_PJ_pdf_small_font_size']+2)*2)) {
 		$pdf->AddPage();
 		$pdf->SetY($GLOBALS['_PJ_pdf_top_margin']);
 		// more rows to be printed left?
