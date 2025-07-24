@@ -104,15 +104,7 @@ select {
    ======================================== */
 @media (max-width: 480px) {
     
-    /* Hide left navigation on mobile */
-    #leftNavigation {
-        display: none !important;
-    }
     
-    /* Hide top info with login as on mobile */
-    .topInfo {
-        display: none !important;
-    }
     
     /* Create mobile main options in hamburger menu */
     .mobile-main-options {
@@ -522,6 +514,16 @@ select {
 }
 
 @media (max-width: 768px) {
+    
+    /* Hide left navigation on mobile - available in hamburger menu */
+    #leftNavigation {
+        display: none !important;
+    }
+    
+    /* Hide top info with login as on mobile */
+    .topInfo {
+        display: none !important;
+    }
     
     /* Convert main options table to flexbox on mobile */
     #mainOptions {

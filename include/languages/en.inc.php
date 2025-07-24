@@ -109,7 +109,7 @@
 	$GLOBALS['_PJ_strings']['line']						= 'line';
 	$GLOBALS['_PJ_strings']['logged_in_as']				= 'logged in as';
 	$GLOBALS['_PJ_strings']['login']					= 'login';
-	$GLOBALS['_PJ_strings']['login-welcome']			= '<B>Welcome to TIMEEFFECT!</B><BR>Please enter user username and password to logon. Click on "login&nbsp;&gt;&gt;" afterwards.';
+	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Username or password are not correct! Please try again:';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'logout';
@@ -157,7 +157,7 @@
 	$GLOBALS['_PJ_strings']['reports']					= 'Reports';
 	$GLOBALS['_PJ_strings']['save']						= 'Save';
 	$GLOBALS['_PJ_strings']['select']					= 'select';
-	$GLOBALS['_PJ_strings']['session-expire']			= '<FONT COLOR="red"><B>NOTE:</B></FONT> for security reasons your session will end after ' . formatNumber($GLOBALS['_PJ_session_length']/60) . ' minutes. Please logon again after this period.';
+	$GLOBALS['_PJ_strings']['session-expire']			= ''; // Hint below login form
 	$GLOBALS['_PJ_strings']['session_timeout']			= 'EOS';
 	$GLOBALS['_PJ_strings']['settings']					= 'Settings';
 	$GLOBALS['_PJ_strings']['shortcuts']				= 'shortcuts';

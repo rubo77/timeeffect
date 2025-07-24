@@ -7,19 +7,14 @@
 		</TABLE>
 		<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" BACKGROUND="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-bg.gif">
 			<TR>
-				<TD VALIGN="top"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
-					<TR HEIGHT="24">
-						<TD WIDTH="40"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="40" HEIGHT="1" BORDER="0"></TD>
-						<TD BACKGROUND="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-ub.gif"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-bu.gif" BORDER="0"></TD>
-						<TD CLASS="option" BACKGROUND="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-ub.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?> "><?= $GLOBALS['_PJ_strings']['customers']?></A>&nbsp;&nbsp;</TD>
-						<TD CLASS="optionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-us.gif" WIDTH="4" HEIGHT="24" BORDER="0"></TD>
-						<TD CLASS="option" BACKGROUND="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-sb.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?> "><?= $GLOBALS['_PJ_strings']['projects']?></A>&nbsp;&nbsp;</TD>
-						<TD CLASS="optionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-su.gif" WIDTH="4" HEIGHT="24" BORDER="0"></TD>
-						<TD CLASS="option" BACKGROUND="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-ub.gif">&nbsp;&nbsp;<A CLASS="option" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?> "><?= $GLOBALS['_PJ_strings']['efforts']?></A></TD>
-						<TD CLASS="optionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/option-eu.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
-						<TD>&nbsp;</TD>
-					</TR>
-				</TABLE></TD>
+				<TD VALIGN="top">
+				<!-- Modern Tab Navigation -->
+				<div class="modern-tabs subnav-container">
+					<a class="modern-tab" href="<?= $GLOBALS['_PJ_customer_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?>"><?= $GLOBALS['_PJ_strings']['customers']?></a>
+					<a class="modern-tab active" href="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?>"><?= $GLOBALS['_PJ_strings']['projects']?></a>
+					<a class="modern-tab" href="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=$cid&pid=$pid"?>"><?= $GLOBALS['_PJ_strings']['efforts']?></a>
+				</div>
+			</TD>
 			</TR>
 		</TABLE>
 <!-- project/options/list.ihtml - END -->

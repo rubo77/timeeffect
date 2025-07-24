@@ -108,7 +108,7 @@
 	$GLOBALS['_PJ_strings']['line']						= 'ligne';
 	$GLOBALS['_PJ_strings']['logged_in_as']				= 'connect&eacute; en temps que';
 	$GLOBALS['_PJ_strings']['login']					= 'connexion';
-	$GLOBALS['_PJ_strings']['login-welcome']			= '<B>Bienvenue sur TIMEEFFECT!</B><BR>Veuillez entrer votre nom d\'usager et votre mot de passe pour vous connecter. Cliquez ensuite sur "connexion&nbsp;&gt;&gt;" par la suite.';
+	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Nom d\'usager ou mot de passe incorrect! Veuillez essayer de nouveau:';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'd&eacute;connecter';
@@ -156,7 +156,7 @@
 	$GLOBALS['_PJ_strings']['reports']					= 'Rapports';
 	$GLOBALS['_PJ_strings']['save']						= 'Sauvegarder';
 	$GLOBALS['_PJ_strings']['select']					= 's&eacute;lectionner';
-	$GLOBALS['_PJ_strings']['session-expire']			= '<FONT COLOR="red"><B>NOTE:</B></FONT> pour des raisons de s&eacute;curit&eacute;, votre sessions terminera apr&egrave;s ' . formatNumber($GLOBALS['_PJ_session_length']/60) . ' minutes. Veuillez vous connecter de nouveau apr&egrave;s cette p&eacute;riode.';
+	$GLOBALS['_PJ_strings']['session-expire']			= '';
 	$GLOBALS['_PJ_strings']['session_timeout']			= 'EOS';
 	$GLOBALS['_PJ_strings']['settings']					= 'Configuration';
 	$GLOBALS['_PJ_strings']['shortcuts']				= 'raccourcis';
