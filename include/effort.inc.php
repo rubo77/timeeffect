@@ -282,11 +282,36 @@
 		}
 
 		function initEffort () {
-			list($year, $month, $day) = explode("-", $this->data['date']);
-			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
-			list($e_hour, $e_minute, $e_second) = explode(":", $this->data['end']);
-			$b_time = mktime($b_hour+1-1, $b_minute, $b_second, $month, $day, $year+1-1);
-			$e_time = mktime($e_hour+1-1, $e_minute, $e_second, $month, $day, $year+1-1);
+			// Prüfen, ob Datums- und Zeitwerte vorhanden sind, um explode()-Fehler zu vermeiden
+			if (empty($this->data['date'])) {
+				$this->data['date'] = date("Y-m-d");
+			}
+			if (empty($this->data['begin'])) {
+				$this->data['begin'] = "00:00:00";
+			}
+			if (empty($this->data['end'])) {
+				$this->data['end'] = "00:00:00";
+			}
+
+			// Sicherstellen, dass wir Strings für explode() verwenden
+			list($year, $month, $day) = explode("-", (string)$this->data['date']);
+			list($b_hour, $b_minute, $b_second) = explode(":", (string)$this->data['begin']);
+			list($e_hour, $e_minute, $e_second) = explode(":", (string)$this->data['end']);
+
+			// Typsicherheit für numerische Operationen
+			$b_hour = (int)$b_hour;
+			$b_minute = (int)$b_minute;
+			$b_second = (int)$b_second;
+			$e_hour = (int)$e_hour;
+			$e_minute = (int)$e_minute;
+			$e_second = (int)$e_second;
+			$year = (int)$year;
+			$month = (int)$month;
+			$day = (int)$day;
+
+			// Zeiten berechnen
+			$b_time = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
+			$e_time = mktime($e_hour, $e_minute, $e_second, $month, $day, $year);
 
 			if($this->data['billed'] != '') {
 				$this->data['billed_seconds']	= ($e_time - $b_time);
