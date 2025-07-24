@@ -32,42 +32,42 @@
 	}
 	$project_budget_currency	= $GLOBALS['_PJ_currency'];
 ?>
-<FORM ACTION="<? if(!empty($GLOBALS['_PJ_projects_inventory_script'])) echo $GLOBALS['_PJ_projects_inventory_script'] ?>" METHOD="<? if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method'] ?>">
+<FORM ACTION="<?php if(!empty($GLOBALS['_PJ_projects_inventory_script'])) echo $GLOBALS['_PJ_projects_inventory_script'] ?>" METHOD="<?php if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method'] ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
-<INPUT TYPE="hidden" NAME="pid" VALUE="<? if(isset($pid)) echo $pid; ?>">
-<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
-<INPUT TYPE="hidden" NAME="project_budget_currency" VALUE="<? if(isset($project_budget_currency)) echo $project_budget_currency; ?>">
+<INPUT TYPE="hidden" NAME="pid" VALUE="<?php if(isset($pid)) echo $pid; ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<?php if(isset($cid)) echo $cid; ?>">
+<INPUT TYPE="hidden" NAME="project_budget_currency" VALUE="<?php if(isset($project_budget_currency)) echo $project_budget_currency; ?>">
 
 	<CENTER>
 	<TABLE	WIDTH="90%"
-			BORDER="<? if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
-			CELLPADDING="<? if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
-			CELLSPACING="<? if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
+			BORDER="<?php if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
+			CELLPADDING="<?php if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
+			CELLSPACING="<?php if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
 		<TR>
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT NAME="project_name" SIZE="30" MAXLENGTH="64" VALUE="<? if(isset($project_name)) echo $project_name; ?>"></TD>
+					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT NAME="project_name" SIZE="30" MAXLENGTH="64" VALUE="<?php if(isset($project_name)) echo $project_name; ?>"></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><? if(!empty($GLOBALS['_PJ_strings']['budget_in'])) echo $GLOBALS['_PJ_strings']['budget_in'] ?> <? if(isset($project_budget_currency)) echo $project_budget_currency; ?>:</TD>
-					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT NAME="project_budget" SIZE="30" MAXLENGTH="64" VALUE="<? if(isset($project_budget)) echo $project_budget; ?>"></TD>
+					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['budget_in'])) echo $GLOBALS['_PJ_strings']['budget_in'] ?> <?php if(isset($project_budget_currency)) echo $project_budget_currency; ?>:</TD>
+					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT NAME="project_budget" SIZE="30" MAXLENGTH="64" VALUE="<?php if(isset($project_budget)) echo $project_budget; ?>"></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
-					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="project_desc"><? if(isset($project_desc)) echo $project_desc; ?></TEXTAREA></TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="project_desc"><?php if(isset($project_desc)) echo $project_desc; ?></TEXTAREA></TD>
 <?php
 if($_PJ_auth->checkPermission('admin')) {
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="user">
 					<?php
 						$a_user = $user;
 						reset($users);
 						while(list($cnt, $o_user) = each($users)) {
 ?>
-						<OPTION VALUE="<? if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
 						}
 					?>
@@ -78,61 +78,61 @@ if($_PJ_auth->checkPermission('admin')) {
 if($_PJ_auth->checkPermission('admin') || !$project->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gid">
 <?php
 	reset($u_gids);
 	foreach($u_gids as $id) {
 ?>
-						<OPTION<?php if($id == $project_gid) print ' SELECTED'; ?> value="<? if(isset($id)) echo $id; ?>"><?= $a_gids[$id] ?>
+						<OPTION<?php if($id == $project_gid) print ' SELECTED'; ?> value="<?php if(isset($id)) echo $id; ?>"><?= $a_gids[$id] ?>
 <?php
 	}
 ?>
 					 </SELECT></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_owner'])) echo $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_owner'])) echo $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_owner">
-						<OPTION VALUE="rwx"<?php if(!empty($project_access_owner) and $project_access_owner == 'rwx') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
-						<OPTION VALUE="rw-"<?php if($project_access_owner == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
-						<OPTION VALUE="r-x"<?php if($project_access_owner == 'r-x') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
-						<OPTION VALUE="r--"<?php if($project_access_owner == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
-						<OPTION VALUE="---"<?php if($project_access_owner == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rwx"<?php if(!empty($project_access_owner) and $project_access_owner == 'rwx') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_owner == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_owner == 'r-x') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_owner == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_owner == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_group'])) echo $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_group'])) echo $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_group">
-						<OPTION VALUE="rwx"<?php if(!empty($project_access_group) and $project_access_group == 'rwx') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
-						<OPTION VALUE="rw-"<?php if($project_access_group == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
-						<OPTION VALUE="r-x"<?php if($project_access_group == 'r-x') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
-						<OPTION VALUE="r--"<?php if($project_access_group == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
-						<OPTION VALUE="---"<?php if($project_access_group == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rwx"<?php if(!empty($project_access_group) and $project_access_group == 'rwx') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_group == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_group == 'r-x') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_group == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_group == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_world'])) echo $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_world'])) echo $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_world">
-						<OPTION VALUE="rwx"<?php if(!empty($project_access_world) and $project_access_world == 'rwx') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
-						<OPTION VALUE="rw-"<?php if($project_access_world == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
-						<OPTION VALUE="r-x"<?php if($project_access_world == 'r-x') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
-						<OPTION VALUE="r--"<?php if($project_access_world == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
-						<OPTION VALUE="---"<?php if($project_access_world == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rwx"<?php if(!empty($project_access_world) and $project_access_world == 'rwx') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rwx'])) echo $GLOBALS['_PJ_strings']['access_project_rwx'] ?>
+						<OPTION VALUE="rw-"<?php if($project_access_world == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rw'])) echo $GLOBALS['_PJ_strings']['access_project_rw'] ?>
+						<OPTION VALUE="r-x"<?php if($project_access_world == 'r-x') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_rx'])) echo $GLOBALS['_PJ_strings']['access_project_rx'] ?>
+						<OPTION VALUE="r--"<?php if($project_access_world == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_project_r'])) echo $GLOBALS['_PJ_strings']['access_project_r'] ?>
+						<OPTION VALUE="---"<?php if($project_access_world == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 <?php
 }
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['closed'])) echo $GLOBALS['_PJ_strings']['closed'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['closed'])) echo $GLOBALS['_PJ_strings']['closed'] ?>:</TD>
 					<TD CLASS="FormField">
-					<INPUT TYPE="radio" NAME="closed" VALUE="Yes"<?php if($closed=='Yes') print ' CHECKED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
-					<INPUT TYPE="radio" NAME="closed" VALUE="No"<?php if($closed=='No' || !$closed) print ' CHECKED' ?>>&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
+					<INPUT TYPE="radio" NAME="closed" VALUE="Yes"<?php if($closed=='Yes') print ' CHECKED' ?>>&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
+					<INPUT TYPE="radio" NAME="closed" VALUE="No"<?php if($closed=='No' || !$closed) print ' CHECKED' ?>>&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
 					</TD>
 				</TR><TR>
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>
 				</TR><TR>
-					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
 				</TR>
 			</TABLE></TD>
 		</TR>
