@@ -61,6 +61,9 @@
 		}
 
 		function getUserAccess() {
+			if(!isset($this->user) || !is_object($this->user)) {
+				return array('read' => false, 'write' => false, 'new' => false);
+			}
 			if($this->user->checkPermission('admin')) {
 				return array('read' => true, 'write' => true, 'new' => true);
 			}
