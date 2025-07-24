@@ -60,6 +60,7 @@ else return null;
 		var $data_keys = array();
 		var $data_pointer = 0;
 		var $db; // Datenbankobjekt
+		var $debug_exists; // Property für Debug-Ausgabe von exists()
 
 		function User($data = '') {
 			self::__construct($data);
@@ -117,7 +118,13 @@ else return null;
 		}
 
 		function exists($username) {
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username' AND id <> '" . $this->data['id'] . "'";
+			// FIX: Fehlende Formularfelder aus REQUEST übernehmen
+			if (isset($_REQUEST['id']) && !isset($this->data['id'])) {
+				$this->data['id'] = $_REQUEST['id'];
+			}
+			
+			$id_condition = !empty($this->data['id']) ? " AND id <> '" . $this->data['id'] . "'" : "";
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username'" . $id_condition;
 			$this->db->query($query);
 
 			if($this->db->next_record()) {
