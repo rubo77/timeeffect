@@ -462,17 +462,36 @@
 		}
 
 		function setEndTime($effort) {
-			list($year, $month, $day) = explode("-", $this->data['date']);
-			list($b_hour, $b_minute, $b_second) = explode(":", $this->data['begin']);
-			list($e_hour, $e_minute, $e_second) = explode(":", $effort);
+			$date_parts = explode("-", $this->data['date']);
+			$year = isset($date_parts[0]) ? $date_parts[0] : date('Y');
+			$month = isset($date_parts[1]) ? $date_parts[1] : date('m');
+			$day = isset($date_parts[2]) ? $date_parts[2] : date('d');
+		
+			$begin_parts = explode(":", $this->data['begin']);
+			$b_hour = isset($begin_parts[0]) ? $begin_parts[0] : 0;
+			$b_minute = isset($begin_parts[1]) ? $begin_parts[1] : 0;
+			$b_second = isset($begin_parts[2]) ? $begin_parts[2] : 0;
+		
+			$effort_parts = explode(":", $effort);
+			$e_hour = isset($effort_parts[0]) ? $effort_parts[0] : 0;
+			$e_minute = isset($effort_parts[1]) ? $effort_parts[1] : 0;
+			$e_second = isset($effort_parts[2]) ? $effort_parts[2] : 0;
 			$b_timestamp = mktime($b_hour, $b_minute, $b_second, $month, $day, $year);
 			$e_timestamp = $b_timestamp + $e_hour*3600 + $e_minute*60 + $e_second;
 			$this->data['end'] = date("H:i:s", $e_timestamp);
 		}
 
 		function stop() {
-			list($year, $month, $day) = explode("-", $this->data['date']);
-			list($hour, $minute, $second) = explode(":", $this->data['begin']);
+			// Fix: Add safe array handling for explode results to prevent undefined array key warnings
+			$date_parts = explode("-", $this->data['date']);
+			$year = isset($date_parts[0]) ? $date_parts[0] : date('Y');
+			$month = isset($date_parts[1]) ? $date_parts[1] : date('m');
+			$day = isset($date_parts[2]) ? $date_parts[2] : date('d');
+			
+			$begin_parts = explode(":", $this->data['begin']);
+			$hour = isset($begin_parts[0]) ? $begin_parts[0] : 0;
+			$minute = isset($begin_parts[1]) ? $begin_parts[1] : 0;
+			$second = isset($begin_parts[2]) ? $begin_parts[2] : 0;
 			$b_time 			= mktime($hour, $minute, $second, $month, $day, $year);
 			if($b_time > time() || $this->giveValue('begin') != $this->giveValue('end')) {
 				return;

@@ -143,7 +143,8 @@ if(intval($year) && intval($month)) {
 }
 $menge		= $statistic->effortCount();
 
-$pdf =& new PDFReport();
+// Fix: Remove deprecated reference assignment syntax for PHP 8.4 compatibility
+$pdf = new PDFReport();
 
 $pdf->ezSetMargins(65,50,30,30);
 
@@ -186,14 +187,15 @@ if($mode != 'billed') {
 	$GLOBALS['field_widths']['billed'] = 0;
 }
 
-reset($GLOBALS['fields']);
-while(list($name, $string) = each($GLOBALS['fields'])) {
-	if($GLOBALS['field_widths'][$name] == 0) {
-		continue;
-	}
-	$heading_data[0][$name] = $GLOBALS['_PJ_strings'][$name];
-	if($GLOBALS['field_widths'][$name] > 0) {
-		$heading_cols[$name] = array('justification' => $GLOBALS['field_aligns'][$name], 'width' => $GLOBALS['field_widths'][$name]);
+if(isset($GLOBALS['fields']) && is_array($GLOBALS['fields'])) {
+	foreach($GLOBALS['fields'] as $name => $string) {
+		if($GLOBALS['field_widths'][$name] == 0) {
+			continue;
+		}
+		$heading_data[0][$name] = $GLOBALS['_PJ_strings'][$name];
+		if($GLOBALS['field_widths'][$name] > 0) {
+			$heading_cols[$name] = array('justification' => $GLOBALS['field_aligns'][$name], 'width' => $GLOBALS['field_widths'][$name]);
+		}
 	}
 }
 reset($GLOBALS['fields']);
