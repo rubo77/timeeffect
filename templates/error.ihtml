@@ -36,7 +36,7 @@
 
 <!-- START - content -->
 
-				<TD VALIGN="top" class="error"><? if(isset($error_message)) echo $error_message; ?></TD>
+				<TD VALIGN="top" class="error"><?php if(isset($error_message)) echo $error_message; ?></TD>
 
 <!-- END - content -->
 
@@ -46,7 +46,7 @@
 
 	</TR><TR>
 
-		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<? if(isset($_PJ_timeeffect_version)) echo $_PJ_timeeffect_version; ?></td>
+		<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?php if(isset($_PJ_timeeffect_version)) echo $_PJ_timeeffect_version; ?></td>
 
 	</TR>
 

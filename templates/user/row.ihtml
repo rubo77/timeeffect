@@ -1,18 +1,18 @@
 <!-- user/row.ihtml - START -->
 
-					<TR><?php if(
+					<TR>
 
-						<TD COLSPAN="5"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
-<?php if(<?php if(
-					</TR><?php if(
-<?php if(
-					<TR HEIGHT="25"><?php if(
+						<TD COLSPAN="5"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 
-						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?edit=1&uid=" . $user->giveValue('id') ?>"><?= $user->giveValue('username') ?></A></TD>
+					</TR>
 
-						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('firstname') ?> <?= $user->giveValue('lastname') ?></TD><?php if(<?php if(<?php if(
+					<TR HEIGHT="25">
 
-						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('perm_names') ?></TD>
+						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?edit=1&uid=" . $user->giveValue('id') ?>"><?= $user->giveValue('username') ?></A></TD>
+
+						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('firstname') ?> <?= $user->giveValue('lastname') ?></TD>
+
+						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('perm_names') ?></TD>
 
 						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;<?= $user->giveValue('group_names') ?></TD>
 
@@ -22,7 +22,7 @@ if($user->giveValue('id') != '1') {
 
 ?>
 
-						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?delete=1&uid=" . $user->giveValue('id') ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
+						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?delete=1&uid=" . $user->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A></TD>
 
 <?php
 
@@ -30,7 +30,7 @@ if($user->giveValue('id') != '1') {
 
 ?>
 
-						<TD CLASS="list<? if(isset($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
+						<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
 
 <?php
 
