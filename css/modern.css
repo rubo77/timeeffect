@@ -52,6 +52,164 @@ body {
     color: #334155;
 }
 
+/* Modern Tab Navigation System */
+.modern-tabs {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.modern-tab {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 1px solid #cbd5e1;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.75rem 1.5rem;
+    margin-right: 2px;
+    color: #475569;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: inline-block;
+}
+
+.modern-tab:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    color: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modern-tab.active {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    color: #1e293b;
+    border-color: #94a3b8;
+    font-weight: 600;
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modern-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ffffff;
+}
+
+/* Main Options (Top Navigation) - Modern Tab Integration */
+#mainOptions {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Legacy table support - hide if still present */
+#mainOptions td {
+    background: none !important;
+    padding: 0 !important;
+    display: none;
+}
+
+/* MainOptions modern tabs inherit from .modern-tab */
+#mainOptions .modern-tab {
+    margin-right: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Subnav Integration - Seamless connection with MainOptions */
+.subnav-container {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    border-top: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Remove spacing between navigation levels */
+.nav-spacer {
+    display: none;
+}
+
+/* Subnav tabs slightly smaller than main tabs */
+.subnav-container .modern-tab {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    margin-right: 2px;
+}
+
+/* Legacy option class modernization */
+.option {
+    background: none !important;
+    border: none !important;
+}
+
+a.option {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    border: 1px solid #cbd5e1 !important;
+    border-bottom: none !important;
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    padding: 0.75rem 1.5rem !important;
+    margin-right: 2px !important;
+    color: #475569 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-block !important;
+}
+
+a.option:hover {
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+    color: #1e293b !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Active tab styling for current page */
+td.option[background*="option-sb.gif"] a.option,
+a.option.active {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+    color: #1e293b !important;
+    border-color: #94a3b8 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Remove background images from legacy subnav tables */
+table[background*="option-bg.gif"] {
+    background: #ffffff !important;
+    border: none !important;
+}
+
+/* White background for all navigation containers */
+.subnav-container,
+.modern-tabs {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0.5rem 0 !important;
+}
+
+/* Remove spacing between main and sub navigation */
+table[background*="option-bg.gif"] tr td {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 /* Modern input fields with ease-in effects, larger borders and shadows */
 
 /* Modern submit and button styling */

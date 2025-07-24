@@ -110,7 +110,7 @@
 	$GLOBALS['_PJ_strings']['line']						= 'Zeile';
 	$GLOBALS['_PJ_strings']['logged_in_as']				= 'angemeldet als';
 	$GLOBALS['_PJ_strings']['login']					= 'Anmelden';
-	$GLOBALS['_PJ_strings']['login-welcome']			= '<B>Herzlich willkommen bei TIMEEFFECT!</B><BR>Um sich anzumelden, tragen Sie bitte Ihren Benutzernamen und Ihr Passwort ein. Klicken Sie anschlie&szlig;end auf "Anmelden&nbsp;&gt;&gt;"';
+	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Benutzername oder Passwort sind nicht korrekt! Bitte versuchen Sie es erneut:';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'Abmelden';
