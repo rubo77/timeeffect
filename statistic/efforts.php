@@ -3,9 +3,17 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	$customer = new Customer($cid, $_PJ_auth);
+	// Fix: Initialize request variables to prevent undefined variable warnings
+	$cid = isset($_REQUEST['cid']) ? $_REQUEST['cid'] : '';
+	$pid = isset($_REQUEST['pid']) ? $_REQUEST['pid'] : '';
+	$eid = isset($_REQUEST['eid']) ? $_REQUEST['eid'] : '';
+	$shown = isset($_REQUEST['shown']) ? $_REQUEST['shown'] : array();
+	$detail = isset($_REQUEST['detail']) ? $_REQUEST['detail'] : '';
+	$pdf = isset($_REQUEST['pdf']) ? $_REQUEST['pdf'] : '';
 
-	$effort = new Effort($eid, $_PJ_auth);
+	$customer = new Customer($_PJ_auth, $cid);
+
+	$effort = new Effort($_PJ_auth, $eid);
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
@@ -31,12 +39,16 @@
 	}
 
 	if(isset($pdf)) {
-		$efforts = new EffortList($customer, $project, $_PJ_auth, $shown['be']);
+		// Fix: Add isset check for array key 'be' to prevent array offset warning
+		$be_value = isset($shown['be']) ? $shown['be'] : false;
+		$efforts = new EffortList($customer, $project, $_PJ_auth, $be_value);
 		include("$_PJ_root/templates/statistic/effort/pdf.ihtml");
 		exit;
 	}
 
-	$efforts			= new EffortList($customer, $project, $_PJ_auth, $shown['be']);
+	// Fix: Add isset check for array key 'be' to prevent array offset warning
+	$be_value = isset($shown['be']) ? $shown['be'] : false;
+	$efforts			= new EffortList($customer, $project, $_PJ_auth, $be_value);
 	$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['efforts'];
 	if(!empty($pid)) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['effort_for'] . " '" . $project->giveValue('project_name') . "'";
