@@ -10,16 +10,12 @@ require_once('../include/db_mysql.inc.php');
 
 // Get database configuration from existing config or use defaults
 $config_file = 'include/config.inc.php';
-if (file_exists($config_file)) {
-    include($config_file);
-} else {
-    // Use default values for Docker environment
-    $db_name = 'timeeffect_db';
-    $db_host = 'db';
-    $db_user = 'timeeffect';
-    $db_password = 'very_unsecure_timeeffect_PW1';
-    $db_prefix = 'te_';
+if (!file_exists($config_file)) {
+    error_log("no database configuration found in include/config.inc.php");
+    die('no database configuration found in include/config.inc.php');
 }
+
+include($config_file);
 
 $db = new DB_Sql();
 $db->Database = $db_name;
@@ -28,6 +24,7 @@ $db->User = $db_user;
 $db->Password = $db_password;
 
 if (!$db->connect()) {
+    error_log("Database connection failed!");
     die("Database connection failed!");
 }
 
