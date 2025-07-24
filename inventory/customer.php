@@ -98,17 +98,22 @@
 					}
 					$customer = new Customer($data,  $_PJ_auth);
 					$customer->save();
+					
+					// Nach erfolgreichem Speichern zur Kundenliste weiterleiten
+					echo '<script type="text/javascript">';
+					echo 'setTimeout(function() { window.location.href = "' . $GLOBALS['_PJ_customer_inventory_script'] . '?list=1"; }, 1000);';
+					echo '</script>';
+					echo '<div style="text-align: center; margin: 20px; color: #666;">';
+					echo 'Sie werden zur Kundenliste weitergeleitet...';
+					echo '</div>';
+					exit;
 				}
-				$center_template	= "inventory/customer/rates";
-				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_rate'];
-				include("$_PJ_root/templates/edit.ihtml");
-			} else {
-				$center_template	= "inventory/customer";
-				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_customer'];
-				include("$_PJ_root/templates/edit.ihtml");
 			}
-			exit;
+			$center_template	= "inventory/customer";
+			$center_title		= $GLOBALS['_PJ_strings']['edit_customer'];
+			include("$_PJ_root/templates/edit.ihtml");
 		}
+		exit;
 	}
 
 	if(isset($delete) && !isset($cancel)) {

@@ -7,7 +7,7 @@
 		var $customer_cursor	= -1;
 		var $inactive_count = 0; // Deklaration der vorher dynamischen Property
 
-		function CustomerList(&$user, $inactive = '') {
+		function __construct(&$user, $inactive = '') {
 			self::__construct($user, $inactive);
 		}
 		function __construct(&$user, $inactive = '') {
