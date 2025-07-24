@@ -110,6 +110,8 @@ include_once($_PJ_include_path . '/layout.inc.php');
 include_once($_PJ_include_path . '/languages/' . $_PJ_language . '.inc.php');
 include_once($_PJ_include_path . '/print.inc.php');
 
+// Set $logout from request for global logout handling
+$logout = isset($_REQUEST['logout']) ? $_REQUEST['logout'] : null;
 include_once($_PJ_include_path . '/auth.inc.php');
 
 // Initialize expanded array to avoid strict mode warnings

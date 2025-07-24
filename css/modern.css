@@ -1,0 +1,530 @@
+/* Modern UI Design for TimeEffect - Inspired by contemporary web applications */
+
+/* CSS Variables for consistent theming - Pastel & Modern */
+:root {
+    --primary-color: #6366f1;
+    --primary-hover: #4f46e5;
+    --primary-light: #a5b4fc;
+    --secondary-color: #8b5cf6;
+    --secondary-light: #c4b5fd;
+    --success-color: #34d399;
+    --success-light: #86efac;
+    --warning-color: #fbbf24;
+    --warning-light: #fde68a;
+    --danger-color: #f87171;
+    --danger-light: #fca5a5;
+    --background-color: #f1f5f9;
+    --background-gradient: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    --surface-color: #ffffff;
+    --surface-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    --text-primary: #334155;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --border-focus: #6366f1;
+    --glow-color: rgba(99, 102, 241, 0.4);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 0 3px var(--glow-color);
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modern body and typography with gradient background */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--background-gradient);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+#logout {
+    font-size: 1.5rem;
+    color: #334155;
+}
+
+/* Modern input fields with ease-in effects, larger borders and shadows */
+
+/* Modern submit and button styling */
+input[type="submit"], button[type="submit"], button {
+    background: linear-gradient(90deg, #a7c7e7 0%, #b7e7c7 100%);
+    color: #222;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px -2px rgba(99,102,241,0.12);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    outline: none;
+    margin: 0.5rem 0;
+    display: inline-block;
+}
+input[type="submit"]:hover, button[type="submit"]:hover, button:hover {
+    background: linear-gradient(90deg, #b7e7c7 0%, #a7c7e7 100%);
+    color: #1e40af;
+    box-shadow: 0 8px 24px -4px rgba(99,102,241,0.18);
+    transform: translateY(-2px) scale(1.03);
+}
+
+input:not([type="radio"]):not([type="submit"]), textarea, select {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 3px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all 0.4s ease-in;
+    box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 4px 8px -2px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    font-family: inherit;
+    min-height: 3rem;
+    position: relative;
+}
+
+input:not([type="radio"]):not([type="submit"]):hover, textarea:hover, select:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.15), 0 6px 12px -2px rgba(0, 0, 0, 0.08), 0 0 0 2px rgba(99, 102, 241, 0.1);
+    transition: all 0.4s ease-in;
+}
+
+input:not([type="radio"]):not([type="submit"]):focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 4px var(--glow-color), 0 10px 20px -6px rgba(0, 0, 0, 0.2), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px) scale(1.02);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
+    transition: all 0.4s ease-in;
+}
+
+/* Specific textarea sizing for better multi-line input */
+textarea {
+    min-height: 6rem;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Select boxes with enhanced styling */
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23666" d="M2 0L0 2h4zm0 5L0 3h4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.75rem;
+    padding-right: 3rem;
+}
+
+/* Modern buttons with gradients and animations */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    box-sizing: border-box;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: var(--transition-slow);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #7c3aed 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #059669;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--background-color);
+    border-color: var(--secondary-color);
+}
+
+/* Modern cards and containers with gradients */
+.card {
+    background: var(--surface-gradient);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--success-color));
+    opacity: 0;
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(99, 102, 241, 0.1);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Modern navigation with pastel gradients */
+.modern-nav {
+    background: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    position: relative;
+}
+
+.modern-nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: #e5e7eb;
+    opacity: 1;
+}
+
+.nav-item {
+    display: block;
+    padding: 1rem 1.25rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    margin-bottom: 0.5rem;
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+    transition: var(--transition-slow);
+}
+
+.nav-item:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    color: var(--primary-color);
+    transform: translateX(4px);
+    border-color: rgba(99, 102, 241, 0.2);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-item:hover::before {
+    left: 100%;
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    transform: translateX(6px);
+    box-shadow: var(--shadow-md), 0 0 15px rgba(99, 102, 241, 0.3);
+    border-color: var(--primary-light);
+}
+
+/* Modern tables */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.modern-table th {
+    background-color: var(--background-color);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modern-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modern-table tr:hover {
+    background-color: var(--background-color);
+}
+
+/* Modern form groups */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.form-help {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+/* Modern alerts */
+.alert {
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background-color: #f0fdf4;
+    border-color: #bbf7d0;
+    color: #166534;
+}
+
+.alert-warning {
+    background-color: #fffbeb;
+    border-color: #fed7aa;
+    color: #92400e;
+}
+
+.alert-danger {
+    background-color: #fef2f2;
+    border-color: #fecaca;
+    color: #991b1b;
+}
+
+/* Modern layout utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+/* Modern responsive design */
+@media (max-width: 768px) {
+    .btn {
+        padding: 0.875rem 1.25rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    input[type="text"], 
+    input[type="password"], 
+    input[type="email"], 
+    input[type="number"], 
+    input[type="date"], 
+    input[type="time"], 
+    textarea, 
+    select {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 0.875rem 1rem;
+    }
+    
+    .card {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .modern-table th,
+    .modern-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #0f172a;
+        --surface-color: #1e293b;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+    }
+}
+
+/* Modern loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modern focus indicators */
+.focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Modern transitions and animations */
+* {
+    transition: var(--transition-fast);
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Subtle animations for interactive elements */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-2px); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: var(--shadow-sm); }
+    50% { box-shadow: var(--shadow-md), 0 0 20px rgba(99, 102, 241, 0.2); }
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Loading shimmer effect */
+.shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
