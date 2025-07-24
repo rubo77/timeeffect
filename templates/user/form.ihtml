@@ -1,6 +1,12 @@
 <!-- user/form.ihtml - START -->
 
 <?php
+	$gids = array();
+	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : '';
+	$username = isset($_REQUEST['login']) ? $_REQUEST['login'] : '';
+	$login = isset($_REQUEST['login']) ? $_REQUEST['login'] : '';
+	$own = isset($_REQUEST['own']) ? $_REQUEST['own'] : '';
+	$permissions = array();
 
 	if(isset($permissions) and !is_array($permissions)) {
 

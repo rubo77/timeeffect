@@ -58,6 +58,7 @@ else return null;
 		// Properties added for PHP 8.4 compatibility - replace deprecated each() function
 		var $data_keys = array();
 		var $data_pointer = 0;
+		var $db; // Datenbankobjekt
 
 		function Group($data = '') {
 			if(!isset($this->db) or !is_object($this->db)) {
@@ -122,7 +123,7 @@ else return null;
 				$this->db = new Database;
 			}
 
-			if($this->data['name'] == '') {
+			if(!isset($this->data['name']) || $this->data['name'] == '') {
 	        	return $GLOBALS['_PJ_strings']['error_group_empty'];
 	        }
 
