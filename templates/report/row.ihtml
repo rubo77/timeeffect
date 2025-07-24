@@ -1,5 +1,15 @@
 <!-- report/row.ihtml - START -->
 <?php
+	// Fix: Initialize sum variables if not set to prevent undefined variable warnings
+	if (!isset($sum_effort_costs)) {
+		$sum_effort_costs = 0;
+	}
+	if (!isset($sum_effort_days)) {
+		$sum_effort_days = 0;
+	}
+	if (!isset($sum_effort_hours)) {
+		$sum_effort_hours = 0;
+	}
 	$sum_effort_costs	+= $effort->giveValue('costs');
 	$sum_effort_days	+= $effort->giveValue('days');
 	$sum_effort_hours	+= $effort->giveValue('hours');

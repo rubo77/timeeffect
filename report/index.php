@@ -3,13 +3,16 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	// Initialisierung von Variablen für PHP 8.4 Kompatibilität
+	// Fix: Initialize request variables to prevent undefined variable warnings
 	$pid = $_REQUEST['pid'] ?? '';
 	$cid = $_REQUEST['cid'] ?? '';
 	$shown = $_REQUEST['shown'] ?? [];
 	$report = $_REQUEST['report'] ?? null;
 	$syear = $_REQUEST['syear'] ?? null;
 	$eyear = $_REQUEST['eyear'] ?? null;
+	$mode = $_REQUEST['mode'] ?? null;
+	$charge = $_REQUEST['charge'] ?? null;
+	$users = $_REQUEST['users'] ?? null;
 
 	$customer 			= new Customer($_PJ_auth, $cid);
 	$project 			= new Project($customer, $_PJ_auth, $pid);
