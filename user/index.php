@@ -33,11 +33,13 @@
 			$data['email']				= $email;
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
-			$data['gids']				= @implode(',', $gids);
+			// FIX: Sicherstellung, dass $gids ein Array ist (verhindert implode-Fehler)
+			$data['gids']				= isset($gids) && is_array($gids) ? implode(',', $gids) : '';
 			$data['lastname']			= add_slashes($lastname);
 			$data['firstname']			= add_slashes($firstname);
 			$data['username']			= add_slashes($login);
-			$data['permissions']		= @implode(',', $permissions);
+			// FIX: Sicherstellung, dass $permissions ein Array ist (verhindert implode-Fehler)
+			$data['permissions']		= isset($permissions) && is_array($permissions) ? implode(',', $permissions) : '';
 			$data['allow_nc']			= $allow_nc;
 
 			$new_user = new User($data);
