@@ -220,7 +220,9 @@ if($GLOBALS['_PJ_session_length']) {
 
 		<TD CLASS="leftNaviInfo">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['session_timeout'])) echo $GLOBALS['_PJ_strings']['session_timeout'] ?>: <?php
 
-printf("%dm %02ds", (($GLOBALS['_PJ_session_timeout']-($GLOBALS['_PJ_session_timeout']%60))/60), ($GLOBALS['_PJ_session_timeout']%60));
+// FIX: String zu Integer konvertieren für Modulo-Operation (PHP 8.4 Kompatibilität)
+$timeout = (int)$GLOBALS['_PJ_session_timeout'];
+printf("%dm %02ds", (($timeout-($timeout%60))/60), ($timeout%60));
 
 		?></TD>
 

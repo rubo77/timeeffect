@@ -75,7 +75,8 @@
 					$data['customer_desc']				= add_slashes($customer_desc);
 					$data['customer_budget']			= add_slashes($customer_budget);
 					$data['customer_budget_currency']	= add_slashes($customer_budget_currency);
-					$data['customer_logo']				= add_slashes($customer_logo);
+					// FIX: customer_logo Variable initialisieren falls nicht gesetzt
+					$data['customer_logo']				= add_slashes(isset($customer_logo) ? $customer_logo : '');
 					$data['user']						= $user;
 					$data['gid']						= $gid;
 					$data['access']						= $access_owner . $access_group . $access_world;

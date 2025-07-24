@@ -61,6 +61,10 @@
 	}
 
 	function add_slashes($string) {
+		// FIX: Null-Prüfung für PHP 8.4 Kompatibilität
+		if ($string === null) {
+			return '';
+		}
 		if(((bool) ini_get('magic_quotes_gpc'))) {
 			return $string;
 		}

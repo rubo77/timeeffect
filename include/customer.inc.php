@@ -173,27 +173,53 @@
 				$this->db = new Database;
 			}
 
+			// FIX: Fehlende Formularfelder aus REQUEST übernehmen (analog zu Group/User)
+			foreach (array('id', 'user', 'gid', 'active', 'customer_name') as $field) {
+				if (isset($_REQUEST[$field]) && (!isset($this->data[$field]) || empty($this->data[$field]))) {
+					$this->data[$field] = $_REQUEST[$field];
+				}
+			}
+
 			$query = "REPLACE INTO " . $GLOBALS['_PJ_customer_table'] . " (";
 
-			if($this->data['id']) {
+			// FIX: Prüfung auf isset für alle Array-Keys (PHP 8.4 Kompatibilität)
+			if(isset($this->data['id']) && $this->data['id']) {
 				$query .= "id, ";
 			}
 			$query .= "active, user, gid, access, readforeignefforts, customer_name, customer_desc, customer_budget, customer_budget_currency, customer_logo) VALUES(";
-			if($this->data['id']) {
+			if(isset($this->data['id']) && $this->data['id']) {
 				$query .= $this->data['id'] . ", ";
 			}
-			$query .= "'" . $this->data['active'] . "', ";
-			$query .= "'" . $this->data['user'] . "', ";
-			$query .= "'" . $this->data['gid'] . "', ";
-			$query .= "'" . $this->data['access'] . "', ";
-			$query .= "'" . $this->data['readforeignefforts'] . "', ";
-			$query .= "'" . $this->data['customer_name'] . "', ";
-			$query .= "'" . $this->data['customer_desc'] . "', ";
-			$query .= "'" . $this->data['customer_budget'] . "', ";
-			$query .= "'" . $this->data['customer_budget_currency'] . "', ";
-			$query .= "'" . $this->data['customer_logo'] . "')";
+			$query .= "'" . (isset($this->data['active']) ? $this->data['active'] : 'yes') . "', ";
+			$query .= "'" . (isset($this->data['user']) ? $this->data['user'] : '') . "', ";
+			$query .= "'" . (isset($this->data['gid']) ? $this->data['gid'] : '') . "', ";
+			$query .= "'" . (isset($this->data['access']) ? $this->data['access'] : 'rwxr-xr--') . "', ";
+			$query .= "'" . (isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0') . "', ";
+			$query .= "'" . (isset($this->data['customer_name']) ? $this->data['customer_name'] : '') . "', ";
+			$query .= "'" . (isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '') . "', ";
+			$query .= "'" . (isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0') . "', ";
+			$query .= "'" . (isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR') . "', ";
+			$query .= "'" . (isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '') . "')";
 			if($this->db->query($query)) {
 				$this->data['id'] = $this->db->insert_id();
+				
+				// Erfolgsmeldung anzeigen
+				echo '<div style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin: 15px; border: 1px solid #d6e9c6; border-radius: 4px;">';
+				echo '<strong>Erfolg!</strong> Der Kunde wurde erfolgreich angelegt:<br><br>';
+				echo '<strong>Name:</strong> ' . htmlspecialchars(isset($this->data['customer_name']) ? $this->data['customer_name'] : 'Unbekannt') . '<br>';
+				echo '<strong>Budget:</strong> ' . htmlspecialchars(isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0') . ' ' . htmlspecialchars(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR') . '<br>';
+				echo '<strong>Status:</strong> ' . (isset($this->data['active']) && $this->data['active'] == 'yes' ? 'Aktiv' : 'Inaktiv') . '<br>';
+				if (isset($this->data['customer_desc']) && !empty($this->data['customer_desc'])) {
+					echo '<strong>Beschreibung:</strong> ' . htmlspecialchars(substr($this->data['customer_desc'], 0, 100)) . (strlen($this->data['customer_desc']) > 100 ? '...' : '') . '<br>';
+				}
+				echo '</div>';
+			} else {
+				// Fehler beim Speichern - Debug-Ausgaben anzeigen
+				echo '<div style="background-color: #f2dede; color: #a94442; padding: 15px; margin: 15px; border: 1px solid #ebccd1; border-radius: 4px;">';
+				echo '<strong>Fehler!</strong> Der Kunde konnte nicht gespeichert werden.<br><br>';
+				echo '<strong>Datenbankfehler:</strong> ' . htmlspecialchars($this->db->Error) . '<br>';
+				echo '<strong>SQL-Query:</strong> ' . htmlspecialchars($query) . '<br>';
+				echo '</div>';
 			}
 		}
 

@@ -68,11 +68,13 @@ if($_PJ_auth->checkPermission('admin')) {
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="user">
 					<?php
 						$a_user = $user;
-						reset($users);
-						while(list($cnt, $o_user) = each($users)) {
-?>
+						// FIX: each() durch moderne Array-Iteration ersetzen (PHP 8.4 Kompatibilität)
+						if (is_array($users)) {
+							foreach($users as $cnt => $o_user) {
+					?>
 						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
+							}
 						}
 					?>
 					</SELECT>
