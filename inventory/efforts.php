@@ -3,6 +3,42 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Variablen-Initialisierungen zur Vermeidung von PHP 8.4 Warnungen
+	$eid = $_REQUEST['eid'] ?? null;
+	$stop = $_REQUEST['stop'] ?? null;
+	$pid = $_REQUEST['pid'] ?? '';
+	$cid = $_REQUEST['cid'] ?? '';
+	$cont = $_REQUEST['cont'] ?? null;
+	$new = $_REQUEST['new'] ?? null;
+	$edit = $_REQUEST['edit'] ?? null;
+	$altered = $_REQUEST['altered'] ?? null;
+	$year = $_REQUEST['year'] ?? null;
+	$month = $_REQUEST['month'] ?? null;
+	$day = $_REQUEST['day'] ?? null;
+	$hour = $_REQUEST['hour'] ?? null;
+	$minute = $_REQUEST['minute'] ?? null;
+	$second = $_REQUEST['second'] ?? null;
+	$description = $_REQUEST['description'] ?? null;
+	$note = $_REQUEST['note'] ?? null;
+	$rate = $_REQUEST['rate'] ?? null;
+	$user = $_REQUEST['user'] ?? null;
+	$gid = $_REQUEST['gid'] ?? null;
+	$access_owner = $_REQUEST['access_owner'] ?? null;
+	$access_group = $_REQUEST['access_group'] ?? null;
+	$access_world = $_REQUEST['access_world'] ?? null;
+	$billing_day = $_REQUEST['billing_day'] ?? null;
+	$billing_month = $_REQUEST['billing_month'] ?? null;
+	$billing_year = $_REQUEST['billing_year'] ?? null;
+	$hours = $_REQUEST['hours'] ?? null;
+	$minutes = $_REQUEST['minutes'] ?? null;
+	$detail = $_REQUEST['detail'] ?? null;
+	$pdf = $_REQUEST['pdf'] ?? null;
+	$delete = $_REQUEST['delete'] ?? null;
+	$cancel = $_REQUEST['cancel'] ?? null;
+	$confirm = $_REQUEST['confirm'] ?? null;
+	$shown = $_REQUEST['shown'] ?? array();
+	$list = $_REQUEST['list'] ?? null;
+
 	$effort = new Effort($eid, $_PJ_auth);
 	if(!empty($stop)) {
 		if($eid && !$effort->checkUserAccess('write')) {
