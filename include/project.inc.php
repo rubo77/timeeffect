@@ -40,6 +40,7 @@
 				$order = " ORDER BY closed, project_name";
 				$limit = "";
 			} else {
+				$cids = ''; // Initialisierung von $cids
 				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $access_query");
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
@@ -180,7 +181,7 @@ else return null;
 				$this->db = new Database;
 			}
 
-			if(!$this->data['id'])
+			if(!isset($this->data) || !isset($this->data['id']) || !$this->data['id'])
 				return;
 
 			$rates			= new Rates($this->data['customer_id']);

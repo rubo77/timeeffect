@@ -3,6 +3,14 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialisierung von Variablen für PHP 8.4 Kompatibilität
+	$pid = $_REQUEST['pid'] ?? '';
+	$cid = $_REQUEST['cid'] ?? '';
+	$shown = $_REQUEST['shown'] ?? [];
+	$report = $_REQUEST['report'] ?? null;
+	$syear = $_REQUEST['syear'] ?? null;
+	$eyear = $_REQUEST['eyear'] ?? null;
+
 	$customer 			= new Customer($cid, $_PJ_auth);
 	$project 			= new Project($customer, $_PJ_auth, $pid);
 
