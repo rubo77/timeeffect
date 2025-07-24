@@ -3,6 +3,15 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$altered = $_REQUEST['altered'] ?? null;
+	$id = $_REQUEST['id'] ?? null;
+	$telephone = $_REQUEST['telephone'] ?? '';
+	$facsimile = $_REQUEST['facsimile'] ?? '';
+	$email = $_REQUEST['email'] ?? '';
+	$password = $_REQUEST['password'] ?? '';
+	$password_retype = $_REQUEST['password_retype'] ?? '';
+
 	$center_template	= "user";
 	$center_title		= 'Benutzer';
 

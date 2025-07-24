@@ -3,6 +3,10 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$altered = $_REQUEST['altered'] ?? null;
+	$pdflayout = '';
+
 	$center_template	= "admin/pdflayout";
 	$center_title		= $GLOBALS['_PJ_strings']['admin'] . ' ' . $GLOBALS['_PJ_strings']['pdf_layout'];
 

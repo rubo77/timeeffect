@@ -3,8 +3,16 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$cid = $_REQUEST['cid'] ?? '';
+	$pid = $_REQUEST['pid'] ?? '';
+	$eid = $_REQUEST['eid'] ?? null;
+	$expand = $_REQUEST['expand'] ?? null;
+	$pdf = $_REQUEST['pdf'] ?? null;
+	$shown = $_REQUEST['shown'] ?? [];
+
 	$customer	= new Customer($cid, $_PJ_auth);
-	$project	= new Project($cutomer, $_PJ_auth, $pid);
+	$project	= new Project($customer, $_PJ_auth, $pid);
 
 	if(isset($eid)) {
 		$effort = new Effort($eid, $_PJ_auth);

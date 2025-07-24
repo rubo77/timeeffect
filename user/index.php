@@ -3,6 +3,16 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Initialize variables from request
+	$uid = $_REQUEST['uid'] ?? null;
+	$new = $_REQUEST['new'] ?? null;
+	$edit = $_REQUEST['edit'] ?? null;
+	$altered = $_REQUEST['altered'] ?? null;
+	$delete = $_REQUEST['delete'] ?? null;
+	$cancel = $_REQUEST['cancel'] ?? null;
+	$confirm = $_REQUEST['confirm'] ?? null;
+	$id = $_REQUEST['id'] ?? null;
+
 	$center_template	= "user";
 	$center_title		= $GLOBALS['_PJ_strings']['user'];
 
