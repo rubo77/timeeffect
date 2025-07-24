@@ -157,7 +157,7 @@
 	$GLOBALS['_PJ_strings']['reports']					= 'Reports';
 	$GLOBALS['_PJ_strings']['save']						= 'Speichern';
 	$GLOBALS['_PJ_strings']['select']					= 'w&auml;hlen';
-	$GLOBALS['_PJ_strings']['session-expire']			= '<FONT COLOR="red"><B>HINWEIS:</B></FONT> Aus Sicherheitsgr&uuml;nden ist die L&auml;nge Ihrer Sitzung auf ' . formatNumber($GLOBALS['_PJ_session_length']/60) . ' Minuten begrenzt. Nach Ablauf dieser Zeit m&uuml;ssen Sie sich erneut anmelden!';
+	$GLOBALS['_PJ_strings']['session-expire']			= ''; // Hint below login form
 	$GLOBALS['_PJ_strings']['session_timeout']			= 'EOS';
 	$GLOBALS['_PJ_strings']['settings']					= 'Einstellungen';
 	$GLOBALS['_PJ_strings']['shortcuts']				= 'Shortcuts';

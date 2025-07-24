@@ -73,7 +73,9 @@ if($GLOBALS['_PJ_session_length']) {
 ?>
 	</TR><TR>
 		<TD CLASS="leftNaviInfo">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['session_timeout'])) echo $GLOBALS['_PJ_strings']['session_timeout'] ?>: <?php
-printf("%dm %02ds", (($GLOBALS['_PJ_session_timeout']-($GLOBALS['_PJ_session_timeout']%60))/60), ($GLOBALS['_PJ_session_timeout']%60));
+// Fix: Cast string to int before modulo operation for PHP 8.4 compatibility
+$session_timeout = (int)$GLOBALS['_PJ_session_timeout'];
+printf("%dm %02ds", (($session_timeout-($session_timeout%60))/60), ($session_timeout%60));
 		?></TD>
 <?php
 }
