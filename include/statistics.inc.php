@@ -115,9 +115,11 @@
 				$seconds = calculate('seconds', $this->db->Record['date'], $this->db->Record['begin'], $this->db->Record['end']);
 				if($this->db->Record['billed'] != '') {
 					$this->data['billed_seconds']			+= $seconds;
+					if (!isset($this->months['billed']["$year-$month"])) $this->months['billed']["$year-$month"] = 0;
 					$this->months['billed']["$year-$month"] += $seconds;
 					$this->billed_effort_count++;
-				} else {
+					if (!isset($this->months['open']["$year-$month"])) $this->months['open']["$year-$month"] = 0;
+					$this->months['open']["$year-$month"] += $seconds;
 					$this->months['open']["$year-$month"]	+= $seconds;
 				}
 				$this->data['seconds']						+= $seconds;

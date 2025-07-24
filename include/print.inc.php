@@ -108,6 +108,8 @@ class PJPDF extends FPDF {
 			$spare_space = round($spare_space/$open_count);
 
 		$left = $GLOBALS['_PJ_pdf_left_margin'] + $GLOBALS['_PJ_pdf_table_cell_spacing'];
+		// Fix: Initialize name_buffer to prevent undefined variable warning
+		$name_buffer = '';
 		reset($field_widths);
 		foreach($field_widths as $name => $width) {
 			if($width == 0) {

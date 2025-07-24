@@ -1,4 +1,7 @@
 <?php
+// Fix: Start output buffering to prevent 'headers already sent' error
+ob_start();
+
 function tableHead($fields) {
 	$table_head='';
 	foreach($fields as $field_name) {
@@ -122,6 +125,9 @@ while($statistic->nextEffort()) {
 	$output .= formatNumber($effort->giveValue('costs'), true);
 	$output .= "\n";
 }
+
+// Fix: Clear output buffer before setting headers
+ob_clean();
 
 if(isset($HTTP_ENV_VARS['HTTP_USER_AGENT']) and strpos($HTTP_ENV_VARS['HTTP_USER_AGENT'],'MSIE 5.5')) {
 	Header('Content-Type: application/dummy');
