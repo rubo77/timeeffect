@@ -4,7 +4,7 @@
 	include_once(__DIR__ . "/../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	$customer 	= new Customer(@$cid, $_PJ_auth);
+	$customer 	= new Customer($cid, $_PJ_auth);
 
 	if(isset($pid)) {
 		$project = new Project($customer, $_PJ_auth, $pid);
