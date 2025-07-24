@@ -1,19 +1,7 @@
 <?php
-if(!isset($db_prefix)) {
-	$db_prefix = 'te_';
-}
 if(!isset($db_name)) {
-	$db_name = 'timeeffect_db';
-}
-if(!isset($db_user)) {
-	$db_user = 'timeeffect';
-}
-if(!isset($db_host)) {
-	// Docker-compatible default: use 'db' service name
-	$db_host = 'db';
-}
-if(!isset($db_password)) {
-	$db_password = 'very_unsecure_timeeffect_PW1';
+	error_log("no database name given");
+	die('no database name given');
 }
 ?>
 				<b>TIMEEFFECT Installation - Step <? if(isset($step)) echo $step; ?></b><br><br>
