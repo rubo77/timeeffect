@@ -39,27 +39,27 @@
 <?php
 if($_PJ_auth->checkPermission('agent')) {
 ?>
-				<TD CLASS="mainOption<?= strtoupper($inventory_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($inventory_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><?=$GLOBALS['_PJ_strings']['inventory']?></A>&nbsp;&nbsp;</TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($inventory_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($inventory_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><?=$GLOBALS['_PJ_strings']['inventory']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
 <?php
 }
 ?>
-				<TD CLASS="mainOption<?= strtoupper($statistics_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($statistics_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_statistics_script'])) echo $GLOBALS['_PJ_statistics_script'] ?>"><?=$GLOBALS['_PJ_strings']['statistics']?></A>&nbsp;&nbsp;</TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($statistics_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($statistics_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_statistics_script'])) echo $GLOBALS['_PJ_statistics_script'] ?>"><?=$GLOBALS['_PJ_strings']['statistics']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
 <?php
 if($_PJ_auth->checkPermission('admin')) {
 ?>
-				<TD CLASS="mainOption<?= strtoupper($users_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($users_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_user_script'])) echo $GLOBALS['_PJ_user_script'] ?>"><?=$GLOBALS['_PJ_strings']['user']?></A>&nbsp;&nbsp;</TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
-				<TD CLASS="mainOption<?= strtoupper($groups_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($groups_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_group_script'])) echo $GLOBALS['_PJ_group_script'] ?>"><?=$GLOBALS['_PJ_strings']['groups']?></A>&nbsp;&nbsp;</TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
-				<TD CLASS="mainOption<?= strtoupper($admin_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($admin_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_admin_script'])) echo $GLOBALS['_PJ_admin_script'] ?>"><?=$GLOBALS['_PJ_strings']['admin']?></A>&nbsp;&nbsp;</TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($users_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($users_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_user_script'])) echo $GLOBALS['_PJ_user_script'] ?>"><?=$GLOBALS['_PJ_strings']['user']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($groups_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($groups_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_group_script'])) echo $GLOBALS['_PJ_group_script'] ?>"><?=$GLOBALS['_PJ_strings']['groups']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($admin_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($admin_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_admin_script'])) echo $GLOBALS['_PJ_admin_script'] ?>"><?=$GLOBALS['_PJ_strings']['admin']?></A>&nbsp;&nbsp;</TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-division.gif" WIDTH="2" HEIGHT="24" BORDER="0"></TD>
 <?php
 }
 ?>
-				<TD CLASS="mainOption<?= strtoupper($reports_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($reports_selection)?>" HREF="<? if(!empty($GLOBALS['_PJ_reports_script'])) echo $GLOBALS['_PJ_reports_script'] ?>"><?=$GLOBALS['_PJ_strings']['reports']?></A></TD>
-				<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-e<? if(isset($reports_selection)) echo $reports_selection; ?>.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+				<TD CLASS="mainOption<?= strtoupper($reports_selection)?>">&nbsp;&nbsp;<A CLASS="mainOption<?= strtoupper($reports_selection)?>" HREF="<?php if(!empty($GLOBALS['_PJ_reports_script'])) echo $GLOBALS['_PJ_reports_script'] ?>"><?=$GLOBALS['_PJ_strings']['reports']?></A></TD>
+				<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-e<?php if(isset($reports_selection)) echo $reports_selection; ?>.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
 			</TR>
 		</TABLE>
 	</TR>

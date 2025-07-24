@@ -1,4 +1,4 @@
-				<b>TIMEEFFECT Installation - Step <? if(isset($step)) echo $step; ?></b><br><br>
+				<b>TIMEEFFECT Installation - Step <?php if(isset($step)) echo $step; ?></b><br><br>
 				Please check the entered values and press 'finish &gt;&gt;'<br>
 <?php
 	// Check write permissions for config file or directory
@@ -42,19 +42,19 @@
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td>table prefix:</td>
-						<td width="300"><? if(isset($db_prefix)) echo $db_prefix; ?></td>
+						<td width="300"><?php if(isset($db_prefix)) echo $db_prefix; ?></td>
 					</tr><tr>
 						<td width="200">database name:</td>
-						<td width="300"><? if(isset($db_name)) echo $db_name; ?></td>
+						<td width="300"><?php if(isset($db_name)) echo $db_name; ?></td>
 					</tr><tr>
 						<td>database host:</td>
-						<td width="300"><? if(isset($db_host)) echo $db_host; ?></td>
+						<td width="300"><?php if(isset($db_host)) echo $db_host; ?></td>
 					</tr><tr>
 						<td>database user:</td>
-						<td width="300"><? if(isset($db_user)) echo $db_user; ?></td>
+						<td width="300"><?php if(isset($db_user)) echo $db_user; ?></td>
 					</tr><tr>
 						<td>database password:</td>
-						<td width="300"><? if(isset($db_password)) echo $db_password; ?></td>
+						<td width="300"><?php if(isset($db_password)) echo $db_password; ?></td>
 					</tr><tr>
 						<td colspan="2"><IMG SRC="../images/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></td>
 					</tr><tr>
@@ -65,28 +65,28 @@
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td>interface language:</td>
-						<td width="300"><? if(isset($language)) echo $language; ?></td>
+						<td width="300"><?php if(isset($language)) echo $language; ?></td>
 					</tr><tr>
 						<td>currency:</td>
-						<td width="300"><? if(isset($currency)) echo $currency; ?></td>
+						<td width="300"><?php if(isset($currency)) echo $currency; ?></td>
 					</tr><tr>
 						<td>decimal point:</td>
-						<td width="300"><? if(isset($decimal_point)) echo $decimal_point; ?></td>
+						<td width="300"><?php if(isset($decimal_point)) echo $decimal_point; ?></td>
 					</tr><tr>
 						<td>thousands seperator:</td>
-						<td width="300"><? if(isset($thousands_seperator)) echo $thousands_seperator; ?></td>
+						<td width="300"><?php if(isset($thousands_seperator)) echo $thousands_seperator; ?></td>
 					</tr><tr>
 						<td>session length:</td>
-						<td width="300"><? if(isset($session_length)) echo $session_length; ?></td>
+						<td width="300"><?php if(isset($session_length)) echo $session_length; ?></td>
 					</tr><tr>
 						<td>admin user:</td>
-						<td width="300"><? if(isset($admin_user)) echo $admin_user; ?></td>
+						<td width="300"><?php if(isset($admin_user)) echo $admin_user; ?></td>
 					</tr><tr>
 						<td>admin password:</td>
-						<td width="300"><? if(isset($admin_password)) echo $admin_password; ?></td>
+						<td width="300"><?php if(isset($admin_password)) echo $admin_password; ?></td>
 					</tr><tr>
 						<td>allow delete:</td>
-						<td width="300"><? if(isset($allow_delete)) echo $allow_delete; ?></td>
+						<td width="300"><?php if(isset($allow_delete)) echo $allow_delete; ?></td>
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
@@ -94,7 +94,7 @@
 					</tr><tr>
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
-<form action="<? if(isset($PHP_SELF)) echo $PHP_SELF; ?>" method="POST" onsubmit="return checkPermissions()">
+<form action="<?php if(isset($PHP_SELF)) echo $PHP_SELF; ?>" method="POST" onsubmit="return checkPermissions()">
 <script>
 function checkPermissions() {
 	<?php if (!$can_write) { ?>
@@ -105,19 +105,19 @@ function checkPermissions() {
 }
 </script>
 <input type="hidden" name="step" value="4">
-<input type="hidden" name="db_prefix" value="<? if(isset($db_prefix)) echo $db_prefix; ?>">
-<input type="hidden" name="db_name" value="<? if(isset($db_name)) echo $db_name; ?>">
-<input type="hidden" name="db_host" value="<? if(isset($db_host)) echo $db_host; ?>">
-<input type="hidden" name="db_user" value="<? if(isset($db_user)) echo $db_user; ?>">
-<input type="hidden" name="db_password" value="<? if(isset($db_password)) echo $db_password; ?>">
-<input type="hidden" name="currency" value="<? if(isset($currency)) echo $currency; ?>">
-<input type="hidden" name="decimal_point" value="<? if(isset($decimal_point)) echo $decimal_point; ?>">
-<input type="hidden" name="thousands_seperator" value="<? if(isset($thousands_seperator)) echo $thousands_seperator; ?>">
-<input type="hidden" name="session_length" value="<? if(isset($session_length)) echo $session_length; ?>">
-<input type="hidden" name="language" value="<? if(isset($language)) echo $language; ?>">
-<input type="hidden" name="admin_user" value="<? if(isset($admin_user)) echo $admin_user; ?>">
-<input type="hidden" name="admin_password" value="<? if(isset($admin_password)) echo $admin_password; ?>">
-<input type="hidden" name="allow_delete" value="<? if(isset($allow_delete)) echo $allow_delete; ?>">
+<input type="hidden" name="db_prefix" value="<?php if(isset($db_prefix)) echo $db_prefix; ?>">
+<input type="hidden" name="db_name" value="<?php if(isset($db_name)) echo $db_name; ?>">
+<input type="hidden" name="db_host" value="<?php if(isset($db_host)) echo $db_host; ?>">
+<input type="hidden" name="db_user" value="<?php if(isset($db_user)) echo $db_user; ?>">
+<input type="hidden" name="db_password" value="<?php if(isset($db_password)) echo $db_password; ?>">
+<input type="hidden" name="currency" value="<?php if(isset($currency)) echo $currency; ?>">
+<input type="hidden" name="decimal_point" value="<?php if(isset($decimal_point)) echo $decimal_point; ?>">
+<input type="hidden" name="thousands_seperator" value="<?php if(isset($thousands_seperator)) echo $thousands_seperator; ?>">
+<input type="hidden" name="session_length" value="<?php if(isset($session_length)) echo $session_length; ?>">
+<input type="hidden" name="language" value="<?php if(isset($language)) echo $language; ?>">
+<input type="hidden" name="admin_user" value="<?php if(isset($admin_user)) echo $admin_user; ?>">
+<input type="hidden" name="admin_password" value="<?php if(isset($admin_password)) echo $admin_password; ?>">
+<input type="hidden" name="allow_delete" value="<?php if(isset($allow_delete)) echo $allow_delete; ?>">
 						<td colspan="2" align="right">
 							<?php if ($can_write) { ?>
 								<input type="submit" value="finish &gt;&gt;">

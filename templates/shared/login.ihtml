@@ -29,9 +29,9 @@ function sf(){
 			<TR>
 				<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
 					<TR>
-						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
+						<TD CLASS="headFrame" COLSPAN="2" HEIGHT="150" VALIGN="top"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
 					</TR><TR>
-						<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+						<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
 					</TR>
 				</TABLE></TD>
 			</TR>
@@ -46,15 +46,15 @@ function sf(){
 			<TR>
 				<TD><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0">
 					<TR>
-						<TD CLASS="mainOptionS">&nbsp;&nbsp;<A CLASS="mainOptionS" HREF="<?php if(!empty($GLOBALS['PHP_SELF'])) echo $GLOBALS['PHP_SELF'] ?>"><? if(!empty($GLOBALS['_PJ_strings']['authentication'])) echo $GLOBALS['_PJ_strings']['authentication'] ?></A></TD>
-						<TD CLASS="mainOptionDivision"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-es.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
+						<TD CLASS="mainOptionS">&nbsp;&nbsp;<A CLASS="mainOptionS" HREF="<?php if(!empty($GLOBALS['PHP_SELF'])) echo $GLOBALS['PHP_SELF'] ?>"><?php if(!empty($GLOBALS['_PJ_strings']['authentication'])) echo $GLOBALS['_PJ_strings']['authentication'] ?></A></TD>
+						<TD CLASS="mainOptionDivision"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/main-option-es.gif" WIDTH="10" HEIGHT="24" BORDER="0"></TD>
 					</TR>
 				</TABLE>
 			</TR>
 		</TABLE>
 		</TD>
 <!-- END - Main Options  -->
-		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<? if(!empty($GLOBALS['_PJ_help_script'])) echo $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><? if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></A></TD>
+		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<?php if(!empty($GLOBALS['_PJ_help_script'])) echo $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><?php if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></A></TD>
 	</TR>
 </TABLE></TD>
 	</TR><TR>
@@ -68,32 +68,32 @@ function sf(){
 		?>
 		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 			<TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
 			</TR><TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 			</TR><TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
 			</TR><TR>
 				<TD CLASS="content"><TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="600">
 					<TR VALIGN="top">
-						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>
-						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/login-welcome.gif" HEIGHT="80" WIDTH="71" BORDER="0"></TD>
-						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="20" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="40" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/login-welcome.gif" HEIGHT="80" WIDTH="71" BORDER="0"></TD>
+						<TD ROWSPAN="13" ALIGN="right"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="20" BORDER="0"></TD>
 						<TD COLSPAN="2"><?=$GLOBALS['_PJ_strings']['login-welcome']?></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR>
 <?php
 if(!empty($GLOBALS['username'])) {
 ?>
 					<TR>
-						<TD COLSPAN="2" CLASS="ErrorMessage"><? if(!empty($GLOBALS['_PJ_strings']['login_error_msg'])) echo $GLOBALS['_PJ_strings']['login_error_msg'] ?></TD>
+						<TD COLSPAN="2" CLASS="ErrorMessage"><?php if(!empty($GLOBALS['_PJ_strings']['login_error_msg'])) echo $GLOBALS['_PJ_strings']['login_error_msg'] ?></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR>
 <?php
 }else {
@@ -127,11 +127,11 @@ if(!empty($GLOBALS['username'])) {
 						<TD></TD>
 						<TD CLASS="FormField"><INPUT CLASS="FormSubmit" TYPE="submit" VALUE="<?=$GLOBALS['_PJ_strings']['login']?> >>"></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 					</TR><TR>
-						<TD COLSPAN="2"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
+						<TD COLSPAN="2"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="10" WIDTH="1" BORDER="0"></TD>
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>
@@ -143,12 +143,12 @@ if($GLOBALS['_PJ_session_length']) {
 					</TR>
 				</TABLE></TD>
 			</TR><TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="40" WIDTH="1" BORDER="0"></TD>
 			</TR><TR>
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 			</TR>
 			</TR><TR>
-				<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<? if(!empty($GLOBALS['_PJ_timeeffect_version'])) echo $GLOBALS['_PJ_timeeffect_version'] ?> (Revision: <? if(!empty($GLOBALS['_PJ_timeeffect_revision'])) echo $GLOBALS['_PJ_timeeffect_revision'] ?>, <?= date($GLOBALS['_PJ_format_datetime'], strtotime($GLOBALS['_PJ_timeeffect_date'])) ?>)</td>
+				<TD class="version">&nbsp;TIMEEFFECT Version:&nbsp;<?php if(!empty($GLOBALS['_PJ_timeeffect_version'])) echo $GLOBALS['_PJ_timeeffect_version'] ?> (Revision: <?php if(!empty($GLOBALS['_PJ_timeeffect_revision'])) echo $GLOBALS['_PJ_timeeffect_revision'] ?>, <?= date($GLOBALS['_PJ_format_datetime'], strtotime($GLOBALS['_PJ_timeeffect_date'])) ?>)</td>
 			</TR>
 		</TABLE>
 		</FORM>

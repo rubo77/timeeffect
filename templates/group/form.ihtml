@@ -14,9 +14,9 @@
 	}
 	include($GLOBALS['_PJ_root'] . '/templates/group/options/edit.ihtml');
 ?>
-<FORM ACTION="<? if(isset($form_action)) echo $form_action; ?>" METHOD="<? if(isset($_PJ_form_method)) echo $_PJ_form_method; ?>">
-<INPUT TYPE="hidden" NAME="id" VALUE="<? if(!empty($id)) echo $id ?>">
-<INPUT TYPE="hidden" NAME="own" VALUE="<? if(!empty($own)) echo $own ?>">
+<FORM ACTION="<?php if(isset($form_action)) echo $form_action; ?>" METHOD="<?php if(isset($_PJ_form_method)) echo $_PJ_form_method; ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<?php if(!empty($id)) echo $id ?>">
+<INPUT TYPE="hidden" NAME="own" VALUE="<?php if(!empty($own)) echo $own ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
 	<CENTER>
@@ -25,15 +25,15 @@
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="Error" COLSPAN="2"><? if(!empty($message)) echo $message ?></TD>
+					<TD CLASS="Error" COLSPAN="2"><?php if(!empty($message)) echo $message ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
-					<TD CLASS="FormField"><INPUT CLASS="FormField" NAME="name" VALUE="<? if(!empty($name)) echo $name ?>"></TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?>:</TD>
+					<TD CLASS="FormField"><INPUT CLASS="FormField" NAME="name" VALUE="<?php if(!empty($name)) echo $name ?>"></TD>
 				</TR><TR>
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>
 				</TR><TR>
-					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
 				</TR>
 			</TABLE>
 			</TD>

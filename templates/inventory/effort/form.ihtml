@@ -96,31 +96,31 @@
 <FORM ACTION="<? print $PHP_SELF; ?>" METHOD="<? print $_PJ_form_method; ?>">
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
-<INPUT TYPE="hidden" NAME="cid" VALUE="<? if(isset($cid)) echo $cid; ?>">
-<INPUT TYPE="hidden" NAME="eid" VALUE="<? if(isset($eid)) echo $eid; ?>">
-<INPUT TYPE="hidden" NAME="id" VALUE="<? if(isset($id)) echo $id; ?>">
+<INPUT TYPE="hidden" NAME="cid" VALUE="<?php if(isset($cid)) echo $cid; ?>">
+<INPUT TYPE="hidden" NAME="eid" VALUE="<?php if(isset($eid)) echo $eid; ?>">
+<INPUT TYPE="hidden" NAME="id" VALUE="<?php if(isset($id)) echo $id; ?>">
 
 	<CENTER>
 	<TABLE	WIDTH="90%"
-			BORDER="<? if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
-			CELLPADDING="<? if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
-			CELLSPACING="<? if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
+			BORDER="<?php if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
+			CELLPADDING="<?php if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
+			CELLSPACING="<?php if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
 		<TR>
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
 				<TR>
-					<TD CLASS="Error" COLSPAN="2"><? if(isset($message)) echo $message; ?></TD>
+					<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<? if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><? if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<? if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><? if(isset($project_input)) echo $project_input; ?></TD>
+					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><?php if(isset($project_input)) echo $project_input; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="note" COLS="35" ROWS="5" WRAP><?php print $note; ?></TEXTAREA></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['date'])) echo $GLOBALS['_PJ_strings']['date'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['date'])) echo $GLOBALS['_PJ_strings']['date'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormSelect" NAME="day">
 					<?php
@@ -168,10 +168,10 @@
 						}
 					?>
 					</SELECT>
-					(<? if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['yaer'])) echo $GLOBALS['_PJ_strings']['yaer'] ?>)
+					(<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['yaer'])) echo $GLOBALS['_PJ_strings']['yaer'] ?>)
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['time_of_beginning'])) echo $GLOBALS['_PJ_strings']['time_of_beginning'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['time_of_beginning'])) echo $GLOBALS['_PJ_strings']['time_of_beginning'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormSelect" NAME="hour">
 					<?php
@@ -203,10 +203,10 @@
 						}
 					?>
 					</SELECT>
-					(<? if(!empty($GLOBALS['_PJ_strings']['hour'])) echo $GLOBALS['_PJ_strings']['hour'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['minute'])) echo $GLOBALS['_PJ_strings']['minute'] ?>)
+					(<?php if(!empty($GLOBALS['_PJ_strings']['hour'])) echo $GLOBALS['_PJ_strings']['hour'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['minute'])) echo $GLOBALS['_PJ_strings']['minute'] ?>)
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['duration'])) echo $GLOBALS['_PJ_strings']['duration'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['duration'])) echo $GLOBALS['_PJ_strings']['duration'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormSelect" NAME="hours">
 					<?php
@@ -236,7 +236,7 @@
 						print ' VALUE="59">59' . "\n";
 					?>
 					</SELECT>
-					(<? if(!empty($GLOBALS['_PJ_strings']['hours'])) echo $GLOBALS['_PJ_strings']['hours'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['minutes'])) echo $GLOBALS['_PJ_strings']['minutes'] ?>)
+					(<?php if(!empty($GLOBALS['_PJ_strings']['hours'])) echo $GLOBALS['_PJ_strings']['hours'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['minutes'])) echo $GLOBALS['_PJ_strings']['minutes'] ?>)
 					<?php
 						if(!empty($duration_message)) {
 							?>&nbsp;<span class="warning"><?=$duration_message?><span>
@@ -246,7 +246,7 @@
 					?>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['rate'])) echo $GLOBALS['_PJ_strings']['rate'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['rate'])) echo $GLOBALS['_PJ_strings']['rate'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormField" NAME="rate">
 					<?php
@@ -271,7 +271,7 @@
 if($_PJ_auth->checkPermission('accountant')) {
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['billed'])) echo $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['billed'])) echo $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormSelect" NAME="billing_day">
 						<OPTION VALUE="">
@@ -316,21 +316,21 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					(<? if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <? if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>)
+					(<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>)
 					</TD>
 <?php
 }
 if($_PJ_auth->checkPermission('admin')) {
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="user">
 					<?php
 						$a_user = $user;
 						reset($users);
 						while(list($cnt, $o_user) = each($users)) {
 ?>
-						<OPTION VALUE="<? if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
 						}
 					?>
@@ -341,39 +341,39 @@ if($_PJ_auth->checkPermission('admin')) {
 if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gid">
 <?php
 	reset($u_gids);
 	foreach($u_gids as $id) {
 ?>
-						<OPTION<?php if($id == $effort_gid) print ' SELECTED'; ?> value="<? if(isset($id)) echo $id; ?>"><?= $a_gids[$id] ?>
+						<OPTION<?php if($id == $effort_gid) print ' SELECTED'; ?> value="<?php if(isset($id)) echo $id; ?>"><?= $a_gids[$id] ?>
 <?php
 	}
 ?>
 					 </SELECT></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_owner'])) echo $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_owner'])) echo $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_owner">
-						<OPTION VALUE="rw-"<?php if($effort_access_owner == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
-						<OPTION VALUE="r--"<?php if($effort_access_owner == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
-						<OPTION VALUE="---"<?php if($effort_access_owner == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rw-"<?php if($effort_access_owner == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_owner == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_owner == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_group'])) echo $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_group'])) echo $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_group">
-						<OPTION VALUE="rw-"<?php if($effort_access_group == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
-						<OPTION VALUE="r--"<?php if($effort_access_group == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
-						<OPTION VALUE="---"<?php if($effort_access_group == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rw-"<?php if($effort_access_group == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_group == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_group == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName"><? if(!empty($GLOBALS['_PJ_strings']['access_world'])) echo $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
+					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_world'])) echo $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_world">
-						<OPTION VALUE="rw-"<?php if($effort_access_world == 'rw-') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
-						<OPTION VALUE="r--"<?php if($effort_access_world == 'r--') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
-						<OPTION VALUE="---"<?php if($effort_access_world == '---') print ' SELECTED' ?>><? if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
+						<OPTION VALUE="rw-"<?php if($effort_access_world == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
+						<OPTION VALUE="r--"<?php if($effort_access_world == 'r--') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_r'])) echo $GLOBALS['_PJ_strings']['access_effort_r'] ?>
+						<OPTION VALUE="---"<?php if($effort_access_world == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
 <?php
@@ -383,7 +383,7 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>
 				</TR><TR>
-					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
 				</TR>
 			</TABLE>
 			</TD>

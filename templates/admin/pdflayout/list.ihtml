@@ -18,7 +18,7 @@
 			</TR><TR>
 				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="1" CELLSPACING="0" WIDTH="90%">
 					<TR>
-<form action="<? if(isset($PHP_SELF)) echo $PHP_SELF; ?>" method="POST">
+<form action="<?php if(isset($PHP_SELF)) echo $PHP_SELF; ?>" method="POST">
 <input type="hidden" name="altered" value="1">
 <?php
 foreach($GLOBALS as $gname => $gvalue) {
@@ -33,11 +33,11 @@ foreach($GLOBALS as $gname => $gvalue) {
 		}
 		if(is_array($gvalue)) {
 ?>
-						<td align="right" width="50%" valign="top"><? if(isset($show_name)) echo $show_name; ?>:&nbsp;</td><td>
+						<td align="right" width="50%" valign="top"><?php if(isset($show_name)) echo $show_name; ?>:&nbsp;</td><td>
 <?php
 			foreach($gvalue as $ggname => $ggvalue) {
 ?>
-						<input name="<? if(isset($sg_name)) echo $sg_name; ?>[<? if(isset($ggname)) echo $ggname; ?>]" value="<? if(isset($ggvalue)) echo $ggvalue; ?>" size="3"> <?= $GLOBALS['_PJ_strings'][$ggname] ?><br>
+						<input name="<?php if(isset($sg_name)) echo $sg_name; ?>[<?php if(isset($ggname)) echo $ggname; ?>]" value="<?php if(isset($ggvalue)) echo $ggvalue; ?>" size="3"> <?= $GLOBALS['_PJ_strings'][$ggname] ?><br>
 <?php
 			}
 ?>
@@ -48,9 +48,9 @@ foreach($GLOBALS as $gname => $gvalue) {
 			if(!empty($sg_colour_string) and $sg_colour_string == '_r') {
 				$colour_prefix = substr($sg_name, 0, strlen($sg_name)-1);
 ?>
-						<td align="right" width="50%"><? if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
+						<td align="right" width="50%"><?php if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
 						<td>
-						<input name="<? if(isset($sg_name)) echo $sg_name; ?>" value="<? if(isset($gvalue)) echo $gvalue; ?>" size="3" maxlength="3"> (R)
+						<input name="<?php if(isset($sg_name)) echo $sg_name; ?>" value="<?php if(isset($gvalue)) echo $gvalue; ?>" size="3" maxlength="3"> (R)
 						<input name="<?= $colour_prefix . 'g' ?>" value="<?= $GLOBALS['_PJ_' . $colour_prefix . 'g'] ?>" size="3" maxlength="3"> (G)
 						<input name="<?= $colour_prefix . 'b' ?>" value="<?= $GLOBALS['_PJ_' . $colour_prefix . 'b'] ?>" size="3" maxlength="3"> (B)
 <?php
@@ -58,13 +58,13 @@ foreach($GLOBALS as $gname => $gvalue) {
 			} else if($sg_colour_string != '_g' && $sg_colour_string != '_b') {
 				if(!empty($sg_name) and $sg_name == 'pdf_footer_string') {
 ?>
-					<td align="right" width="50%"><? if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
-					<td><textarea rows="3" cols="50" name="<? if(isset($sg_name)) echo $sg_name; ?>"><? if(isset($gvalue)) echo $gvalue; ?></textarea></td>
+					<td align="right" width="50%"><?php if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
+					<td><textarea rows="3" cols="50" name="<?php if(isset($sg_name)) echo $sg_name; ?>"><?php if(isset($gvalue)) echo $gvalue; ?></textarea></td>
 <?php
 				} else {
 ?>
-					<td align="right" width="50%"><? if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
-					<td><input name="<? if(isset($sg_name)) echo $sg_name; ?>" value="<? if(isset($gvalue)) echo $gvalue; ?>" size="50"></td>
+					<td align="right" width="50%"><?php if(isset($show_name)) echo $show_name; ?>:&nbsp;</td>
+					<td><input name="<?php if(isset($sg_name)) echo $sg_name; ?>" value="<?php if(isset($gvalue)) echo $gvalue; ?>" size="50"></td>
 <?php
 				}
 			} else {
@@ -75,7 +75,7 @@ foreach($GLOBALS as $gname => $gvalue) {
 }
 ?>
 					<tr>
-						<td colspan="2" align="center"><br><input type="submit" value="<? if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></td>
+						<td colspan="2" align="center"><br><input type="submit" value="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></td>
 					</tr>
 </form>
 				</table></td>
