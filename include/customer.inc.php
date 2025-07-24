@@ -117,9 +117,20 @@
 				$this->db = new Database;
 			}
 
+			// Sicherheitsprüfung für $this->data['id']
+			if(!isset($this->data['id'])) {
+				return 0; // Wenn keine ID vorhanden ist, gibt es keine Projekte
+			}
+
 			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id='" . $this->data['id'] . "'";
 			$access_query="";
-			if(!$this->user->checkPermission('admin')) {
+			
+			// Überprüfen, ob $this->user ein Objekt ist
+			if(!isset($this->user) || !is_object($this->user)) {
+				// Wenn kein User-Objekt vorhanden ist, keine Zugriffseinschränkung
+			} 
+			// Nur wenn $this->user ein Objekt ist, prüfen wir die Berechtigung
+			elseif(!$this->user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
 				$access_query .= " OR ";
