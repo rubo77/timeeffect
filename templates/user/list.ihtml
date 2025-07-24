@@ -16,13 +16,13 @@
 
 	<TR>
 
-		<TD CLASS="content"><?php if(<?php if(<?php if(
+		<TD CLASS="content">
 
 		<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 
 			<TR>
 
-				<TD><TABLE BORDER="0" CELLPADDING="0" CELLSPAC<?php if(" WIDTH="100%">
+				<TD><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
 
 					<TR>
 
@@ -30,11 +30,11 @@
 
 					</TR><TR>
 
-						<TD ALIGN="center<?php if(LE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
-<?php if(
-							<TR><?php if(
-<?php if(
-								<TH CLASS="list"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?new=1"; ?>"><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<? if(!empty($GLOBALS['_PJ_strings']['new_user'])) echo $GLOBALS['_PJ_strings']['new_user'] ?>" ALIGN="absmiddle">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['new_user'])) echo $GLOBALS['_PJ_strings']['new_user'] ?></A></TH>
+						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
+
+							<TR>
+
+								<TH CLASS="list"><A CLASS="list" HREF="<?= $GLOBALS['_PJ_user_script'] . "?new=1"; ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['new_user'])) echo $GLOBALS['_PJ_strings']['new_user'] ?>" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['new_user'])) echo $GLOBALS['_PJ_strings']['new_user'] ?></A></TH>
 
 							</TR>
 
@@ -45,8 +45,8 @@
 						<TD>&nbsp;</TD>
 
 					</TR><TR>
-<?php if(
-						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
+
+						<TD COLSPAN="3" BGCOLOR="#DDDDDD"><IMG src="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" HEIGHT="1" WIDTH="1" BORDER="0"></TD>
 
 					</TR><TR>
 
@@ -62,13 +62,13 @@
 
 					<TR>
 
-						<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['username'])) echo $GLOBALS['_PJ_strings']['username'] ?></TH>
+						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['username'])) echo $GLOBALS['_PJ_strings']['username'] ?></TH>
 
-						<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?></TH>
+						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['name'])) echo $GLOBALS['_PJ_strings']['name'] ?></TH>
 
-						<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['permissions'])) echo $GLOBALS['_PJ_strings']['permissions'] ?></TH>
+						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['permissions'])) echo $GLOBALS['_PJ_strings']['permissions'] ?></TH>
 
-						<TH CLASS="list"><? if(!empty($GLOBALS['_PJ_strings']['groups'])) echo $GLOBALS['_PJ_strings']['groups'] ?></TH>
+						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['groups'])) echo $GLOBALS['_PJ_strings']['groups'] ?></TH>
 
 					</TR>
 
@@ -92,7 +92,7 @@
 
 					<TR>
 
-						<TD COLSPAN="5"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
+						<TD COLSPAN="5"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0"></TD>
 
 					</TR>
 

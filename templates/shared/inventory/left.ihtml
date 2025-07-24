@@ -7,126 +7,84 @@
 	$nav_width = 120;
 
 ?>
-<?php if(
+
 <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="160" HEIGHT="100%">
-<?php if(
+
 	<TR>
-<?php if(
+
 		<TD VALIGN="top" CLASS="leftNavi"><TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
 
-			<TR HEIGHT="150<?php if(<?php if(
+			<TR HEIGHT="150">
 
-				<TD CLASS="headFrame" COLS<?php if(" VALIGN="top"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/<?php if(e_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD><?php if(
-
-			</TR><TR>
-
-				<TD><IMG SRC="<? if(!e<?php if(GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORD<?php if(></TD><?php if(
+				<TD CLASS="headFrame" COLSPAN="2" VALIGN="top"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/logo_te_150.png" WIDTH="150" HEIGHT="19" BORDER="0" HSPACE="5" VSPACE="0"></TD>
 
 			</TR><TR>
 
-				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
-<?php if(<?php if(<?php if(
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="20" BORDER="0"></TD>
+
+			</TR><TR>
+
+				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+
 				<TD CLASS="leftHead"><?=$GLOBALS['_PJ_strings']['navigation']?></TD>
 
 			</TR><TR>
 
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<? if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?php if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
 
 			</TR><TR>
-<?php if(
-				<TD><A CLASS="<?php if(HREF="<? if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><? if(!empty($GLOBALS['_PJ_strings']['customers'])) echo $GLOBALS['_PJ_strings']['customers'] ?></A>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-top.gif" WIDTH="11" HEIGHT="7" BORDER="0"></TD>
+
+				<TD><A CLASS="left" HREF="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><?php if(!empty($GLOBALS['_PJ_strings']['customers'])) echo $GLOBALS['_PJ_strings']['customers'] ?></A>&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-top.gif" WIDTH="11" HEIGHT="7" BORDER="0"></TD>
 
 			</TR><TR>
-<?php if(
+
 				<TD><?php
-<?php if(<?php if(
+
 		if(($SCRIPT_NAME == $GLOBALS['_PJ_projects_inventory_script']) || ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_inventory_script'])) {
-<?php if(
-		?><A CLASS="left" HREF="<? if(!empty($GLOBALS['_PJ_projects_inventory_script'])) echo $GLOBALS['_PJ_projects_inventory_script'] ?>"><? if(!empty($GLOBALS['_PJ_strings']['projects'])) echo $GLOBALS['_PJ_strings']['projects'] ?></A>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
+
+		?><A CLASS="left" HREF="<?php if(!empty($GLOBALS['_PJ_projects_inventory_script'])) echo $GLOBALS['_PJ_projects_inventory_script'] ?>"><?php if(!empty($GLOBALS['_PJ_strings']['projects'])) echo $GLOBALS['_PJ_strings']['projects'] ?></A>&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
 
 		} ?>&nbsp;</TD>
 
 			</TR><TR>
-<?php if(
+
 				<TD><?php
 
 		if($SCRIPT_NAME == $GLOBALS['_PJ_efforts_inventory_script']) {
 
-		?><A CLASS="left" HREF="<? if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>"><? if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
+		?><A CLASS="left" HREF="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>"><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></A>&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-up.gif" WIDTH="11" HEIGHT="7" BORDER="0"><?php
 
 		} ?>&nbsp;</TD>
-<?php if(
-			</TR><?php if(
 
-		</TABLE><?php if(
+			</TR>
 
-		<TABLE CELLPADDI<?php if( CELLSPACING="0" BORDER="0"><?php if(
+		</TABLE>
 
-		<?php<?php if(
+		<TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
+
+		<?php
 
 		if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 
 		?><TR>
 
-				<TD WIDTH=<?php if(OWSPAN="30"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
 
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
 
 			</TR>
 
 			<TR>
 
-				<TD CLASS="leftHead"><? if(!empty($GLOBALS['_PJ_strings']['statistics'])) echo $GLOBALS['_PJ_strings']['statistics'] ?></TD>
+				<TD CLASS="leftHead"><?php if(!empty($GLOBALS['_PJ_strings']['statistics'])) echo $GLOBALS['_PJ_strings']['statistics'] ?></TD>
 
 			</TR><TR>
 
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<? if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
-
-			</TR><TR><?php if(
-<?php if(
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
-
-		print $customer->giveV<?php if(customer_name');
-
-		?></A>&nbsp;</T<?php if(<?php if(
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?php if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
 
 			</TR><TR>
 
-				<TD><?php
-
-			if(isset($project) && is_object($project) && $project->giveValue('id')) {
-<?php if(<?php if(
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
-
-		print $project->giveValue('project_name');
-
-		?></A>&nbsp;</TD>
-
-			</TR><?php
-
-			} ?>
-
-		</TABLE>
-
-		<TABLE CELLPADDING="3" CELLSPAC<?php if(" BORDER="0">
-
-			<TR>
-
-				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
-
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
-
-			</TR><TR>
-
-				<TD CLASS="leftHead"><? if(!empty($GLOBALS['_PJ_strings']['reports'])) echo $GLOBALS['_PJ_strings']['reports'] ?></TD>
-
-			</TR><TR>
-
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<? if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
-
-			</TR><TR>
-
-				<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_projects_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 
 		print $customer->giveValue('customer_name');
 
@@ -138,7 +96,49 @@
 
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
 
-		?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
+		?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_efforts_statistics_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
+
+		print $project->giveValue('project_name');
+
+		?></A>&nbsp;</TD>
+
+			</TR><?php
+
+			} ?>
+
+		</TABLE>
+
+		<TABLE CELLPADDING="3" CELLSPACING="0" BORDER="0">
+
+			<TR>
+
+				<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
+
+			</TR><TR>
+
+				<TD CLASS="leftHead"><?php if(!empty($GLOBALS['_PJ_strings']['reports'])) echo $GLOBALS['_PJ_strings']['reports'] ?></TD>
+
+			</TR><TR>
+
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?php if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
+
+			</TR><TR>
+
+				<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
+
+		print $customer->giveValue('customer_name');
+
+		?></A>&nbsp;</TD>
+
+			</TR><TR>
+
+				<TD><?php
+
+			if(isset($project) && is_object($project) && $project->giveValue('id')) {
+
+		?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_reports_script'] . "?list=1&cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."" ?>"><?php
 
 		print $project->giveValue('project_name');
 
@@ -166,19 +166,19 @@
 
 		<tr>
 
-			<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
+			<TD WIDTH="10" ROWSPAN="30"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="10" HEIGHT="1" BORDER="0"></TD>
 
-			<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
+			<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" WIDTH="1" HEIGHT="30" BORDER="0"></TD>
 
 		</TR>
 
 		<TR>
 
-			<TD CLASS="leftHead"><? if(!empty($GLOBALS['_PJ_strings']['open_efforts'])) echo $GLOBALS['_PJ_strings']['open_efforts'] ?></TD>
+			<TD CLASS="leftHead"><?php if(!empty($GLOBALS['_PJ_strings']['open_efforts'])) echo $GLOBALS['_PJ_strings']['open_efforts'] ?></TD>
 
 		</TR><TR>
 
-			<TD><IMG SRC="<? if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<? if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
+			<TD><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="<?php if(isset($nav_width)) echo $nav_width; ?>" HEIGHT="1" BORDER="0"></TD>
 
 		</tr>
 
@@ -192,7 +192,7 @@
 
 		<tr>
 
-			<td><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/stop.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<a CLASS="left" href="<? if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>"><?= substr($__effort->giveValue('description'), 0, 13); ?><?php if(strlen($__effort->giveValue('description')) > 13) print "..."; ?></td>
+			<td><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/stop.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<a CLASS="left" href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>"><?= substr($__effort->giveValue('description'), 0, 13); ?><?php if(strlen($__effort->giveValue('description')) > 13) print "..."; ?></td>
 
 		</tr>
 
@@ -218,7 +218,7 @@ if($GLOBALS['_PJ_session_length']) {
 
 	</TR><TR>
 
-		<TD CLASS="leftNaviInfo">&nbsp;<? if(!empty($GLOBALS['_PJ_strings']['session_timeout'])) echo $GLOBALS['_PJ_strings']['session_timeout'] ?>: <?php
+		<TD CLASS="leftNaviInfo">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['session_timeout'])) echo $GLOBALS['_PJ_strings']['session_timeout'] ?>: <?php
 
 printf("%dm %02ds", (($GLOBALS['_PJ_session_timeout']-($GLOBALS['_PJ_session_timeout']%60))/60), ($GLOBALS['_PJ_session_timeout']%60));
 

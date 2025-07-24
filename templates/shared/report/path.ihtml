@@ -2,15 +2,15 @@
 
 if(isset($customer) && is_object($customer) &&
 
-	$customer-><?php if(lue('id')) {
+	$customer->giveValue('id')) {
 
 $c_id = $customer->giveValue('id');
 
-?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
+?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
 
 print "[ID: '$c_id']&nbsp;" . $customer->giveValue('customer_name');
-<?php if(
-}<?php if(
+
+}
 
 if(isset($project) && is_object($project) &&
 
@@ -20,9 +20,9 @@ $p_id = $project->giveValue('id');
 
 if(!empty($c_id)) {
 
-?>&nbsp;<IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-r.gif" WIDTH="11" HEIGHT="7" BORDER="0">&nbsp;<?php
+?>&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-r.gif" WIDTH="11" HEIGHT="7" BORDER="0">&nbsp;<?php
 
-} ?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp<?php
+} ?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp<?php
 
 print "[ID: '$p_id']&nbsp;" . $project->giveValue('project_name');
 

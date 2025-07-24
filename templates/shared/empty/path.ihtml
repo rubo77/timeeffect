@@ -3,14 +3,14 @@
 if(isset($user) && is_object($user) &&
 
 	$user->giveValue('id') &&
-<?php if(
+
 	($SCRIPT_NAME == $GLOBALS['_PJ_user_script']) && isset($list) && $list!=1) {
 
 $uid = $user->giveValue('id');
 
-?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
+?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
 
-print "[ID: <?php if(]&nbsp;" . $user->giveValue('firstname') . '&nbsp;' . $user->giveValue('lastname');
+print "[ID: '$uid']&nbsp;" . $user->giveValue('firstname') . '&nbsp;' . $user->giveValue('lastname');
 
 }
 
@@ -22,7 +22,7 @@ if(isset($group) && is_object($group) &&
 
 $gid = $group->giveValue('id');
 
-?><IMG SRC="<? if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/group.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
+?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/group.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
 
 print "[ID: '$gid']&nbsp;" . $group->giveValue('name');
 
