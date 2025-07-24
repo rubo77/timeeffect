@@ -8,17 +8,17 @@
 
 // Debug-Log-Funktion für Session-Diagnose
 function debug_session_log($message, $data = []) {
-    $log_dir = __DIR__ . '/../logs';
-    if (!is_dir($log_dir)) {
-        mkdir($log_dir, 0755, true);
-    }
+    // $log_dir = __DIR__ . '/../logs';
+    // if (!is_dir($log_dir)) {
+    //     mkdir($log_dir, 0755, true);
+    // }
     
-    $log_file = $log_dir . '/session_debug.log';
-    $timestamp = date('Y-m-d H:i:s');
-    $data_str = !empty($data) ? ' | ' . json_encode($data, JSON_UNESCAPED_SLASHES) : '';
-    $log_entry = "[$timestamp] $message$data_str\n";
+    // $log_file = $log_dir . '/session_debug.log';
+    // $timestamp = date('Y-m-d H:i:s');
+    // $data_str = !empty($data) ? ' | ' . json_encode($data, JSON_UNESCAPED_SLASHES) : '';
+    // $log_entry = "[$timestamp] $message$data_str\n";
     
-    file_put_contents($log_file, $log_entry, FILE_APPEND);
+    // file_put_contents($log_file, $log_entry, FILE_APPEND);
 }
 
 // Session-Cookie-Kompatibilität für PHP 8.4 sicherstellen
