@@ -8,6 +8,15 @@
 	$cid = $_REQUEST['cid'] ?? '';
 	$pid = $_REQUEST['pid'] ?? '';
 	$eid = $_REQUEST['eid'] ?? '';
+	$new = $_REQUEST['new'] ?? null;
+	$edit = $_REQUEST['edit'] ?? null;
+	$rates = $_REQUEST['rates'] ?? null;
+	$altered = $_REQUEST['altered'] ?? null;
+	$delete = $_REQUEST['delete'] ?? null;
+	$cancel = $_REQUEST['cancel'] ?? null;
+	$confirm = $_REQUEST['confirm'] ?? null;
+	$name = $_REQUEST['name'] ?? [];
+	$customer_logo = $_REQUEST['customer_logo'] ?? '';
 
 	$customer 	= new Customer($_PJ_auth, $cid);
 
