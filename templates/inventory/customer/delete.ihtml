@@ -1,5 +1,5 @@
 <!-- inventory/customer/delete.ihtml - START -->
-<?
+<?php
 	if(isset($customer) && is_object($customer)) {
 		$cid						= $customer->giveValue('id');
 		$customer_name				= $customer->giveValue('customer_name');

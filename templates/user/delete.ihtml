@@ -1,6 +1,6 @@
 <!-- user/delete.ihtml - START -->
 
-<?
+<?php
 
 	if(isset($user) && is_object($user)) {
 

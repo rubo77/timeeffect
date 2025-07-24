@@ -1,5 +1,5 @@
 <!-- inventory/project/delete.ihtml - START -->
-<?
+<?php
 	if(isset($project) && is_object($project)) {
 		$pid						= $project->giveValue('id');
 		$cid				= $project->giveValue('customer_id');
