@@ -13,7 +13,9 @@
 	$project_input	= '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
 	if(isset($effort) && is_object($effort) && $effort->giveValue('id')) {
 		if($_PJ_auth->checkPermission('accountant')) {
-			$__projects = new ProjectList($cid, $_PJ_auth, $shown['cp']);
+			// Fix: Add isset check for array key 'cp' to prevent undefined array key warning
+			$cp_value = isset($shown['cp']) ? $shown['cp'] : false;
+			$__projects = new ProjectList($cid, $_PJ_auth, $cp_value);
 			$project_input = '<SELECT NAME="pid">' . "\n";
 			$__cid_buffer = NULL;
 			while($__projects->nextProject()) {
@@ -24,7 +26,9 @@
 				}
 				$project_input .= '>';
 				if($__cid_buffer != $__project->giveValue('customer_id')) {
-					$__customer = new Customer($__project->giveValue('customer_id'), $_PJ_auth);
+					// Fix: Use intermediate variable to avoid 'Only variables should be passed by reference' notice
+					$customer_id = $__project->giveValue('customer_id');
+					$__customer = new Customer($_PJ_auth, $customer_id);
 					$__cid_buffer = $__project->giveValue('customer_id');
 				}
 				$project_input .= $__customer->giveValue('customer_name') . ':&nbsp;';
@@ -72,7 +76,11 @@
 		$effort_access_owner		= substr($effort->giveValue('access'), 0, 3);
 		$effort_access_group		= substr($effort->giveValue('access'), 3, 3);
 		$effort_access_world		= substr($effort->giveValue('access'), 6, 3);
-		list($billing_year, $billing_month, $billing_day) = explode("-", $billed);
+		// Fix: Add safe array handling for explode results to prevent undefined array key warnings
+		$billing_parts = explode("-", $billed);
+		$billing_year = isset($billing_parts[0]) ? $billing_parts[0] : date('Y');
+		$billing_month = isset($billing_parts[1]) ? $billing_parts[1] : date('m');
+		$billing_day = isset($billing_parts[2]) ? $billing_parts[2] : date('d');
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
 	} else {
 		// last_description mod by Ruben Barkow -- START
@@ -327,11 +335,12 @@ if($_PJ_auth->checkPermission('admin')) {
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="user">
 					<?php
 						$a_user = $user;
-						reset($users);
-						while(list($cnt, $o_user) = each($users)) {
-?>
+						if(isset($users) && is_array($users)) {
+							foreach($users as $cnt => $o_user) {
+					?>
 						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if($a_user == $o_user['id']) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
 <?php
+							}
 						}
 					?>
 					</SELECT>

@@ -40,7 +40,7 @@ if($cid && $customer->checkUserAccess('new')) {
 		$rowclass = !$rowclass;
 		$project = $projects->giveProject();
 		$row_class = !$row_class;
-		if(isset($expanded) && $expanded['pid']['all']) {
+		if(isset($expanded) && isset($expanded['pid']['all']) && $expanded['pid']['all']) {
 			$expanded['pid'][$project->giveValue('id')] = 1;
 		}
 		include("$_PJ_root/templates/inventory/project/row.ihtml");

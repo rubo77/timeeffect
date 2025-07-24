@@ -183,7 +183,7 @@
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
-	$efforts			= new EffortList($customer, $project, $_PJ_auth, $shown['be']);
+	$efforts			= new EffortList($customer, $project, $_PJ_auth, isset($shown['be']) ? $shown['be'] : false);
 	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $project->giveValue('project_name');
 	include("$_PJ_root/templates/list.ihtml");
 

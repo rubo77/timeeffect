@@ -1,7 +1,14 @@
 <!-- statistic/project/row.ihtml - START -->
 <?php
-	if($no_customer || (is_object($customer) && !$customer->giveValue('id'))) {
-		$customer = new Customer($project->giveValue('customer_id'), $project->user);
+	// Initialize sum variables if not set
+	if(!isset($sum_project_costs)) $sum_project_costs = 0;
+	if(!isset($sum_project_days)) $sum_project_days = 0;
+	if(!isset($sum_project_full_budget)) $sum_project_full_budget = 0;
+	if(!isset($sum_project_remaining_budget)) $sum_project_remaining_budget = 0;
+	
+	if((isset($no_customer) && $no_customer) || (is_object($customer) && !$customer->giveValue('id'))) {
+		$customer_id = $project->giveValue('customer_id');
+		$customer = new Customer($project->user, $customer_id);
 		$no_customer = 1;
 	}
 	$sum_project_costs				+= $project->giveValue('costs');
