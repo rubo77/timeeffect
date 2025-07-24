@@ -220,7 +220,12 @@
 		}
 
 		function giveUserById($id) {
-			return $this->user_list[$id];
+			// Fix: Add isset check to prevent undefined array key warning
+			if (isset($this->user_list[$id])) {
+				return $this->user_list[$id];
+			}
+			// Return empty user array as fallback
+			return array('firstname' => '', 'lastname' => '', 'id' => $id);
 		}
 	
 		function loadUserList() {
