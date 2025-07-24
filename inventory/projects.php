@@ -3,7 +3,7 @@
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
-	$customer	= new Customer($cid, $_PJ_auth);
+	$customer	= new Customer($_PJ_auth, $cid);
 
 	$project = new Project($customer, $_PJ_auth, $pid);
 

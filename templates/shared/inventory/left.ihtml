@@ -36,7 +36,20 @@
 
 				<TD><A CLASS="left" HREF="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><?php if(!empty($GLOBALS['_PJ_strings']['customers'])) echo $GLOBALS['_PJ_strings']['customers'] ?></A>&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/arrow-top.gif" WIDTH="11" HEIGHT="7" BORDER="0"></TD>
 
-			</TR><TR>
+			</TR>
+			<?php
+				// CustomerList für Navigation laden
+				$nav_customers = new CustomerList($_PJ_auth, true);
+				while($nav_customers->nextCustomer()) {
+					$nav_customer = $nav_customers->giveCustomer();
+			?>
+			<TR>
+				<TD>&nbsp;&nbsp;<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<A CLASS="left" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . '?edit=1&cid=' . $nav_customer->giveValue('id') ?>"><?= substr($nav_customer->giveValue('customer_name'), 0, $max_length) ?><?php if(strlen($nav_customer->giveValue('customer_name')) > $max_length) print "..."; ?></A></TD>
+			</TR>
+			<?php
+				}
+			?>
+			<TR>
 
 				<TD><?php
 
