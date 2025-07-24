@@ -1,6 +1,6 @@
 <!-- inventory/project/row.ihtml - START -->
 <?php
-	if($no_customer || (is_object($customer) && !$customer->giveValue('id'))) {
+	if((isset($no_customer) && $no_customer) || (is_object($customer) && !$customer->giveValue('id'))) {
 		$customer = new Customer($project->giveValue('customer_id'), $project->user);
 		$no_customer = 1;
 	}
