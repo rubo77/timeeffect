@@ -75,7 +75,7 @@
 			$this->user = $user;
 			if(is_array($customer)) {
 				$this->data = $customer;
-			} else if($customer != '') {
+			} else if(is_string($customer) && $customer != '') {
 				$this->load($customer);
 			}
 			$this->user_access				= $this->getUserAccess();

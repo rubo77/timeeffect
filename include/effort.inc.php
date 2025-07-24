@@ -252,13 +252,13 @@
 	class Effort extends Data {
 		var $db;
 		var $data;
-		var $user; // Deklaration der vorher dynamischen Property
-		var $user_access; // Deklaration der vorher dynamischen Property
-
-		function Effort(&$user, $effort = '') {
-			self::__construct($user, $effort);
+		var $user;
+		var $user_access;
+		
+		function Effort($effort, &$user) {
+			self::__construct($effort, $user);
 		}
-		function __construct(&$user, $effort = '') {
+		function __construct($effort, &$user) {
 			$this->user = $user;
 			if(is_array($effort)) {
 				$this->data = $effort;
