@@ -18,6 +18,9 @@ RUN echo "short_open_tag = On" >> /opt/docker/etc/php/php.ini && \
     echo "display_startup_errors = On" >> /opt/docker/etc/php/php.ini && \
     echo "error_reporting = E_ALL" >> /opt/docker/etc/php/php.ini
 
+# Remove default Apache Alias for /icons/ (prevents conflict with project icons)
+RUN sed -i 's|^Alias /icons/.*|# Alias /icons/ removed by Dockerfile for TimeEffect|' /etc/apache2/mods-available/alias.conf
+
 # Create necessary directories and set permissions
 RUN mkdir -p /var/www/html/logs \
     && mkdir -p /var/www/html/install/include \
