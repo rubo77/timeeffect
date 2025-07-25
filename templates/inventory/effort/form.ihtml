@@ -130,7 +130,7 @@
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['date'])) echo $GLOBALS['_PJ_strings']['date'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect" NAME="day">
+					<SELECT CLASS="FormSelect date-field date-day" NAME="day">
 					<?php
 						$a_day = $day;
 						if(empty($day)) {
@@ -145,7 +145,7 @@
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="month">
+					<SELECT CLASS="FormSelect date-field date-month" NAME="month">
 					<?php
 						$a_month = $month;
 						if(empty($month)) {
@@ -160,7 +160,7 @@
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="year">
+					<SELECT CLASS="FormSelect date-field date-year" NAME="year">
 					<?php
 						$a_year = $year;
 						if(empty($year)) {
@@ -181,8 +181,10 @@
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['time_of_beginning'])) echo $GLOBALS['_PJ_strings']['time_of_beginning'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect" NAME="hour">
+					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('hour', -1)">−</button>
+					<SELECT CLASS="FormSelect time-field time-hour" NAME="hour" title="<?php if(!empty($GLOBALS['_PJ_strings']['hour'])) echo $GLOBALS['_PJ_strings']['hour'] ?>">
 					<?php
+					    // ############# Beginn: hour
 						$a_hour = $hour;
 						if(empty($hour)) {
 							$a_hour = date("H");
@@ -195,29 +197,33 @@
 							printf(" VALUE='%02d'>%02d", $i, $i);
 						}
 					?>
-					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="minute">
+					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('hour', 1)">+</button>
+
+					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('minute', -1)">−</button>
+					<SELECT CLASS="FormSelect time-field time-minute" NAME="minute" title="<?php if(!empty($GLOBALS['_PJ_strings']['minute'])) echo $GLOBALS['_PJ_strings']['minute'] ?>">
 					<?php
+					    // ############# Beginn: minute
 						$a_minute = $minute;
 						if(empty($minute)) {
 							$a_minute = date("i");
 						}
 	
-						for($i=0; $i <= 11; $i++) {
+						for($i=0; $i < 60; $i++) {
 							print "<OPTION ";
-							if(floor($a_minute/5) == $i)
+							if($a_minute == $i)
 								print " SELECTED";
-							printf(" VALUE='%02d'>%02d", $i*5, $i*5);
+							printf(" VALUE='%02d'>%02d", $i, $i);
 						}
 					?>
-					</SELECT>
-					(<?php if(!empty($GLOBALS['_PJ_strings']['hour'])) echo $GLOBALS['_PJ_strings']['hour'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['minute'])) echo $GLOBALS['_PJ_strings']['minute'] ?>)
+					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('minute', 1)">+</button>
 					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['duration'])) echo $GLOBALS['_PJ_strings']['duration'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect" NAME="hours">
+					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('hours', -1)">−</button>
+					<SELECT CLASS="FormSelect time-field time-hour" NAME="hours" title="<?php if(!empty($GLOBALS['_PJ_strings']['hours'])) echo $GLOBALS['_PJ_strings']['hours'] ?>">
 					<?php
+					    // ############# Duration: hours
 						$a_hours = $hours;
 	
 						for($i=0; $i < 24; $i++) {
@@ -227,9 +233,11 @@
 							printf(" VALUE='%02d'>%02d", $i, $i);
 						}
 					?>
-					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="minutes">
+					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('hours', 1)">+</button>
+					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('minutes', -5)">−</button>
+					<SELECT CLASS="FormSelect time-field time-minute" NAME="minutes" title="<?php if(!empty($GLOBALS['_PJ_strings']['minutes'])) echo $GLOBALS['_PJ_strings']['minutes'] ?>">
 					<?php
+					    // ############# Duration: minutes
 						$a_minutes = $minutes;
 	
 						for($i=0; $i <= 11; $i++) {
@@ -243,11 +251,11 @@
 								print " SELECTED";
 						print ' VALUE="59">59' . "\n";
 					?>
-					</SELECT>
-					(<?php if(!empty($GLOBALS['_PJ_strings']['hours'])) echo $GLOBALS['_PJ_strings']['hours'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['minutes'])) echo $GLOBALS['_PJ_strings']['minutes'] ?>)
+					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('minutes', 5)">+</button>
+					<br>
 					<?php
 						if(!empty($duration_message)) {
-							?>&nbsp;<span class="warning"><?=$duration_message?><span>
+							?><br><span class="warning"><?=$duration_message?><span>
 								&nbsp;<input type="button" value="reset" onclick="document.getElementsByName('hours')[0].value='00'; document.getElementsByName('minutes')[0].value='00'; return false" id="reset_time">
 							<?php
 						}
@@ -281,7 +289,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['billed'])) echo $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect" NAME="billing_day">
+					<SELECT CLASS="FormSelect date-field date-day" NAME="billing_day">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_day = $billing_day;
@@ -294,7 +302,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="billing_month">
+					<SELECT CLASS="FormSelect date-field date-month" NAME="billing_month">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_month = $billing_month;
@@ -307,7 +315,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect" NAME="billing_year">
+					<SELECT CLASS="FormSelect date-field date-year" NAME="billing_year">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_year = $billing_year;
@@ -398,5 +406,42 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 			</TD>
 		</TR>
 	</TABLE>
-</FORM>
+	</CENTER>
+
+<script type="text/javascript">
+// JavaScript function to adjust time values with plus/minus buttons
+function adjustTime(fieldName, increment) {
+	var select = document.getElementsByName(fieldName)[0];
+	if (!select) return;
+	
+	var currentValue = parseInt(select.value) || 0;
+	var newValue = currentValue + increment;
+	
+	// Handle different field types with appropriate limits
+	if (fieldName === 'hour' || fieldName === 'hours') {
+		// Hours: 0-23
+		if (newValue < 0) newValue = 23;
+		if (newValue > 23) newValue = 0;
+	} else if (fieldName === 'minute') {
+		// Minutes: 0-59 (for start time)
+		if (newValue < 0) newValue = 59;
+		if (newValue > 59) newValue = 0;
+	} else if (fieldName === 'minutes') {
+		// Minutes: 0,5,10,15...55,59 (for duration, 5-minute steps)
+		if (newValue < 0) newValue = 59;
+		if (newValue > 59) newValue = 0;
+		// Ensure it's a valid option in the select
+		if (newValue !== 59 && newValue % 5 !== 0) {
+			newValue = Math.round(newValue / 5) * 5;
+		}
+	}
+	
+	// Format value with leading zero
+	var formattedValue = (newValue < 10) ? '0' + newValue : newValue.toString();
+	
+	// Set the new value
+	select.value = formattedValue;
+}
+</script>
+
 <!-- inventory/effort/form.ihtml - END -->
