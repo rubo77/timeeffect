@@ -331,6 +331,33 @@ select.time-field:last-of-type {
 	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
+/* Table layout for proper column width control */
+#effort-form-table {
+	table-layout: fixed;
+    width: 100%;
+}
+
+/* FormFieldName column styling - narrower with word-wrap */
+.FormFieldName {
+	hyphens: auto;
+	vertical-align: top;
+	padding-top: 13px;
+	line-height: 1;
+	width: 120px;
+	font-size: 0.9em;
+}
+
+/* Override the PHP variable width for form field names */
+td.FormFieldName {
+	width: 120px !important;
+}
+td.FormField{
+    width: 403px;
+}
+td.FormField textarea {
+    width: 100%;
+}
+
 /* Specific textarea sizing for better multi-line input */
 textarea {
     min-height: 6rem;
@@ -472,6 +499,7 @@ select {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     padding: 1.5rem;
     position: relative;
+    height: 100%;
 }
 
 .modern-nav::before {

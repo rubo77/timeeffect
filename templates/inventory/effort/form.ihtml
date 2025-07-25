@@ -109,13 +109,17 @@
 <INPUT TYPE="hidden" NAME="id" VALUE="<?php if(isset($id)) echo $id; ?>">
 
 	<CENTER>
-	<TABLE	WIDTH="90%"
+	<TABLE ID="effort-form-table" 
 			BORDER="<?php if(isset($_PJ_inner_frame_border)) echo $_PJ_inner_frame_border; ?>"
 			CELLPADDING="<?php if(isset($_PJ_inner_frame_cellpadding)) echo $_PJ_inner_frame_cellpadding; ?>"
 			CELLSPACING="<?php if(isset($_PJ_inner_frame_cellspacing)) echo $_PJ_inner_frame_cellspacing; ?>">
 		<TR>
 			<TD CLASS="content">
 			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+				<COLGROUP>
+					<COL style="width: 80px;">
+					<COL style="width: auto;">
+				</COLGROUP>
 				<TR>
 					<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
 				</TR><TR>
@@ -130,7 +134,7 @@
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['date'])) echo $GLOBALS['_PJ_strings']['date'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect date-field date-day" NAME="day">
+					<SELECT CLASS="FormSelect date-field date-day" NAME="day" title="<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>">
 					<?php
 						$a_day = $day;
 						if(empty($day)) {
@@ -145,7 +149,7 @@
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect date-field date-month" NAME="month">
+					<SELECT CLASS="FormSelect date-field date-month" NAME="month" title="<?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>">
 					<?php
 						$a_month = $month;
 						if(empty($month)) {
@@ -160,7 +164,7 @@
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect date-field date-year" NAME="year">
+					<SELECT CLASS="FormSelect date-field date-year" NAME="year" title="<?php if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>">
 					<?php
 						$a_year = $year;
 						if(empty($year)) {
@@ -176,7 +180,6 @@
 						}
 					?>
 					</SELECT>
-					(<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['yaer'])) echo $GLOBALS['_PJ_strings']['yaer'] ?>)
 					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['time_of_beginning'])) echo $GLOBALS['_PJ_strings']['time_of_beginning'] ?>:</TD>
@@ -256,7 +259,7 @@
 					<?php
 						if(!empty($duration_message)) {
 							?><br><span class="warning"><?=$duration_message?><span>
-								&nbsp;<input type="button" value="reset" onclick="document.getElementsByName('hours')[0].value='00'; document.getElementsByName('minutes')[0].value='00'; return false" id="reset_time">
+								&nbsp;<button type="button" value="reset" onclick="document.getElementsByName('hours')[0].value='00'; document.getElementsByName('minutes')[0].value='00'; return false" id="reset_time">reset</button>
 							<?php
 						}
 					?>
@@ -289,7 +292,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['billed'])) echo $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
 					<TD CLASS="FormField">
-					<SELECT CLASS="FormSelect date-field date-day" NAME="billing_day">
+					<SELECT CLASS="FormSelect date-field date-day" NAME="billing_day" title="<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_day = $billing_day;
@@ -302,7 +305,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect date-field date-month" NAME="billing_month">
+					<SELECT CLASS="FormSelect date-field date-month" NAME="billing_month" title="<?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_month = $billing_month;
@@ -315,7 +318,7 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					<SELECT CLASS="FormSelect date-field date-year" NAME="billing_year">
+					<SELECT CLASS="FormSelect date-field date-year" NAME="billing_year" title="<?php if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>">
 						<OPTION VALUE="">
 					<?php
 						$a_billing_year = $billing_year;
@@ -332,7 +335,6 @@ if($_PJ_auth->checkPermission('accountant')) {
 						}
 					?>
 					</SELECT>
-					(<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['month'])) echo $GLOBALS['_PJ_strings']['month'] ?>, <?php if(!empty($GLOBALS['_PJ_strings']['year'])) echo $GLOBALS['_PJ_strings']['year'] ?>)
 					</TD>
 <?php
 }
