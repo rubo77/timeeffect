@@ -4,6 +4,24 @@
 	include_once(__DIR__ . "/../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// DRY: Reusable function to validate that groups exist in the system
+	function validateGroupsExist() {
+		global $_PJ_table_prefix;
+		$group_check = new DB_Sql();
+		$group_check->query("SELECT COUNT(*) as group_count FROM " . $_PJ_table_prefix . "group");
+		$group_check->next_record();
+		
+		if($group_check->f('group_count') == 0) {
+			$error_message = '<div style="color: #d9534f; background: #f2dede; border: 1px solid #ebccd1; padding: 15px; margin: 20px; border-radius: 4px;">';
+			$error_message .= '<strong>Fehler:</strong> Es sind noch keine Gruppen im System vorhanden.<br>';
+			$error_message .= 'Bitte legen Sie zuerst eine Gruppe an: <a href="../admin/group.php?new=1" style="color: #337ab7;">Neue Gruppe erstellen</a>';
+			$error_message .= '</div>';
+			echo $error_message;
+			return false; // No groups available
+		}
+		return true; // Groups exist
+	}
+
 	// Initialize variables from request
 	$cid = $_REQUEST['cid'] ?? '';
 	$pid = $_REQUEST['pid'] ?? '';
@@ -49,6 +67,13 @@
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
+		
+		// DRY: Validate that groups exist before showing new customer form
+		if(!validateGroupsExist()) {
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_customer'];
 		include("$_PJ_root/templates/add.ihtml");
 		exit;
@@ -123,6 +148,27 @@
 					if($data['readforeignefforts'] == '') {
 						$data['readforeignefforts']	= $customer->giveValue('readforeignefforts');
 					}
+					
+					// DRY: Validate that groups exist BEFORE creating/saving customer
+					if(empty($data['gid']) || $data['gid'] == '' || $data['gid'] == '0') {
+						if(!validateGroupsExist()) {
+							return; // Stop execution, don't save customer
+						}
+						// If no group selected but groups exist, show error and stop
+						$error_message = '<div style="color: #d9534f; background: #f2dede; border: 1px solid #ebccd1; padding: 15px; margin: 20px; border-radius: 4px;">';
+						$error_message .= '<strong>Fehler:</strong> Bitte wählen Sie eine Gruppe für den Kunden aus.';
+						$error_message .= '</div>';
+						echo $error_message;
+						return; // Stop execution, don't save customer
+					}
+					
+					// Ensure gid is a valid integer (never empty string)
+					if($data['gid'] != '' && $data['gid'] != '0') {
+						$data['gid'] = intval($data['gid']);
+					} else {
+						$data['gid'] = null; // Use NULL instead of empty string
+					}
+					
 					$customer = new Customer($_PJ_auth, $data);
 					$customer->save();
 					
