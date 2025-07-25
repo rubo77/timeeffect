@@ -3,10 +3,30 @@ require_once('../include/fix_php7.php');
 require_once('../include/db_mysql.inc.php');
 $db = new DB_Sql();
 
-if(!isset($step)) {
+if(empty($step) and empty($_POST['step'])) {
 	$step = 1;
 }
+if(!empty($_POST['step'])) {
+	$step = $_POST['step'];
+}
 if($step > 1) {
+	if(empty($_POST['db_name'])) {
+		error_log("no database name given");
+		die('no default database name given');
+	}
+	$db_name = $_POST['db_name'];
+	$db_host = $_POST['db_host'];
+	$db_user = $_POST['db_user'];
+	$db_password = $_POST['db_password'];
+	$db_prefix = $_POST['db_prefix'] ?? 'te_';
+	$currency = $_POST['currency'] ?? 'EUR';
+	$admin_user = $_POST['admin_user'] ?? '';
+	$admin_password = $_POST['admin_password'] ?? '';
+	$interface_language = $_POST['interface_language'] ?? 'de';
+	$decimal_point = $_POST['decimal_point'] ?? ',';
+	$thousands_seperator = $_POST['thousands_seperator'] ?? '.';
+	$session_length = $_POST['session_length'] ?? '3600';
+	$allow_delete = $_POST['allow_delete'] ?? '1';
 	$db->Halt_On_Error = 'no';
 	$db->Database	= $db_name;
 	$db->Host		= $db_host;
@@ -18,8 +38,8 @@ if($step > 1) {
 	}
 }
 if($step == 3) {
-	if(!$currency || !$admin_user || !$admin_password) {
-		$error_message = 'Please enter values in every field.';
+	if(empty($currency) || empty($admin_user) || empty($admin_password)) {
+		$error_message = 'Please enter values in every field (currency, admin user, admin password).';
 		$step--;
 	}
 }

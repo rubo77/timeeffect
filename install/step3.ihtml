@@ -65,7 +65,7 @@
 						<td colspan="2"><img src="../images/abstand.gif" height="10" width="1" border="0"></td>
 					</tr><tr>
 						<td>interface language:</td>
-						<td width="300"><?php if(isset($language)) echo $language; ?></td>
+						<td width="300"><?php if(isset($interface_language)) echo $interface_language; ?></td>
 					</tr><tr>
 						<td>currency:</td>
 						<td width="300"><?php if(isset($currency)) echo $currency; ?></td>
@@ -114,7 +114,7 @@ function checkPermissions() {
 <input type="hidden" name="decimal_point" value="<?php if(isset($decimal_point)) echo $decimal_point; ?>">
 <input type="hidden" name="thousands_seperator" value="<?php if(isset($thousands_seperator)) echo $thousands_seperator; ?>">
 <input type="hidden" name="session_length" value="<?php if(isset($session_length)) echo $session_length; ?>">
-<input type="hidden" name="language" value="<?php if(isset($language)) echo $language; ?>">
+<input type="hidden" name="interface_language" value="<?php if(isset($interface_language)) echo $interface_language; ?>">
 <input type="hidden" name="admin_user" value="<?php if(isset($admin_user)) echo $admin_user; ?>">
 <input type="hidden" name="admin_password" value="<?php if(isset($admin_password)) echo $admin_password; ?>">
 <input type="hidden" name="allow_delete" value="<?php if(isset($allow_delete)) echo $allow_delete; ?>">
