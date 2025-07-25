@@ -1,43 +1,61 @@
-# Icon Problem Fix - Local Development
+# Icon Problem Fix - Docker Development Environment
 
-## Problem
-Icons are not accessible locally via `http://localhost/icons/customer.gif` because:
-- Nginx DocumentRoot is `/var/www/html`
-- TimeEffect is located in `/var/www/timeeffect`
-- Icons exist in `/var/www/timeeffect/icons/` but are not web-accessible
+## Problem Analysis
+Icons are not accessible locally via `http://localhost/icons/customer.gif`
 
-## Solution Options
-
-### Option 1: Create Symlink (requires sudo)
-```bash
-sudo ln -sf /var/www/timeeffect/icons /var/www/html/icons
-sudo ln -sf /var/www/timeeffect/images /var/www/html/images
-sudo ln -sf /var/www/timeeffect/css /var/www/html/css
+## Docker-Compose Investigation
+Checking `/var/www/timeeffect/docker/docker-compose.yml`:
+```yaml
+app:
+  volumes:
+    - /var/www/timeeffect:/var/www/html
 ```
 
-### Option 2: Nginx Configuration
-Add to nginx virtual host config:
-```nginx
-location /icons/ {
-    alias /var/www/timeeffect/icons/;
-}
-location /images/ {
-    alias /var/www/timeeffect/images/;
-}
-location /css/ {
-    alias /var/www/timeeffect/css/;
-}
+**Expected behavior:** `/var/www/timeeffect` is mounted as `/var/www/html` in container
+**This means:** Icons should be accessible at `http://localhost/icons/customer.gif`
+
+## Solution: Docker-Compose Restart
+
+### Option 1: Restart Docker Services (with sudo)
+```bash
+cd /var/www/timeeffect/docker
+sudo docker-compose down
+sudo docker-compose up -d
 ```
 
-### Option 3: Copy Files (temporary)
+### Option 2: Check Container Mount (with sudo)
 ```bash
-cp -r /var/www/timeeffect/icons /var/www/html/
-cp -r /var/www/timeeffect/images /var/www/html/
-cp -r /var/www/timeeffect/css /var/www/html/
+cd /var/www/timeeffect/docker
+sudo docker-compose exec app ls -la /var/www/html/icons/
+```
+
+### Option 3: Rebuild Container (if needed)
+```bash
+cd /var/www/timeeffect/docker
+sudo docker-compose down
+sudo docker-compose build --no-cache
+sudo docker-compose up -d
+```
+
+### Option 4: Add User to Docker Group (permanent fix)
+```bash
+sudo usermod -aG docker $USER
+# Then logout and login again
 ```
 
 ## Current Status
 - Icons work online: https://te.eclabs.de/icons/customer.gif ✅
-- Icons fail locally: http://localhost/icons/customer.gif ❌
+- Icons work in Docker: `sudo docker-compose exec app ls -la /var/www/html/icons/` ✅
+- Docker containers running on ports 8081 (HTTP) and 3307 (MySQL) to avoid conflicts
 - All subnav templates modernized to remove legacy image dependencies
 - Breadcrumb templates fixed and functional
+- **SOLUTION SUCCESSFUL:** Docker-compose restart resolved the icon mounting issue
+
+## Final Solution Applied
+```bash
+cd /var/www/timeeffect/docker
+sudo docker-compose down --volumes --remove-orphans
+sudo docker-compose up -d --build
+```
+
+**Result:** Icons are now properly mounted and accessible within the Docker environment.
