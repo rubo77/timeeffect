@@ -1,21 +1,15 @@
 <?php
 
-// this script throws error lines with 10 lines extra... strange ;)
-if(isset($customer) && is_object($customer) &&
-
-	$customer->giveValue('id') &&
-
-	((($SCRIPT_NAME == $GLOBALS['_PJ_customer_inventory_script']) && isset($list) && $list!=1) ||
-
-	  ($SCRIPT_NAME == $GLOBALS['_PJ_projects_inventory_script']) ||
-
-	  ($SCRIPT_NAME == $GLOBALS['_PJ_efforts_inventory_script']))) {
+// Fix: Show customer breadcrumbs on inventory pages (edit/detail/list)
+if(isset($customer) && is_object($customer) && $customer->giveValue('id') &&
+   (strpos($_SERVER['PHP_SELF'], '/inventory/') !== false ||
+    $SCRIPT_NAME == $GLOBALS['_PJ_customer_inventory_script'] ||
+    $SCRIPT_NAME == $GLOBALS['_PJ_projects_inventory_script'] ||
+    $SCRIPT_NAME == $GLOBALS['_PJ_efforts_inventory_script'])) {
 
 $c_id = $customer->giveValue('id');
 
-?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">&nbsp;<?php
-
-print "[ID: '$c_id']&nbsp;" . $customer->giveValue('customer_name');
+?><div class="breadcrumb-path"><img src="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer.gif" width="16" height="16" border="0" class="breadcrumb-icon">&nbsp;<span class="breadcrumb-item">[ID: <?= $c_id ?>] <?= htmlspecialchars($customer->giveValue('customer_name')) ?></span></div><?php
 
 }
 
