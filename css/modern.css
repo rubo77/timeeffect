@@ -274,6 +274,63 @@ input:not([type="radio"]):not([type="submit"]):focus, textarea:focus, select:foc
     transition: all 0.4s ease-in;
 }
 
+/* Date fields styling for inline layout (day, month, year in one line) */
+select.date-field {
+    width: 28%;
+    display: inline-block;
+    margin-right: 2%;
+    vertical-align: top;
+}
+
+/* Remove margin from last date field in a group */
+select.date-field:last-of-type {
+    margin-right: 0;
+}
+
+/* Time fields styling for inline layout (hour, minute in one line) */
+select.time-field {
+    width: 25%;
+    display: inline-block;
+    margin: 0;
+    vertical-align: top;
+    margin-left: -5px;
+}
+
+/* Remove margin from last time field in a group */
+select.time-field:last-of-type {
+    margin-right: 0;
+}
+
+
+/* Styling for time adjustment buttons */
+.time-btn {
+	width: 10px;
+	height: 10px;
+	padding: 0;
+	border: 1px solid #ddd;
+	background: linear-gradient(135deg, #f8f9ff 0%, #e8f0ff 100%);
+	color: #333;
+	font-size: 11px;
+	font-weight: bold;
+	border-radius: 4px;
+	cursor: pointer;
+	margin: 0;
+	vertical-align: middle;
+	transition: all 0.2s ease;
+}
+
+.time-btn:hover {
+	background: linear-gradient(135deg, #e8f0ff 0%, #d0e0ff 100%);
+	border-color: #6366f1;
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.time-btn:active {
+	transform: translateY(0);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
 /* Specific textarea sizing for better multi-line input */
 textarea {
     min-height: 6rem;
