@@ -156,6 +156,14 @@ body {
 .option {
     background: none !important;
     border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    margin: 0 !important;
+    color: #64748b !important;
+    text-decoration: none !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-radius: 8px 8px 0 0;
+    display: inline-block;
 }
 
 a.option {
@@ -542,6 +550,26 @@ select {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+}
+
+/* Breadcrumb Path Styling */
+.breadcrumb-path {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #64748b;
+    background: transparent;
+}
+
+.breadcrumb-icon {
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.breadcrumb-item {
+    font-weight: 500;
+    color: #475569;
 }
 
 .flex {
