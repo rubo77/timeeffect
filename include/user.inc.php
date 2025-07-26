@@ -185,7 +185,7 @@ else return null;
 	        	return $GLOBALS['_PJ_strings']['error_gids_empty'];
 	        }
 
-	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile, confirmed, confirmation_token) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)",
 	                         $GLOBALS['_PJ_auth_table'],
 	                         $this->data['id']?"'".$this->data['id']."'":"NULL",
 	                         $this->data['username'],
@@ -197,7 +197,10 @@ else return null;
 	                         $this->data['lastname'],
 	                         $this->data['email'],
 	                         $this->data['telephone'],
-	                         $this->data['facsimile']
+	                         $this->data['facsimile'],
+	                         isset($this->data['confirmed']) ? $this->data['confirmed'] : 1,
+	                         isset($this->data['confirmation_token']) && $this->data['confirmation_token'] ? 
+	                         "'".$this->data['confirmation_token']."'" : "NULL"
 	                         );
 
 			$this->db->query($query);

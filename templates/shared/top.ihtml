@@ -4,7 +4,12 @@
 
 		<TD CLASS="mainOptionFrame" VALIGN="bottom"><?php include("$_PJ_root/templates/shared/main-options.ihtml"); ?></TD>
 
-		<TD CLASS="topInfo" VALIGN="bottom"><?php if(!empty($GLOBALS['_PJ_strings']['logged_in_as'])) echo $GLOBALS['_PJ_strings']['logged_in_as'] ?> <A CLASS="topNav" HREF="<?php if(!empty($GLOBALS['_PJ_own_user_script'])) echo $GLOBALS['_PJ_own_user_script'] ?>"><B><?= $_PJ_auth->giveValue('firstname') ?> <?= $_PJ_auth->giveValue('lastname') ?></B></A></TD>
+		<TD CLASS="topInfo" VALIGN="bottom">
+			<?php if(isset($_SESSION['switched_by_admin']) && $_SESSION['switched_by_admin']): ?>
+				<span style="color: orange; font-weight: bold;"><?= $GLOBALS['_PJ_strings']['logged_in_as_admin'] ?>:</span><br>
+			<?php endif; ?>
+			<?php if(!empty($GLOBALS['_PJ_strings']['logged_in_as'])) echo $GLOBALS['_PJ_strings']['logged_in_as'] ?> <A CLASS="topNav" HREF="<?php if(!empty($GLOBALS['_PJ_own_user_script'])) echo $GLOBALS['_PJ_own_user_script'] ?>"><B><?= $_PJ_auth->giveValue('firstname') ?> <?= $_PJ_auth->giveValue('lastname') ?></B></A>
+		</TD>
 
 		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><?php include("$_PJ_root/templates/shared/topnav.ihtml"); ?></TD>
 

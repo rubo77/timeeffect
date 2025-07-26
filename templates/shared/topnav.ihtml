@@ -1,4 +1,9 @@
 <!--IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<?php if(!empty($GLOBALS['_PJ_help_script'])) echo $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><?php if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></A>&nbsp;-->
 
+<?php if(isset($_SESSION['switched_by_admin']) && $_SESSION['switched_by_admin']): ?>
+<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">
+<A CLASS="topNav" HREF="<?= $GLOBALS['_PJ_http_root'] ?>/return_to_admin.php" title="<?= $GLOBALS['_PJ_strings']['return_to_admin'] ?>"><?= $GLOBALS['_PJ_strings']['return_to_admin'] ?></A>&nbsp;
+<?php endif; ?>
+
 <IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/logout.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">
 <A ID="logout" CLASS="topNav" HREF="<?php if(!empty($GLOBALS['PHP_SELF'])) echo $GLOBALS['PHP_SELF'] ?>?logout=1" title="<?php if(!empty($GLOBALS['_PJ_strings']['logout'])) echo $GLOBALS['_PJ_strings']['logout'] ?>">⏏</A>

@@ -112,6 +112,23 @@
 	$GLOBALS['_PJ_strings']['login']					= 'Anmelden';
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Benutzername oder Passwort sind nicht korrekt! Bitte versuchen Sie es erneut:';
+	
+	// Registration and password recovery strings
+	$GLOBALS['_PJ_strings']['register']					= 'Registrieren';
+	$GLOBALS['_PJ_strings']['register_new_account']		= 'Neues Konto registrieren';
+	$GLOBALS['_PJ_strings']['forgot_password']			= 'Passwort vergessen?';
+	$GLOBALS['_PJ_strings']['reset_password']			= 'Passwort zurücksetzen';
+	$GLOBALS['_PJ_strings']['password_reset_sent']		= 'Anweisungen zum Zurücksetzen des Passworts wurden an Ihre E-Mail-Adresse gesendet.';
+	$GLOBALS['_PJ_strings']['password_reset_success']	= 'Ihr Passwort wurde erfolgreich zurückgesetzt.';
+	$GLOBALS['_PJ_strings']['password_reset_error']		= 'Ungültiger oder abgelaufener Token zum Zurücksetzen des Passworts.';
+	$GLOBALS['_PJ_strings']['email_confirm_sent']		= 'Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet.';
+	$GLOBALS['_PJ_strings']['email_confirm_success']	= 'E-Mail-Adresse erfolgreich bestätigt. Sie können sich jetzt anmelden.';
+	$GLOBALS['_PJ_strings']['email_confirm_error']		= 'Ungültiger oder abgelaufener Bestätigungstoken.';
+	$GLOBALS['_PJ_strings']['registration_success']		= 'Registrierung erfolgreich. Bitte überprüfen Sie Ihre E-Mail für Bestätigungsanweisungen.';
+	$GLOBALS['_PJ_strings']['registration_disabled']	= 'Benutzerregistrierung ist derzeit deaktiviert.';
+	$GLOBALS['_PJ_strings']['switch_to_user']			= 'Zu Benutzer wechseln';
+	$GLOBALS['_PJ_strings']['return_to_admin']			= 'Zurück zum Admin';
+	$GLOBALS['_PJ_strings']['logged_in_as_admin']		= 'Als Admin angemeldet';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'Abmelden';
 	$GLOBALS['_PJ_strings']['minute']					= 'Minute';

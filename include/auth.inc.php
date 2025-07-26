@@ -140,6 +140,14 @@
 				return PEAR::raiseError('', $res->code, PEAR_ERROR_TRIGGER);
 			} 
 			if($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
+				// Check if user is confirmed (for registration with email confirmation)
+				if (isset($row['confirmed']) && $row['confirmed'] == 0) {
+					$this->logout();
+					$GLOBALS['username'] = $this->getUsername();
+					$GLOBALS['_PJ_strings']['login_error_msg'] = $GLOBALS['_PJ_strings']['email_confirm_sent'];
+					return false;
+				}
+				
 				$this->data = $row;
 				$this->fetchPermissions();
 			}

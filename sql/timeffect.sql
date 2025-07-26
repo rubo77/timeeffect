@@ -29,9 +29,15 @@ CREATE TABLE `auth` (
   `email` varchar(255) default NULL,
   `telephone` varchar(64) default NULL,
   `facsimile` varchar(64) default NULL,
+  `confirmed` tinyint(1) NOT NULL default '1',
+  `confirmation_token` varchar(64) default NULL,
+  `reset_token` varchar(64) default NULL,
+  `reset_expires` datetime default NULL,
   PRIMARY KEY  (`id`),
   KEY `gids` (`gids`),
-  KEY `username` (`username`,`password`)
+  KEY `username` (`username`,`password`),
+  KEY `confirmation_token` (`confirmation_token`),
+  KEY `reset_token` (`reset_token`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
 
 #

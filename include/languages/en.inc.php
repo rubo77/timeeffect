@@ -111,6 +111,23 @@
 	$GLOBALS['_PJ_strings']['login']					= 'login';
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Username or password are not correct! Please try again:';
+	
+	// Registration and password recovery strings
+	$GLOBALS['_PJ_strings']['register']					= 'Register';
+	$GLOBALS['_PJ_strings']['register_new_account']		= 'Register new account';
+	$GLOBALS['_PJ_strings']['forgot_password']			= 'Forgot password?';
+	$GLOBALS['_PJ_strings']['reset_password']			= 'Reset password';
+	$GLOBALS['_PJ_strings']['password_reset_sent']		= 'Password reset instructions have been sent to your email address.';
+	$GLOBALS['_PJ_strings']['password_reset_success']	= 'Your password has been successfully reset.';
+	$GLOBALS['_PJ_strings']['password_reset_error']		= 'Invalid or expired password reset token.';
+	$GLOBALS['_PJ_strings']['email_confirm_sent']		= 'A confirmation email has been sent to your email address.';
+	$GLOBALS['_PJ_strings']['email_confirm_success']	= 'Email address confirmed successfully. You may now log in.';
+	$GLOBALS['_PJ_strings']['email_confirm_error']		= 'Invalid or expired confirmation token.';
+	$GLOBALS['_PJ_strings']['registration_success']		= 'Registration successful. Please check your email for confirmation instructions.';
+	$GLOBALS['_PJ_strings']['registration_disabled']	= 'User registration is currently disabled.';
+	$GLOBALS['_PJ_strings']['switch_to_user']			= 'Switch to user';
+	$GLOBALS['_PJ_strings']['return_to_admin']			= 'Return to admin';
+	$GLOBALS['_PJ_strings']['logged_in_as_admin']		= 'Logged in via admin';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'logout';
 	$GLOBALS['_PJ_strings']['minute']					= 'Minute';

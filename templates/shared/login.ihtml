@@ -140,6 +140,17 @@ if(!empty($GLOBALS['username'])) {
 					</button>
 				</div>
 				
+				<!-- Registration and Password Recovery Links -->
+				<div class="form-help" style="text-align: center; margin-top: 1rem;">
+<?php if (isset($GLOBALS['_PJ_allow_registration']) && $GLOBALS['_PJ_allow_registration']): ?>
+					<a href="<?= $GLOBALS['_PJ_http_root'] ?>/register.php" class="form-link"><?= $GLOBALS['_PJ_strings']['register_new_account'] ?></a>
+					<br>
+<?php endif; ?>
+<?php if (isset($GLOBALS['_PJ_allow_password_recovery']) && $GLOBALS['_PJ_allow_password_recovery']): ?>
+					<a href="<?= $GLOBALS['_PJ_http_root'] ?>/password_reset.php" class="form-link"><?= $GLOBALS['_PJ_strings']['forgot_password'] ?></a>
+<?php endif; ?>
+				</div>
+				
 <?php
 if($GLOBALS['_PJ_session_length']) {
 ?>

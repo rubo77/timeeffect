@@ -56,6 +56,21 @@
 	$_PJ_agents_allow_delete 	= 1;
 	
 	/*
+	   allow users to register themselves
+	*/
+	$_PJ_allow_registration 	= 1;
+	
+	/*
+	   enable email confirmation for new registrations
+	*/
+	$_PJ_registration_email_confirm = 1;
+	
+	/*
+	   enable password recovery functionality
+	*/
+	$_PJ_allow_password_recovery = 1;
+	
+	/*
 		 Database charset encoding
 	*/
 	$GLOBALS['mysql_charset']='utf8';
