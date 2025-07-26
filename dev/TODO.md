@@ -1,20 +1,22 @@
 # TODO
 
-
-und beim gruppe löschen kommt:
-
- Warning: Undefined property: Group::$Errno in /var/www/html/include/group.inc.php on line 167
-
-es soll aber auch eine abfrage kommen, wenn die gruppe schon benutzt wurde, dann dann passieren soll dass man diese kunden alle einer anderen gruppe zuordnen kann in dem formular
-
----
-beim gruppe anlegen:
-
- Warning: Undefined variable $name in /var/www/html/groups/index.php on line 41 
-
- -----
- 
-bei http://localhost/inventory/efforts.php?edit=1&cid=1&pid=1&eid=1 die date fields mit einem extra css class belegen, damit man die so stylen kann, dass tag, monat und jahr nicht über die volle breite gehen, sondern insgesamt in einer zeile passen
+- [ ] add a user settings page
+    - [ ] check if user settings exists, if not exists, create a user settings page
+    - [ ] add a link to the settings to the main navigation
+- [ ] add a dark mode
+    - [ ] settings in user profile
+            - [ ] force dark mode in settings
+                - [ ] add a checkbox to the settings page
+                - [ ] if checked, force always dark mode
+            - [ ] force light mode in settings
+                - [ ] add a checkbox to the settings page
+                - [ ] if checked, force always light mode
+            - [ ] "same as browser" mode in settings
+                - [ ] add a checkbox to the settings page
+                - [ ] if checked, use the browser's dark mode settings
+    - [ ] change modern.css in dark mode
+        - [ ] change all colors e.g. text, backgrounds, table-borders, input-text, buttons, etc.
+        - [ ] surround the logo with a light thin border
 
 ----
 
