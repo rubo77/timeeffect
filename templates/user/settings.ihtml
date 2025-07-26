@@ -1,0 +1,135 @@
+<?php include("$_PJ_root/templates/shared/top.ihtml"); ?>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <h1 class="content-title">User Settings</h1>
+        <p class="content-subtitle">Manage your preferences and account information</p>
+    </div>
+    
+    <div class="content-body">
+        <?php if(!empty($message)): ?>
+            <div class="alert alert-success">
+                <?= htmlspecialchars($message) ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if(!empty($error_message)): ?>
+            <div class="alert alert-danger">
+                <?= htmlspecialchars($error_message) ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="settings.php" class="user-settings-form">
+            <!-- Theme Preferences Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Theme Preferences</h2>
+                <div class="form-group">
+                    <label class="form-label" for="theme_preference">Color Theme</label>
+                    <select id="theme_preference" name="theme_preference" class="theme-selector">
+                        <option value="system" <?= $current_theme === 'system' ? 'selected' : '' ?>>System Default</option>
+                        <option value="light" <?= $current_theme === 'light' ? 'selected' : '' ?>>Force Light Mode</option>
+                        <option value="dark" <?= $current_theme === 'dark' ? 'selected' : '' ?>>Force Dark Mode</option>
+                    </select>
+                    <div class="form-help">Choose your preferred color theme. System Default will follow your device's theme setting.</div>
+                </div>
+            </div>
+
+            <!-- Profile Information Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Profile Information</h2>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="firstname">First Name</label>
+                        <input type="text" id="firstname" name="firstname" value="<?= htmlspecialchars($current_firstname ?? '') ?>" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="lastname">Last Name</label>
+                        <input type="text" id="lastname" name="lastname" value="<?= htmlspecialchars($current_lastname ?? '') ?>" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="<?= htmlspecialchars($current_email ?? '') ?>" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="telephone">Phone Number</label>
+                    <input type="tel" id="telephone" name="telephone" value="<?= htmlspecialchars($current_telephone ?? '') ?>" />
+                </div>
+            </div>
+
+            <!-- Password Change Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Change Password</h2>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="change_password" name="change_password" value="1" />
+                        Change Password
+                    </label>
+                    <div class="form-help">Check this box if you want to change your password</div>
+                </div>
+                
+                <div id="password-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="current_password">Current Password</label>
+                        <input type="password" id="current_password" name="current_password" />
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="new_password">New Password</label>
+                            <input type="password" id="new_password" name="new_password" />
+                            <div class="form-help">Minimum 6 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="confirm_password">Confirm New Password</label>
+                            <input type="password" id="confirm_password" name="confirm_password" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="action-buttons">
+                <input type="submit" name="save_settings" value="Save Settings" class="btn btn-primary" />
+                <a href="/user/own.php" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// Show/hide password fields based on checkbox
+document.getElementById('change_password').addEventListener('change', function() {
+    const passwordFields = document.getElementById('password-fields');
+    if (this.checked) {
+        passwordFields.style.display = 'block';
+        // Make password fields required when visible
+        document.getElementById('current_password').required = true;
+        document.getElementById('new_password').required = true;
+        document.getElementById('confirm_password').required = true;
+    } else {
+        passwordFields.style.display = 'none';
+        // Remove required attribute when hidden
+        document.getElementById('current_password').required = false;
+        document.getElementById('new_password').required = false;
+        document.getElementById('confirm_password').required = false;
+        // Clear password fields
+        document.getElementById('current_password').value = '';
+        document.getElementById('new_password').value = '';
+        document.getElementById('confirm_password').value = '';
+    }
+});
+
+// Initialize theme manager and bind to settings form
+document.addEventListener('DOMContentLoaded', function() {
+    // Theme preview functionality
+    const themeSelector = document.getElementById('theme_preference');
+    if (themeSelector && window.themeManager) {
+        themeSelector.addEventListener('change', function() {
+            // Preview theme change immediately
+            window.themeManager.applyTheme(this.value);
+        });
+    }
+});
+</script>
+
+<?php include_once("$_PJ_include_path/degestiv.inc.php"); ?>
