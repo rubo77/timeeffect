@@ -70,6 +70,8 @@
 
 						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['groups'])) echo $GLOBALS['_PJ_strings']['groups'] ?></TH>
 
+						<TH CLASS="list">Actions</TH>
+
 					</TR>
 
 <?php
