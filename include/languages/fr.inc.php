@@ -110,6 +110,23 @@
 	$GLOBALS['_PJ_strings']['login']					= 'connexion';
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Nom d\'usager ou mot de passe incorrect! Veuillez essayer de nouveau:';
+	
+	// Registration and password recovery strings (French)
+	$GLOBALS['_PJ_strings']['register']					= 'S\'inscrire';
+	$GLOBALS['_PJ_strings']['register_new_account']		= 'Créer un nouveau compte';
+	$GLOBALS['_PJ_strings']['forgot_password']			= 'Mot de passe oublié?';
+	$GLOBALS['_PJ_strings']['reset_password']			= 'Réinitialiser le mot de passe';
+	$GLOBALS['_PJ_strings']['password_reset_sent']		= 'Les instructions de réinitialisation du mot de passe ont été envoyées à votre adresse e-mail.';
+	$GLOBALS['_PJ_strings']['password_reset_success']	= 'Votre mot de passe a été réinitialisé avec succès.';
+	$GLOBALS['_PJ_strings']['password_reset_error']		= 'Token de réinitialisation de mot de passe invalide ou expiré.';
+	$GLOBALS['_PJ_strings']['email_confirm_sent']		= 'Un e-mail de confirmation a été envoyé à votre adresse e-mail.';
+	$GLOBALS['_PJ_strings']['email_confirm_success']	= 'Adresse e-mail confirmée avec succès. Vous pouvez maintenant vous connecter.';
+	$GLOBALS['_PJ_strings']['email_confirm_error']		= 'Token de confirmation invalide ou expiré.';
+	$GLOBALS['_PJ_strings']['registration_success']		= 'Inscription réussie. Veuillez vérifier votre e-mail pour les instructions de confirmation.';
+	$GLOBALS['_PJ_strings']['registration_disabled']	= 'L\'inscription des utilisateurs est actuellement désactivée.';
+	$GLOBALS['_PJ_strings']['switch_to_user']			= 'Basculer vers l\'utilisateur';
+	$GLOBALS['_PJ_strings']['return_to_admin']			= 'Retour à l\'admin';
+	$GLOBALS['_PJ_strings']['logged_in_as_admin']		= 'Connecté via admin';
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'd&eacute;connecter';
 	$GLOBALS['_PJ_strings']['minute']					= 'Minute';
