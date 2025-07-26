@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'timeeffect/webapp',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-copilot/fix-13',
+        'version' => 'dev-copilot/fix-13',
+        'reference' => 'b664b04b0f16076244b68a0e00f170551b0ab6b3',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -143,9 +143,9 @@
             'dev_requirement' => false,
         ),
         'timeeffect/webapp' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-copilot/fix-13',
+            'version' => 'dev-copilot/fix-13',
+            'reference' => 'b664b04b0f16076244b68a0e00f170551b0ab6b3',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
