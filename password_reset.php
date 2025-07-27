@@ -121,7 +121,7 @@
 		if ($db->next_record()) {
 			// Generate reset token
 			$reset_token = bin2hex(random_bytes(32));
-			$expires = date('Y-m-d H:i:s', strtotime('+1 hour'));
+			$expires = date('Y-m-d H:i:s', strtotime('+24 hours'));
 			
 			$query = sprintf("UPDATE %s SET reset_token='%s', reset_expires='%s' WHERE id='%s'", 
 							 $GLOBALS['_PJ_auth_table'], 
@@ -134,7 +134,7 @@
 			$subject = "TIMEEFFECT - Password Reset";
 			$message_body = "Please click the following link to reset your password:\n\n";
 			$message_body .= $_PJ_http_root . "/password_reset.php?token=" . $reset_token . "\n\n";
-			$message_body .= "This link will expire in 1 hour. If you did not request this reset, please ignore this email.";
+			$message_body .= "This link will expire in 24 hours. If you did not request this reset, please ignore this email.";
 			
 			if (function_exists('mail')) {
 				mail($email, $subject, $message_body);

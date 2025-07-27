@@ -33,7 +33,7 @@ Secure password reset functionality for users who have forgotten their passwords
 **Features:**
 - Email-based password reset
 - Secure random tokens (64 characters)
-- Time-limited reset links (1 hour expiry)
+- Time-limited reset links (24 hour expiry)
 - Protection against email enumeration attacks
 - HTML and plain text email support
 
@@ -57,8 +57,17 @@ Allows administrators to switch to any user account for troubleshooting and supp
 2. Configure the new settings in `include/config.inc.php`
 
 ### For Existing Installations
+
+TimeEffect will automatically detect if migration is required and show a notification with a link to the migration page.
+
+**Automatic Migration:**
+1. Visit your TimeEffect installation - you'll see a migration notice if needed
+2. Click the migration link to go to `/migrate.php`
+3. Follow the automated migration process for database and configuration updates
+
+**Manual Migration (if needed):**
 1. Run the migration script: `sql/migration_add_registration_features.sql`
-2. Add the new configuration options to your `include/config.inc.php`:
+2. Add the new configuration options to your `include/config.inc.php` (see below)
 
 ```php
 // User registration settings
@@ -80,7 +89,7 @@ The following fields have been added to the `auth` table:
 
 - **Email Confirmation:** Prevents unauthorized registrations
 - **Secure Tokens:** Cryptographically secure random tokens for all operations
-- **Time Limits:** Password reset tokens expire after 1 hour
+- **Time Limits:** Password reset tokens expire after 24 hours
 - **Role Restrictions:** Self-registration limited to 'agent' role only
 - **Anti-Enumeration:** Password reset doesn't reveal if email exists
 - **Session Security:** Admin switching preserves security context
@@ -109,6 +118,7 @@ New language strings added:
 - `return_to_admin.php` - Return to admin script
 - `templates/user/register.ihtml` - Registration form template
 - `sql/migration_add_registration_features.sql` - Database migration
+- `migrate.php` - Automated migration page for existing installations
 
 ### Modified Files
 - `include/config.inc.php.sample` - Added new configuration options

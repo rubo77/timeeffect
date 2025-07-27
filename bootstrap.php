@@ -82,6 +82,84 @@ $logger->info('TimeEffect application bootstrap completed', [
     'max_execution_time' => ini_get('max_execution_time')
 ]);
 
+// Check for required database migration and configuration
+function checkTimeEffectMigration() {
+    global $logger;
+    
+    // Skip checks for migration page itself and during installation
+    $current_script = basename($_SERVER['SCRIPT_NAME']);
+    if ($current_script === 'migrate.php' || 
+        strpos($_SERVER['REQUEST_URI'], '/install/') !== false ||
+        strpos($_SERVER['REQUEST_URI'], '/sql/') !== false) {
+        return;
+    }
+    
+    try {
+        // Only check if we have database connection configured
+        if (!isset($GLOBALS['_PJ_auth_table']) || !isset($GLOBALS['_PJ_db_host'])) {
+            return; // No database configured yet
+        }
+        
+        include_once(__DIR__ . '/include/aperetiv.inc.php');
+        
+        $migration_needed = false;
+        $config_needed = false;
+        
+        // Check database fields
+        try {
+            $db = new Database();
+            
+            // Check if the new fields exist in auth table
+            $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmed'";
+            $db->query($query);
+            
+            if (!$db->next_record()) {
+                $migration_needed = true;
+            }
+        } catch (Exception $e) {
+            $logger->warning('Database migration check failed', ['error' => $e->getMessage()]);
+            return; // Skip if database not accessible
+        }
+        
+        // Check configuration options
+        if (!isset($GLOBALS['_PJ_allow_registration']) || 
+            !isset($GLOBALS['_PJ_registration_email_confirm']) || 
+            !isset($GLOBALS['_PJ_allow_password_recovery'])) {
+            $config_needed = true;
+        }
+        
+        // Show migration notice if needed
+        if ($migration_needed || $config_needed) {
+            $logger->info('TimeEffect migration required', [
+                'database_migration' => $migration_needed,
+                'config_update' => $config_needed
+            ]);
+            
+            // Only show notice for web requests, not CLI
+            if (php_sapi_name() !== 'cli' && !headers_sent()) {
+                echo '<div style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; margin: 10px; border-radius: 4px; font-family: Arial, sans-serif;">';
+                echo '<strong>TimeEffect Migration Required</strong><br>';
+                echo 'New features require database and configuration updates. ';
+                echo '<a href="' . (isset($_SERVER['REQUEST_URI']) ? dirname($_SERVER['REQUEST_URI']) : '') . '/migrate.php" style="color: #007bff; text-decoration: none;">Click here to run migration</a>';
+                echo '</div>';
+                
+                // Don't show the notice on every page - set a session flag
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+                if (!isset($_SESSION['migration_notice_shown'])) {
+                    $_SESSION['migration_notice_shown'] = true;
+                }
+            }
+        }
+    } catch (Exception $e) {
+        $logger->error('Migration check error', ['error' => $e->getMessage()]);
+    }
+}
+
+// Run migration check
+checkTimeEffectMigration();
+
 // Load Session/Auth compatibility layer for PHP 8.4
 require_once __DIR__ . '/include/auth_compatibility.php';
 
