@@ -112,6 +112,16 @@
 	$GLOBALS['_PJ_strings']['login']					= 'Anmelden';
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Benutzername oder Passwort sind nicht korrekt! Bitte versuchen Sie es erneut:';
+	
+	// Brute force protection messages
+	$GLOBALS['_PJ_strings']['account_locked']			= 'Konto gesperrt';
+	$GLOBALS['_PJ_strings']['lockout_ip_message']		= 'Zu viele fehlgeschlagene Anmeldeversuche von Ihrer IP-Adresse.';
+	$GLOBALS['_PJ_strings']['lockout_user_message']		= 'Zu viele fehlgeschlagene Anmeldeversuche für diesen Benutzernamen.';
+	$GLOBALS['_PJ_strings']['lockout_until']			= 'Bitte versuchen Sie es nach';
+	$GLOBALS['_PJ_strings']['login_failed']				= 'Anmeldung fehlgeschlagen';
+	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Verbleibende Versuche';
+	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Ihr Konto wird nach zu vielen fehlgeschlagenen Versuchen vorübergehend gesperrt.';
+	
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'Abmelden';
 	$GLOBALS['_PJ_strings']['minute']					= 'Minute';

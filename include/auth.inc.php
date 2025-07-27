@@ -5,12 +5,14 @@
 	}
 
 	require_once('Auth/Auth.php');
+	require_once($_PJ_root . '/include/login_attempts.inc.php');
 
 	class PJAuth extends Auth {
 		// global permissions for checking user access rights
 		var $permissions;
 		var $user_list = array(); // Deklaration der vorher dynamischen Property
 		var $gids = array(); // Deklaration für Gruppenberechtigungen
+		var $loginAttemptTracker; // Login attempt tracker for brute force protection
 
 		// user data (e.g. name, id, personal permissions)
 		var $data = array();
@@ -107,6 +109,10 @@
 			// Debug log to track what DSN is being used (mask password)
 			error_log("Auth DSN constructed: " . preg_replace('/:[^@]*@/', ':***@', $dsn));
 			
+			// Initialize login attempt tracker
+			$this->loginAttemptTracker = new LoginAttemptTracker();
+			$this->loginAttemptTracker->ensureTableExists();
+			
 			$parent = get_parent_class($this);
 			$options = array(
 				'table'			=> $GLOBALS['_PJ_auth_table'],
@@ -164,6 +170,87 @@
 			} 
 			while($row = $res->fetchRow(DB_FETCHMODE_ASSOC)) {
 				$this->gids[$row['id']] = $row['name'];
+			}
+		}
+		
+		/**
+		 * Override parent login method to add brute force protection
+		 */
+		function login() {
+			$login_ok = false;
+			
+			// Check for lockout before proceeding
+			if (!empty($this->username)) {
+				$lockout_status = $this->loginAttemptTracker->isLockedOut($this->username);
+				
+				if ($lockout_status['locked']) {
+					// Set global variables for login template to display lockout message
+					$GLOBALS['login_lockout'] = true;
+					$GLOBALS['lockout_reason'] = $lockout_status['reason'];
+					$GLOBALS['lockout_until'] = $lockout_status['lockout_until'];
+					$GLOBALS['remaining_attempts'] = 0;
+					
+					// Log the blocked attempt
+					if (isset($GLOBALS['logger'])) {
+						$GLOBALS['logger']->warning('Login attempt blocked due to lockout', [
+							'username' => $this->username,
+							'ip' => $_SERVER['REMOTE_ADDR'] ?? 'Unknown',
+							'reason' => $lockout_status['reason'],
+							'attempts' => $lockout_status['attempts']
+						]);
+					}
+					
+					$this->status = AUTH_WRONG_LOGIN;
+					if ($this->showLogin) {
+						$this->drawLogin($this->storage->activeUser);
+					}
+					return;
+				}
+			}
+
+			/**
+			 * When the user has already entered a username,
+			 * we have to validate it.
+			 */
+			if (!empty($this->username)) {
+				if (true === $this->storage->fetchData($this->username, $this->password)) {
+					$login_ok = true;
+					// Record successful login and clear failed attempts
+					$this->loginAttemptTracker->recordAttempt($this->username, true);
+					$this->loginAttemptTracker->clearAttempts($this->username);
+				} else {
+					// Record failed login attempt
+					$this->loginAttemptTracker->recordAttempt($this->username, false);
+					
+					// Get remaining attempts for display
+					$remaining = $this->loginAttemptTracker->getRemainingAttempts($this->username);
+					$GLOBALS['remaining_attempts'] = $remaining;
+					$GLOBALS['login_failed'] = true;
+					
+					if (is_callable($this->loginFailedCallback)) {
+						call_user_func($this->loginFailedCallback,$this->username, $this);
+					}
+				}
+			}
+
+			if (!empty($this->username) && $login_ok) {
+				$this->setAuth($this->username);
+				if (is_callable($this->loginCallback)) {
+					call_user_func($this->loginCallback,$this->username, $this);
+				}
+			}
+
+			/**
+			 * If the login failed or the user entered no username,
+			 * output the login screen again.
+			 */
+			if (!empty($this->username) && !$login_ok) {
+				$this->status = AUTH_WRONG_LOGIN;
+			}
+
+			if ((empty($this->username) || !$login_ok) && $this->showLogin) {
+				$this->drawLogin($this->storage->activeUser);
+				return;
 			}
 		}
 		

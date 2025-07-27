@@ -89,6 +89,43 @@ function sf(){
 					</h1>
 				</div>
 <?php
+if(!empty($GLOBALS['login_lockout'])) {
+?>
+					<div class="alert alert-danger" style="margin: 1rem 0; padding: 1rem; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 0.25rem; color: #721c24;">
+						<h4 style="margin: 0 0 0.5rem 0;">🔒 <?=$GLOBALS['_PJ_strings']['account_locked'] ?? 'Account Locked'?></h4>
+						<p style="margin: 0;">
+							<?php if($GLOBALS['lockout_reason'] == 'ip'): ?>
+								<?=$GLOBALS['_PJ_strings']['lockout_ip_message'] ?? 'Too many failed login attempts from your IP address.'?>
+							<?php else: ?>
+								<?=$GLOBALS['_PJ_strings']['lockout_user_message'] ?? 'Too many failed login attempts for this username.'?>
+							<?php endif; ?>
+						</p>
+						<p style="margin: 0.5rem 0 0 0; font-weight: bold;">
+							<?=$GLOBALS['_PJ_strings']['lockout_until'] ?? 'Please try again after'?>: <?=$GLOBALS['lockout_until']?>
+						</p>
+					</div>
+<?php
+} elseif (!empty($GLOBALS['login_failed']) && !empty($GLOBALS['remaining_attempts'])) {
+?>
+					<div class="alert alert-warning" style="margin: 1rem 0; padding: 1rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 0.25rem; color: #856404;">
+						<h4 style="margin: 0 0 0.5rem 0;">⚠️ <?=$GLOBALS['_PJ_strings']['login_failed'] ?? 'Login Failed'?></h4>
+						<p style="margin: 0;">
+							<?=$GLOBALS['_PJ_strings']['remaining_attempts'] ?? 'Remaining attempts'?>: <strong><?=$GLOBALS['remaining_attempts']?></strong>
+						</p>
+						<p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+							<?=$GLOBALS['_PJ_strings']['lockout_warning'] ?? 'Your account will be temporarily locked after too many failed attempts.'?>
+						</p>
+					</div>
+<?php
+} elseif (!empty($GLOBALS['username'])) {
+?>
+					<div class="alert alert-danger" style="margin: 1rem 0; padding: 1rem; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 0.25rem; color: #721c24;">
+						<?php if(!empty($GLOBALS['_PJ_strings']['login_error_msg'])) echo $GLOBALS['_PJ_strings']['login_error_msg'] ?>
+					</div>
+<?php
+}
+?>
+<?php
 if(!empty($GLOBALS['username'])) {
 ?>
 					<TR>

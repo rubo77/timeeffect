@@ -110,6 +110,16 @@
 	$GLOBALS['_PJ_strings']['login']					= 'connexion';
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Nom d\'usager ou mot de passe incorrect! Veuillez essayer de nouveau:';
+	
+	// Brute force protection messages
+	$GLOBALS['_PJ_strings']['account_locked']			= 'Compte verrouillé';
+	$GLOBALS['_PJ_strings']['lockout_ip_message']		= 'Trop de tentatives de connexion échouées depuis votre adresse IP.';
+	$GLOBALS['_PJ_strings']['lockout_user_message']		= 'Trop de tentatives de connexion échouées pour ce nom d\'utilisateur.';
+	$GLOBALS['_PJ_strings']['lockout_until']			= 'Veuillez réessayer après';
+	$GLOBALS['_PJ_strings']['login_failed']				= 'Échec de la connexion';
+	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Tentatives restantes';
+	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Votre compte sera temporairement verrouillé après trop de tentatives échouées.';
+	
 	$GLOBALS['_PJ_strings']['logo']						= 'Logo';
 	$GLOBALS['_PJ_strings']['logout']					= 'd&eacute;connecter';
 	$GLOBALS['_PJ_strings']['minute']					= 'Minute';
