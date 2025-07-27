@@ -123,8 +123,44 @@
 				<TR>
 					<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><?php if(isset($project_input)) echo $project_input; ?></TD>
+					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
+						<SELECT CLASS="FormField" NAME="selected_cid" ID="customer-select" onchange="updateProjectList()">
+							<OPTION VALUE="">-- Kunde wählen --</OPTION>
+							<?php
+								// Generate customer options
+								$customer_list = new CustomerList($_PJ_auth);
+								while($customer_list->nextCustomer()) {
+									$customer_option = $customer_list->giveCustomer();
+									$selected = ($customer_option->giveValue('id') == $cid) ? ' SELECTED' : '';
+									echo '<OPTION VALUE="' . $customer_option->giveValue('id') . '"' . $selected . '>' . 
+										 htmlspecialchars($customer_option->giveValue('customer_name')) . '</OPTION>';
+								}
+							?>
+						</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField">
+						<SELECT CLASS="FormField" NAME="selected_pid" ID="project-select">
+							<OPTION VALUE="">-- Projekt wählen --</OPTION>
+							<?php
+								if(!empty($cid)) {
+									// Show projects for current customer
+									$customer_for_projects = new Customer($_PJ_auth, $cid);
+									$project_list = new ProjectList($customer_for_projects, $_PJ_auth);
+									while($project_list->nextProject()) {
+										$project_option = $project_list->giveProject();
+										$selected = ($project_option->giveValue('id') == $pid) ? ' SELECTED' : '';
+										echo '<OPTION VALUE="' . $project_option->giveValue('id') . '"' . $selected . '>' . 
+											 htmlspecialchars($project_option->giveValue('project_name')) . '</OPTION>';
+									}
+								}
+							?>
+						</SELECT>
+						<!-- Keep the old project input for backward compatibility -->
+						<INPUT TYPE="hidden" NAME="pid" VALUE="<?php if(isset($pid)) echo $pid; ?>">
+					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>
@@ -410,7 +446,56 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 	</TABLE>
 	</CENTER>
 
+	<!-- German help section for auto-assignment -->
+	<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 20px auto; max-width: 600px; font-size: 0.9em; color: #495057;">
+		<h4 style="color: #007bff; margin-top: 0;">💡 Hilfe zur automatischen Zuordnung</h4>
+		<p><strong>Automatische Kunden- und Projektzuordnung:</strong></p>
+		<ul>
+			<li>Wenn kein Projekt ausgewählt wurde, aber der <strong>Kundenname</strong> in der Beschreibung vorkommt, wird der Kunde automatisch zugeordnet.</li>
+			<li>Beginnt die Beschreibung mit <strong>"k"</strong> gefolgt von der Kunden-ID (z.B. "k5"), wird automatisch der entsprechende Kunde zugeordnet.</li>
+			<li>Beginnt die Beschreibung mit <strong>"p"</strong> gefolgt von der Projekt-ID (z.B. "p12"), wird automatisch das entsprechende Projekt zugeordnet.</li>
+		</ul>
+		<p><em>Beispiele:</em></p>
+		<ul>
+			<li><code>k3 Projektplanung</code> → Ordnet Kunde mit ID 3 zu</li>
+			<li><code>p15 Bugfixes</code> → Ordnet Projekt mit ID 15 zu</li>
+			<li><code>Arbeit für Musterfirma</code> → Sucht nach Kunde "Musterfirma"</li>
+		</ul>
+	</div>
+
 <script type="text/javascript">
+// Update project list when customer is selected
+function updateProjectList() {
+	var customerSelect = document.getElementById('customer-select');
+	var projectSelect = document.getElementById('project-select');
+	var customerId = customerSelect.value;
+	
+	// Clear current project options
+	projectSelect.innerHTML = '<option value="">-- Projekt wählen --</option>';
+	
+	if (customerId) {
+		// Make AJAX request to get projects for selected customer
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', window.location.origin + '/inventory/efforts.php?get_projects=1&customer_id=' + customerId, true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				try {
+					var projects = JSON.parse(xhr.responseText);
+					for (var i = 0; i < projects.length; i++) {
+						var option = document.createElement('option');
+						option.value = projects[i].id;
+						option.textContent = projects[i].name;
+						projectSelect.appendChild(option);
+					}
+				} catch (e) {
+					console.error('Error parsing projects JSON:', e);
+				}
+			}
+		};
+		xhr.send();
+	}
+}
+
 // JavaScript function to adjust time values with plus/minus buttons
 function adjustTime(fieldName, increment) {
 	var select = document.getElementsByName(fieldName)[0];
