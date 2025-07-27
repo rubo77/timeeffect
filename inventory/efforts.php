@@ -5,6 +5,7 @@
 
 	$eid = $_REQUEST['eid'] ?? null;
 	$stop = $_REQUEST['stop'] ?? null;
+	$stop_all = $_REQUEST['stop_all'] ?? null;
 	$pid = $_REQUEST['pid'] ?? '';
 	$cid = $_REQUEST['cid'] ?? '';
 	$cont = $_REQUEST['cont'] ?? null;
@@ -19,6 +20,8 @@
 	$second = $_REQUEST['second'] ?? null;
 	$description = $_REQUEST['description'] ?? null;
 	$note = $_REQUEST['note'] ?? null;
+	$selected_cid = $_REQUEST['selected_cid'] ?? null;
+	$selected_pid = $_REQUEST['selected_pid'] ?? null;
 	$rate = $_REQUEST['rate'] ?? null;
 	$user = $_REQUEST['user'] ?? null;
 	$gid = $_REQUEST['gid'] ?? null;
@@ -38,6 +41,28 @@
 	$shown = $_REQUEST['shown'] ?? array();
 	$list = $_REQUEST['list'] ?? null;
 
+	// AJAX endpoint for getting projects by customer
+	if(isset($_GET['get_projects']) && isset($_GET['customer_id'])) {
+		$customer_id = intval($_GET['customer_id']);
+		$projects = array();
+		
+		if($customer_id > 0) {
+			$customer_for_ajax = new Customer($_PJ_auth, $customer_id);
+			$project_list = new ProjectList($customer_for_ajax, $_PJ_auth);
+			while($project_list->nextProject()) {
+				$project = $project_list->giveProject();
+				$projects[] = array(
+					'id' => $project->giveValue('id'),
+					'name' => $project->giveValue('project_name')
+				);
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($projects);
+		exit;
+	}
+
 	$effort = new Effort($eid, $_PJ_auth);
 	if(!empty($stop)) {
 		if($eid && !$effort->checkUserAccess('write')) {
@@ -47,6 +72,30 @@
 			exit;
 		}
 		$effort->stop();
+	}
+	
+	// Stop all activities functionality  
+	if(!empty($stop_all)) {
+		// Get all open efforts for the current user
+		$open_efforts = new OpenEfforts($_PJ_auth);
+		$stopped_count = 0;
+		
+		if($open_efforts->effortCount() > 0) {
+			$open_efforts->reset();
+			while($open_efforts->nextEffort()) {
+				$open_effort = $open_efforts->giveEffort();
+				if($open_effort->checkUserAccess('write')) {
+					$open_effort->stop();
+					$stopped_count++;
+				}
+			}
+		}
+		
+		// Show success message or redirect
+		$success_message = "Es wurden $stopped_count Aktivitäten gestoppt.";
+		// Redirect to customer list after stopping all
+		header("Location: " . $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message));
+		exit;
 	}
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
@@ -98,7 +147,64 @@
 
 			$data = array();
 			$data['id']				= $eid;
-			$data['project_id']		= $pid;
+			
+			// Auto-assignment logic for customer and project
+			$final_pid = $pid;
+			$final_cid = $cid;
+			
+			// Use selected values from form if available
+			if(!empty($selected_pid)) {
+				$final_pid = $selected_pid;
+			} elseif(!empty($selected_cid)) {
+				$final_cid = $selected_cid;
+				// If customer is selected but no project, we'll use the customer's first project if available
+			}
+			
+			// Auto-assignment based on description if no project is selected
+			if(empty($final_pid) && !empty($description)) {
+				// Check if description starts with 'k' followed by customer ID
+				if(preg_match('/^k(\d+)/', $description, $matches)) {
+					$auto_cid = intval($matches[1]);
+					$test_customer = new Customer($_PJ_auth, $auto_cid);
+					if($test_customer->giveValue('id')) {
+						$final_cid = $auto_cid;
+					}
+				}
+				// Check if description starts with 'p' followed by project ID
+				elseif(preg_match('/^p(\d+)/', $description, $matches)) {
+					$auto_pid = intval($matches[1]);
+					// Verify project exists and user has access
+					$test_project = new Project(null, $_PJ_auth, $auto_pid);
+					if($test_project->giveValue('id')) {
+						$final_pid = $auto_pid;
+						$final_cid = $test_project->giveValue('customer_id');
+					}
+				}
+				// Check if customer name appears in description
+				else {
+					$customer_list = new CustomerList($_PJ_auth);
+					while($customer_list->nextCustomer()) {
+						$customer_check = $customer_list->giveCustomer();
+						$customer_name = $customer_check->giveValue('customer_name');
+						if(!empty($customer_name) && stripos($description, $customer_name) !== false) {
+							$final_cid = $customer_check->giveValue('id');
+							break;
+						}
+					}
+				}
+			}
+			
+			// If we have a customer but no project, try to get the first available project
+			if(!empty($final_cid) && empty($final_pid)) {
+				$customer_for_project = new Customer($_PJ_auth, $final_cid);
+				$project_list = new ProjectList($customer_for_project, $_PJ_auth);
+				if($project_list->nextProject()) {
+					$first_project = $project_list->giveProject();
+					$final_pid = $first_project->giveValue('id');
+				}
+			}
+			
+			$data['project_id']		= $final_pid;
 			$data['date']			= "$year-$month-$day";
 			$data['begin']			= sprintf('%02d:%02d:%02d', intval($hour), intval($minute), intval($second));
 			$data['description']	= add_slashes($description);
