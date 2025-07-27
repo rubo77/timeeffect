@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class Statistics extends EffortList {
 		var $db;
 		var $data;
