@@ -1,37 +1,35 @@
 <?php
 /**
- * TimeEffect Security Layer
+ * TimeEffect Security Layer - PHP 8.4+
  * 
- * This class provides SQL injection protection for the existing PEAR DB infrastructure.
- * It offers secure query building and input sanitization functions.
+ * This class provides comprehensive SQL injection protection for the TimeEffect application.
+ * It works with the existing PEAR DB infrastructure and mysqli connections.
+ * 
+ * Requirements:
+ * - PHP 8.4+
+ * - mysqli extension
+ * 
+ * @author TimeEffect Security Layer
+ * @version 2.0
+ * @since PHP 8.4
  */
 
 class DatabaseSecurity {
     
     /**
-     * Safely escape a string for MySQL queries
-     * This function works with both mysqli and old mysql extensions
+     * Safely escape a string for MySQL queries using mysqli
+     * Requires PHP 8.4+ and mysqli extension
      * 
      * @param string $value The value to escape
-     * @param resource $link Optional database link (for mysqli)
+     * @param mysqli $link Database connection (required)
      * @return string The escaped value
      */
-    public static function escapeString($value, $link = null) {
-        // Convert to string if not already
-        $value = (string) $value;
-        
-        // Use mysqli_real_escape_string if available and link provided
-        if (function_exists('mysqli_real_escape_string') && $link && is_object($link)) {
-            return mysqli_real_escape_string($link, $value);
+    public static function escapeString($value, $link) {
+        if (!$link instanceof mysqli) {
+            throw new InvalidArgumentException('Database connection must be a mysqli object');
         }
         
-        // Use mysql_real_escape_string if available (deprecated but may be in use)
-        if (function_exists('mysql_real_escape_string')) {
-            return mysql_real_escape_string($value);
-        }
-        
-        // Fallback to manual escaping (not ideal but better than nothing)
-        return addcslashes($value, "\000\n\r\\'\"\032");
+        return mysqli_real_escape_string($link, (string) $value);
     }
     
     /**
@@ -76,10 +74,10 @@ class DatabaseSecurity {
      * @param string $column The column name
      * @param string $value The value to compare
      * @param string $operator The comparison operator (=, !=, LIKE, etc.)
-     * @param resource $link Optional database link
+     * @param mysqli $link Database connection (required)
      * @return string Safe WHERE clause
      */
-    public static function buildWhereString($column, $value, $operator = '=', $link = null) {
+    public static function buildWhereString($column, $value, $operator = '=', $link) {
         $safeColumn = self::sanitizeColumnName($column);
         $safeValue = self::escapeString($value, $link);
         $safeOperator = self::sanitizeOperator($operator);
@@ -148,10 +146,10 @@ class DatabaseSecurity {
      * @param string $table The table name
      * @param array $data Associative array of column => value pairs
      * @param string $whereClause Safe WHERE clause (must be pre-built using other methods)
-     * @param resource $link Optional database link
+     * @param mysqli $link Database connection (required)
      * @return string Safe UPDATE query
      */
-    public static function buildUpdate($table, $data, $whereClause, $link = null) {
+    public static function buildUpdate($table, $data, $whereClause, $link) {
         $safeTable = self::sanitizeColumnName($table);
         $setParts = [];
         
@@ -174,10 +172,10 @@ class DatabaseSecurity {
      * 
      * @param string $table The table name
      * @param array $data Associative array of column => value pairs
-     * @param resource $link Optional database link
+     * @param mysqli $link Database connection (required)
      * @return string Safe INSERT query
      */
-    public static function buildInsert($table, $data, $link = null) {
+    public static function buildInsert($table, $data, $link) {
         $safeTable = self::sanitizeColumnName($table);
         $columns = [];
         $values = [];
@@ -275,7 +273,7 @@ class DatabaseSecurity {
 
 /**
  * Compatibility wrapper for legacy database class
- * This extends the existing Database class to add security methods
+ * This extends the existing Database class to add security methods for PHP 8.4+
  */
 if (class_exists('Database')) {
     class SecureDatabase extends Database {
@@ -296,11 +294,11 @@ if (class_exists('Database')) {
         }
         
         /**
-         * Get the database connection link for escaping functions
+         * Get the mysqli database connection
          * 
-         * @return resource Database connection
+         * @return mysqli Database connection
          */
-        public function getLink() {
+        public function getConnection() {
             return $this->Link_ID;
         }
         
@@ -311,7 +309,7 @@ if (class_exists('Database')) {
          * @return string Escaped value
          */
         public function escape($value) {
-            return DatabaseSecurity::escapeString($value, $this->getLink());
+            return DatabaseSecurity::escapeString($value, $this->getConnection());
         }
     }
 }
