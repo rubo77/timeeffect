@@ -100,20 +100,32 @@
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
-		} else {
+		} elseif(!isset($new)) {
+			// Only exit if we're not creating a new effort
 			exit;
 		}
 	}
-	$project = new Project($customer, $_PJ_auth, $pid);
+	
+	// Only create project object if we have a valid pid
+	$project = null;
+	if($pid) {
+		$project = new Project($customer, $_PJ_auth, $pid);
+	}
 
 	if($cid == '') {
 		if(isset($project) && is_object($project)) {
 			$cid = $project->giveValue('customer_id');
-		} else {
+		} elseif(!isset($new)) {
+			// Only exit if we're not creating a new effort
 			exit;
 		}
 	}
-	$customer = new Customer($cid, $_PJ_auth);
+	
+	// Only create customer object if we have a valid cid
+	$customer = null;
+	if($cid) {
+		$customer = new Customer($cid, $_PJ_auth);
+	}
 	$center_template	= "inventory/effort";
 
 	if(!empty($cont)) {
@@ -202,6 +214,18 @@
 					$first_project = $project_list->giveProject();
 					$final_pid = $first_project->giveValue('id');
 				}
+			}
+			
+			// Update global variables with final values
+			$pid = $final_pid;
+			$cid = $final_cid;
+			
+			// Recreate customer and project objects with updated values
+			if($cid) {
+				$customer = new Customer($_PJ_auth, $cid);
+			}
+			if($pid) {
+				$project = new Project($customer, $_PJ_auth, $pid);
 			}
 			
 			$data['project_id']		= $final_pid;
