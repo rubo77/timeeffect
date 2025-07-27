@@ -41,10 +41,10 @@ To verify the protection is working:
 ## Configuration
 
 The default settings are:
-- **5 attempts per IP address** before lockout
+- **10 attempts per IP address** before lockout
 - **3 attempts per username** before lockout  
-- **15 minutes** lockout duration
-- **24 hours** data retention for cleanup
+- **1 minute** lockout duration
+- **20 days** data retention for cleanup
 
 These can be modified in `include/login_attempts.inc.php` if needed.
 

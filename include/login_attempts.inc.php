@@ -16,9 +16,9 @@ require_once($_PJ_root . '/include/database.inc.php');
 class LoginAttemptTracker {
     
     // Configuration constants
-    const MAX_ATTEMPTS_PER_IP = 5;        // Max attempts per IP address
+    const MAX_ATTEMPTS_PER_IP = 10;       // Max attempts per IP address
     const MAX_ATTEMPTS_PER_USER = 3;      // Max attempts per username
-    const LOCKOUT_DURATION = 900;         // Lockout duration in seconds (15 minutes)
+    const LOCKOUT_DURATION = 60;          // Lockout duration in seconds (1 minute)
     const CLEANUP_INTERVAL = 3600;        // Clean old records every hour
     
     private $db;
@@ -225,7 +225,7 @@ class LoginAttemptTracker {
     private function cleanupOldAttempts() {
         // Only run cleanup occasionally to avoid performance impact
         if (rand(1, 100) <= 5) { // 5% chance on each instantiation
-            $cleanup_time = date('Y-m-d H:i:s', time() - (self::CLEANUP_INTERVAL * 24)); // Keep 24 hours of data
+            $cleanup_time = date('Y-m-d H:i:s', time() - (self::CLEANUP_INTERVAL * 24 * 20)); // Keep 20 days of data
             
             $query = sprintf(
                 "DELETE FROM `%s` WHERE attempt_time < '%s'",

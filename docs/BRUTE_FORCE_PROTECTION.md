@@ -26,9 +26,9 @@ The brute force protection system tracks failed login attempts by IP address and
 The protection settings are defined as constants in `LoginAttemptTracker` class:
 
 ```php
-const MAX_ATTEMPTS_PER_IP = 5;        // Max attempts per IP address
+const MAX_ATTEMPTS_PER_IP = 10;       // Max attempts per IP address
 const MAX_ATTEMPTS_PER_USER = 3;      // Max attempts per username
-const LOCKOUT_DURATION = 900;         // Lockout duration in seconds (15 minutes)
+const LOCKOUT_DURATION = 60;          // Lockout duration in seconds (1 minute)
 const CLEANUP_INTERVAL = 3600;        // Clean old records every hour
 ```
 
