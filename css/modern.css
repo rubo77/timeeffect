@@ -848,11 +848,11 @@ select {
 }
 
 /* Dark mode form styling */
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]),
+[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
 [data-theme="dark"] textarea,
 [data-theme="dark"] select,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]),
+    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
     :root:not([data-theme="light"]) textarea,
     :root:not([data-theme="light"]) select {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
@@ -861,11 +861,11 @@ select {
     }
 }
 
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):hover,
+[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):hover,
 [data-theme="dark"] textarea:hover,
 [data-theme="dark"] select:hover,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):hover,
+    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):hover,
     :root:not([data-theme="light"]) textarea:hover,
     :root:not([data-theme="light"]) select:hover {
         border-color: #818cf8;
@@ -873,11 +873,11 @@ select {
     }
 }
 
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):focus,
+[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):focus,
 [data-theme="dark"] textarea:focus,
 [data-theme="dark"] select:focus,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):focus,
+    :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):focus,
     :root:not([data-theme="light"]) textarea:focus,
     :root:not([data-theme="light"]) select:focus {
         border-color: #818cf8;
@@ -888,16 +888,20 @@ select {
 
 /* Dark mode table styling */
 [data-theme="dark"] .modern-table,
+[data-theme="dark"] table,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .modern-table {
+    :root:not([data-theme="light"]) .modern-table,
+    :root:not([data-theme="light"]) table {
         background-color: #1e293b;
         border: 1px solid #334155;
     }
 }
 
 [data-theme="dark"] .modern-table th,
+[data-theme="dark"] th,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .modern-table th {
+    :root:not([data-theme="light"]) .modern-table th,
+    :root:not([data-theme="light"]) th {
         background-color: #334155;
         color: #f1f5f9;
         border-bottom: 1px solid #475569;
@@ -905,16 +909,21 @@ select {
 }
 
 [data-theme="dark"] .modern-table td,
+[data-theme="dark"] td,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .modern-table td {
+    :root:not([data-theme="light"]) .modern-table td,
+    :root:not([data-theme="light"]) td {
         border-bottom: 1px solid #334155;
         color: #e2e8f0;
+        background-color: #1e293b;
     }
 }
 
 [data-theme="dark"] .modern-table tr:hover,
+[data-theme="dark"] tr:hover,
 @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .modern-table tr:hover {
+    :root:not([data-theme="light"]) .modern-table tr:hover,
+    :root:not([data-theme="light"]) tr:hover {
         background-color: #334155;
     }
 }
@@ -943,6 +952,25 @@ select {
         background-color: #334155 !important;
         color: #f1f5f9 !important;
         border: 1px solid #475569 !important;
+    }
+}
+
+/* Dark mode links and navigation */
+[data-theme="dark"] .topNav,
+[data-theme="dark"] a,
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .topNav,
+    :root:not([data-theme="light"]) a {
+        color: #94a3b8;
+    }
+}
+
+[data-theme="dark"] .topNav:hover,
+[data-theme="dark"] a:hover,
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .topNav:hover,
+    :root:not([data-theme="light"]) a:hover {
+        color: #f1f5f9;
     }
 }
 
@@ -977,6 +1005,25 @@ select {
         background: rgba(248, 113, 113, 0.2);
         border: 1px solid rgba(248, 113, 113, 0.3);
     }
+}
+
+/* Quick theme toggle button styling */
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: 0.5rem;
+    border-radius: 0.25rem;
+    transition: var(--transition-fast);
+    color: var(--text-secondary);
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    transform: scale(1.1);
 }
 
 /* Modern loading states */

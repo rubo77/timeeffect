@@ -117,6 +117,14 @@ class ThemeManager {
         if (selector) {
             selector.value = this.currentTheme;
         }
+        
+        // Update theme toggle button icon
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (toggleBtn) {
+            const effectiveTheme = this.getEffectiveTheme();
+            toggleBtn.textContent = effectiveTheme === 'dark' ? '☀️' : '🌙';
+            toggleBtn.title = effectiveTheme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        }
     }
 
     /**

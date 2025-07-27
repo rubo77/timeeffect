@@ -1,5 +1,7 @@
 <!--IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<?php if(!empty($GLOBALS['_PJ_help_script'])) echo $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><?php if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></A>&nbsp;-->
 
+<button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
+
 <IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle" onerror="this.style.display='none'">
 <A CLASS="topNav" HREF="<?php echo $GLOBALS['_PJ_http_root']; ?>/user/settings.php" title="User Settings">⚙️</A>&nbsp;
 
