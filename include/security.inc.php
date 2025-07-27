@@ -73,11 +73,11 @@ class DatabaseSecurity {
      * 
      * @param string $column The column name
      * @param string $value The value to compare
-     * @param string $operator The comparison operator (=, !=, LIKE, etc.)
      * @param mysqli $link Database connection (required)
+     * @param string $operator The comparison operator (=, !=, LIKE, etc.)
      * @return string Safe WHERE clause
      */
-    public static function buildWhereString($column, $value, $operator = '=', $link) {
+    public static function buildWhereString($column, $value, $link, $operator = '=') {
         $safeColumn = self::sanitizeColumnName($column);
         $safeValue = self::escapeString($value, $link);
         $safeOperator = self::sanitizeOperator($operator);
