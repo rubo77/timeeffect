@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class UserList {
 		var $db;
 		var $data;
@@ -16,7 +19,8 @@
 		function __construct() {
 			$this->db = new Database;
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'];
+			$safeAuthTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_auth_table']);
+			$query = "SELECT * FROM {$safeAuthTable}";
 			$query .= " ORDER BY lastname";
 
 			$this->db->query($query);
@@ -75,7 +79,9 @@ else return null;
 		}
 
 		function load($id = '') {
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE id='$id'";
+			$safeAuthTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_auth_table']);
+			$safeId = DatabaseSecurity::escapeInt($id);
+			$query = "SELECT * FROM {$safeAuthTable} WHERE id={$safeId}";
 			$this->db->query($query);
 
 			if($this->db->next_record()) {
@@ -90,7 +96,13 @@ else return null;
 				$this->data['group_names'] = '';
 				return;
 			}
-			$query = "SELECT name FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id IN (" . $this->data['gids'] . ")";;
+			$safeGidTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_gid_table']);
+			// Parse the gids string and sanitize each ID
+			$gidList = explode(',', $this->data['gids']);
+			$safeGids = array_map([DatabaseSecurity::class, 'escapeInt'], $gidList);
+			$gidsString = implode(',', $safeGids);
+			
+			$query = "SELECT name FROM {$safeGidTable} WHERE id IN ({$gidsString})";
 			$this->db->query($query);
 
 			while($this->db->next_record()) {
