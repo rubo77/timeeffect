@@ -92,7 +92,7 @@
 		}
 		// last_description mod by Ruben Barkow -- END
 		$user						= $_PJ_auth->giveValue('id');
-		$effort_gid					= $project->giveValue('gid');
+		$effort_gid					= isset($project) && is_object($project) ? $project->giveValue('gid') : $_PJ_auth->giveValue('gids');
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';
 		$effort_access_group		= 'r--';
@@ -132,7 +132,7 @@
 								$customer_list = new CustomerList($_PJ_auth);
 								while($customer_list->nextCustomer()) {
 									$customer_option = $customer_list->giveCustomer();
-									$selected = ($customer_option->giveValue('id') == $cid) ? ' SELECTED' : '';
+									$selected = (isset($cid) && $customer_option->giveValue('id') == $cid) ? ' SELECTED' : '';
 									echo '<OPTION VALUE="' . $customer_option->giveValue('id') . '"' . $selected . '>' . 
 										 htmlspecialchars($customer_option->giveValue('customer_name')) . '</OPTION>';
 								}
@@ -151,7 +151,7 @@
 									$project_list = new ProjectList($customer_for_projects, $_PJ_auth);
 									while($project_list->nextProject()) {
 										$project_option = $project_list->giveProject();
-										$selected = ($project_option->giveValue('id') == $pid) ? ' SELECTED' : '';
+										$selected = (isset($pid) && $project_option->giveValue('id') == $pid) ? ' SELECTED' : '';
 										echo '<OPTION VALUE="' . $project_option->giveValue('id') . '"' . $selected . '>' . 
 											 htmlspecialchars($project_option->giveValue('project_name')) . '</OPTION>';
 									}
