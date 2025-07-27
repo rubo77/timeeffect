@@ -81,7 +81,7 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || !$customer->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
+if($_PJ_auth->checkPermission('admin') || !($customer && $customer->giveValue('id')) || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>

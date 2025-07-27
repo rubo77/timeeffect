@@ -12,6 +12,7 @@
 	$cancel = $_REQUEST['cancel'] ?? null;
 	$confirm = $_REQUEST['confirm'] ?? null;
 	$id = $_REQUEST['id'] ?? null;
+	$name = $_REQUEST['name'] ?? null;
 
 	$center_template	= "group";
 	$center_title		= $GLOBALS['_PJ_strings']['groups'];

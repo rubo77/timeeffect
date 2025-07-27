@@ -5,8 +5,8 @@
 
 	$eid = $_REQUEST['eid'] ?? null;
 	$stop = $_REQUEST['stop'] ?? null;
-	$pid = $_REQUEST['pid'] ?? '';
-	$cid = $_REQUEST['cid'] ?? '';
+	$pid = $_REQUEST['pid'] ?? null;
+	$cid = $_REQUEST['cid'] ?? null;
 	$cont = $_REQUEST['cont'] ?? null;
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
@@ -38,7 +38,8 @@
 	$shown = $_REQUEST['shown'] ?? array();
 	$list = $_REQUEST['list'] ?? null;
 
-	$effort = new Effort($eid, $_PJ_auth);
+	// Only create Effort object if valid eid is provided
+	$effort = $eid ? new Effort($eid, $_PJ_auth) : null;
 	if(!empty($stop)) {
 		if($eid && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
@@ -48,23 +49,30 @@
 		}
 		$effort->stop();
 	}
-	if($pid == '') {
-		if(isset($effort) && is_object($effort)) {
+	// Fix object creation order: Customer first, then Project
+	if($pid === null) {
+		if($effort && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
-		} else {
-			exit;
 		}
 	}
-	$project = new Project($customer, $_PJ_auth, $pid);
-
-	if($cid == '') {
-		if(isset($project) && is_object($project)) {
-			$cid = $project->giveValue('customer_id');
-		} else {
-			exit;
+	
+	if($cid === null) {
+		if($effort && is_object($effort)) {
+			// Get cid from effort's project
+			$temp_pid = $effort->giveValue('project_id');
+			if($temp_pid) {
+				$temp_db = new Database();
+				$temp_db->query("SELECT customer_id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE id='$temp_pid'");
+				if($temp_db->next_record()) {
+					$cid = $temp_db->f('customer_id');
+				}
+			}
 		}
 	}
-	$customer = new Customer($cid, $_PJ_auth);
+	
+	// Only create objects if valid IDs are provided
+	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
+	$project = ($customer && $pid) ? new Project($customer, $_PJ_auth, $pid) : null;
 	$center_template	= "inventory/effort";
 
 	if(!empty($cont)) {

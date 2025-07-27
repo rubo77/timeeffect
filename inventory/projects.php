@@ -4,9 +4,9 @@
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	// Initialize variables from request
-	$cid = $_REQUEST['cid'] ?? '';
-	$pid = $_REQUEST['pid'] ?? '';
-	$eid = $_REQUEST['eid'] ?? '';
+	$cid = $_REQUEST['cid'] ?? null;
+	$pid = $_REQUEST['pid'] ?? null;
+	$eid = $_REQUEST['eid'] ?? null;
 	$shown = $_REQUEST['shown'] ?? [];
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
@@ -26,9 +26,11 @@
 	$access_world = $_REQUEST['access_world'] ?? '';
 	$expand = $_REQUEST['expand'] ?? '';
 
-	$customer	= new Customer($_PJ_auth, $cid);
+	// Only create Customer object if valid cid is provided
+	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
 
-	$project = new Project($customer, $_PJ_auth, $pid);
+	// Only create Project object if valid customer and pid are provided
+	$project = ($customer && $pid) ? new Project($customer, $_PJ_auth, $pid) : null;
 
 	if(isset($eid)) {
 		$effort = new Effort($eid, $_PJ_auth);

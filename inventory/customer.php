@@ -23,9 +23,9 @@
 	}
 
 	// Initialize variables from request
-	$cid = $_REQUEST['cid'] ?? '';
-	$pid = $_REQUEST['pid'] ?? '';
-	$eid = $_REQUEST['eid'] ?? '';
+	$cid = $_REQUEST['cid'] ?? null;
+	$pid = $_REQUEST['pid'] ?? null;
+	$eid = $_REQUEST['eid'] ?? null;
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
 	$rates = $_REQUEST['rates'] ?? null;
@@ -50,7 +50,8 @@
 	$access_world = $_REQUEST['access_world'] ?? '';
 	$readforeignefforts = $_REQUEST['readforeignefforts'] ?? '';
 
-	$customer 	= new Customer($_PJ_auth, $cid);
+	// Only create Customer object if valid cid is provided
+	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
 
 	if(isset($pid)) {
 		$project = new Project($customer, $_PJ_auth, $pid);

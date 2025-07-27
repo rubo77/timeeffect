@@ -272,6 +272,7 @@
 			} else if($effort != '') {
 				$this->load($effort);
 			}
+			// Always call getUserAccess() - it handles null access values properly
 			$this->user_access = $this->getUserAccess();
 			$this->initEffort();
 		}

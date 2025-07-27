@@ -144,7 +144,8 @@ else return null;
 			} else if($project != '') {
 				$this->load($project);
 			}
-			$this->user_access				= $this->getUserAccess();
+			// Always call getUserAccess() - it handles null access values properly
+			$this->user_access = $this->getUserAccess();
 			$this->loadEffort();
 		}
 

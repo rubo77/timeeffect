@@ -25,6 +25,8 @@
 				$query .= " WHERE 1";
 			}
 			$access_query="";
+			// ACL_DEBUG: Log user permissions and ACL query
+			error_log("ACL_DEBUG CustomerList: user_id=" . $user->giveValue('id') . ", is_admin=" . ($user->checkPermission('admin') ? 'YES' : 'NO') . ", gids=" . $user->giveValue('gids'));
 			if(!$user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
@@ -33,9 +35,13 @@
 				$access_query .= " OR ";
 				$access_query .= " (access LIKE '______r__')";
 				$access_query .= " ) ";
+				error_log("ACL_DEBUG CustomerList access_query: " . $access_query);
+			} else {
+				error_log("ACL_DEBUG CustomerList: User is admin - no ACL filtering applied");
 			}
 			$query .= $access_query;
 			$query .= " ORDER BY customer_name";
+			error_log("ACL_DEBUG CustomerList final query: " . $query);
 		
 			if($debugmessage) {
 				echo 'Query: ' . htmlspecialchars($query) . '<br>';
@@ -49,6 +55,7 @@
 					echo 'Raw DB Record: <pre>' . print_r($this->db->Record, true) . '</pre>';
 				}
 				$customer = new Customer($user, $this->db->Record);
+				error_log("ACL_DEBUG CustomerList loaded customer: id=" . $this->db->Record['id'] . ", name=" . $this->db->Record['customer_name'] . ", access=" . $this->db->Record['access'] . ", user=" . $this->db->Record['user'] . ", gid=" . $this->db->Record['gid']);
 				$this->customers[] = $customer;
 				$name = $customer->giveValue('customer_name');
 				$id = $customer->giveValue('id');
@@ -107,7 +114,8 @@
 					echo 'Customer constructor: No data provided<br>';
 				}
 			}
-			$this->user_access				= $this->getUserAccess();
+			// Always call getUserAccess() - it handles null access values properly
+			$this->user_access = $this->getUserAccess();
 		}
 
 		function load($id) {
