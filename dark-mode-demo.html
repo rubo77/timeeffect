@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeEffect Dark Mode Demo</title>
+    <link rel="stylesheet" href="css/project.css">
+    <link rel="stylesheet" href="css/modern.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <style>
+        body { margin: 0; padding: 20px; }
+        .demo-section { margin-bottom: 2rem; padding: 1rem; }
+        .demo-title { font-size: 1.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <script>
+        // Initialize with system theme
+        var userTheme = 'system';
+        if (userTheme !== 'system') {
+            document.documentElement.setAttribute('data-theme', userTheme);
+        }
+    </script>
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <h1 class="content-title">TimeEffect Dark Mode Demo</h1>
+            <p class="content-subtitle">Testing dark mode functionality and styling</p>
+            
+            <div style="margin-top: 1rem;">
+                <button id="theme-toggle" class="theme-toggle-btn">🌙</button>
+                <select id="theme-selector" class="theme-selector" style="margin-left: 1rem;">
+                    <option value="system">System Default</option>
+                    <option value="light">Force Light Mode</option> 
+                    <option value="dark">Force Dark Mode</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="content-body">
+            <!-- Navigation Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Navigation Tabs</h2>
+                <div class="modern-tabs">
+                    <a href="#" class="modern-tab active">Inventory</a>
+                    <a href="#" class="modern-tab">Statistics</a>
+                    <a href="#" class="modern-tab">Users</a>
+                    <a href="#" class="modern-tab">Reports</a>
+                </div>
+            </div>
+
+            <!-- Form Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Form Elements</h2>
+                <div class="form-section">
+                    <h3 class="form-section-title">Sample Form</h3>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Text Input</label>
+                            <input type="text" placeholder="Enter text..." />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Select Dropdown</label>
+                            <select>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                                <option>Option 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Textarea</label>
+                        <textarea placeholder="Enter description..."></textarea>
+                    </div>
+                    <div class="action-buttons">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <button class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Data Table</h2>
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Doe</td>
+                            <td>john@example.com</td>
+                            <td>Admin</td>
+                            <td><span class="status-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Jane Smith</td>
+                            <td>jane@example.com</td>
+                            <td>User</td>
+                            <td><span class="status-inactive">Inactive</span></td>
+                        </tr>
+                        <tr>
+                            <td>Bob Johnson</td>
+                            <td>bob@example.com</td>
+                            <td>Agent</td>
+                            <td><span class="status-warning">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Alerts Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Alerts & Status</h2>
+                <div class="alert alert-success">Success message - Settings updated successfully!</div>
+                <div class="alert alert-warning">Warning message - Please check your input.</div>
+                <div class="alert alert-danger">Error message - Something went wrong.</div>
+            </div>
+
+            <!-- Cards Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Cards</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Sample Card</h3>
+                        </div>
+                        <p>This is a sample card with some content to demonstrate the dark mode styling.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Another Card</h3>
+                        </div>
+                        <p>Cards should look great in both light and dark themes with proper contrast.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme.js"></script>
+</body>
+</html>
