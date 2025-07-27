@@ -16,7 +16,7 @@ $safePrice = DatabaseSecurity::escapeFloat($input);
 ```php
 // WHERE clauses
 $where = DatabaseSecurity::buildWhereId('id', $userId);                    // id = 123
-$where = DatabaseSecurity::buildWhereString('name', $name, '=', $db);      // name = 'escaped'
+$where = DatabaseSecurity::buildWhereString('name', $name, $db, '=');      // name = 'escaped'
 $where = DatabaseSecurity::buildWhereIn('category_id', [1,2,3]);          // category_id IN (1,2,3)
 
 // Complete queries
@@ -42,7 +42,7 @@ $search = DatabaseSecurity::getParam('search', 'string', '', 'post');
 ### User Authentication
 ```php
 $username = DatabaseSecurity::validateInput($_POST['username'], 'string');
-$where = DatabaseSecurity::buildWhereString('username', $username, '=', $db->getConnection());
+$where = DatabaseSecurity::buildWhereString('username', $username, $db->getConnection());
 $query = "SELECT * FROM users WHERE {$where}";
 ```
 
@@ -59,7 +59,7 @@ $query = DatabaseSecurity::buildUpdate('users', $data, $where, $db->getConnectio
 ### Search Queries
 ```php
 $searchTerm = DatabaseSecurity::getParam('search', 'string');
-$where = DatabaseSecurity::buildWhereString('description', "%{$searchTerm}%", 'LIKE', $db->getConnection());
+$where = DatabaseSecurity::buildWhereString('description', "%{$searchTerm}%", $db->getConnection(), 'LIKE');
 $query = "SELECT * FROM projects WHERE {$where}";
 ```
 

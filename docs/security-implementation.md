@@ -53,7 +53,7 @@ $whereClause = DatabaseSecurity::buildWhereId('user_id', $userId);
 // Result: "user_id = 123"
 
 // For string comparisons
-$whereClause = DatabaseSecurity::buildWhereString('username', $username, '=', $dbConnection);
+$whereClause = DatabaseSecurity::buildWhereString('username', $username, $dbConnection, '=');
 // Result: "username = 'escaped_username'"
 
 // For IN clauses with multiple integers
