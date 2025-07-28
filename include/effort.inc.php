@@ -366,17 +366,27 @@
 				$this->db = new Database;
 			}
 
+			// Ensure database connection is established
+			if(empty($this->db->Link_ID)) {
+				$this->db->connect(
+					$GLOBALS['_PJ_db_database'],
+					$GLOBALS['_PJ_db_host'],
+					$GLOBALS['_PJ_db_user'],
+					$GLOBALS['_PJ_db_password']
+				);
+			}
+
 			// Only check for duplicates when creating a new effort (no ID yet)
 			if(!empty($this->data['id'])) {
 				return false;
 			}
 
 			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
-			$safeProjectId = DatabaseSecurity::escapeString($this->data['project_id']);
-			$safeDate = DatabaseSecurity::escapeString($this->data['date']);
-			$safeBegin = DatabaseSecurity::escapeString($this->data['begin']);
-			$safeDescription = DatabaseSecurity::escapeString($this->data['description']);
-			$safeUser = DatabaseSecurity::escapeString($this->data['user']);
+			$safeProjectId = DatabaseSecurity::escapeString($this->data['project_id'], $this->db->Link_ID);
+			$safeDate = DatabaseSecurity::escapeString($this->data['date'], $this->db->Link_ID);
+			$safeBegin = DatabaseSecurity::escapeString($this->data['begin'], $this->db->Link_ID);
+			$safeDescription = DatabaseSecurity::escapeString($this->data['description'], $this->db->Link_ID);
+			$safeUser = DatabaseSecurity::escapeString($this->data['user'], $this->db->Link_ID);
 			
 			$query = "SELECT id FROM {$safeTable} WHERE ";
 			$query .= "project_id = '{$safeProjectId}' AND ";

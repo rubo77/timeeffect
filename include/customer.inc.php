@@ -138,8 +138,17 @@
 			$query = "SELECT COUNT(id) FROM {$safeProjectTable} WHERE customer_id={$safeId}";
 			$access_query="";
 			if(!$this->user->checkPermission('admin')) {
+				// Ensure database connection is established
+				if(empty($this->db->Link_ID)) {
+					$this->db->connect(
+						$GLOBALS['_PJ_db_database'],
+						$GLOBALS['_PJ_db_host'],
+						$GLOBALS['_PJ_db_user'],
+						$GLOBALS['_PJ_db_password']
+					);
+				}
 				$safeUserId = DatabaseSecurity::escapeInt($this->user->giveValue('id'));
-				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'));
+				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'), $this->db->Link_ID);
 				$access_query  = " AND (";
 				$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
 				$access_query .= " OR ";
@@ -179,8 +188,17 @@
 			} 
 			// Nur wenn $this->user ein Objekt ist, prüfen wir die Berechtigung
 			elseif(!$this->user->checkPermission('admin')) {
+				// Ensure database connection is established
+				if(empty($this->db->Link_ID)) {
+					$this->db->connect(
+						$GLOBALS['_PJ_db_database'],
+						$GLOBALS['_PJ_db_host'],
+						$GLOBALS['_PJ_db_user'],
+						$GLOBALS['_PJ_db_password']
+					);
+				}
 				$safeUserId = DatabaseSecurity::escapeInt($this->user->giveValue('id'));
-				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'));
+				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'), $this->db->Link_ID);
 				$access_query  = " AND (";
 				$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
 				$access_query .= " OR ";

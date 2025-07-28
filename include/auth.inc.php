@@ -138,10 +138,10 @@
 			// Create a proper mysqli connection for DatabaseSecurity functions
 			$db = new Database();
 			$db->connect(
+				$GLOBALS['_PJ_db_database'],
 				$GLOBALS['_PJ_db_host'],
 				$GLOBALS['_PJ_db_user'],
-				$GLOBALS['_PJ_db_password'],
-				$GLOBALS['_PJ_db_database']
+				$GLOBALS['_PJ_db_password']
 			);
 			$whereClause = DatabaseSecurity::buildWhereString(
 				$this->storage->options['usernamecol'], 
