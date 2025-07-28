@@ -303,6 +303,11 @@
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
+				// LOG_EFFORT_LOAD: Ensure access field is never null after loading from database
+				if(empty($this->data['access']) || $this->data['access'] === null) {
+					$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+					error_log("LOG_EFFORT_LOAD: Fixed null access field for effort ID: $id, set to default access");
+				}
 			}
 		}
 

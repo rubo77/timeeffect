@@ -66,13 +66,36 @@
 		</a>
 		
 		<!-- Efforts Navigation -->
-		<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
-			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<circle cx="12" cy="12" r="10"/>
-				<polyline points="12,6 12,12 16,14"/>
-			</svg>
-			<span><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></span>
-		</a>
+		<div style="display: flex; align-items: center; gap: 0.5rem;">
+			<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"/>
+					<polyline points="12,6 12,12 16,14"/>
+				</svg>
+				<span><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></span>
+			</a>
+			<!-- Stop Link for Current Running Effort -->
+			<?php
+				$__PJ_running_efforts = new OpenEfforts($_PJ_auth);
+				if($__PJ_running_efforts->effortCount()) {
+					$__PJ_running_efforts->reset();
+					while($__PJ_running_efforts->nextEffort()) {
+						$running_effort = $__PJ_running_efforts->giveEffort();
+						if($running_effort->giveValue('hours') == 0) { // Only show stop for running efforts
+			?>
+			<a href="<?= $GLOBALS['_PJ_efforts_inventory_script'] . '?stop=1&eid=' . $running_effort->giveValue('id') ?>" 
+			   class="nav-item" 
+			   style="display: flex; align-items: center; padding: 0.5rem; background: rgba(239, 68, 68, 0.1); border-radius: 0.375rem; transition: all 0.2s ease;" 
+			   title="<?php if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>">
+				🛑
+			</a>
+			<?php
+							break; // Only show one stop button for the first running effort
+						}
+					}
+				}
+			?>
+		</div>
 		
 		<!-- Statistics Navigation -->
 		<a href="<?php if(!empty($GLOBALS['_PJ_projects_statistics_script'])) echo $GLOBALS['_PJ_projects_statistics_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
