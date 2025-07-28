@@ -126,7 +126,7 @@
 					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</b></TD>
 					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 						<SELECT CLASS="FormField" NAME="selected_cid" ID="customer-select" onchange="updateProjectList()">
-							<OPTION VALUE="">-- Kunde wählen --</OPTION>
+							<OPTION VALUE="">-- <?php echo $GLOBALS['_PJ_strings']['select_customer']; ?> --</OPTION>
 							<?php
 								// Generate customer options
 								$customer_list = new CustomerList($_PJ_auth);
@@ -143,7 +143,7 @@
 					<TD CLASS="FormFieldName"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
 					<TD CLASS="FormField">
 						<SELECT CLASS="FormField" NAME="selected_pid" ID="project-select">
-							<OPTION VALUE="">-- Projekt wählen --</OPTION>
+							<OPTION VALUE="">-- <?php echo $GLOBALS['_PJ_strings']['select_project']; ?> --</OPTION>
 							<?php
 								if(!empty($cid)) {
 									// Show projects for current customer
@@ -448,18 +448,18 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 
 	<!-- German help section for auto-assignment -->
 	<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 20px auto; max-width: 600px; font-size: 0.9em; color: #495057;">
-		<h4 style="color: #007bff; margin-top: 0;">💡 Hilfe zur automatischen Zuordnung</h4>
-		<p><strong>Automatische Kunden- und Projektzuordnung:</strong></p>
+		<h4 style="color: #007bff; margin-top: 0;">💡 <?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_title']; ?></h4>
+		<p><strong><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_desc']; ?></strong></p>
 		<ul>
-			<li>Wenn kein Projekt ausgewählt wurde, aber der <strong>Kundenname</strong> in der Beschreibung vorkommt, wird der Kunde automatisch zugeordnet.</li>
-			<li>Beginnt die Beschreibung mit <strong>"k"</strong> gefolgt von der Kunden-ID (z.B. "k5"), wird automatisch der entsprechende Kunde zugeordnet.</li>
-			<li>Beginnt die Beschreibung mit <strong>"p"</strong> gefolgt von der Projekt-ID (z.B. "p12"), wird automatisch das entsprechende Projekt zugeordnet.</li>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_1']; ?></li>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_2']; ?></li>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_3']; ?></li>
 		</ul>
-		<p><em>Beispiele:</em></p>
+		<p><em><?php echo $GLOBALS['_PJ_strings']['auto_assignment_examples']; ?></em></p>
 		<ul>
-			<li><code>k3 Projektplanung</code> → Ordnet Kunde mit ID 3 zu</li>
-			<li><code>p15 Bugfixes</code> → Ordnet Projekt mit ID 15 zu</li>
-			<li><code>Arbeit für Musterfirma</code> → Sucht nach Kunde "Musterfirma"</li>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_1']; ?></code></li>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_2']; ?></code></li>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_3']; ?></code></li>
 		</ul>
 	</div>
 

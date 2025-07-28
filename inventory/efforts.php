@@ -173,23 +173,28 @@
 			}
 			
 			// Auto-assignment based on description if no project is selected
+			$cleaned_description = $description;
 			if(empty($final_pid) && !empty($description)) {
 				// Check if description starts with 'k' followed by customer ID
-				if(preg_match('/^k(\d+)/', $description, $matches)) {
+				if(preg_match('/^k(\d+)\s*/', $description, $matches)) {
 					$auto_cid = intval($matches[1]);
 					$test_customer = new Customer($_PJ_auth, $auto_cid);
 					if($test_customer->giveValue('id')) {
 						$final_cid = $auto_cid;
+						// Remove the shortcode from the description
+						$cleaned_description = preg_replace('/^k\d+\s*/', '', $description);
 					}
 				}
 				// Check if description starts with 'p' followed by project ID
-				elseif(preg_match('/^p(\d+)/', $description, $matches)) {
+				elseif(preg_match('/^p(\d+)\s*/', $description, $matches)) {
 					$auto_pid = intval($matches[1]);
 					// Verify project exists and user has access
 					$test_project = new Project(null, $_PJ_auth, $auto_pid);
 					if($test_project->giveValue('id')) {
 						$final_pid = $auto_pid;
 						$final_cid = $test_project->giveValue('customer_id');
+						// Remove the shortcode from the description
+						$cleaned_description = preg_replace('/^p\d+\s*/', '', $description);
 					}
 				}
 				// Check if customer name appears in description
@@ -231,7 +236,7 @@
 			$data['project_id']		= $final_pid;
 			$data['date']			= "$year-$month-$day";
 			$data['begin']			= sprintf('%02d:%02d:%02d', intval($hour), intval($minute), intval($second));
-			$data['description']	= add_slashes($description);
+			$data['description']	= add_slashes($cleaned_description);
 			$data['note']			= add_slashes($note);
 			$data['rate']			= $rate;
 			$data['user']			= $user;
