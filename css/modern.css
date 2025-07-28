@@ -1300,3 +1300,71 @@ html {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
+
+/* Chrome Android specific dark mode fixes */
+/* Force dark mode styles when system-dark class is present (Chrome Android fallback) */
+.system-dark {
+    --primary-color: #818cf8;
+    --primary-hover: #6366f1;
+    --primary-light: #a5b4fc;
+    --secondary-color: #a78bfa;
+    --secondary-light: #c4b5fd;
+    --success-color: #4ade80;
+    --success-light: #86efac;
+    --warning-color: #facc15;
+    --warning-light: #fde047;
+    --danger-color: #f87171;
+    --danger-light: #fca5a5;
+    --background-color: #0f172a;
+    --background-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --surface-color: #1e293b;
+    --surface-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: #475569;
+    --border-focus: #818cf8;
+    --glow-color: rgba(129, 140, 248, 0.4);
+}
+
+/* Force Chrome Android to respect dark mode variables */
+@supports (-webkit-touch-callout: none) {
+    .system-dark body,
+    .system-dark * {
+        color-scheme: dark !important;
+    }
+    
+    .system-dark body {
+        background: var(--background-gradient) !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .system-dark input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
+    .system-dark textarea,
+    .system-dark select {
+        background: var(--surface-color) !important;
+        color: var(--text-primary) !important;
+        border-color: var(--border-color) !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+    }
+    
+    .system-dark .modern-tab,
+    .system-dark a.option {
+        background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+        border: 1px solid #475569 !important;
+        color: #cbd5e1 !important;
+    }
+    
+    .system-dark .modern-tab:hover,
+    .system-dark a.option:hover {
+        background: linear-gradient(135deg, #475569 0%, #64748b 100%) !important;
+        color: #f1f5f9 !important;
+        border-color: #64748b !important;
+    }
+    
+    .system-dark .modern-tab.active,
+    .system-dark a.option.active {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+        color: #f1f5f9 !important;
+        border-color: #64748b !important;
+    }
+}

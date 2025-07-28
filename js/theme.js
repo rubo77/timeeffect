@@ -70,15 +70,31 @@ class ThemeManager {
     }
 
     /**
-     * Apply system theme based on media query
+     * Apply system theme based on media query with Chrome Android fallback
      */
     applySystemTheme() {
-        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDark = false;
+        
+        // Primary detection method
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            isDark = true;
+        }
+        
+        // Chrome Android fallback detection methods
+        if (!isDark && this.isChromeAndroid()) {
+            isDark = this.detectDarkModeOnChromeAndroid();
+        }
+        
         document.documentElement.removeAttribute('data-theme');
         
         // Add system class for styling purposes
         document.documentElement.classList.toggle('system-dark', isDark);
         document.documentElement.classList.toggle('system-light', !isDark);
+        
+        // Force CSS custom properties update for Chrome Android
+        if (this.isChromeAndroid()) {
+            this.forceChromeAndroidThemeUpdate(isDark);
+        }
     }
 
     /**
@@ -104,7 +120,14 @@ class ThemeManager {
      */
     getEffectiveTheme() {
         if (this.currentTheme === 'system') {
-            return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Chrome Android fallback
+            if (!isDark && this.isChromeAndroid()) {
+                isDark = this.detectDarkModeOnChromeAndroid();
+            }
+            
+            return isDark ? 'dark' : 'light';
         }
         return this.currentTheme;
     }
@@ -191,6 +214,84 @@ class ThemeManager {
         });
         
         return selector;
+    }
+    
+    /**
+     * Detect if running on Chrome Android
+     */
+    isChromeAndroid() {
+        const userAgent = navigator.userAgent;
+        return /Android/.test(userAgent) && /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
+    }
+    
+    /**
+     * Fallback dark mode detection for Chrome Android
+     */
+    detectDarkModeOnChromeAndroid() {
+        // Method 1: Check if CSS media query works in a different way
+        try {
+            const testElement = document.createElement('div');
+            testElement.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;';
+            testElement.style.backgroundColor = 'white';
+            document.body.appendChild(testElement);
+            
+            const computedStyle = window.getComputedStyle(testElement);
+            const bgColor = computedStyle.backgroundColor;
+            document.body.removeChild(testElement);
+            
+            // If the background is not white, system might be in dark mode
+            if (bgColor !== 'rgb(255, 255, 255)' && bgColor !== 'white') {
+                return true;
+            }
+        } catch (e) {
+            console.warn('Chrome Android dark mode detection method 1 failed:', e);
+        }
+        
+        // Method 2: Check meta theme-color if available
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (metaThemeColor) {
+            const content = metaThemeColor.getAttribute('content');
+            if (content && (content.includes('#1') || content.includes('#2') || content.includes('#3'))) {
+                return true;
+            }
+        }
+        
+        // Method 3: Time-based heuristic (dark mode more likely at night)
+        const hour = new Date().getHours();
+        if (hour < 6 || hour > 20) {
+            // Store this preference for consistency
+            const stored = localStorage.getItem('chrome-android-dark-hint');
+            if (stored === 'true') {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Force CSS custom properties update for Chrome Android
+     */
+    forceChromeAndroidThemeUpdate(isDark) {
+        // Force repaint by temporarily changing a CSS custom property
+        const root = document.documentElement;
+        const tempProp = '--chrome-android-fix';
+        
+        root.style.setProperty(tempProp, isDark ? 'dark' : 'light');
+        
+        // Force layout recalculation
+        root.offsetHeight;
+        
+        // Remove temporary property
+        root.style.removeProperty(tempProp);
+        
+        // Store the detected state for consistency
+        localStorage.setItem('chrome-android-dark-hint', isDark.toString());
+        
+        // Dispatch a custom event to trigger any additional updates
+        document.dispatchEvent(new CustomEvent('chromeAndroidThemeForced', {
+            detail: { isDark }
+        }));
     }
 }
 
