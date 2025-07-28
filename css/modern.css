@@ -1055,7 +1055,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-tab,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-tab {
         background: linear-gradient(135deg, #334155 0%, #475569 100%);
@@ -1064,8 +1063,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-tab:hover,
-[data-theme="dark"] a.option:hover,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-tab:hover,
     :root:not([data-theme="light"]) a.option:hover {
@@ -1075,8 +1072,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-tab.active,
-[data-theme="dark"] a.option.active,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-tab.active,
     :root:not([data-theme="light"]) a.option.active {
@@ -1087,9 +1082,6 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode form styling */
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
-[data-theme="dark"] textarea,
-[data-theme="dark"] select,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
     :root:not([data-theme="light"]) textarea,
@@ -1100,9 +1092,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):hover,
-[data-theme="dark"] textarea:hover,
-[data-theme="dark"] select:hover,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):hover,
     :root:not([data-theme="light"]) textarea:hover,
@@ -1112,9 +1101,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):focus,
-[data-theme="dark"] textarea:focus,
-[data-theme="dark"] select:focus,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]):focus,
     :root:not([data-theme="light"]) textarea:focus,
@@ -1126,8 +1112,6 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode table styling */
-[data-theme="dark"] .modern-table,
-[data-theme="dark"] table,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-table,
     :root:not([data-theme="light"]) table {
@@ -1136,8 +1120,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-table th,
-[data-theme="dark"] th,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-table th,
     :root:not([data-theme="light"]) th {
@@ -1147,8 +1129,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-table td,
-[data-theme="dark"] td,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-table td,
     :root:not([data-theme="light"]) td {
@@ -1158,8 +1138,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .modern-table tr:hover,
-[data-theme="dark"] tr:hover,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .modern-table tr:hover,
     :root:not([data-theme="light"]) tr:hover {
@@ -1168,14 +1146,12 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode navigation */
-[data-theme="dark"] .nav-item,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .nav-item {
         color: #cbd5e1;
     }
 }
 
-[data-theme="dark"] .nav-item:hover,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .nav-item:hover {
         background: linear-gradient(135deg, rgba(129, 140, 248, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
@@ -1185,7 +1161,6 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode legacy table support */
-[data-theme="dark"] TD.headFrame,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) TD.headFrame {
         background-color: #334155 !important;
@@ -1195,8 +1170,6 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode links and navigation */
-[data-theme="dark"] .topNav,
-[data-theme="dark"] a,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .topNav,
     :root:not([data-theme="light"]) a {
@@ -1204,8 +1177,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .topNav:hover,
-[data-theme="dark"] a:hover,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .topNav:hover,
     :root:not([data-theme="light"]) a:hover {
@@ -1214,7 +1185,6 @@ html[data-theme="dark"] a.option:hover {
 }
 
 /* Dark mode status indicators */
-[data-theme="dark"] .status-active,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .status-active {
         background: rgba(74, 222, 128, 0.2);
@@ -1222,7 +1192,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .status-inactive,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .status-inactive {
         background: rgba(148, 163, 184, 0.2);
@@ -1230,7 +1199,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .status-warning,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .status-warning {
         background: rgba(250, 204, 21, 0.2);
@@ -1238,7 +1206,6 @@ html[data-theme="dark"] a.option:hover {
     }
 }
 
-[data-theme="dark"] .status-error,
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .status-error {
         background: rgba(248, 113, 113, 0.2);
