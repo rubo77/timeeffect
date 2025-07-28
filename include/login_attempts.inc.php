@@ -23,13 +23,19 @@ class LoginAttemptTracker {
     
     private $db;
     private $table_name;
+    public $table_exists = false;
     
     public function __construct() {
         $this->db = new Database();
         $this->table_name = $GLOBALS['_PJ_table_prefix'] . 'login_attempts';
         
-        // Clean up old records periodically
-        $this->cleanupOldAttempts();
+        // Check if table exists
+        $this->table_exists = $this->ensureTableExists();
+        
+        // Clean up old records periodically (only if table exists)
+        if ($this->table_exists) {
+            $this->cleanupOldAttempts();
+        }
     }
     
     /**
@@ -68,6 +74,11 @@ class LoginAttemptTracker {
      * Check if IP or username is currently locked out
      */
     public function isLockedOut($username = '') {
+        // If table doesn't exist, no lockout protection is available
+        if (!$this->table_exists) {
+            return ['locked' => false];
+        }
+        
         $ip = $this->getClientIP();
         $lockout_time = date('Y-m-d H:i:s', time() - self::LOCKOUT_DURATION);
         
@@ -120,6 +131,11 @@ class LoginAttemptTracker {
      * Record a login attempt
      */
     public function recordAttempt($username, $success = false) {
+        // If table doesn't exist, cannot record attempts
+        if (!$this->table_exists) {
+            return;
+        }
+        
         $ip = $this->getClientIP();
         
         $query = sprintf(
@@ -147,6 +163,11 @@ class LoginAttemptTracker {
      * Clear successful attempts for user (called on successful login)
      */
     public function clearAttempts($username) {
+        // If table doesn't exist, nothing to clear
+        if (!$this->table_exists) {
+            return;
+        }
+        
         $ip = $this->getClientIP();
         
         // Clear attempts for both IP and username
@@ -172,6 +193,11 @@ class LoginAttemptTracker {
      * Get remaining attempts before lockout
      */
     public function getRemainingAttempts($username = '') {
+        // If table doesn't exist, return max attempts (no restrictions)
+        if (!$this->table_exists) {
+            return min(self::MAX_ATTEMPTS_PER_IP, self::MAX_ATTEMPTS_PER_USER);
+        }
+        
         $lockout_status = $this->isLockedOut($username);
         
         if ($lockout_status['locked']) {
@@ -223,6 +249,11 @@ class LoginAttemptTracker {
      * Clean up old login attempt records
      */
     private function cleanupOldAttempts() {
+        // If table doesn't exist, nothing to clean up
+        if (!$this->table_exists) {
+            return;
+        }
+        
         // Only run cleanup occasionally to avoid performance impact
         if (rand(1, 100) <= 5) { // 5% chance on each instantiation
             $cleanup_time = date('Y-m-d H:i:s', time() - (self::CLEANUP_INTERVAL * 24 * 20)); // Keep 20 days of data
@@ -238,34 +269,20 @@ class LoginAttemptTracker {
     }
     
     /**
-     * Check if login attempts table exists and create if needed
+     * Check if login attempts table exists
      */
     public function ensureTableExists() {
         $table_check = sprintf("SHOW TABLES LIKE '%s'", $this->table_name);
         $this->db->query($table_check);
         
         if (!$this->db->next_record()) {
-            // Table doesn't exist, create it
-			$create_sql = "
-				CREATE TABLE `{$this->table_name}` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `ip_address` varchar(45) NOT NULL COMMENT 'IP address of the attempt (IPv4 or IPv6)',
-				  `username` varchar(50) NOT NULL DEFAULT '' COMMENT 'Username attempted',
-				  `attempt_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'When the attempt occurred',
-				  `success` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 for successful login, 0 for failed',
-				  PRIMARY KEY (`id`),
-				  KEY `ip_time` (`ip_address`, `attempt_time`),
-				  KEY `username_time` (`username`, `attempt_time`),
-				  KEY `attempt_time` (`attempt_time`)
-				) ENGINE=MyISAM COMMENT='Tracks login attempts for brute force protection'
-			";
-            
-            $this->db->query($create_sql);
-            
+            // Table doesn't exist - this should be created through proper installation
             if (isset($GLOBALS['logger'])) {
-                $GLOBALS['logger']->info('Created login_attempts table for brute force protection');
+                $GLOBALS['logger']->error('Login attempts table missing. Please run database migration/installation.');
             }
+            return false;
         }
+        return true;
     }
 }
 ?>

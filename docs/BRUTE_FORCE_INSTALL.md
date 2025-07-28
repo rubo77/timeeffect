@@ -1,20 +1,37 @@
 # Brute Force Protection - Installation Notes
 
-## Automatic Installation
+## Installation for New TimeEffect Installations
 
-The brute force protection system is designed to work automatically without manual database setup. When a user first attempts to login, the system will:
+For new installations, the brute force protection table is automatically included in the main installation process. No additional setup is required.
 
-1. Check if the `te_login_attempts` table exists
-2. Create the table automatically if it doesn't exist
-3. Begin tracking login attempts immediately
+## Installation for Existing TimeEffect Installations
 
-## Manual Installation (Optional)
+For existing TimeEffect installations, you need to run the database migration to add the login attempts table:
 
-If you prefer to create the table manually or need to troubleshoot, you can run:
+### Using the Migration Script (Recommended)
+
+1. Navigate to the sql directory in your TimeEffect installation:
+   ```bash
+   cd sql/
+   ```
+
+2. Run the migration script:
+   ```bash
+   php migrate.php
+   ```
+
+   This will:
+   - Create the necessary `login_attempts` table
+   - Set up the migration tracking system for future updates
+   - Ensure the schema is properly created with your table prefix
+
+### Manual Installation (Alternative)
+
+If you prefer to create the table manually, you can run this SQL command directly in your database:
 
 ```sql
--- Run this SQL command in your TimeEffect database
-CREATE TABLE `te_login_attempts` (
+-- Replace 'te_' with your actual table prefix
+CREATE TABLE IF NOT EXISTS `te_login_attempts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(45) NOT NULL COMMENT 'IP address of the attempt (IPv4 or IPv6)',
   `username` varchar(50) NOT NULL DEFAULT '' COMMENT 'Username attempted',
@@ -27,7 +44,7 @@ CREATE TABLE `te_login_attempts` (
 ) ENGINE=MyISAM COMMENT='Tracks login attempts for brute force protection';
 ```
 
-**Note**: Replace `te_` with your configured table prefix if different.
+**Note**: Replace `te_` with your configured table prefix.
 
 ## Verification
 

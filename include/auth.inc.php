@@ -111,7 +111,6 @@
 			
 			// Initialize login attempt tracker
 			$this->loginAttemptTracker = new LoginAttemptTracker();
-			$this->loginAttemptTracker->ensureTableExists();
 			
 			$parent = get_parent_class($this);
 			$options = array(
@@ -179,8 +178,8 @@
 		function login() {
 			$login_ok = false;
 			
-			// Check for lockout before proceeding
-			if (!empty($this->username)) {
+			// Check for lockout before proceeding (only if tracker is available)
+			if (!empty($this->username) && $this->loginAttemptTracker && $this->loginAttemptTracker->table_exists) {
 				$lockout_status = $this->loginAttemptTracker->isLockedOut($this->username);
 				
 				if ($lockout_status['locked']) {
@@ -215,16 +214,23 @@
 			if (!empty($this->username)) {
 				if (true === $this->storage->fetchData($this->username, $this->password)) {
 					$login_ok = true;
-					// Record successful login and clear failed attempts
-					$this->loginAttemptTracker->recordAttempt($this->username, true);
-					$this->loginAttemptTracker->clearAttempts($this->username);
+					// Record successful login and clear failed attempts (only if tracker is available)
+					if ($this->loginAttemptTracker && $this->loginAttemptTracker->table_exists) {
+						$this->loginAttemptTracker->recordAttempt($this->username, true);
+						$this->loginAttemptTracker->clearAttempts($this->username);
+					}
 				} else {
-					// Record failed login attempt
-					$this->loginAttemptTracker->recordAttempt($this->username, false);
-					
-					// Get remaining attempts for display
-					$remaining = $this->loginAttemptTracker->getRemainingAttempts($this->username);
-					$GLOBALS['remaining_attempts'] = $remaining;
+					// Record failed login attempt (only if tracker is available)
+					if ($this->loginAttemptTracker && $this->loginAttemptTracker->table_exists) {
+						$this->loginAttemptTracker->recordAttempt($this->username, false);
+						
+						// Get remaining attempts for display
+						$remaining = $this->loginAttemptTracker->getRemainingAttempts($this->username);
+						$GLOBALS['remaining_attempts'] = $remaining;
+					} else {
+						// Set default when tracker not available
+						$GLOBALS['remaining_attempts'] = 1; // Show some remaining attempts
+					}
 					$GLOBALS['login_failed'] = true;
 					
 					if (is_callable($this->loginFailedCallback)) {
