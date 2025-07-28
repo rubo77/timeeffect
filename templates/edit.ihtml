@@ -1,5 +1,15 @@
 <!-- edit.ihtml - START -->
-<HTML>
+<?php
+// Get user theme preference for data-theme attribute
+$user_theme = 'system'; // default
+if(isset($_PJ_auth) && is_object($_PJ_auth) && method_exists($_PJ_auth, 'giveValue')) {
+    $theme_pref = $_PJ_auth->giveValue('theme_preference');
+    if(!empty($theme_pref)) {
+        $user_theme = $theme_pref;
+    }
+}
+?>
+<HTML<?php if($user_theme !== 'system') echo ' data-theme="' . htmlspecialchars($user_theme) . '"'; ?>>
 <HEAD>
 <TITLE>TIMEEFFECT - <?= $center_title; ?></TITLE>
 <!-- Mobile viewport and PWA meta tags for Phase 1 mobile optimization -->
@@ -46,6 +56,8 @@
 </TABLE>
 <!-- Mobile JavaScript for Phase 1 mobile optimization -->
 <SCRIPT SRC="<?php print $_PJ_http_root; ?>/js/mobile.js" type="text/javascript"></SCRIPT>
+<!-- Theme Management JavaScript -->
+<SCRIPT SRC="<?php print $_PJ_http_root; ?>/js/theme.js" type="text/javascript"></SCRIPT>
 </BODY>
 </HTML>
 <!-- edit.ihtml - END -->

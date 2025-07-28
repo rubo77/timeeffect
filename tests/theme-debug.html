@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>Theme Debug - Dark Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/project.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modern.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <style>
+        /* Debug styles to force dark theme visibility */
+        body {
+            background: var(--background-color, #0f172a) !important;
+            color: var(--text-primary, #f1f5f9) !important;
+        }
+        .debug-box {
+            background: var(--surface-color, #1e293b) !important;
+            border: 1px solid var(--border-color, #334155) !important;
+            color: var(--text-primary, #f1f5f9) !important;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .debug-info {
+            font-family: monospace;
+            font-size: 12px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 20px;">
+    <h1>Theme Debug - Dark Mode</h1>
+    <p>This page tests if dark mode CSS variables are working correctly.</p>
+    
+    <div class="debug-box">
+        <h3>Debug Information</h3>
+        <div class="debug-info">
+            <div>HTML data-theme: <span id="theme-attr">Loading...</span></div>
+            <div>Computed background-color: <span id="bg-color">Loading...</span></div>
+            <div>Computed text color: <span id="text-color">Loading...</span></div>
+            <div>CSS Variables loaded: <span id="css-vars">Loading...</span></div>
+        </div>
+    </div>
+    
+    <div class="debug-box">
+        <h3>Visual Test</h3>
+        <p>If dark mode is working:</p>
+        <ul>
+            <li>This background should be very dark (#0f172a)</li>
+            <li>This text should be light (#f1f5f9)</li>
+            <li>This box should have dark slate background (#1e293b)</li>
+        </ul>
+        
+        <button style="background: var(--primary-color, #6366f1); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Primary Button</button>
+        <button style="background: var(--secondary-color, #8b5cf6); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Secondary Button</button>
+    </div>
+    
+    <div class="debug-box">
+        <h3>CSS Variable Values</h3>
+        <div id="css-variable-values">Loading...</div>
+    </div>
+</div>
+
+<script>
+// Debug script to check CSS variables
+document.addEventListener('DOMContentLoaded', function() {
+    // Check data-theme attribute
+    const themeAttr = document.documentElement.getAttribute('data-theme');
+    document.getElementById('theme-attr').textContent = themeAttr || 'none';
+    
+    // Check computed styles
+    const bodyStyles = getComputedStyle(document.body);
+    document.getElementById('bg-color').textContent = bodyStyles.backgroundColor;
+    document.getElementById('text-color').textContent = bodyStyles.color;
+    
+    // Check CSS variables
+    const rootStyles = getComputedStyle(document.documentElement);
+    const variables = [
+        '--background-color',
+        '--surface-color', 
+        '--text-primary',
+        '--text-secondary',
+        '--primary-color',
+        '--secondary-color'
+    ];
+    
+    let cssVarHtml = '';
+    let varsLoaded = 0;
+    
+    variables.forEach(varName => {
+        const value = rootStyles.getPropertyValue(varName).trim();
+        if (value) {
+            varsLoaded++;
+            cssVarHtml += `<div>${varName}: <span style="color: #4ade80;">${value}</span></div>`;
+        } else {
+            cssVarHtml += `<div>${varName}: <span style="color: #f87171;">NOT FOUND</span></div>`;
+        }
+    });
+    
+    document.getElementById('css-variable-values').innerHTML = cssVarHtml;
+    document.getElementById('css-vars').textContent = `${varsLoaded}/${variables.length} loaded`;
+    document.getElementById('css-vars').style.color = varsLoaded === variables.length ? '#4ade80' : '#f87171';
+});
+</script>
+
+</body>
+</html>

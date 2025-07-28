@@ -21,7 +21,7 @@
 	</div>
 	
 	<!-- Main Navigation Items -->
-	<div style="padding: 0 0.5rem;">
+	<div id="main_nav_items" style="padding: 0 0.5rem;">
 		<a href="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
 			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 				<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>

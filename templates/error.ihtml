@@ -19,6 +19,15 @@
 
 
 <BODY>
+<script>
+// Initialize user theme preference from PHP
+(function() {
+    var userTheme = '<?php echo isset($_PJ_auth) ? ($_PJ_auth->giveValue("theme_preference") ?: "system") : "system"; ?>';
+    if (userTheme !== 'system') {
+        document.documentElement.setAttribute('data-theme', userTheme);
+    }
+})();
+</script>
 
 <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
 
@@ -56,6 +65,8 @@
 
 </TABLE>
 
+<!-- Theme Management JavaScript -->
+<SCRIPT SRC="<?php print $_PJ_http_root; ?>/js/theme.js" type="text/javascript"></SCRIPT>
 </BODY>
 
 </HTML>

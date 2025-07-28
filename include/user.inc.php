@@ -116,6 +116,10 @@ else return null;
 		function loadPermissionNames() {
 			$user_perms = explode(',', $this->giveValue('permissions'));
 			foreach($user_perms as $user_perm) {
+				// Skip empty permission values
+				if(empty($user_perm) || !isset($GLOBALS['_PJ_permission_names'][$user_perm])) {
+					continue;
+				}
 				if(!empty($this->data['perm_names'])) {
 					$this->data['perm_names'] .= ', ';
 				} else $this->data['perm_names']='';

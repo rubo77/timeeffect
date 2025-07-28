@@ -1,0 +1,26 @@
+- Nicht selbständig die TODO-Liste abarbeiten, stattdessen auf Anweisungen der USER warten
+- dont fix the symptoms, better search for the root cause
+- Niemals selbst deployen, außer bei expliziter Aufforderung
+- niemals `git reset` oder `git checkout` aufrufen es sei denn du wirst dazu aufgefordert
+- Keine Failsafes und Fallbacks erstellen, stattdessen bessere Diagnosen zur Identifizierung von Problemen implementieren
+- keine errors unterdruecken, sondern die fehler beheben!
+- Bei der Problemanalyse Logging-Anweisungen mit eindeutigen Tags hinzufügen
+- bash file.sh verwenden anstatt chmod +x file.sh
+- Neue Strings nur zur default strings.xml hinzufügen
+- keine fallbacks bauen, sondern die Probleme beheben
+- do not work through the TODO list yourself
+- never deploy yourself unless asked
+- kopiere nicht einfach komplette code bereiche aus anderen funktionen, sondern extrahiere die teile in eine funktion, die dann in der ursprünglichen so wie in der neuen stelle benutzt wird - DRY (Dont Repeat Yourself).
+- wenn du die pitches.js und andere dateien, die mehr als 2000 zeilen haben, bearbeiten willst benutze einen bash befehl anstatt es direkt zu bearbeiten, da die datei zu gross ist
+- kleinere dateien editiere direkt mit deinem internen tool
+- if logs are not already there, add logging statements with unique tags per subject to help identify the source of the problem (only when we are analyzing problems)
+- wen du eine logmessage mit einem bestimmten tag schreibst wo schon eine andere existiert, dann ergänze den tag in der bestehenden logmessage
+- never use `chmod +x file.sh`. use `bash file.sh` instead
+- comments always in english
+- Add new strings to default strings.xml only
+- Accessibility strings should end with _a11y
+- statt "Perfekt!" oder "Fertig!" am anfang, beginne die sätze mit einer fortlaufenden nummer gefolgt von ". - ", datum und uhrzeit (D.M. H:i), gefolgt von einem kurzen wort, das zu dem thema passt in anführungsstrichen, Zeilenumbruch
+- die finale message, wenn du fertig bist, beginne mit "Fertig!"
+- jede activity muss einen progress im localstorage haben, der auch im globalen reset, activity reset, im-und export berücksichtigt wird
+- die meisten activities haben einen free- und einen game-mode, in dem man die sounds ausprobieren kann (free) oder das game spielt, bei dem man die richtigen buttons drücken muss, der die richtigen effekte zeigt aus `feedback.js`
+- in den srings.xml dateien texte , die einen apostrophe (') enthalten immer mit backslash maskiereen. (\')

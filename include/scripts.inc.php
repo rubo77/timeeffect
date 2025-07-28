@@ -23,7 +23,7 @@
 	$GLOBALS['_PJ_billing_script']				= $GLOBALS['_PJ_http_root'] . '/billing/index.' . $GLOBALS['_PJ_php_suffix'];
 
 	$GLOBALS['_PJ_user_script']					= $GLOBALS['_PJ_http_root'] . '/user/index.'	. $GLOBALS['_PJ_php_suffix'];
-	$GLOBALS['_PJ_own_user_script']				= $GLOBALS['_PJ_http_root'] . '/user/own.'		. $GLOBALS['_PJ_php_suffix'];
+	$GLOBALS['_PJ_own_user_script']				= $GLOBALS['_PJ_http_root'] . '/user/settings.'		. $GLOBALS['_PJ_php_suffix'];
 
 	$GLOBALS['_PJ_group_script']				= $GLOBALS['_PJ_http_root'] . '/groups/index.'	. $GLOBALS['_PJ_php_suffix'];
 ?>

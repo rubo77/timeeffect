@@ -12,6 +12,19 @@
 	$cancel = $_REQUEST['cancel'] ?? null;
 	$confirm = $_REQUEST['confirm'] ?? null;
 	$id = $_REQUEST['id'] ?? null;
+	
+	// Initialize form field variables to prevent undefined variable warnings
+	$telephone = $_REQUEST['telephone'] ?? '';
+	$facsimile = $_REQUEST['facsimile'] ?? '';
+	$email = $_REQUEST['email'] ?? '';
+	$password = $_REQUEST['password'] ?? '';
+	$password_retype = $_REQUEST['password_retype'] ?? '';
+	$lastname = $_REQUEST['lastname'] ?? '';
+	$firstname = $_REQUEST['firstname'] ?? '';
+	$login = $_REQUEST['login'] ?? '';
+	$allow_nc = $_REQUEST['allow_nc'] ?? '';
+	$gids = $_REQUEST['gids'] ?? [];
+	$permissions = $_REQUEST['permissions'] ?? [];
 
 	$center_template	= "user";
 	$center_title		= $GLOBALS['_PJ_strings']['user'];

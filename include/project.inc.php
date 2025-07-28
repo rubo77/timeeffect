@@ -149,8 +149,17 @@ else return null;
 				$this->data = $project;
 			} else if($project != '') {
 				$this->load($project);
+			} else {
+				// LOG_PROJECT_INIT: Initialize empty project with required fields
+				$this->data = array();
+				$this->data['id'] = '';
+				$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+				$this->data['user'] = $user ? $user->giveValue('id') : '';
+				$this->data['gid'] = $user ? $user->giveValue('gid') : '';
+				error_log("LOG_PROJECT_INIT: Initialized empty project with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
 			}
-			$this->user_access				= $this->getUserAccess();
+			// Always call getUserAccess() - now safe because access field is always set
+			$this->user_access = $this->getUserAccess();
 			$this->loadEffort();
 		}
 
@@ -175,8 +184,12 @@ else return null;
 			if(empty($billed)) {
 					$query .= " AND billed IS NULL";
 			}
-			if(!$this->user->checkPermission('admin') && !$this->customer->giveValue('readforeignefforts')) {
+			// LOG_PROJECT_COUNT: Check customer object before accessing readforeignefforts
+			if(!$this->user->checkPermission('admin') && $this->customer && !$this->customer->giveValue('readforeignefforts')) {
+				error_log("LOG_PROJECT_COUNT: Restricting to own efforts for project " . $this->data['id']);
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "'";
+			} elseif (!$this->customer) {
+				error_log("LOG_PROJECT_COUNT: No customer object available for project " . $this->data['id'] . ", allowing all efforts");
 			}
 			$this->db->query($query);
 			if($this->db->next_record()) {

@@ -8,9 +8,24 @@
 		$u_gids						= explode(',', $_PJ_auth->giveValue('gids'));
 	}
 	$users			= $_PJ_auth->listUsers();
-	$rates			= new Rates($customer->giveValue("id"));
-	$r_count		= $rates->giveCount();
-	$project_input	= '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
+	
+	// LOG_EFFORT_FORM: Check customer and project objects before accessing giveValue
+	if ($customer && $customer->giveValue('id')) {
+		$rates = new Rates($customer->giveValue("id"));
+		$customer_id = $customer->giveValue('id');
+	} else {
+		error_log("LOG_EFFORT_FORM: No customer object available, using default rates");
+		$rates = new Rates(0); // Default rates
+		$customer_id = 0;
+	}
+	$r_count = $rates->giveCount();
+	
+	if ($project && $project->giveValue('project_name')) {
+		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
+	} else {
+		error_log("LOG_EFFORT_FORM: No project object available, using project ID only");
+		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>Project ID: ' . $pid . '</b>';
+	}
 	if(isset($effort) && is_object($effort) && $effort->giveValue('id')) {
 		if($_PJ_auth->checkPermission('accountant')) {
 			// Fix: Add isset check for array key 'cp' to prevent undefined array key warning
@@ -92,7 +107,16 @@
 		}
 		// last_description mod by Ruben Barkow -- END
 		$user						= $_PJ_auth->giveValue('id');
-		$effort_gid					= $project->giveValue('gid');
+		
+		// LOG_EFFORT_FORM: Check project object before accessing gid
+		if ($project && $project->giveValue('gid')) {
+			$effort_gid = $project->giveValue('gid');
+			error_log("LOG_EFFORT_FORM: Using project gid: " . $effort_gid);
+		} else {
+			// Use user's default gid for new efforts
+			$effort_gid = $_PJ_auth->giveValue('gid');
+			error_log("LOG_EFFORT_FORM: No project gid available, using user default gid: " . $effort_gid);
+		}
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';
 		$effort_access_group		= 'r--';
@@ -357,7 +381,8 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
+// LOG_EFFORT_FORM: Check effort object before accessing giveValue method
+if($_PJ_auth->checkPermission('admin') || (!$effort || !$effort->giveValue('id')) || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>

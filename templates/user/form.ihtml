@@ -126,15 +126,14 @@
 
 				</TR><TR>
 
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password'])) echo $GLOBALS['_PJ_strings']['password'] ?>*:</TD>
+					<TD CLASS="FormFieldName">Password:</TD>
 
-					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password" VALUE="<?php if(isset($password)) echo $password; ?>"></TD>
+					<TD CLASS="FormField">
+						<button type="button" id="change-password-btn" onclick="togglePasswordFields()" style="background: #007cba; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Change Password</button>
+					</TD>
 
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password_retype'])) echo $GLOBALS['_PJ_strings']['password_retype'] ?>*:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="<?php if(isset($password_retype)) echo $password_retype; ?>"></TD>
+				</TR>
+				<!-- Password fields will be dynamically inserted here by JavaScript -->
 
 				</TR><TR>
 
@@ -165,6 +164,16 @@
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['facsimile'])) echo $GLOBALS['_PJ_strings']['facsimile'] ?>:</TD>
 
 					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="facsimile" VALUE="<?php if(isset($facsimile)) echo $facsimile; ?>"></TD>
+
+				</TR><TR>
+
+					<TD CLASS="FormFieldName">Theme:</TD>
+
+					<TD CLASS="FormField"><SELECT CLASS="FormField" NAME="theme_preference">
+						<OPTION VALUE="system"<?php if((!isset($user) || $user->giveValue('theme_preference') == 'system' || $user->giveValue('theme_preference') == '')) print ' SELECTED'; ?>>System Default</OPTION>
+						<OPTION VALUE="light"<?php if(isset($user) && $user->giveValue('theme_preference') == 'light') print ' SELECTED'; ?>>Light</OPTION>
+						<OPTION VALUE="dark"<?php if(isset($user) && $user->giveValue('theme_preference') == 'dark') print ' SELECTED'; ?>>Dark</OPTION>
+					</SELECT></TD>
 
 <?php
 
@@ -261,6 +270,55 @@ if($_PJ_auth->checkPermission('admin')) {
 	</TABLE>
 
 </FORM>
+
+<script>
+// Get localized strings from PHP
+var passwordLabel = '<?php if(!empty($GLOBALS["_PJ_strings"]["password"])) echo addslashes($GLOBALS["_PJ_strings"]["password"]); else echo "Password"; ?>';
+var passwordRetypeLabel = '<?php if(!empty($GLOBALS["_PJ_strings"]["password_retype"])) echo addslashes($GLOBALS["_PJ_strings"]["password_retype"]); else echo "Retype Password"; ?>';
+
+function togglePasswordFields() {
+    var button = document.getElementById('change-password-btn');
+    var existingFields = document.getElementById('password-fields');
+    
+    if (!existingFields) {
+        // Create password fields dynamically
+        var buttonRow = button.closest('tr');
+        var table = buttonRow.parentNode;
+        
+        // Create password field row
+        var passwordRow = document.createElement('tr');
+        passwordRow.id = 'password-fields';
+        passwordRow.innerHTML = '<td class="FormFieldName">' + passwordLabel + '*:</td>' +
+                               '<td class="FormField"><input class="FormField" type="password" name="password" value="" id="password-field" autocomplete="new-password"></td>';
+        
+        // Create password retype field row
+        var passwordRetypeRow = document.createElement('tr');
+        passwordRetypeRow.id = 'password-retype-fields';
+        passwordRetypeRow.innerHTML = '<td class="FormFieldName">' + passwordRetypeLabel + '*:</td>' +
+                                     '<td class="FormField"><input class="FormField" type="password" name="password_retype" value="" id="password-retype-field" autocomplete="new-password"></td>';
+        
+        // Insert after button row
+        var nextRow = buttonRow.nextElementSibling;
+        table.insertBefore(passwordRow, nextRow);
+        table.insertBefore(passwordRetypeRow, nextRow);
+        
+        // Update button
+        button.textContent = 'Cancel Password Change';
+        button.style.background = '#dc3545';
+        
+        // Focus first password field
+        document.getElementById('password-field').focus();
+    } else {
+        // Remove password fields completely
+        document.getElementById('password-fields').remove();
+        document.getElementById('password-retype-fields').remove();
+        
+        // Update button
+        button.textContent = 'Change Password';
+        button.style.background = '#007cba';
+    }
+}
+</script>
 
 <!-- user/form.ihtml - END -->
 
