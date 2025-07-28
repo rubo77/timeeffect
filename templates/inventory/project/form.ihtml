@@ -76,7 +76,8 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || !$project->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
+// LOG_PROJECT_ACCESS: Check project object before accessing giveValue method
+if($_PJ_auth->checkPermission('admin') || (!$project || !$project->giveValue('id')) || $user == $_PJ_auth->giveValue('id')) {
 ?>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>

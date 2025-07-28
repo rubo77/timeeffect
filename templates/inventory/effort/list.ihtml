@@ -17,7 +17,7 @@
 						<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 							<TR VALIGN="center">
 								<TH CLASS="list"><?php
-if($pid && $project->checkUserAccess('new')) {
+if($pid && $project && $project->checkUserAccess('new')) {
 ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_efforts_inventory_script'] . "?new=1&cid=$cid&pid=$pid"; ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/effort.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['new_effort'])) echo $GLOBALS['_PJ_strings']['new_effort'] ?>" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['new_effort'])) echo $GLOBALS['_PJ_strings']['new_effort'] ?></A><?php
 } else { ?>&nbsp;<?php
 } ?></TH>

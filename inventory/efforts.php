@@ -38,6 +38,25 @@
 	$shown = $_REQUEST['shown'] ?? array();
 	$list = $_REQUEST['list'] ?? null;
 
+	// Initialize Customer and Project objects (required for efforts)
+	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
+	
+	// LOG_CUSTOMER_INIT: Log customer initialization status in efforts.php
+	if (!$customer) {
+		error_log("LOG_CUSTOMER_INIT: No customer ID provided in efforts.php, customer object is null");
+	}
+	
+	// Create Project object only if valid customer and pid are provided
+	if ($customer && $pid) {
+		// LOG_PROJECT_INIT: Loading existing project in efforts.php
+		error_log("LOG_PROJECT_INIT: Loading existing project with pid=$pid for customer $cid in efforts.php");
+		$project = new Project($customer, $_PJ_auth, $pid);
+	} else {
+		// LOG_PROJECT_INIT: No project object for new efforts or missing data
+		error_log("LOG_PROJECT_INIT: No project object created in efforts.php - new effort or missing customer/pid");
+		$project = null;
+	}
+
 	// Only create Effort object if valid eid is provided
 	$effort = $eid ? new Effort($eid, $_PJ_auth) : null;
 	if(!empty($stop)) {
@@ -115,17 +134,42 @@
 			$data['user']			= $user;
 			$data['gid']			= $gid;
 			$data['access']			= $access_owner . $access_group . $access_world;
+			// LOG_EFFORT_SAVE: Set defaults for empty fields
 			if($data['user'] == '') {
-				$data['user']	= $effort->giveValue('user');
+				if ($effort && $effort->giveValue('user')) {
+					// Use existing effort's user
+					$data['user'] = $effort->giveValue('user');
+					error_log("LOG_EFFORT_SAVE: Using existing effort user: " . $data['user']);
+				} else {
+					// Use current user for new efforts
+					$data['user'] = $_PJ_auth->giveValue('id');
+					error_log("LOG_EFFORT_SAVE: Using current user for new effort: " . $data['user']);
+				}
 			}
 			if($data['user'] == '') {
 				$data['user']	= $_PJ_auth->giveValue('id');
 			}
 			if($data['gid'] == '') {
-				$data['gid']	= $effort->giveValue('gid');
+				if ($effort && $effort->giveValue('gid')) {
+					// Use existing effort's gid
+					$data['gid'] = $effort->giveValue('gid');
+					error_log("LOG_EFFORT_SAVE: Using existing effort gid: " . $data['gid']);
+				} else {
+					// Use user's default gid for new efforts
+					$data['gid'] = $_PJ_auth->giveValue('gid');
+					error_log("LOG_EFFORT_SAVE: Using user default gid for new effort: " . $data['gid']);
+				}
 			}
 			if($data['access'] == '') {
-				$data['access']	= $effort->giveValue('access');
+				if ($effort && $effort->giveValue('access')) {
+					// Use existing effort's access
+					$data['access'] = $effort->giveValue('access');
+					error_log("LOG_EFFORT_SAVE: Using existing effort access: " . $data['access']);
+				} else {
+					// Use default access for new efforts (owner: read/write, group: read, world: none)
+					$data['access'] = 'rw-r-----';
+					error_log("LOG_EFFORT_SAVE: Using default access for new effort: " . $data['access']);
+				}
 			}
 			if(date("Y", strtotime("$billing_day/$billing_month/$billing_year")) > 1970) {
 				$data['billed']			= "'$billing_year-$billing_month-$billing_day'";
@@ -185,15 +229,32 @@
 		}
 	}
 
-	if($pid && !$project->checkUserAccess('read')) {
+	// LOG_PROJECT_ACCESS: Check project object before accessing checkUserAccess method
+	if($pid && $project && !$project->checkUserAccess('read')) {
+		error_log("LOG_PROJECT_ACCESS: Access denied for project $pid by user " . $_PJ_auth->giveValue('id'));
 		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 		include("$_PJ_root/templates/error.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
+	} elseif ($pid && !$project) {
+		error_log("LOG_PROJECT_ACCESS: No project object available for pid=$pid, allowing access");
 	}
 	$sort_order = $_GET['sort'] ?? 'desc';
 	$efforts			= new EffortList($customer, $project, $_PJ_auth, isset($shown['be']) ? $shown['be'] : false, NULL, $sort_order);
-	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $project->giveValue('project_name');
+	// LOG_TITLE_GENERATION: Set appropriate title based on project context
+	if ($project && $project->giveValue('project_name')) {
+		// Single project view
+		error_log("LOG_TITLE_GENERATION: Generating title for single project: " . $project->giveValue('project_name'));
+		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $project->giveValue('project_name');
+	} elseif ($customer && $customer->giveValue('customer_name')) {
+		// Customer-specific efforts view
+		error_log("LOG_TITLE_GENERATION: Generating title for customer efforts: " . $customer->giveValue('customer_name'));
+		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $customer->giveValue('customer_name');
+	} else {
+		// All efforts view
+		error_log("LOG_TITLE_GENERATION: Generating title for all efforts view");
+		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'];
+	}
 	include("$_PJ_root/templates/list.ihtml");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");

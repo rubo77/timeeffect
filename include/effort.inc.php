@@ -271,8 +271,16 @@
 				$this->data = $effort;
 			} else if($effort != '') {
 				$this->load($effort);
+			} else {
+				// LOG_EFFORT_INIT: Initialize empty effort with required fields
+				$this->data = array();
+				$this->data['id'] = '';
+				$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+				$this->data['user'] = $user ? $user->giveValue('id') : '';
+				$this->data['gid'] = $user ? $user->giveValue('gid') : '';
+				error_log("LOG_EFFORT_INIT: Initialized empty effort with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
 			}
-			// Always call getUserAccess() - it handles null access values properly
+			// Always call getUserAccess() - now safe because access field is always set
 			$this->user_access = $this->getUserAccess();
 			$this->initEffort();
 		}
