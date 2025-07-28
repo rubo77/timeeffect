@@ -47,60 +47,13 @@
 - Umfassende Darkmode-Styles für mobile Navigation (.mobile-nav, .nav-item, svg, span) ergänzt, sodass jetzt alle Bereiche (inkl. Kunden im Hamburger-Menü) dunkel sind
 - Darkmode-Styles für .modern-nav, .animate-float und a.option ergänzt und getestet (Inventar- und mobile Navigation jetzt überall dunkel, inkl. aller Option-Links)
 - Mobile Navigation ist jetzt vollständig dunkel, alle Elemente (inkl. .modern-nav, .animate-float, a.option) wurden korrekt gestylt
-- Database Migration System ist jetzt umfassend in docs/DATABASE_MIGRATIONS.md dokumentiert (Best Practices, Patterns, Checkliste, Beispiele, Troubleshooting für PRs)
+- Database Migration System ist jetzt umfassend in [docs/DATABASE_MIGRATIONS.md](docs/DATABASE_MIGRATIONS.md) dokumentiert (Best Practices, Patterns, Checkliste, Beispiele, Troubleshooting für PRs)
+- Installationsanleitung (docs/TIMEEFECT Installation Manual.md) ist jetzt modernisiert: PEAR entfernt, Docker empfohlen, aktuelle PHP/MySQL/MariaDB Anforderungen, moderne Setup- und Troubleshooting-Abschnitte
+- Installationsanleitung konsolidiert: Docker, Composer, .env, Production Deployment, dev/README.md kann gelöscht werden (alle Infos jetzt zentral in [TIMEEFECT Installation Manual.md](docs/TIMEEFECT Installation Manual.md))
+- Alle relevanten Markdown-Dokumentationen sind jetzt im Installation Manual verlinkt (siehe Abschnitt "Additional Documentation").
+- Die wichtigsten Development- und Dokumentationsdateien sind im Installation Manual gelistet; Legacy-Skripte und abgeschlossene Migrations-/Analyse-Dateien wurden gelöscht und sind im Manual als nicht mehr relevant markiert.
+- dev/ wurde aufgeräumt und alle Legacy-Skripte wurden gelöscht und im Manual dokumentiert.
 
 ## Task List
-- [x] Diagnose port 3306 conflict and docker-compose startup
-- [x] Confirm Apache and MariaDB containers are healthy and running
-- [x] Analyze document root in container and index.html redirect
-- [x] Fix te-docker-restart.sh to properly stop/disable nginx and mysql
-- [x] Fix undefined variable warnings in user/index.php when creating a user
-- [x] Fix undefined variable warning in groups/index.php when creating a group
-- [x] Verify user creation works without warnings
-- [x] Fix PHP 8.4 substr() deprecation warnings in data.inc.php
-- [x] Investigate root cause of null access value in data.inc.php
-- [x] Add diagnostic logging for access field in ACL logic
-- [x] Investigate ACL logic as root cause of access/null issues
-- [x] Analyze logs for ACL_DEBUG entries and identify faulty data flow
-- [x] Fix Konstruktoren von Customer, Project, Effort: getUserAccess() nur bei gültigen Daten aufrufen
-- [x] Installiere PHPUnit und schreibe ACL-Unit-Test
-- [x] Behebe PHPUnit-Testfehler durch fehlende Verzeichnisse/Globals
-- [x] Entferne Fallbacks aus ACL/Constructor-Logik und analysiere, warum getUserAccess() ohne ID aufgerufen wird
-- [x] Bei access=NULL: fataler Fehler statt Fallback
-- [x] Analysiere, warum Objekte ohne access erzeugt werden (Root Cause)
-- [x] Verhindere Customer-Objekt-Erstellung ohne gültige ID (z.B. in inventory/customer.php, report/index.php)
-- [x] Verhindere Project-Objekt-Erstellung ohne gültige ID (z.B. in inventory/projects.php)
-- [x] Teste, ob Fehler (FATAL ERROR: access field is null) nicht mehr auftritt
-- [x] Verhindere Effort-Objekt-Erstellung ohne gültige ID (z.B. in inventory/efforts.php)
-- [x] Schreibe einen PHPUnit-Test, der prüft, dass User ohne Welt-Lesezugriff keine fremden Kunden sieht
-- [x] ACL-Filter und Rechteverhalten mit Testdaten und Debug-Log verifizieren
-- [x] Fehleranalyse: giveValue() on null beim Kunden anlegen als User "ruben"
-- [x] settings.php entfernen, Theme-Setting in own.php integrieren
-- [x] Theme-Setting (Darkmode) in own.php funktional und ohne Fehler bereitstellen
-- [x] Spalte `theme_preference` in Auth-Tabelle hinzufügen (DB-Migration)
-- [x] Automatische Migrationen beim Login prüfen und ggf. ausführen
-- [x] DB-Flag für Migrationsstand einführen und Logik für automatische Upgrades implementieren
-- [x] Bug: Fatal error Call to undefined method Auth::giveValue() in settings.php analysieren und beheben (Include von auth.inc.php ergänzt)
-- [x] Alle Links von own.php auf settings.php umstellen (Header, Templates, Migration)
-- [x] Redirect-Problem nach own.php nach dem Speichern beheben ($GLOBALS['_PJ_own_user_script'] in scripts.inc.php anpassen)
-- [x] Bug: Nach Theme-Update wurde $_PJ_auth durch Auth-Objekt ersetzt, Fehler Call to undefined method Auth::giveValue() beheben (PJAuth erhalten, fetchAdditionalData() verwenden)
-- [x] Passwortfelder erst nach Klick auf "Passwort ändern" anzeigen, kein Fehler bei Speichern ohne Passwort
-- [x] Analyse: Welche CSS-Dateien werden geladen, warum hat Theme-Änderung keinen Effekt?
-- [x] Theme-Funktion (Dark/Light Mode) funktioniert jetzt korrekt (JavaScript-Override entfernt)
-- [x] CSS-Variables für Darkmode im Haupt-CSS mit html[data-theme="dark"] und/oder !important nachhaltig überschreiben
-- [x] Darkmode-Styles für Inputs, Textareas, Selectboxen und Links ergänzen
-- [x] Darkmode-Styles für Navigation-Links (dunkler) und .FormFieldName (hell) ergänzen
-- [x] Darkmode-Styles für Tabellen, TD.leftNavi und Inventar-spezifische Navigation ergänzen
-- [x] Inventar-Navigation Root Cause analysieren und CSS-Fix für a.modern-tab ergänzen
-- [x] Reiter (Tabs) in MainNav und Subnav dunkler machen (Darkmode)
-- [x] Darkmode-Styles für Hamburger-Menu und Kunden-Bereiche (mobile-main-options, .content, .list, A.list) ergänzen
-- [x] Umfassende Darkmode-Styles für mobile Navigation und mobile Kundenbereiche ergänzen
-- [x] Database Migration System dokumentieren (docs/DATABASE_MIGRATIONS.md für PR-Guideline)
 
 ## Current Goal
-Regressionstests und weitere Fehlerbeobachtung nach erfolgreicher Migration
-- Passwort-UI und Theme-Funktion prüfen
-- CSS-Variables im Haupt-CSS korrigieren
-+ Offene technische Schuld: Syntaxfehler in CSS-Datei (Media Query/Selector-Mischungen)
-+ Visuelle Regressionstests für Inputs, Selects, Links, Navigation und FormFieldName im Darkmode
-+ Sicherstellen, dass neue Migrationen nach Doku-Standard gebaut werden
