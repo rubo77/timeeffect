@@ -135,9 +135,18 @@
 			$session = &Auth::_importGlobalVariable("session");
 			
 			// Use secure query building to prevent SQL injection
+			// Create a proper mysqli connection for DatabaseSecurity functions
+			$db = new Database();
+			$db->connect(
+				$GLOBALS['_PJ_db_host'],
+				$GLOBALS['_PJ_db_user'],
+				$GLOBALS['_PJ_db_password'],
+				$GLOBALS['_PJ_db_database']
+			);
 			$whereClause = DatabaseSecurity::buildWhereString(
 				$this->storage->options['usernamecol'], 
-				$this->getUsername()
+				$this->getUsername(),
+				$db->Link_ID
 			);
 			$query = "SELECT * FROM `" . DatabaseSecurity::sanitizeColumnName($this->storage->options['table']) . "` WHERE " . $whereClause;
 
