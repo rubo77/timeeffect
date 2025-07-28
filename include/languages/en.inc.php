@@ -113,6 +113,15 @@
 	$GLOBALS['_PJ_strings']['login-welcome']			= '';
 	$GLOBALS['_PJ_strings']['login_error_msg']			= 'Username or password are not correct! Please try again:';
 	
+	// Brute force protection messages
+	$GLOBALS['_PJ_strings']['account_locked']			= 'Account Locked';
+	$GLOBALS['_PJ_strings']['lockout_ip_message']		= 'Too many failed login attempts from your IP address.';
+	$GLOBALS['_PJ_strings']['lockout_user_message']		= 'Too many failed login attempts for this username.';
+	$GLOBALS['_PJ_strings']['lockout_until']			= 'Please try again after';
+	$GLOBALS['_PJ_strings']['login_failed']				= 'Login Failed';
+	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Remaining attempts';
+	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Your account will be temporarily locked after too many failed attempts.';
+	
 	// Registration and password recovery strings
 	$GLOBALS['_PJ_strings']['register']					= 'Register';
 	$GLOBALS['_PJ_strings']['register_new_account']		= 'Register new account';
