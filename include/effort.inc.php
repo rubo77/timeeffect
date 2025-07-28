@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class OpenEfforts {
 		var $__effort_count	= 0;
 		var $__effort_cursor	= -1;
@@ -134,25 +137,31 @@
 				$raw_access_query="";
 			}
 
-			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
-			$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
-			$query .= ", " 		. $GLOBALS['_PJ_project_table'];
-			$query .= ", " 		. $GLOBALS['_PJ_customer_table'];
-			$query .= " WHERE "	. $GLOBALS['_PJ_effort_table'] . ".project_id=";
-			$query .= $GLOBALS['_PJ_project_table'] . ".id";
-			$query .= " AND "	. $GLOBALS['_PJ_project_table'] . ".customer_id=";
-			$query .= $GLOBALS['_PJ_customer_table'] . ".id";
+			$safeEffortTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$safeCustomerTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+			
+			$query  = "SELECT {$safeEffortTable}.* ";
+			$query .= " FROM {$safeEffortTable}";
+			$query .= ", {$safeProjectTable}";
+			$query .= ", {$safeCustomerTable}";
+			$query .= " WHERE {$safeEffortTable}.project_id=";
+			$query .= "{$safeProjectTable}.id";
+			$query .= " AND {$safeProjectTable}.customer_id=";
+			$query .= "{$safeCustomerTable}.id";
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
-				$query .= " AND project_id='" . $project->giveValue('id') . "'";
+				$safeProjectId = DatabaseSecurity::escapeInt($project->giveValue('id'));
+				$query .= " AND project_id={$safeProjectId}";
 				$sort_direction = ($sort_order === 'asc') ? 'ASC' : 'DESC';
 				$order_query = " ORDER BY billed, date $sort_direction, begin $sort_direction";
 				$limit_query = '';
 			} else if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
-				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='" . $customer->giveValue('id') . "'";
+				$safeCustomerId = DatabaseSecurity::escapeInt($customer->giveValue('id'));
+				$query .= " AND {$safeCustomerTable}.id={$safeCustomerId}";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
 				$limit_query = ' LIMIT 1000';
 			} else {
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM {$safeCustomerTable} WHERE 1 $raw_access_query");
 				$cids = '';
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
@@ -357,17 +366,34 @@
 				$this->db = new Database;
 			}
 
+			// Ensure database connection is established
+			if(empty($this->db->Link_ID)) {
+				$this->db->connect(
+					$GLOBALS['_PJ_db_database'],
+					$GLOBALS['_PJ_db_host'],
+					$GLOBALS['_PJ_db_user'],
+					$GLOBALS['_PJ_db_password']
+				);
+			}
+
 			// Only check for duplicates when creating a new effort (no ID yet)
 			if(!empty($this->data['id'])) {
 				return false;
 			}
 
-			$query = "SELECT id FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE ";
-			$query .= "project_id = '" . addslashes($this->data['project_id']) . "' AND ";
-			$query .= "date = '" . addslashes($this->data['date']) . "' AND ";
-			$query .= "begin = '" . addslashes($this->data['begin']) . "' AND ";
-			$query .= "description = '" . addslashes($this->data['description']) . "' AND ";
-			$query .= "user = '" . addslashes($this->data['user']) . "'";
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
+			$safeProjectId = DatabaseSecurity::escapeString($this->data['project_id'], $this->db->Link_ID);
+			$safeDate = DatabaseSecurity::escapeString($this->data['date'], $this->db->Link_ID);
+			$safeBegin = DatabaseSecurity::escapeString($this->data['begin'], $this->db->Link_ID);
+			$safeDescription = DatabaseSecurity::escapeString($this->data['description'], $this->db->Link_ID);
+			$safeUser = DatabaseSecurity::escapeString($this->data['user'], $this->db->Link_ID);
+			
+			$query = "SELECT id FROM {$safeTable} WHERE ";
+			$query .= "project_id = '{$safeProjectId}' AND ";
+			$query .= "date = '{$safeDate}' AND ";
+			$query .= "begin = '{$safeBegin}' AND ";
+			$query .= "description = '{$safeDescription}' AND ";
+			$query .= "user = '{$safeUser}'";
 
 			$this->db->query($query);
 			

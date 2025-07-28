@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class ProjectList {
 		var $db;
 		var $data = array();
@@ -35,25 +38,28 @@
 				$access_query .= " ) ";
 			}
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'];
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$query = "SELECT * FROM {$safeProjectTable}";
 			$sql_limit='';
 			if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
-				$query .= " WHERE customer_id = '" . $customer->giveValue('id') . "'";
+				$safeCustomerId = DatabaseSecurity::escapeInt($customer->giveValue('id'));
+				$query .= " WHERE customer_id = {$safeCustomerId}";
 				$order = " ORDER BY closed, project_name";
 				$limit = "";
 			} else {
 				$cids = ''; // Initialisierung von $cids
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $access_query");
+				$safeCustomerTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+				$this->db->query("SELECT id FROM {$safeCustomerTable} WHERE 1 {$access_query}");
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
 						$cids .= ',';
 					}
-					$cids .= $this->db->f('id');
+					$cids .= DatabaseSecurity::escapeInt($this->db->f('id'));
 				}
 				if(empty($cids)) {
 					return;
 				}
-				$query .= " WHERE customer_id IN ($cids)";
+				$query .= " WHERE customer_id IN ({$cids})";
 				if(isset($customer)) {
 					$order = " ORDER BY customer_id, last DESC, project_name";
 				} else {
