@@ -58,16 +58,27 @@ Allows administrators to switch to any user account for troubleshooting and supp
 
 ### For Existing Installations
 
-TimeEffect will automatically detect if migration is required and show a notification with a link to the migration page.
+TimeEffect uses a comprehensive migration system that automatically detects when database and configuration updates are required. The system follows the patterns described in `DATABASE_MIGRATIONS.md`.
 
-**Automatic Migration:**
+**Migration System Overview:**
+- **MigrationManager Class**: Manages version-based sequential migrations with proper tracking
+- **Migrations Table**: Tracks executed migrations to prevent duplicate execution 
+- **Automatic Detection**: Bootstrap checks for pending migrations on each request
+- **Integration**: Migrations run automatically during login process after database connection
+
+**Automatic Migration Process:**
 1. Visit your TimeEffect installation - you'll see a migration notice if needed
 2. Click the migration link to go to `/migrate.php`
-3. Follow the automated migration process for database and configuration updates
+3. The system will show current schema version and target version
+4. Click "Run Database Migration" to execute pending migrations
+5. Add configuration options automatically or manually as guided
 
-**Manual Migration (if needed):**
-1. Run the migration script: `sql/migration_add_registration_features.sql`
-2. Add the new configuration options to your `include/config.inc.php` (see below)
+**Migration Features:**
+- Version tracking prevents duplicate execution
+- Safety checks ensure migrations are idempotent
+- Comprehensive error handling and logging
+- Detailed migration history in the migrations table
+- Configuration auto-detection and guided setup
 
 ```php
 // User registration settings
@@ -78,12 +89,18 @@ $_PJ_allow_password_recovery = 1;
 
 ## Database Schema Changes
 
-The following fields have been added to the `auth` table:
+The migration system (version 1) automatically adds the following fields to the `auth` table:
 
 - `confirmed` - TINYINT(1) - Whether the user's email is confirmed (default: 1)
 - `confirmation_token` - VARCHAR(64) - Token for email confirmation
 - `reset_token` - VARCHAR(64) - Token for password reset
 - `reset_expires` - DATETIME - Expiration time for password reset token
+
+**Migration Details:**
+- Migration is tracked in the `{prefix}migrations` table
+- Includes performance indexes on token fields
+- Safe to run multiple times (idempotent)
+- Follows DATABASE_MIGRATIONS.md specification
 
 ## Security Features
 

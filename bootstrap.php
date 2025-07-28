@@ -101,21 +101,15 @@ function checkTimeEffectMigration() {
         }
         
         include_once(__DIR__ . '/include/aperetiv.inc.php');
+        include_once(__DIR__ . '/include/migrations.inc.php');
         
         $migration_needed = false;
         $config_needed = false;
         
-        // Check database fields
+        // Check database migration status using MigrationManager  
         try {
-            $db = new Database();
-            
-            // Check if the new fields exist in auth table
-            $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmed'";
-            $db->query($query);
-            
-            if (!$db->next_record()) {
-                $migration_needed = true;
-            }
+            $migrationManager = new MigrationManager();
+            $migration_needed = $migrationManager->migrationsNeeded();
         } catch (Exception $e) {
             $logger->warning('Database migration check failed', ['error' => $e->getMessage()]);
             return; // Skip if database not accessible

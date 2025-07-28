@@ -1,12 +1,14 @@
 <?php
 /**
  * TimeEffect Database Migration Page
- * Handles automatic migration of database schema for new features
+ * Handles automatic migration of database schema using the MigrationManager system
+ * Following DATABASE_MIGRATIONS.md specification
  */
 
 $no_login = true; // Disable automatic login requirement
 include_once("include/config.inc.php");
 include_once($_PJ_include_path . '/scripts.inc.php');
+include_once($_PJ_include_path . '/migrations.inc.php');
 
 $center_title = "Database Migration Required";
 $migration_required = false;
@@ -14,51 +16,27 @@ $config_required = false;
 $migration_success = false;
 $config_success = false;
 $errors = [];
+$migrations_run = [];
 
 // Check if migration is requested
 $run_migration = $_REQUEST['run_migration'] ?? null;
 $add_config = $_REQUEST['add_config'] ?? null;
 
-// Function to check if database fields exist
-function checkDatabaseFields() {
+// Function to check migration status using MigrationManager
+function checkMigrationStatus() {
     global $errors;
     
     try {
-        $db = new Database();
-        
-        // Check if the new fields exist in auth table
-        $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmed'";
-        $db->query($query);
-        
-        if (!$db->next_record()) {
-            return false; // confirmed field doesn't exist
-        }
-        
-        $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmation_token'";
-        $db->query($query);
-        
-        if (!$db->next_record()) {
-            return false; // confirmation_token field doesn't exist
-        }
-        
-        $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'reset_token'";
-        $db->query($query);
-        
-        if (!$db->next_record()) {
-            return false; // reset_token field doesn't exist
-        }
-        
-        $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'reset_expires'";
-        $db->query($query);
-        
-        if (!$db->next_record()) {
-            return false; // reset_expires field doesn't exist
-        }
-        
-        return true; // All fields exist
+        $migrationManager = new MigrationManager();
+        return $migrationManager->getMigrationStatus();
     } catch (Exception $e) {
-        $errors[] = "Database connection error: " . $e->getMessage();
-        return false;
+        $errors[] = "Migration status check error: " . $e->getMessage();
+        return [
+            'current_version' => 0,
+            'target_version' => 1,
+            'migrations_needed' => true,
+            'migrations_table_exists' => false
+        ];
     }
 }
 
@@ -69,32 +47,21 @@ function checkConfigOptions() {
            isset($GLOBALS['_PJ_allow_password_recovery']);
 }
 
-// Function to run database migration
+// Function to run database migration using MigrationManager
 function runDatabaseMigration() {
-    global $errors, $migration_success;
+    global $errors, $migration_success, $migrations_run;
     
     try {
-        $db = new Database();
+        $migrationManager = new MigrationManager();
+        $migrations_run = $migrationManager->runPendingMigrations();
         
-        // Read and execute migration SQL
-        $migration_sql = file_get_contents(__DIR__ . '/sql/migration_add_registration_features.sql');
-        
-        if ($migration_sql === false) {
-            $errors[] = "Could not read migration file: sql/migration_add_registration_features.sql";
+        if ($migrations_run !== false) {
+            $migration_success = true;
+            return true;
+        } else {
+            $errors[] = "Migration execution failed. Check error messages above.";
             return false;
         }
-        
-        // Split SQL into individual statements
-        $statements = array_filter(array_map('trim', explode(';', $migration_sql)));
-        
-        foreach ($statements as $statement) {
-            if (!empty($statement) && !preg_match('/^--/', $statement)) {
-                $db->query($statement);
-            }
-        }
-        
-        $migration_success = true;
-        return true;
     } catch (Exception $e) {
         $errors[] = "Migration error: " . $e->getMessage();
         return false;
@@ -156,14 +123,14 @@ function addConfigOptions() {
     }
 }
 
-// Check current status
-$db_fields_exist = checkDatabaseFields();
+// Check current status using MigrationManager
+$migration_status = checkMigrationStatus();
 $config_options_exist = checkConfigOptions();
 
 // Handle migration request
-if (isset($run_migration) && !$db_fields_exist) {
+if (isset($run_migration) && $migration_status['migrations_needed']) {
     runDatabaseMigration();
-    $db_fields_exist = checkDatabaseFields(); // Re-check
+    $migration_status = checkMigrationStatus(); // Re-check
 }
 
 // Handle config addition request
@@ -172,7 +139,7 @@ if (isset($add_config) && !$config_options_exist) {
     $config_options_exist = checkConfigOptions(); // Re-check
 }
 
-$migration_required = !$db_fields_exist;
+$migration_required = $migration_status['migrations_needed'];
 $config_required = !$config_options_exist;
 
 ?>
@@ -203,9 +170,14 @@ $config_required = !$config_options_exist;
             </div>
             <?php endif; ?>
             
-            <?php if ($migration_success): ?>
+            <?php if ($migration_success && !empty($migrations_run)): ?>
             <div class="alert alert-success" style="margin-bottom: 1rem; padding: 1rem; background: #efe; border: 1px solid #cfc; border-radius: 4px;">
                 <strong>Success!</strong> Database migration completed successfully.
+                <ul style="margin: 0.5rem 0;">
+                <?php foreach ($migrations_run as $migration): ?>
+                    <li><?= htmlspecialchars($migration) ?></li>
+                <?php endforeach; ?>
+                </ul>
             </div>
             <?php endif; ?>
             
@@ -221,11 +193,11 @@ $config_required = !$config_options_exist;
             <h3>Migration Status</h3>
             
             <div style="margin: 1rem 0;">
-                <strong>Database Fields:</strong>
-                <?php if ($db_fields_exist): ?>
-                    <span style="color: green;">✓ Up to date</span>
+                <strong>Database Schema:</strong>
+                <?php if (!$migration_status['migrations_needed']): ?>
+                    <span style="color: green;">✓ Version <?= $migration_status['current_version'] ?> (Up to date)</span>
                 <?php else: ?>
-                    <span style="color: red;">✗ Migration required</span>
+                    <span style="color: red;">✗ Version <?= $migration_status['current_version'] ?> (Target: <?= $migration_status['target_version'] ?>)</span>
                 <?php endif; ?>
             </div>
             
@@ -245,7 +217,7 @@ $config_required = !$config_options_exist;
                 <?php if ($migration_required): ?>
                 <div style="margin: 1rem 0; padding: 1rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px;">
                     <h4>Database Migration</h4>
-                    <p>New database fields need to be added to support user registration and password recovery.</p>
+                    <p>Database schema needs to be updated to version <?= $migration_status['target_version'] ?> to support user registration and password recovery.</p>
                     <form method="POST" style="margin-top: 1rem;">
                         <button type="submit" name="run_migration" value="1" class="btn btn-primary">
                             Run Database Migration
