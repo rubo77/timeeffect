@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>Theme Test - Dark Mode</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/project.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modern.css">
+    <link rel="stylesheet" href="../css/layout.css">
+</head>
+<body>
+
+<div style="padding: 20px;">
+    <h1>Theme Test - Dark Mode</h1>
+    <p>This page has <code>data-theme="dark"</code> set on the HTML element.</p>
+    
+    <div style="margin: 20px 0; padding: 20px; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <h3>Sample Content</h3>
+        <p>This text should appear in dark mode colors:</p>
+        <ul>
+            <li>Background should be dark (--background-color: #0f172a)</li>
+            <li>Text should be light (--text-primary: #f1f5f9)</li>
+            <li>Surface should be dark slate (--surface-color: #1e293b)</li>
+        </ul>
+        
+        <div style="margin-top: 15px;">
+            <button style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer;">Primary Button</button>
+            <button style="background: var(--secondary-color); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-sm); cursor: pointer; margin-left: 10px;">Secondary Button</button>
+        </div>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <h3>CSS Variables Test</h3>
+        <div style="font-family: monospace; font-size: 12px;">
+            <div>--background-color: <span style="background: var(--background-color); color: var(--text-primary); padding: 2px 8px; border: 1px solid var(--border-color);">var(--background-color)</span></div>
+            <div>--surface-color: <span style="background: var(--surface-color); color: var(--text-primary); padding: 2px 8px; border: 1px solid var(--border-color);">var(--surface-color)</span></div>
+            <div>--text-primary: <span style="color: var(--text-primary); background: var(--surface-color); padding: 2px 8px; border: 1px solid var(--border-color);">var(--text-primary)</span></div>
+            <div>--text-secondary: <span style="color: var(--text-secondary); background: var(--surface-color); padding: 2px 8px; border: 1px solid var(--border-color);">var(--text-secondary)</span></div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="theme-test-light.html" style="padding: 10px; background: var(--primary-color); color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">Test Light Mode</a>
+        <a href="../dark-mode-demo.html" style="padding: 10px; background: var(--secondary-color); color: white; text-decoration: none; border-radius: 5px;">Full Demo</a>
+    </div>
+</div>
+
+</body>
+</html>

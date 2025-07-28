@@ -90,7 +90,7 @@
             <!-- Save Button -->
             <div class="action-buttons">
                 <input type="submit" name="save_settings" value="Save Settings" class="btn btn-primary" />
-                <a href="/user/own.php" class="btn btn-secondary">Cancel</a>
+                <a href="/user/settings.php" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

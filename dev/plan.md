@@ -1,42 +1,53 @@
-# TimeEffect Docker & User Creation Debugging Plan
+- Undefined variable warnings in user/index.php und groups/index.php wurden durch Initialisierung aller relevanten Variablen aus $_REQUEST behoben.
+- Fatal Error bei Theme-Änderung: settings.php ruft nicht existierende Methode escape() auf. settings.php ist redundant, Theme-Einstellung soll in own.php integriert werden.
+- settings.php hat kein CSS, ist nicht im Haupt-Flow genutzt.
+- Backend-Refaktor: Verhindere Objekt-Erstellung ohne gültige ID (Customer, Project, Effort), entferne Fallbacks, verbessere ACL-Filter und Logging, Regressionstests mit PHPUnit.
 
 ## Notes
-- Initial port 3306 conflict was due to MySQL already running on host; resolved by stopping mysql before docker-compose up.
-- The Dockerfile's removal of the Apache /icons/ alias is unrelated to the main app loading.
-- Apache and MariaDB containers start correctly; application files are present in /var/www/html in the container.
-- No index.php exists; index.html redirects to inventory/customer.php (the real entry point).
-- nginx was still running and serving its default page on port 80, causing confusion; script now disables nginx and mysql.
-- User creation in user/index.php throws multiple "Undefined variable" PHP warnings (e.g. $telephone, $email, $password, etc.)
-- The document root in the container is /var/www/html, which is where the application files are served from.
-- The te-docker-restart.sh script now properly stops and disables nginx to prevent port conflicts.
-- The PHP warnings are likely due to uninitialized variables in the user/index.php script.
-- Undefined variable warnings in user/index.php have been fixed by initializing all relevant variables from $_REQUEST.
-- Undefined array key warning in user.inc.php has been fixed by checking for key existence before accessing permission names.
-- PHP 8.4 deprecation warnings for substr() in data.inc.php fixed by ensuring null values are not passed to substr().
-- Investigating root cause of null access values in data.inc.php (not just handling the symptom).
-- Root cause found: Effort and Project classes did not initialize access field with default if missing, causing nulls to override DB default. Fixed by initializing access in Effort::initEffort() and Project::save(). Customer class already had a fallback, though with a slightly different default.
-- Previous fixes did not resolve the errors; root cause likely in ACL (Access Control List) logic.
-- Diagnostic logging (tag: ACL_DEBUG) added to getUserAccess() in data.inc.php to identify when/why access is null.
-- Root cause: Customer, Project, Effort Konstruktor riefen getUserAccess() zu früh auf (ohne ID/access), was zu NULL-ACL führte. Jetzt wird getUserAccess() nur bei gültigen Daten aufgerufen, sonst Default-ACL gesetzt.
-- PHPUnit installiert, ACL-Test geschrieben und ausgeführt; Testlauf aktuell mit Fehler wegen fehlender Verzeichnisse/Globals.
-- WICHTIG: Keine Fallbacks mehr in ACL/Constructor-Logik! Stattdessen Ursache analysieren, warum getUserAccess() zu früh (ohne ID) aufgerufen wird, und ggf. den Aufruf verschieben. getUserAccess() darf selbst default-ACL liefern, aber keine Konstruktor-Fallbacks! (User-Präferenz)
-- Fallbacks aus allen Konstruktoren entfernt. getUserAccess() gibt jetzt direkt das Default-ACL zurück, wenn access NULL ist. Konstruktoren rufen immer getUserAccess() auf.
-- Korrigiere PHPUnit-Testlauf (Verzeichnis/Globals) falls nötig
-- Wenn access NULL ist, wird jetzt ein fataler Fehler ausgelöst (die() mit Fehlerlog). Das ist ein Programmierfehler, kein legitimer Zustand!
-- Nächster Schritt: Ursachenanalyse, warum Objekte ohne access erzeugt werden (statt Symptome abzufangen)
-- Root Cause identifiziert: Customer-Objekte werden mit leerem String als ID erzeugt, wenn keine cid im Request vorhanden ist (z.B. in inventory/customer.php oder report/index.php). Das führt zu fatalem Fehler, weil keine Daten geladen werden und access NULL bleibt. Objekt-Erstellung muss auf gültige ID geprüft werden (und ggf. gar nicht erfolgen, wenn keine ID vorliegt).
-- Customer-Objekt-Erstellung ohne gültige ID wird jetzt systematisch verhindert (in inventory/customer.php und report/index.php). Fehler tritt nicht mehr auf.
-- Fehlerbehebung getestet: FATAL ERROR tritt nicht mehr auf, wenn keine gültige ID für Customer übergeben wird. User ohne Rechte sieht keine Kunden mehr in der Übersicht; ACL greift korrekt.
-- Project-Objekt-Erstellung ohne gültige ID wird jetzt ebenfalls systematisch verhindert (in inventory/projects.php). Fehler tritt auch dort nicht mehr auf.
-- Es gab einen FATAL ERROR für Effort-Objekte, wenn keine gültige ID übergeben wird (z.B. in inventory/efforts.php). Muss analog abgesichert werden.
-- Effort-Objekt-Erstellung ohne gültige ID wird jetzt ebenfalls systematisch verhindert (in inventory/efforts.php). Fehler tritt auch dort nicht mehr auf.
-- ACL-Problem: User sehen weiterhin Kunden/Projekte, auf die sie keinen Zugriff haben. CustomerList und ProjectList müssen ACL korrekt filtern (User "ruben" sieht zu viele Kunden/Projekte).
-- Effort-Objekt-Erstellung ohne gültige ID wurde erfolgreich abgesichert. Jetzt liegt der Fokus auf der ACL-Filterung in CustomerList und ProjectList.
-- Temporäres ACL-Debug-Logging in CustomerList hinzugefügt, um Ursache für zu weite Sichtbarkeit zu analysieren.
-- ACL-Debug zeigt: User ruben ist kein Admin, aber sieht alle Kunden. Nächster Schritt: access-Felder der Kunden und generierte Query prüfen, dann ACL-Filter korrigieren.
-- ACL-Problem identifiziert: access=rwxr-xr-- gibt Welt-Lesezugriff, ACL-Query gibt alle Kunden zurück, auch wenn User keinen direkten Zugriff hat. Nächster Schritt: PHPUnit-Test, der dieses Verhalten prüft.
-- ACL-Test zeigt: Auch Kunden ohne Welt-Lesezugriff werden angezeigt, wenn Gruppen-Lesezugriff besteht und User in der Gruppe ist. Testlogik und Testfälle erfolgreich ausgeführt. Nächster Schritt: ACL-Filter korrigieren, sodass wirklich nur berechtigte Kunden angezeigt werden.
-- ACL-Logik ist korrekt: Gruppenmitglieder dürfen Kunden sehen, wenn Gruppen-Lesezugriff gesetzt ist. Test mit Kunde ohne Gruppen-/Welt-Zugriff bestätigt die Filterung funktioniert wie erwartet. Nächster Schritt: Fehleranalyse beim Anlegen eines neuen Kunden als User "ruben" (giveValue() on null in form.ihtml).
+- settings.php ist redundant und sollte entfernt werden.
+- Theme-Einstellung sollte in own.php integriert werden.
+- Theme-Einstellung (Darkmode) ist jetzt in own.php integriert, settings.php wurde entfernt.
+- Backend-Root-Cause-Fixes:
+  - Verhindere Objekt-Erstellung ohne gültige ID (Customer, Project, Effort)
+  - Entferne Fallbacks aus ACL/Constructor-Logik
+  - Verbessere ACL-Filter und Logging
+  - Regressionstests mit PHPUnit
+- Für Theme-Setting muss Spalte `theme_preference` in der Auth-Tabelle existieren (DB-Migration notwendig)
+- Migration migrate_theme_preference.php erstellt, prüft und fügt Spalte automatisch hinzu
+- Automatische Migrationen sollen beim Login geprüft und ggf. ausgeführt werden
+- Es soll ein DB-Flag geben, das den Migrationsstand dokumentiert (automatisches Upgrade jeder beliebigen DB auf aktuellen Stand)
+- Migrationen müssen nach Laden der Database-Klasse ausgeführt werden (jetzt in database.inc.php)
+- Fehler mit fehlendem $_PJ_db_prefix und add_slashes() wurden durch Fallbacks und Umstellung auf addslashes() behoben
+- Migration-Dateien sollen im Verzeichnis sql/ liegen (künftig beachten)
+- Keine Fallbacks mehr für DB-Prefix: Migration läuft nur, wenn Config geladen ist
+- Bug: Fatal error Call to undefined method Auth::giveValue() beim Speichern der Settings-Seite analysiert: Ursache war fehlendes Include von auth.inc.php, jetzt behoben.
+- Alle Links von own.php auf settings.php umgestellt (Header, Templates, Migration).
+- Redirect-Problem nach own.php nach dem Speichern lag an $GLOBALS['_PJ_own_user_script'] in scripts.inc.php. Zeigt jetzt korrekt auf settings.php.
+- Bug: Nach Theme-Update wurde $_PJ_auth fälschlich durch ein Auth-Objekt ersetzt (ohne giveValue). Jetzt bleibt PJAuth erhalten, fetchAdditionalData() wird korrekt verwendet.
+- Neue Anforderung: Passwortfelder erst nach Klick auf "Passwort ändern" anzeigen (JavaScript), kein Fehler beim Speichern ohne Passwortfelder.
+- Neue Anforderung: Theme-Änderung (Darkmode) zeigt keinen Effekt – CSS-Lade-Reihenfolge und aktive Stylesheets analysieren.
+- Theme-Preference wird jetzt als data-theme Attribut am <html> Element gesetzt, damit greift das CSS für Dark- und Light-Mode korrekt.
+- Passwortfelder werden jetzt wirklich erst dynamisch per JavaScript ins DOM eingefügt (nicht nur versteckt), um Autofill-Probleme zu verhindern.
+- Bug: In den Templates wurde das data-theme Attribut durch JavaScript sofort wieder überschrieben; jetzt ist nur noch PHP maßgeblich, Theme-Umschaltung funktioniert.
+- Alle manuellen Theme/CSS/UI-Tests und Demos sind künftig im test-Verzeichnis abzulegen (z.B. test/theme-test-dark.html).
+- Theme-Funktion (Dark/Light Mode) funktioniert jetzt korrekt (JavaScript-Override entfernt)
+- Tests müssen immer im Unterordner tests/ abgelegt werden (User-Regel)
+- Soundausgabe bei sudo-Befehlen ist technisch nicht möglich
+- Theme-Debug-Testseite (tests/theme-debug.html) wurde erstellt, um CSS-Variablen und Dark-Mode-Verhalten im Browser zu prüfen. Zeigt die geladenen Variablen und deren Werte zur Laufzeit an.
+- Test-Regel dauerhaft gespeichert: Tests dürfen nur im tests/-Verzeichnis liegen.
+- Erkenntnis: CSS-Variables für Darkmode werden wegen zu niedriger Spezifität im Haupt-CSS nicht angewendet. Test mit html[data-theme="dark"] und !important funktioniert. Nachhaltige Korrektur im Haupt-CSS erforderlich.
+- Haupt-Darkmode-Variables werden jetzt mit html[data-theme="dark"] überschrieben (Spezifitäts-Fix umgesetzt).
+- CSS-Datei enthält weiterhin viele Syntaxfehler durch fehlerhafte Media Query/Selector-Mischungen (technische Schuld, separat beheben).
+- Darkmode-Styles für Inputs/Textareas/Selectboxen (helle Schrift, dunkler Hintergrund) und Links (helle Farben) ergänzt.
+- Darkmode-Styles für Navigation-Links (dunkler) und .FormFieldName (hell) ergänzt.
+- Darkmode-Styles für Tabellen, TD.leftNavi und Inventar-spezifische Navigation ergänzt.
+- Inventar-Navigation verwendet a.modern-tab statt .modern-tabs a (Root Cause identifiziert, CSS-Fix umgesetzt)
+- Reiter (Tabs) in MainNav und Subnav jetzt mit dunklerem Text (Darkmode)
+- Darkmode-Styles für Hamburger-Menü (.mobile-main-options), Kunden-Listen (.content, .list, A.list) und weitere mobile Bereiche ergänzt (Root Cause: fehlende Selektoren für mobile und Kunden-spezifische Bereiche, jetzt ergänzt)
+- Umfassende Darkmode-Styles für mobile Navigation (.mobile-nav, .nav-item, svg, span) ergänzt, sodass jetzt alle Bereiche (inkl. Kunden im Hamburger-Menü) dunkel sind
+- Darkmode-Styles für .modern-nav, .animate-float und a.option ergänzt und getestet (Inventar- und mobile Navigation jetzt überall dunkel, inkl. aller Option-Links)
+- Mobile Navigation ist jetzt vollständig dunkel, alle Elemente (inkl. .modern-nav, .animate-float, a.option) wurden korrekt gestylt
+- Database Migration System ist jetzt umfassend in docs/DATABASE_MIGRATIONS.md dokumentiert (Best Practices, Patterns, Checkliste, Beispiele, Troubleshooting für PRs)
 
 ## Task List
 - [x] Diagnose port 3306 conflict and docker-compose startup
@@ -44,6 +55,7 @@
 - [x] Analyze document root in container and index.html redirect
 - [x] Fix te-docker-restart.sh to properly stop/disable nginx and mysql
 - [x] Fix undefined variable warnings in user/index.php when creating a user
+- [x] Fix undefined variable warning in groups/index.php when creating a group
 - [x] Verify user creation works without warnings
 - [x] Fix PHP 8.4 substr() deprecation warnings in data.inc.php
 - [x] Investigate root cause of null access value in data.inc.php
@@ -63,6 +75,32 @@
 - [x] Schreibe einen PHPUnit-Test, der prüft, dass User ohne Welt-Lesezugriff keine fremden Kunden sieht
 - [x] ACL-Filter und Rechteverhalten mit Testdaten und Debug-Log verifizieren
 - [x] Fehleranalyse: giveValue() on null beim Kunden anlegen als User "ruben"
+- [x] settings.php entfernen, Theme-Setting in own.php integrieren
+- [x] Theme-Setting (Darkmode) in own.php funktional und ohne Fehler bereitstellen
+- [x] Spalte `theme_preference` in Auth-Tabelle hinzufügen (DB-Migration)
+- [x] Automatische Migrationen beim Login prüfen und ggf. ausführen
+- [x] DB-Flag für Migrationsstand einführen und Logik für automatische Upgrades implementieren
+- [x] Bug: Fatal error Call to undefined method Auth::giveValue() in settings.php analysieren und beheben (Include von auth.inc.php ergänzt)
+- [x] Alle Links von own.php auf settings.php umstellen (Header, Templates, Migration)
+- [x] Redirect-Problem nach own.php nach dem Speichern beheben ($GLOBALS['_PJ_own_user_script'] in scripts.inc.php anpassen)
+- [x] Bug: Nach Theme-Update wurde $_PJ_auth durch Auth-Objekt ersetzt, Fehler Call to undefined method Auth::giveValue() beheben (PJAuth erhalten, fetchAdditionalData() verwenden)
+- [x] Passwortfelder erst nach Klick auf "Passwort ändern" anzeigen, kein Fehler bei Speichern ohne Passwort
+- [x] Analyse: Welche CSS-Dateien werden geladen, warum hat Theme-Änderung keinen Effekt?
+- [x] Theme-Funktion (Dark/Light Mode) funktioniert jetzt korrekt (JavaScript-Override entfernt)
+- [x] CSS-Variables für Darkmode im Haupt-CSS mit html[data-theme="dark"] und/oder !important nachhaltig überschreiben
+- [x] Darkmode-Styles für Inputs, Textareas, Selectboxen und Links ergänzen
+- [x] Darkmode-Styles für Navigation-Links (dunkler) und .FormFieldName (hell) ergänzen
+- [x] Darkmode-Styles für Tabellen, TD.leftNavi und Inventar-spezifische Navigation ergänzen
+- [x] Inventar-Navigation Root Cause analysieren und CSS-Fix für a.modern-tab ergänzen
+- [x] Reiter (Tabs) in MainNav und Subnav dunkler machen (Darkmode)
+- [x] Darkmode-Styles für Hamburger-Menu und Kunden-Bereiche (mobile-main-options, .content, .list, A.list) ergänzen
+- [x] Umfassende Darkmode-Styles für mobile Navigation und mobile Kundenbereiche ergänzen
+- [x] Database Migration System dokumentieren (docs/DATABASE_MIGRATIONS.md für PR-Guideline)
 
 ## Current Goal
-Weitere Fehlerbeobachtung und Regressionstests
+Regressionstests und weitere Fehlerbeobachtung nach erfolgreicher Migration
+- Passwort-UI und Theme-Funktion prüfen
+- CSS-Variables im Haupt-CSS korrigieren
++ Offene technische Schuld: Syntaxfehler in CSS-Datei (Media Query/Selector-Mischungen)
++ Visuelle Regressionstests für Inputs, Selects, Links, Navigation und FormFieldName im Darkmode
++ Sicherstellen, dass neue Migrationen nach Doku-Standard gebaut werden

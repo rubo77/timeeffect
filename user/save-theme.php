@@ -1,26 +1,42 @@
 <?php
+    // Start output buffering to prevent headers-already-sent
+    ob_start();
+    
+    // Set no_login flag to prevent auth redirect
+    $no_login = true;
+    
     require_once(__DIR__ . "/../bootstrap.php");
     include_once("../include/config.inc.php");
     include_once($_PJ_include_path . '/scripts.inc.php');
+    
+    // Clear any output from includes
+    ob_clean();
+    
+    // Now load auth
+    unset($no_login);
+    include_once($_PJ_include_path . '/auth.inc.php');
 
-    // Only accept POST requests
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
+    // Allow both GET and POST requests
+    if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
+        ob_end_clean();
+        header('HTTP/1.1 405 Method Not Allowed');
         exit('Method Not Allowed');
     }
 
     // Check if user is authenticated
-    if (!$_PJ_auth->checkPermission('agent')) {
-        http_response_code(401);
+    if (!isset($_PJ_auth) || !$_PJ_auth->checkPermission('agent')) {
+        ob_end_clean();
+        header('HTTP/1.1 401 Unauthorized');
         exit('Unauthorized');
     }
 
-    // Get theme from request
-    $theme = $_POST['theme'] ?? null;
+    // Get theme from request (support both GET and POST)
+    $theme = $_REQUEST['theme'] ?? null;
 
     // Validate theme
     if (!in_array($theme, ['light', 'dark', 'system'])) {
-        http_response_code(400);
+        ob_end_clean();
+        header('HTTP/1.1 400 Bad Request');
         exit('Invalid theme');
     }
 
@@ -28,13 +44,16 @@
     $user_id = $_PJ_auth->giveValue('id');
     $db = new Database();
     
-    $query = "UPDATE " . $GLOBALS['_PJ_auth_table'] . " SET theme_preference = '" . $db->escape($theme) . "' WHERE id = " . intval($user_id);
+    $query = "UPDATE " . $GLOBALS['_PJ_auth_table'] . " SET theme_preference = '" . addslashes($theme) . "' WHERE id = " . intval($user_id);
     
     if ($db->query($query)) {
-        http_response_code(200);
+        ob_end_clean();
+        header('Content-Type: application/json');
         echo json_encode(['success' => true, 'theme' => $theme]);
     } else {
-        http_response_code(500);
+        ob_end_clean();
+        header('HTTP/1.1 500 Internal Server Error');
+        header('Content-Type: application/json');
         echo json_encode(['success' => false, 'error' => 'Database update failed']);
     }
 ?>
