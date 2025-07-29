@@ -115,7 +115,7 @@
 					<span><?= substr($__effort->giveValue('description'), 0, 16) ?><?php if(strlen($__effort->giveValue('description')) > 16) print "..."; ?></span>
 				</a>
 				<a href="<?= $GLOBALS['_PJ_efforts_inventory_script'] . '?stop=1&eid=' . $__effort->giveValue('id'); ?>" 
-				class="nav-stop-link" style="padding: 0.25rem; border-radius: 0.25rem; background: rgba(239, 68, 68, 0.1); transition: all 0.2s ease;"
+				class="nav-stop-link"
 				title="<?php if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>">🛑</a>
 			</div>
 			<?php

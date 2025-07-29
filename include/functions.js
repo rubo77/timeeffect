@@ -37,3 +37,10 @@ function startAnything() {
 	// Navigate to the new effort creation form
 	window.location.href = window.location.origin + '/inventory/efforts.php?new=1';
 }
+
+// Toggle user menu function - placeholder for future user dropdown menu
+function toggleUserMenu() {
+	// For now, navigate to user settings
+	// TODO: Implement dropdown menu with user options
+	window.location.href = window.location.origin + '/user/settings.php';
+}
