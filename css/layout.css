@@ -39,12 +39,16 @@ a.nav-stop-link:hover, .nav-stop-link:hover {
     text-decoration: none;
 }
 
-/* Modern topnav styling */
+/* Modern topnav styling - force to top right */
 .topnav-modern {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     justify-content: flex-end;
+    position: absolute;
+    top: 3px;
+    right: 20px;
+    z-index: 1001;
 }
 
 .user-avatar {
