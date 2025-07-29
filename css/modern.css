@@ -1326,6 +1326,56 @@ html {
     --glow-color: rgba(129, 140, 248, 0.4);
 }
 
+/* Top navigation button styles */
+.topNav-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+.topNav-btn:hover {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Specific styles for different button types */
+.stop-all-btn {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.stop-all-btn:hover {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+    box-shadow: 0 4px 12px -2px rgba(248, 113, 113, 0.25);
+}
+
+.start-anything-btn {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+.start-anything-btn:hover {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: var(--success-color);
+    color: var(--success-color);
+    box-shadow: 0 4px 12px -2px rgba(52, 211, 153, 0.25);
+}
+
 /* Force Chrome Android to respect dark mode variables */
 @supports (-webkit-touch-callout: none) {
     .system-dark body,
