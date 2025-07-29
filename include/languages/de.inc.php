@@ -65,6 +65,9 @@
 	$GLOBALS['_PJ_strings']['effort_for']				= 'Aufwand f&uuml;r';
 	$GLOBALS['_PJ_strings']['effort_list']				= 'Aufwandsliste';
 	$GLOBALS['_PJ_strings']['efforts']					= 'Aufw&auml;nde';
+	$GLOBALS['_PJ_strings']['effort_saved_successfully']	= 'Aufwand erfolgreich angelegt';
+	$GLOBALS['_PJ_strings']['effort_id']				= 'Aufwand-ID';
+	$GLOBALS['_PJ_strings']['effort_assignment_hint']		= 'Kunde und Projekt k&ouml;nnen sp&auml;ter zugewiesen werden.';
 	$GLOBALS['_PJ_strings']['email']					= 'E-Mail';
 	$GLOBALS['_PJ_strings']['end_date']					= 'End-Datum';
 	$GLOBALS['_PJ_strings']['error']					= 'FEHLER';
@@ -79,7 +82,7 @@
 	$GLOBALS['_PJ_strings']['error_pw_retype']			= 'Das eingegebene Passwort und die Passwort-Wiederholung stimmen nicht &uuml;berein!';
 	$GLOBALS['_PJ_strings']['error_user_empty']			= 'Sie m&uuml;ssen einen Benutzernamen eingeben!';
 	$GLOBALS['_PJ_strings']['error_user_exists']		= 'Der eingegebene Benutzername existiert bereits!';
-	$GLOBALS['_PJ_strings']['error_effort_duplicate']	= 'Ein identischer Aufwand f&uuml;r dieses Projekt und diese Zeit existiert bereits!';
+	$GLOBALS['_PJ_strings']['error_effort_duplicate']	= 'Ein identischer Aufwand für dieses Projekt und diese Zeit existiert bereits!';
 	$GLOBALS['_PJ_strings']['error_zero_effort']		= 'Bitte w&auml;hlen Sie eine Dauer!';
 	$GLOBALS['_PJ_strings']['expand_all']				= 'Alle aufklappen';
 	$GLOBALS['_PJ_strings']['facsimile']				= 'Fax';

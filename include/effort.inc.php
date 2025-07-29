@@ -141,14 +141,12 @@
 			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
 			$safeCustomerTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
 			
-			$query  = "SELECT {$safeEffortTable}.* ";
+			// Use LEFT JOIN to include efforts without project (project_id = 0)
+			$query  = "SELECT {$safeEffortTable}.*, {$safeProjectTable}.project_name, {$safeCustomerTable}.customer_name ";
 			$query .= " FROM {$safeEffortTable}";
-			$query .= ", {$safeProjectTable}";
-			$query .= ", {$safeCustomerTable}";
-			$query .= " WHERE {$safeEffortTable}.project_id=";
-			$query .= "{$safeProjectTable}.id";
-			$query .= " AND {$safeProjectTable}.customer_id=";
-			$query .= "{$safeCustomerTable}.id";
+			$query .= " LEFT JOIN {$safeProjectTable} ON {$safeEffortTable}.project_id = {$safeProjectTable}.id";
+			$query .= " LEFT JOIN {$safeCustomerTable} ON {$safeProjectTable}.customer_id = {$safeCustomerTable}.id";
+			$query .= " WHERE 1=1"; // Always true condition to allow adding AND clauses
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
 				$safeProjectId = DatabaseSecurity::escapeInt($project->giveValue('id'));
 				$query .= " AND project_id={$safeProjectId}";
@@ -157,7 +155,8 @@
 				$limit_query = '';
 			} else if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
 				$safeCustomerId = DatabaseSecurity::escapeInt($customer->giveValue('id'));
-				$query .= " AND {$safeCustomerTable}.id={$safeCustomerId}";
+				// Filter by customer, but also include efforts without project (project_id = 0)
+				$query .= " AND ({$safeCustomerTable}.id={$safeCustomerId} OR {$safeEffortTable}.project_id = 0)";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
 				$limit_query = ' LIMIT 1000';
 			} else {
@@ -181,9 +180,12 @@
 					$pids .= $this->db->f('id');
 				}
 				if(empty($pids)) {
-					return;
+					// If no projects found, only show efforts without project (project_id = 0)
+					$query .= " AND project_id = 0";
+				} else {
+					// Include both efforts with valid project_id AND efforts without project (project_id = 0)
+					$query .= " AND (project_id IN ($pids) OR project_id = 0)";
 				}
-				$query .= " AND project_id IN ($pids)";
 				$order_query = ' ORDER BY billed, date DESC, begin DESC, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
@@ -387,7 +389,9 @@
 			}
 
 			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
-			$safeProjectId = DatabaseSecurity::escapeString($this->data['project_id'], $this->db->Link_ID);
+			// Handle undefined project_id for new efforts without project
+			$projectId = isset($this->data['project_id']) ? $this->data['project_id'] : '';
+			$safeProjectId = DatabaseSecurity::escapeString($projectId, $this->db->Link_ID);
 			$safeDate = DatabaseSecurity::escapeString($this->data['date'], $this->db->Link_ID);
 			$safeBegin = DatabaseSecurity::escapeString($this->data['begin'], $this->db->Link_ID);
 			$safeDescription = DatabaseSecurity::escapeString($this->data['description'], $this->db->Link_ID);
@@ -444,7 +448,12 @@
 
 				$query = "INSERT INTO " . $GLOBALS['_PJ_effort_table'] . " (project_id, gid, access, date, begin, end, description, note, rate, user, billed, last)";
 				$query .= " VALUES(";
-				$query .= "'" . $this->data['project_id'] . "', ";
+				// Handle project_id as integer or 0 (database default) to prevent MySQL constraint errors
+				if(!empty($this->data['project_id']) && is_numeric($this->data['project_id'])) {
+					$query .= "'" . $this->data['project_id'] . "', ";
+				} else {
+					$query .= "'0', ";
+				}
 				$query .= "'" . $this->data['gid'] . "', ";
 				$query .= "'" . $this->data['access'] . "', ";
 				$query .= "'" . $date . "', ";
@@ -472,7 +481,12 @@
 			$query .= " VALUES(";
 			if(empty($this->data['id'])) $query .= "NULL, ";
 			else $query .= "'" . $this->data['id'] . "', ";
-			$query .= "'" . $this->data['project_id'] . "', ";
+			// Handle project_id as integer or 0 (database default) to prevent MySQL constraint errors
+			if(!empty($this->data['project_id']) && is_numeric($this->data['project_id'])) {
+				$query .= "'" . $this->data['project_id'] . "', ";
+			} else {
+				$query .= "'0', ";
+			}
 			$query .= "'" . $this->data['gid'] . "', ";
 			$query .= "'" . $this->data['access'] . "', ";
 			$query .= "'" . $this->data['date'] . "', ";
@@ -486,8 +500,11 @@
 
 			$this->db->query($query);
 
-			$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
-			$this->db->query($query);
+			// Only update project timestamp if we have a valid project_id
+			if(isset($this->data['project_id']) && !empty($this->data['project_id']) && $this->data['project_id'] !== '0') {
+				$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
+				$this->db->query($query);
+			}
 			
 			return ''; // Success - no error message
 		}

@@ -1,7 +1,16 @@
 <?php
+	// Start output buffering to prevent "headers already sent" errors
+	ob_start();
+	
     require_once(__DIR__ . "/../bootstrap.php"); // Modern PHP 8.4 compatibility
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
+
+	// Debug: Log request start
+	error_log("LOG_EFFORTS_START: Request method: " . $_SERVER['REQUEST_METHOD'] . ", URI: " . $_SERVER['REQUEST_URI']);
+	if($_SERVER['REQUEST_METHOD'] === 'POST') {
+		error_log("LOG_EFFORTS_POST: POST data keys: " . implode(', ', array_keys($_POST)));
+	}
 
 	$eid = $_REQUEST['eid'] ?? null;
 	$stop = $_REQUEST['stop'] ?? null;
@@ -27,7 +36,26 @@
 		// Show success message or redirect
 		$success_message = "Es wurden $stopped_count Aktivitäten gestoppt.";
 		// Redirect to customer list after stopping all
-		header("Location: " . $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message));
+		$redirect_url = $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message);
+		?><html>
+			<head>
+				<title>Stop</title>
+				<meta http-equiv="refresh" content="5;url=<?php echo $redirect_url ?>">
+				<style>
+					.success-message {
+						font-size: 1.5rem;
+						font-weight: bold;
+						color: #222;
+					}
+				</style>
+			</head>
+			<body>
+			<span class="success-message">
+				<a href="<?php echo $redirect_url ?>">
+					<?php echo $success_message; ?>
+				</a>
+			</span>
+		</body></html><?php
 		exit;
 	}
 	$pid = $_REQUEST['pid'] ?? null;
@@ -36,6 +64,7 @@
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
 	$altered = $_REQUEST['altered'] ?? null;
+	error_log("LOG_EFFORTS_VARS: altered=" . ($altered ? 'SET' : 'NULL') . ", edit=" . ($edit ? 'SET' : 'NULL') . ", new=" . ($new ? 'SET' : 'NULL'));
 	$year = $_REQUEST['year'] ?? null;
 	$month = $_REQUEST['month'] ?? null;
 	$day = $_REQUEST['day'] ?? null;
@@ -65,27 +94,7 @@
 	$shown = $_REQUEST['shown'] ?? array();
 	$list = $_REQUEST['list'] ?? null;
 
-	// AJAX endpoint for getting projects by customer
-	if(isset($_GET['get_projects']) && isset($_GET['customer_id'])) {
-		$customer_id = intval($_GET['customer_id']);
-		$projects = array();
-		
-		if($customer_id > 0) {
-			$customer_for_ajax = new Customer($_PJ_auth, $customer_id);
-			$project_list = new ProjectList($customer_for_ajax, $_PJ_auth);
-			while($project_list->nextProject()) {
-				$project = $project_list->giveProject();
-				$projects[] = array(
-					'id' => $project->giveValue('id'),
-					'name' => $project->giveValue('project_name')
-				);
-			}
-		}
-		
-		header('Content-Type: application/json');
-		echo json_encode($projects);
-		exit;
-	}
+	// AJAX endpoint removed - now using client-side filtering of pre-generated project options
 
 	// Only create Effort object if valid eid is provided
 	$effort = $eid ? new Effort($eid, $_PJ_auth) : null;
@@ -101,10 +110,9 @@
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
 			$pid = $effort->giveValue('project_id');
-		} elseif(!isset($new)) {
-			// Only exit if we're not creating a new effort
-			exit;
 		}
+		// For new efforts, it's OK to have no project initially
+		// Only exit if we're editing an existing effort without project context
 	}
 	
 	// Only create project object if we have a valid pid
@@ -116,10 +124,9 @@
 	if($cid == '') {
 		if(isset($project) && is_object($project)) {
 			$cid = $project->giveValue('customer_id');
-		} elseif(!isset($new)) {
-			// Only exit if we're not creating a new effort
-			exit;
 		}
+		// For new efforts, it's OK to have no customer initially
+		// Only exit if we're editing an existing effort without customer/project context
 	}
 	
 	// Only create customer object if we have a valid cid
@@ -147,13 +154,24 @@
 	}
 
 	if(isset($edit)) {
-		if($eid && !$effort->checkUserAccess('write')) {
+		// Check access only for existing efforts (when editing)
+		if($eid && $effort && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 			include("$_PJ_root/templates/error.ihtml");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
 		if(isset($altered)) {
+			error_log("LOG_EFFORTS_ALTERED: Starting save process");
+			
+			// Check if user is authenticated before saving
+			if(!$_PJ_auth || !$_PJ_auth->giveValue('id')) {
+				error_log("LOG_EFFORT_SAVE_ERROR: User not authenticated, redirecting to login");
+				header("Location: /inventory/efforts.php");
+				exit;
+			}
+			error_log("LOG_EFFORTS_AUTH: User authenticated: " . $_PJ_auth->giveValue('id'));
+			
 			// last_description mod by Ruben Barkow -- START
 			$_SESSION['last_description'] = $description;
 			// last_description mod by Ruben Barkow -- END
@@ -234,7 +252,14 @@
 				$project = new Project($customer, $_PJ_auth, $pid);
 			}
 			
-			$data['project_id']		= $final_pid;
+			// Convert empty project_id to NULL for database compatibility
+			// Important: Set to NULL (not string) to avoid MySQL integer constraint error
+			if(!empty($final_pid) && is_numeric($final_pid)) {
+				$data['project_id'] = intval($final_pid);
+			} else {
+				// Skip project_id entirely if empty - let Effort class handle it
+				unset($data['project_id']);
+			}
 			$data['date']			= "$year-$month-$day";
 			$data['begin']			= sprintf('%02d:%02d:%02d', intval($hour), intval($minute), intval($second));
 			$data['description']	= add_slashes($cleaned_description);
@@ -286,19 +311,93 @@
 				$data['billed']			= "NULL";
 			}
 	
+			error_log("LOG_EFFORTS_BEFORE_SAVE: Creating new effort with data: " . json_encode(array_keys($data)));
 			$new_effort = new Effort($data, $_PJ_auth);
 			$new_effort->setEndTime("$hours:$minutes");
+			error_log("LOG_EFFORTS_CALLING_SAVE: About to call save()");
 			$message = $new_effort->save();
+			error_log("LOG_EFFORTS_AFTER_SAVE: Save completed");
+			
+			// Debug: Log save result
+			error_log("LOG_EFFORT_SAVE_RESULT: Save message: '" . $message . "', Effort ID: " . ($new_effort->giveValue('id') ?: 'NULL'));
+			
 			if($message != '') {
-				if(!$new_effort->giveValue('id')) {
-					$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_effort'];
-					include("$_PJ_root/templates/add.ihtml");
-				} else {
-					$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
-					include("$_PJ_root/templates/edit.ihtml");
-				}
-				include_once("$_PJ_include_path/degestiv.inc.php");
+				// Save failed - show error message with redirect back to form
+				error_log("LOG_EFFORT_SAVE_ERROR: Save failed with message: " . $message);
+				
+				$error_message = "Fehler beim Speichern des Aufwands:<br><strong>" . htmlspecialchars($message) . "</strong><br><br>";
+				$error_message .= "<a href='" . $_SERVER['PHP_SELF'] . "?new=1'>Neuen Aufwand anlegen</a> | ";
+				$error_message .= "<a href='" . $_SERVER['PHP_SELF'] . "'>Zurück zur Übersicht</a>";
+				
+				// Redirect with error message
+				$redirect_url = $_SERVER['PHP_SELF'] . "?error=" . urlencode($error_message);
+				header("Location: $redirect_url");
 				exit;
+			}
+			
+			// Show success message with effort details
+			$effort_description = !empty($cleaned_description) ? $cleaned_description : 'Ohne Beschreibung';
+			$customer_name = '';
+			$project_name = '';
+			
+			if($final_cid) {
+				$success_customer = new Customer($_PJ_auth, $final_cid);
+				$customer_name = $success_customer->giveValue('customer_name');
+			}
+			
+			if($final_pid) {
+				// Project constructor expects parameters by reference
+				$null_customer = null;
+				$success_project = new Project($null_customer, $_PJ_auth, $final_pid);
+				$project_name = $success_project->giveValue('project_name');
+				if(!$customer_name && $success_project->giveValue('customer_id')) {
+					$success_customer = new Customer($_PJ_auth, $success_project->giveValue('customer_id'));
+					$customer_name = $success_customer->giveValue('customer_name');
+				}
+			}
+			
+			// Build success message with localized strings
+			// Get the actual ID after save (for new efforts, use insert_id)
+			$effort_id = $new_effort->giveValue('id');
+			$is_new_entry=false;
+			if(empty($effort_id)) {
+				$is_new_entry=true;
+				// For new efforts, get the auto-increment ID from the database
+				// Use the same database instance that was used for the save
+				if(isset($new_effort->db) && is_object($new_effort->db)) {
+					$effort_id = $new_effort->db->insert_id();
+					error_log("LOG_EFFORT_ID: Retrieved new effort ID from effort->db->insert_id(): " . $effort_id);
+				} else {
+					error_log("LOG_EFFORT_ID: No database connection available for insert_id()");
+				}
+			}
+			
+			$success_message = $GLOBALS['_PJ_strings']['effort_saved_successfully'] . ":<br>";
+			
+			// Add effort ID
+			if($effort_id) {
+				$success_message .= "<strong>" . $GLOBALS['_PJ_strings']['effort_id'] . ":</strong> " . htmlspecialchars($effort_id) . "<br>";
+			}
+			
+			$success_message .= "<strong>" . $GLOBALS['_PJ_strings']['description'] . ":</strong> " . htmlspecialchars($effort_description) . "<br>";
+			
+			if($project_name) {
+				$success_message .= "<strong>" . $GLOBALS['_PJ_strings']['project'] . ":</strong> " . htmlspecialchars($project_name) . "<br>";
+			}
+			
+			if($customer_name) {
+				$success_message .= "<strong>" . $GLOBALS['_PJ_strings']['customer'] . ":</strong> " . htmlspecialchars($customer_name) . "<br>";
+			}
+			
+			if(!$customer_name && !$project_name) {
+				$success_message .= "<br><em>" . $GLOBALS['_PJ_strings']['effort_assignment_hint'] . "</em>";
+			}
+
+			// Redirect with success message only when createing a new efford
+			if($is_new_entry) {
+				$redirect_url = $_SERVER['PHP_SELF'] . "?message=" . urlencode($success_message);
+			header("Location: $redirect_url");
+			exit;
 			}
 			$list = 1;
 		} else {
@@ -364,6 +463,27 @@
 		error_log("LOG_TITLE_GENERATION: Generating title for all efforts view");
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'];
 	}
+	
+	// Display success message if present
+	if(isset($_GET['message'])) {
+		$success_message = urldecode($_GET['message']);
+		echo '<div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; margin: 20px; border-radius: 5px; text-align: center;">';
+		echo $success_message;
+		echo '</div>';
+	}
+	
+	// Display error message if present
+	if(isset($_GET['error'])) {
+		$error_message = urldecode($_GET['error']);
+		echo '<div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 15px; margin: 20px; border-radius: 5px; text-align: center;">';
+		echo '<strong>❌ Fehler!</strong><br>' . $error_message;
+		echo '</div>';
+	}
+	
+	// Set variables expected by path.ihtml template
+	$p_id = $pid;
+	$c_id = $cid;
+	
 	include("$_PJ_root/templates/list.ihtml");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
