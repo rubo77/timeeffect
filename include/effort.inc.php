@@ -186,7 +186,8 @@
 					// Include both efforts with valid project_id AND efforts without project (project_id = 0)
 					$query .= " AND (project_id IN ($pids) OR project_id = 0)";
 				}
-				$order_query = ' ORDER BY billed, date DESC, begin DESC, last DESC';
+				// Sort by project_id first, then by customer_id within project, then by date
+				$order_query = ' ORDER BY billed, project_id, ' . $GLOBALS['_PJ_customer_table'] . '.id, date DESC, begin DESC, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
 			if(!empty($limit)) {

@@ -60,6 +60,10 @@
 	}
 	$pid = $_REQUEST['pid'] ?? null;
 	$cid = $_REQUEST['cid'] ?? null;
+	
+	// Set variables expected by path.ihtml template early to prevent undefined warnings
+	$p_id = $pid;
+	$c_id = $cid;
 	$cont = $_REQUEST['cont'] ?? null;
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
@@ -230,15 +234,16 @@
 				}
 			}
 			
-			// If we have a customer but no project, try to get the first available project
-			if(!empty($final_cid) && empty($final_pid)) {
-				$customer_for_project = new Customer($_PJ_auth, $final_cid);
-				$project_list = new ProjectList($customer_for_project, $_PJ_auth);
-				if($project_list->nextProject()) {
-					$first_project = $project_list->giveProject();
-					$final_pid = $first_project->giveValue('id');
-				}
-			}
+			// DISABLED: Do not automatically assign first project when customer is selected
+			// This respects user's intention to leave project empty
+			// if(!empty($final_cid) && empty($final_pid)) {
+			//     $customer_for_project = new Customer($_PJ_auth, $final_cid);
+			//     $project_list = new ProjectList($customer_for_project, $_PJ_auth);
+			//     if($project_list->nextProject()) {
+			//         $first_project = $project_list->giveProject();
+			//         $final_pid = $first_project->giveValue('id');
+			//     }
+			// }
 			
 			// Update global variables with final values
 			$pid = $final_pid;
@@ -479,10 +484,6 @@
 		echo '<strong>❌ Fehler!</strong><br>' . $error_message;
 		echo '</div>';
 	}
-	
-	// Set variables expected by path.ihtml template
-	$p_id = $pid;
-	$c_id = $cid;
 	
 	include("$_PJ_root/templates/list.ihtml");
 

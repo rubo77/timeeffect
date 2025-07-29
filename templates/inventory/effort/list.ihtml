@@ -35,16 +35,19 @@ if($pid && $project && $project->checkUserAccess('new')) {
 				<TD ALIGN="center"><TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="90%">
 					<TR>
 						<TH CLASS="list" WIDTH="30%"><?php if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?></TH>
-						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent']; ?></TD>
+						<?php if(empty($cid)) { ?><TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer']; ?></TH><?php } ?>
+						<?php if(empty($pid)) { ?><TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project']; ?></TH><?php } ?>
+						<TH CLASS="list"><?php if(!empty($GLOBALS['_PJ_strings']['agent'])) echo $GLOBALS['_PJ_strings']['agent']; ?></TH>
 						<TH CLASS="list" WIDTH="150">
 							<?php if(!empty($GLOBALS['_PJ_strings']['date'])) echo $GLOBALS['_PJ_strings']['date'] ?>
 							<a href="<?= $_SERVER['PHP_SELF'] ?>?<?= http_build_query(array_merge($_GET, ['sort' => ($_GET['sort'] ?? 'desc') === 'desc' ? 'asc' : 'desc'])) ?>" class="sort-toggle" title="Sortierung umkehren">
 								<?= ($_GET['sort'] ?? 'desc') === 'desc' ? '↓' : '↑' ?>
 							</a>
 						</TH>
-						<TH CLASS="listNumeric"><?php if(!empty($GLOBALS['_PJ_strings']['workinghours'])) echo $GLOBALS['_PJ_strings']['workinghours']; ?></TD>
-						<TH CLASS="listNumeric" WIDTH="200"><?= $GLOBALS['_PJ_strings']['costs'] . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TD>
-						<TH CLASS="list">&nbsp;</TD>
+						<TH CLASS="listNumeric"><?php if(!empty($GLOBALS['_PJ_strings']['workinghours'])) echo $GLOBALS['_PJ_strings']['workinghours']; ?></TH>
+						<TH CLASS="listNumeric" WIDTH="200"><?= $GLOBALS['_PJ_strings']['costs'] . '&nbsp;' . $GLOBALS['_PJ_currency']; ?></TH>
+						<TH CLASS="list">&nbsp;</TH>
+						<TH CLASS="list">&nbsp;</TH>
 					</TR>
 <?php
 	$rowclass = 1;
