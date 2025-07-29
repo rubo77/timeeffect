@@ -286,4 +286,9 @@
 		$session = &Auth::_importGlobalVariable("session"); 
 		$_PJ_session_timeout = $session[$_PJ_auth->_sessionName]['timestamp'] - time() + $_PJ_auth->expire;
 	}
+	
+	// Trigger database migrations after auth is properly initialized
+	if (function_exists('triggerDatabaseMigrations')) {
+		triggerDatabaseMigrations();
+	}
 ?>

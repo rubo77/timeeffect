@@ -201,23 +201,53 @@ else return null;
 	        	return $GLOBALS['_PJ_strings']['error_gids_empty'];
 	        }
 
-	        $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile, confirmed, confirmation_token) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)",
-	                         $GLOBALS['_PJ_auth_table'],
-	                         $this->data['id']?"'".$this->data['id']."'":"NULL",
-	                         $this->data['username'],
-	                         $password,
-	                         $this->data['permissions'],
-	                         $this->data['gids'],
-	                         $this->data['allow_nc'],
-	                         $this->data['firstname'],
-	                         $this->data['lastname'],
-	                         $this->data['email'],
-	                         $this->data['telephone'],
-	                         $this->data['facsimile'],
-	                         isset($this->data['confirmed']) ? $this->data['confirmed'] : 1,
-	                         isset($this->data['confirmation_token']) && $this->data['confirmation_token'] ? 
-	                         "'".$this->data['confirmation_token']."'" : "NULL"
-	                         );
+	        // Check if migration columns exist in the database
+        $migration_columns_exist = false;
+        try {
+            $check_query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmed'";
+            $this->db->query($check_query);
+            $migration_columns_exist = $this->db->next_record();
+        } catch (Exception $e) {
+            // Migration columns don't exist, use original schema
+            $migration_columns_exist = false;
+        }
+        
+        if ($migration_columns_exist) {
+            // Use new schema with migration columns
+            $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile, confirmed, confirmation_token) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s)",
+                             $GLOBALS['_PJ_auth_table'],
+                             $this->data['id']?"'".$this->data['id']."'":"NULL",
+                             $this->data['username'],
+                             $password,
+                             $this->data['permissions'],
+                             $this->data['gids'],
+                             $this->data['allow_nc'],
+                             $this->data['firstname'],
+                             $this->data['lastname'],
+                             $this->data['email'],
+                             $this->data['telephone'],
+                             $this->data['facsimile'],
+                             isset($this->data['confirmed']) ? $this->data['confirmed'] : 1,
+                             isset($this->data['confirmation_token']) && $this->data['confirmation_token'] ? 
+                             "'".$this->data['confirmation_token']."'" : "NULL"
+                             );
+        } else {
+            // Use original schema without migration columns
+            $query = sprintf("REPLACE INTO %s (id, username, password, permissions, gids, allow_nc, firstname, lastname, email, telephone, facsimile) VALUES(%s, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                             $GLOBALS['_PJ_auth_table'],
+                             $this->data['id']?"'".$this->data['id']."'":"NULL",
+                             $this->data['username'],
+                             $password,
+                             $this->data['permissions'],
+                             $this->data['gids'],
+                             $this->data['allow_nc'],
+                             $this->data['firstname'],
+                             $this->data['lastname'],
+                             $this->data['email'],
+                             $this->data['telephone'],
+                             $this->data['facsimile']
+                             );
+        }
 
 			$this->db->query($query);
 		}

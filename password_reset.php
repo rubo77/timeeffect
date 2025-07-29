@@ -113,6 +113,7 @@
 	// Handle password reset request
 	if (isset($reset) && $email != '') {
 		$db = new Database();
+		$db->connect(); // Ensure database connection is established
 		$query = sprintf("SELECT * FROM %s WHERE email='%s'", 
 						 $GLOBALS['_PJ_auth_table'], 
 						 mysqli_real_escape_string($db->Link_ID, $email));
@@ -143,6 +144,7 @@
 		
 		// Always show success message to prevent email enumeration
 		$success_message = $GLOBALS['_PJ_strings']['password_reset_sent'];
+		$center_template = ''; // Leave empty to avoid trying to include non-existent template
 		include("$_PJ_root/templates/note.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;

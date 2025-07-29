@@ -13,7 +13,16 @@
 	
 	// Only allow basic agent permission for self-registration
 	$a_permissions = array('agent' => 1); // Restrict to agent only
-	$a_gids = $_PJ_auth->gids;
+	
+	// Load groups directly from database instead of using $_PJ_auth
+	$db = new Database();
+	$db->connect();
+	// Use predefined group table variable
+	$db->query("SELECT id, name FROM " . $GLOBALS['_PJ_group_table'] . " ORDER BY name");
+	$a_gids = array();
+	while ($db->next_record()) {
+		$a_gids[$db->Record['id']] = $db->Record['name'];
+	}
 
 	if(!is_array($a_gids) || !count($a_gids)) {
 		print '<br><center><span class="errorMessage"><b>' . $GLOBALS['_PJ_strings']['missing_groups'] . '</b></center></span>';
