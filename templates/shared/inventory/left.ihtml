@@ -74,27 +74,6 @@
 				</svg>
 				<span><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></span>
 			</a>
-			<!-- Stop Link for Current Running Effort -->
-			<?php
-				$__PJ_running_efforts = new OpenEfforts($_PJ_auth);
-				if($__PJ_running_efforts->effortCount()) {
-					$__PJ_running_efforts->reset();
-					while($__PJ_running_efforts->nextEffort()) {
-						$running_effort = $__PJ_running_efforts->giveEffort();
-						if($running_effort->giveValue('hours') == 0) { // Only show stop for running efforts
-			?>
-			<a href="<?= $GLOBALS['_PJ_efforts_inventory_script'] . '?stop=1&eid=' . $running_effort->giveValue('id') ?>" 
-			   class="nav-item" 
-			   style="display: flex; align-items: center; padding: 0.5rem; background: rgba(239, 68, 68, 0.1); border-radius: 0.375rem; transition: all 0.2s ease;" 
-			   title="<?php if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>">
-				🛑
-			</a>
-			<?php
-							break; // Only show one stop button for the first running effort
-						}
-					}
-				}
-			?>
 		</div>
 		
 		<!-- Statistics Navigation -->
@@ -126,15 +105,19 @@
 				while($__PJ_open_efforts->nextEffort()) {
 					$__effort = $__PJ_open_efforts->giveEffort();
 			?>
-			<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>" 
-			   class="nav-item" 
-			   style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; margin-bottom: 0.25rem; font-size: 0.875rem;">
-				<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.6; color: var(--success-color);">
-					<circle cx="12" cy="12" r="10"/>
-					<polygon points="10,8 16,12 10,16"/>
-				</svg>
-				<span><?= substr($__effort->giveValue('description'), 0, 16) ?><?php if(strlen($__effort->giveValue('description')) > 16) print "..."; ?></span>
-			</a>
+			<div class="nav-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; margin-bottom: 0.25rem; font-size: 0.875rem;">
+				<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>" 
+				style="display: flex; align-items: center; gap: 0.5rem; flex: 1; text-decoration: none; color: inherit;">
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.6; color: var(--success-color);">
+						<circle cx="12" cy="12" r="10"/>
+						<polygon points="10,8 16,12 10,16"/>
+					</svg>
+					<span><?= substr($__effort->giveValue('description'), 0, 16) ?><?php if(strlen($__effort->giveValue('description')) > 16) print "..."; ?></span>
+				</a>
+				<a href="<?= $GLOBALS['_PJ_efforts_inventory_script'] . '?stop=1&eid=' . $__effort->giveValue('id'); ?>" 
+				class="nav-stop-link" style="padding: 0.25rem; border-radius: 0.25rem; background: rgba(239, 68, 68, 0.1); transition: all 0.2s ease;"
+				title="<?php if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>">🛑</a>
+			</div>
 			<?php
 				}
 			?>

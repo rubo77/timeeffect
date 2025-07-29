@@ -6,6 +6,30 @@
 	$eid = $_REQUEST['eid'] ?? null;
 	$stop = $_REQUEST['stop'] ?? null;
 	$stop_all = $_REQUEST['stop_all'] ?? null;
+	
+	// Handle stop_all BEFORE any output to avoid header issues
+	if(!empty($stop_all)) {
+		// Get all open efforts for the current user
+		$open_efforts = new OpenEfforts($_PJ_auth);
+		$stopped_count = 0;
+		
+		if($open_efforts->effortCount() > 0) {
+			$open_efforts->reset();
+			while($open_efforts->nextEffort()) {
+				$open_effort = $open_efforts->giveEffort();
+				if($open_effort->checkUserAccess('write')) {
+					$open_effort->stop();
+					$stopped_count++;
+				}
+			}
+		}
+		
+		// Show success message or redirect
+		$success_message = "Es wurden $stopped_count Aktivitäten gestoppt.";
+		// Redirect to customer list after stopping all
+		header("Location: " . $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message));
+		exit;
+	}
 	$pid = $_REQUEST['pid'] ?? null;
 	$cid = $_REQUEST['cid'] ?? null;
 	$cont = $_REQUEST['cont'] ?? null;
@@ -73,30 +97,6 @@
 			exit;
 		}
 		$effort->stop();
-	}
-	
-	// Stop all activities functionality  
-	if(!empty($stop_all)) {
-		// Get all open efforts for the current user
-		$open_efforts = new OpenEfforts($_PJ_auth);
-		$stopped_count = 0;
-		
-		if($open_efforts->effortCount() > 0) {
-			$open_efforts->reset();
-			while($open_efforts->nextEffort()) {
-				$open_effort = $open_efforts->giveEffort();
-				if($open_effort->checkUserAccess('write')) {
-					$open_effort->stop();
-					$stopped_count++;
-				}
-			}
-		}
-		
-		// Show success message or redirect
-		$success_message = "Es wurden $stopped_count Aktivitäten gestoppt.";
-		// Redirect to customer list after stopping all
-		header("Location: " . $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message));
-		exit;
 	}
 	if($pid == '') {
 		if(isset($effort) && is_object($effort)) {
