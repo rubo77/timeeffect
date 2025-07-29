@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class OpenEfforts {
 		var $__effort_count	= 0;
 		var $__effort_cursor	= -1;
@@ -134,25 +137,30 @@
 				$raw_access_query="";
 			}
 
-			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
-			$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
-			$query .= ", " 		. $GLOBALS['_PJ_project_table'];
-			$query .= ", " 		. $GLOBALS['_PJ_customer_table'];
-			$query .= " WHERE "	. $GLOBALS['_PJ_effort_table'] . ".project_id=";
-			$query .= $GLOBALS['_PJ_project_table'] . ".id";
-			$query .= " AND "	. $GLOBALS['_PJ_project_table'] . ".customer_id=";
-			$query .= $GLOBALS['_PJ_customer_table'] . ".id";
+			$safeEffortTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$safeCustomerTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+			
+			// Use LEFT JOIN to include efforts without project (project_id = 0)
+			$query  = "SELECT {$safeEffortTable}.*, {$safeProjectTable}.project_name, {$safeCustomerTable}.customer_name ";
+			$query .= " FROM {$safeEffortTable}";
+			$query .= " LEFT JOIN {$safeProjectTable} ON {$safeEffortTable}.project_id = {$safeProjectTable}.id";
+			$query .= " LEFT JOIN {$safeCustomerTable} ON {$safeProjectTable}.customer_id = {$safeCustomerTable}.id";
+			$query .= " WHERE 1=1"; // Always true condition to allow adding AND clauses
 			if(isset($project) && is_object($project) && $project->giveValue('id')) {
-				$query .= " AND project_id='" . $project->giveValue('id') . "'";
+				$safeProjectId = DatabaseSecurity::escapeInt($project->giveValue('id'));
+				$query .= " AND project_id={$safeProjectId}";
 				$sort_direction = ($sort_order === 'asc') ? 'ASC' : 'DESC';
 				$order_query = " ORDER BY billed, date $sort_direction, begin $sort_direction";
 				$limit_query = '';
 			} else if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
-				$query .= " AND "	. $GLOBALS['_PJ_customer_table'] . ".id='" . $customer->giveValue('id') . "'";
+				$safeCustomerId = DatabaseSecurity::escapeInt($customer->giveValue('id'));
+				// Filter by customer, but also include efforts without project (project_id = 0)
+				$query .= " AND ({$safeCustomerTable}.id={$safeCustomerId} OR {$safeEffortTable}.project_id = 0)";
 				$order_query = ' ORDER BY billed, last DESC, date, begin';
 				$limit_query = ' LIMIT 1000';
 			} else {
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
+				$this->db->query("SELECT id FROM {$safeCustomerTable} WHERE 1 $raw_access_query");
 				$cids = '';
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
@@ -172,10 +180,14 @@
 					$pids .= $this->db->f('id');
 				}
 				if(empty($pids)) {
-					return;
+					// If no projects found, only show efforts without project (project_id = 0)
+					$query .= " AND project_id = 0";
+				} else {
+					// Include both efforts with valid project_id AND efforts without project (project_id = 0)
+					$query .= " AND (project_id IN ($pids) OR project_id = 0)";
 				}
-				$query .= " AND project_id IN ($pids)";
-				$order_query = ' ORDER BY billed, date DESC, begin DESC, last DESC';
+				// Sort by project_id first, then by customer_id within project, then by date
+				$order_query = ' ORDER BY billed, project_id, ' . $GLOBALS['_PJ_customer_table'] . '.id, date DESC, begin DESC, last DESC';
 				$limit_query = ' LIMIT 1000';
 			}
 			if(!empty($limit)) {
@@ -271,7 +283,16 @@
 				$this->data = $effort;
 			} else if($effort != '') {
 				$this->load($effort);
+			} else {
+				// LOG_EFFORT_INIT: Initialize empty effort with required fields
+				$this->data = array();
+				$this->data['id'] = '';
+				$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+				$this->data['user'] = $user ? $user->giveValue('id') : '';
+				$this->data['gid'] = $user ? $user->giveValue('gid') : '';
+				error_log("LOG_EFFORT_INIT: Initialized empty effort with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
 			}
+			// Always call getUserAccess() - now safe because access field is always set
 			$this->user_access = $this->getUserAccess();
 			$this->initEffort();
 		}
@@ -285,6 +306,11 @@
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
+				// LOG_EFFORT_LOAD: Ensure access field is never null after loading from database
+				if(empty($this->data['access']) || $this->data['access'] === null) {
+					$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+					error_log("LOG_EFFORT_LOAD: Fixed null access field for effort ID: $id, set to default access");
+				}
 			}
 		}
 
@@ -348,17 +374,36 @@
 				$this->db = new Database;
 			}
 
+			// Ensure database connection is established
+			if(empty($this->db->Link_ID)) {
+				$this->db->connect(
+					$GLOBALS['_PJ_db_database'],
+					$GLOBALS['_PJ_db_host'],
+					$GLOBALS['_PJ_db_user'],
+					$GLOBALS['_PJ_db_password']
+				);
+			}
+
 			// Only check for duplicates when creating a new effort (no ID yet)
 			if(!empty($this->data['id'])) {
 				return false;
 			}
 
-			$query = "SELECT id FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE ";
-			$query .= "project_id = '" . addslashes($this->data['project_id']) . "' AND ";
-			$query .= "date = '" . addslashes($this->data['date']) . "' AND ";
-			$query .= "begin = '" . addslashes($this->data['begin']) . "' AND ";
-			$query .= "description = '" . addslashes($this->data['description']) . "' AND ";
-			$query .= "user = '" . addslashes($this->data['user']) . "'";
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
+			// Handle undefined project_id for new efforts without project
+			$projectId = isset($this->data['project_id']) ? $this->data['project_id'] : '';
+			$safeProjectId = DatabaseSecurity::escapeString($projectId, $this->db->Link_ID);
+			$safeDate = DatabaseSecurity::escapeString($this->data['date'], $this->db->Link_ID);
+			$safeBegin = DatabaseSecurity::escapeString($this->data['begin'], $this->db->Link_ID);
+			$safeDescription = DatabaseSecurity::escapeString($this->data['description'], $this->db->Link_ID);
+			$safeUser = DatabaseSecurity::escapeString($this->data['user'], $this->db->Link_ID);
+			
+			$query = "SELECT id FROM {$safeTable} WHERE ";
+			$query .= "project_id = '{$safeProjectId}' AND ";
+			$query .= "date = '{$safeDate}' AND ";
+			$query .= "begin = '{$safeBegin}' AND ";
+			$query .= "description = '{$safeDescription}' AND ";
+			$query .= "user = '{$safeUser}'";
 
 			$this->db->query($query);
 			
@@ -404,7 +449,12 @@
 
 				$query = "INSERT INTO " . $GLOBALS['_PJ_effort_table'] . " (project_id, gid, access, date, begin, end, description, note, rate, user, billed, last)";
 				$query .= " VALUES(";
-				$query .= "'" . $this->data['project_id'] . "', ";
+				// Handle project_id as integer or 0 (database default) to prevent MySQL constraint errors
+				if(!empty($this->data['project_id']) && is_numeric($this->data['project_id'])) {
+					$query .= "'" . $this->data['project_id'] . "', ";
+				} else {
+					$query .= "'0', ";
+				}
 				$query .= "'" . $this->data['gid'] . "', ";
 				$query .= "'" . $this->data['access'] . "', ";
 				$query .= "'" . $date . "', ";
@@ -432,7 +482,12 @@
 			$query .= " VALUES(";
 			if(empty($this->data['id'])) $query .= "NULL, ";
 			else $query .= "'" . $this->data['id'] . "', ";
-			$query .= "'" . $this->data['project_id'] . "', ";
+			// Handle project_id as integer or 0 (database default) to prevent MySQL constraint errors
+			if(!empty($this->data['project_id']) && is_numeric($this->data['project_id'])) {
+				$query .= "'" . $this->data['project_id'] . "', ";
+			} else {
+				$query .= "'0', ";
+			}
 			$query .= "'" . $this->data['gid'] . "', ";
 			$query .= "'" . $this->data['access'] . "', ";
 			$query .= "'" . $this->data['date'] . "', ";
@@ -446,8 +501,11 @@
 
 			$this->db->query($query);
 
-			$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
-			$this->db->query($query);
+			// Only update project timestamp if we have a valid project_id
+			if(isset($this->data['project_id']) && !empty($this->data['project_id']) && $this->data['project_id'] !== '0') {
+				$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
+				$this->db->query($query);
+			}
 			
 			return ''; // Success - no error message
 		}

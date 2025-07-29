@@ -82,6 +82,15 @@ INSERT INTO `<%db_prefix%>group` VALUES (2, 8, 'accountant');
 INSERT INTO `<%db_prefix%>group` VALUES (3, 4, 'agent');
 INSERT INTO `<%db_prefix%>group` VALUES (4, 2, 'client');
 
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>migrations` (
+  `id` int(11) unsigned NOT NULL auto_increment,
+  `version` int(11) NOT NULL,
+  `migration_name` varchar(255) NOT NULL default '',
+  `executed_at` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `version` (`version`)
+) ENGINE=MyISAM AUTO_INCREMENT=1;
+
 
 CREATE TABLE IF NOT EXISTS `<%db_prefix%>project` (
   `id` int(32) unsigned NOT NULL auto_increment,

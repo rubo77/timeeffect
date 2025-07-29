@@ -4,6 +4,9 @@
 		exit;
 	}
 
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+
 	class ProjectList {
 		var $db;
 		var $data = array();
@@ -35,25 +38,28 @@
 				$access_query .= " ) ";
 			}
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'];
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$query = "SELECT * FROM {$safeProjectTable}";
 			$sql_limit='';
 			if(isset($customer) && is_object($customer) && $customer->giveValue('id')) {
-				$query .= " WHERE customer_id = '" . $customer->giveValue('id') . "'";
+				$safeCustomerId = DatabaseSecurity::escapeInt($customer->giveValue('id'));
+				$query .= " WHERE customer_id = {$safeCustomerId}";
 				$order = " ORDER BY closed, project_name";
 				$limit = "";
 			} else {
 				$cids = ''; // Initialisierung von $cids
-				$this->db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $access_query");
+				$safeCustomerTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+				$this->db->query("SELECT id FROM {$safeCustomerTable} WHERE 1 {$access_query}");
 				while($this->db->next_record()) {
 					if(!empty($cids)) {
 						$cids .= ',';
 					}
-					$cids .= $this->db->f('id');
+					$cids .= DatabaseSecurity::escapeInt($this->db->f('id'));
 				}
 				if(empty($cids)) {
 					return;
 				}
-				$query .= " WHERE customer_id IN ($cids)";
+				$query .= " WHERE customer_id IN ({$cids})";
 				if(isset($customer)) {
 					$order = " ORDER BY customer_id, last DESC, project_name";
 				} else {
@@ -143,8 +149,17 @@ else return null;
 				$this->data = $project;
 			} else if($project != '') {
 				$this->load($project);
+			} else {
+				// LOG_PROJECT_INIT: Initialize empty project with required fields
+				$this->data = array();
+				$this->data['id'] = '';
+				$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
+				$this->data['user'] = $user ? $user->giveValue('id') : '';
+				$this->data['gid'] = $user ? $user->giveValue('gid') : '';
+				error_log("LOG_PROJECT_INIT: Initialized empty project with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
 			}
-			$this->user_access				= $this->getUserAccess();
+			// Always call getUserAccess() - now safe because access field is always set
+			$this->user_access = $this->getUserAccess();
 			$this->loadEffort();
 		}
 
@@ -169,8 +184,12 @@ else return null;
 			if(empty($billed)) {
 					$query .= " AND billed IS NULL";
 			}
-			if(!$this->user->checkPermission('admin') && !$this->customer->giveValue('readforeignefforts')) {
+			// LOG_PROJECT_COUNT: Check customer object before accessing readforeignefforts
+			if(!$this->user->checkPermission('admin') && $this->customer && !$this->customer->giveValue('readforeignefforts')) {
+				error_log("LOG_PROJECT_COUNT: Restricting to own efforts for project " . $this->data['id']);
 				$query .= " AND " . $GLOBALS['_PJ_effort_table'] . ".user = '" . $this->user->giveValue('id') . "'";
+			} elseif (!$this->customer) {
+				error_log("LOG_PROJECT_COUNT: No customer object available for project " . $this->data['id'] . ", allowing all efforts");
 			}
 			$this->db->query($query);
 			if($this->db->next_record()) {

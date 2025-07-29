@@ -8,9 +8,24 @@
 		$u_gids						= explode(',', $_PJ_auth->giveValue('gids'));
 	}
 	$users			= $_PJ_auth->listUsers();
-	$rates			= new Rates($customer->giveValue("id"));
-	$r_count		= $rates->giveCount();
-	$project_input	= '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
+	
+	// LOG_EFFORT_FORM: Check customer and project objects before accessing giveValue
+	if ($customer && $customer->giveValue('id')) {
+		$rates = new Rates($customer->giveValue("id"));
+		$customer_id = $customer->giveValue('id');
+	} else {
+		error_log("LOG_EFFORT_FORM: No customer object available, using default rates");
+		$rates = new Rates(0); // Default rates
+		$customer_id = 0;
+	}
+	$r_count = $rates->giveCount();
+	
+	if ($project && $project->giveValue('project_name')) {
+		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
+	} else {
+		error_log("LOG_EFFORT_FORM: No project object available, using project ID only");
+		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>Project ID: ' . $pid . '</b>';
+	}
 	if(isset($effort) && is_object($effort) && $effort->giveValue('id')) {
 		if($_PJ_auth->checkPermission('accountant')) {
 			// Fix: Add isset check for array key 'cp' to prevent undefined array key warning
@@ -92,7 +107,16 @@
 		}
 		// last_description mod by Ruben Barkow -- END
 		$user						= $_PJ_auth->giveValue('id');
-		$effort_gid					= $project->giveValue('gid');
+		
+		// LOG_EFFORT_FORM: Check project object before accessing gid
+		if ($project && $project->giveValue('gid')) {
+			$effort_gid = $project->giveValue('gid');
+			error_log("LOG_EFFORT_FORM: Using project gid: " . $effort_gid);
+		} else {
+			// Use user's default gid for new efforts
+			$effort_gid = $_PJ_auth->giveValue('gid');
+			error_log("LOG_EFFORT_FORM: No project gid available, using user default gid: " . $effort_gid);
+		}
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';
 		$effort_access_group		= 'r--';
@@ -123,12 +147,91 @@
 				<TR>
 					<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
 				</TR><TR>
-					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
-					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><?php if(isset($project_input)) echo $project_input; ?></TD>
+					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><b><?php if(!empty($GLOBALS['_PJ_strings']['customer'])) echo $GLOBALS['_PJ_strings']['customer'] ?>:</b></TD>
+					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
+						<SELECT CLASS="FormField" NAME="selected_cid" ID="customer-select" onchange="updateProjectList()">
+							<OPTION VALUE="">-- <?php echo $GLOBALS['_PJ_strings']['select_customer']; ?> --</OPTION>
+							<?php
+								// Generate customer options - only customers where user has 'new' rights in at least one project
+								$customer_list = new CustomerList($_PJ_auth);
+								while($customer_list->nextCustomer()) {
+									$customer_option = $customer_list->giveCustomer();
+									
+									// Check if user has 'new' rights in at least one project of this customer
+									$has_new_rights = false;
+									$project_list = new ProjectList($customer_option, $_PJ_auth);
+									while($project_list->nextProject()) {
+										$project_check = $project_list->giveProject();
+										if($project_check->checkUserAccess('new')) {
+											$has_new_rights = true;
+											break; // Found at least one project with 'new' rights
+										}
+									}
+									
+									// Only show customer if user has 'new' rights in at least one project
+									if($has_new_rights) {
+										$selected = (isset($cid) && $customer_option->giveValue('id') == $cid) ? ' SELECTED' : '';
+										echo '<OPTION VALUE="' . $customer_option->giveValue('id') . '"' . $selected . '>' . 
+											 htmlspecialchars($customer_option->giveValue('customer_name')) . '</OPTION>';
+									}
+								}
+							?>
+						</SELECT>
+					</TD>
+				</TR><TR>
+					<TD CLASS="FormFieldName"><b><?php if(!empty($GLOBALS['_PJ_strings']['project'])) echo $GLOBALS['_PJ_strings']['project'] ?>:</b></TD>
+					<TD CLASS="FormField">
+						<SELECT CLASS="FormField" NAME="selected_pid" ID="project-select">
+							<OPTION VALUE="">-- <?php echo $GLOBALS['_PJ_strings']['select_project']; ?> --</OPTION>
+							<?php
+								// Pre-generate all projects with 'new' rights for JavaScript filtering
+								$all_customers = new CustomerList($_PJ_auth);
+								while($all_customers->nextCustomer()) {
+									$customer_for_projects = $all_customers->giveCustomer();
+									$customer_id_for_projects = $customer_for_projects->giveValue('id');
+									
+									$project_list_for_all = new ProjectList($customer_for_projects, $_PJ_auth);
+									while($project_list_for_all->nextProject()) {
+										$project_for_all = $project_list_for_all->giveProject();
+										// Only include projects where user has 'new' rights
+										if($project_for_all->checkUserAccess('new')) {
+											$project_id_for_all = $project_for_all->giveValue('id');
+											$project_name_for_all = $project_for_all->giveValue('project_name');
+											$selected_project = (isset($pid) && $project_id_for_all == $pid) ? ' SELECTED' : '';
+											echo '<OPTION VALUE="' . $project_id_for_all . '" data-customer-id="' . $customer_id_for_projects . '"' . $selected_project . ' style="display:none;">' . 
+												 htmlspecialchars($project_name_for_all) . '</OPTION>';
+										}
+									}
+								}
+							?>
+							<?php
+								if(!empty($cid)) {
+									// Show projects for current customer
+									$customer_for_projects = new Customer($_PJ_auth, $cid);
+									$project_list = new ProjectList($customer_for_projects, $_PJ_auth);
+									while($project_list->nextProject()) {
+										$project_option = $project_list->giveProject();
+										$selected = (isset($pid) && $project_option->giveValue('id') == $pid) ? ' SELECTED' : '';
+										echo '<OPTION VALUE="' . $project_option->giveValue('id') . '"' . $selected . '>' . 
+											 htmlspecialchars($project_option->giveValue('project_name')) . '</OPTION>';
+									}
+								}
+							?>
+						</SELECT>
+						<!-- Keep the old project input for backward compatibility -->
+						<INPUT TYPE="hidden" NAME="pid" VALUE="<?php if(isset($pid)) echo $pid; ?>">
+					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['description'])) echo $GLOBALS['_PJ_strings']['description'] ?>:</TD>
-					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" COLS="35" ROWS="5" WRAP><?php print $description; ?></TEXTAREA></TD>
+					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="description" ID="description-field" COLS="35" ROWS="5" WRAP autofocus><?php print $description; ?></TEXTAREA></TD>
 				</TR><TR>
+					<TD CLASS="FormFieldName"></TD>
+					<TD CLASS="FormField">
+						<button type="button" id="toggle-note-btn" class="btn btn-secondary" onclick="toggleNoteField()">
+							📝 Notiz einfügen
+						</button>
+					</TD>
+				</TR><TR id="note-row" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['note'])) echo $GLOBALS['_PJ_strings']['note'] ?>:</TD>
 					<TD CLASS="FormField"><TEXTAREA CLASS="FormField" NAME="note" COLS="35" ROWS="5" WRAP><?php print $note; ?></TEXTAREA></TD>
 				</TR><TR>
@@ -221,6 +324,13 @@
 					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('minute', 1)">+</button>
 					</TD>
 				</TR><TR>
+					<TD CLASS="FormFieldName"></TD>
+					<TD CLASS="FormField">
+						<button type="button" id="toggle-advanced-btn" class="btn btn-secondary" onclick="toggleAdvancedFields()">
+							⚙️ Erweitert
+						</button>
+					</TD>
+				</TR><TR id="duration-row" class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['duration'])) echo $GLOBALS['_PJ_strings']['duration'] ?>:</TD>
 					<TD CLASS="FormField">
 					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('hours', -1)">−</button>
@@ -264,7 +374,7 @@
 						}
 					?>
 					</TD>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['rate'])) echo $GLOBALS['_PJ_strings']['rate'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormField" NAME="rate">
@@ -289,7 +399,7 @@
 <?php
 if($_PJ_auth->checkPermission('accountant')) {
 ?>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['billed'])) echo $GLOBALS['_PJ_strings']['billed'] ?>:</TD>
 					<TD CLASS="FormField">
 					<SELECT CLASS="FormSelect date-field date-day" NAME="billing_day" title="<?php if(!empty($GLOBALS['_PJ_strings']['day'])) echo $GLOBALS['_PJ_strings']['day'] ?>">
@@ -357,9 +467,10 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TD>
 <?php
 }
-if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == $_PJ_auth->giveValue('id')) {
+// LOG_EFFORT_FORM: Check effort object before accessing giveValue method
+if($_PJ_auth->checkPermission('admin') || (!$effort || !$effort->giveValue('id')) || $user == $_PJ_auth->giveValue('id')) {
 ?>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gid'])) echo $GLOBALS['_PJ_strings']['gid'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gid">
 <?php
@@ -371,7 +482,7 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 	}
 ?>
 					 </SELECT></TD>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_owner'])) echo $GLOBALS['_PJ_strings']['access_owner'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_owner">
 						<OPTION VALUE="rw-"<?php if($effort_access_owner == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
@@ -379,7 +490,7 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 						<OPTION VALUE="---"<?php if($effort_access_owner == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_group'])) echo $GLOBALS['_PJ_strings']['access_group'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_group">
 						<OPTION VALUE="rw-"<?php if($effort_access_group == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
@@ -387,7 +498,7 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 						<OPTION VALUE="---"<?php if($effort_access_group == '---') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_na'])) echo $GLOBALS['_PJ_strings']['access_na'] ?>
 					</SELECT>
 					</TD>
-				</TR><TR>
+				</TR><TR class="advanced-field" style="display: none;">
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['access_world'])) echo $GLOBALS['_PJ_strings']['access_world'] ?>:</TD>
 					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="access_world">
 						<OPTION VALUE="rw-"<?php if($effort_access_world == 'rw-') print ' SELECTED' ?>><?php if(!empty($GLOBALS['_PJ_strings']['access_effort_rw'])) echo $GLOBALS['_PJ_strings']['access_effort_rw'] ?>
@@ -410,7 +521,108 @@ if($_PJ_auth->checkPermission('admin') || !$effort->giveValue('id') || $user == 
 	</TABLE>
 	</CENTER>
 
+	<!-- help section for auto-assignment -->
+	<div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin: 20px auto; max-width: 600px; font-size: 0.9em; color: #495057;">
+		<h4 style="color: #007bff; margin-top: 0;">💡 <?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_title']; ?></h4>
+		<p><strong><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_desc']; ?></strong></p>
+		<ul>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_1']; ?></li>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_2']; ?></li>
+			<li><?php echo $GLOBALS['_PJ_strings']['auto_assignment_help_3']; ?></li>
+		</ul>
+		<p><em><?php echo $GLOBALS['_PJ_strings']['auto_assignment_examples']; ?></em></p>
+		<ul>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_1']; ?></code></li>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_2']; ?></code></li>
+			<li><code><?php echo $GLOBALS['_PJ_strings']['auto_assignment_example_3']; ?></code></li>
+		</ul>
+	</div>
+
 <script type="text/javascript">
+// Update project list when customer is selected
+function updateProjectList() {
+	var customerSelect = document.getElementById('customer-select');
+	var projectSelect = document.getElementById('project-select');
+	var customerId = customerSelect.value;
+	
+	// Hide all project options first
+	var allOptions = projectSelect.querySelectorAll('option');
+	for (var i = 0; i < allOptions.length; i++) {
+		var option = allOptions[i];
+		if (option.value === '') {
+			// Keep the default "-- Projekt wählen --" option visible
+			option.style.display = 'block';
+		} else {
+			// Hide all project options initially
+			option.style.display = 'none';
+			option.selected = false;
+		}
+	}
+	
+	if (customerId) {
+		// Show only projects for the selected customer
+		var projectOptions = projectSelect.querySelectorAll('option[data-customer-id="' + customerId + '"]');
+		for (var j = 0; j < projectOptions.length; j++) {
+			projectOptions[j].style.display = 'block';
+		}
+		
+		// Log for debugging
+		console.log('LOG_PROJECT_FILTER: Customer ID:', customerId, 'Found projects:', projectOptions.length);
+	}
+}
+
+// Toggle advanced fields visibility
+function toggleAdvancedFields() {
+	var advancedFields = document.querySelectorAll('.advanced-field');
+	var toggleBtn = document.getElementById('toggle-advanced-btn');
+	var isVisible = advancedFields[0].style.display !== 'none';
+	
+	for (var i = 0; i < advancedFields.length; i++) {
+		advancedFields[i].style.display = isVisible ? 'none' : 'table-row';
+	}
+	
+	toggleBtn.innerHTML = isVisible ? '⚙️ Erweitert' : '⚙️ Erweitert (ausblenden)';
+}
+
+// Toggle note field visibility
+function toggleNoteField() {
+	var noteRow = document.getElementById('note-row');
+	var toggleBtn = document.getElementById('toggle-note-btn');
+	var isVisible = noteRow.style.display !== 'none';
+	
+	noteRow.style.display = isVisible ? 'none' : 'table-row';
+	toggleBtn.innerHTML = isVisible ? '📝 Notiz einfügen' : '📝 Notiz (ausblenden)';
+	
+	// Focus on note textarea when showing
+	if (!isVisible) {
+		var noteTextarea = noteRow.querySelector('textarea[name="note"]');
+		if (noteTextarea) {
+			noteTextarea.focus();
+		}
+	}
+}
+
+// Auto-select description text if it contains "Ohne Beschreibung"
+function setupDescriptionAutoSelect() {
+	var descField = document.getElementById('description-field');
+	if (descField && descField.value.trim() === 'Ohne Beschreibung') {
+		descField.addEventListener('focus', function() {
+			this.select();
+		}, { once: true }); // Only select on first focus
+	}
+}
+
+// Initialize UI enhancements when page loads
+document.addEventListener('DOMContentLoaded', function() {
+	setupDescriptionAutoSelect();
+	
+	// Show note field if it has content
+	var noteTextarea = document.querySelector('textarea[name="note"]');
+	if (noteTextarea && noteTextarea.value.trim() !== '') {
+		toggleNoteField();
+	}
+});
+
 // JavaScript function to adjust time values with plus/minus buttons
 function adjustTime(fieldName, increment) {
 	var select = document.getElementsByName(fieldName)[0];

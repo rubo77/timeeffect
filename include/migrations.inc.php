@@ -8,7 +8,7 @@
 
 class MigrationManager {
     private $db;
-    private $current_version = 1; // Current target version - increment for new migrations
+    private $current_version = 2; // Current target version - increment for new migrations
     private $migrations_table;
 
     public function __construct() {
@@ -72,75 +72,12 @@ class MigrationManager {
     }
 
     /**
-     * Record a successful migration in the tracking table
+     * Record a completed migration
      */
-    private function recordMigration($version, $migration_name) {
-        try {
-            // Ensure migrations table exists
-            $query = "SHOW TABLES LIKE '" . $this->migrations_table . "'";
-            $this->db->query($query);
-            
-            if (!$this->db->next_record()) {
-                if (!$this->createMigrationsTable()) {
-                    return false;
-                }
-            }
-            
-            $query = "INSERT INTO " . $this->migrations_table . " (version, migration_name) 
-                      VALUES (" . (int)$version . ", '" . addslashes($migration_name) . "')";
-            
-            return $this->db->query($query);
-        } catch (Exception $e) {
-            error_log("Failed to record migration: " . $e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Migration 1: Add user registration and password recovery fields
-     */
-    private function runMigration1() {
-        try {
-            // Check if migration is already applied
-            $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'confirmed'";
-            $this->db->query($query);
-            if ($this->db->next_record()) {
-                return true; // Already applied
-            }
-
-            // Execute migration SQL - add all required fields
-            $migrations = [
-                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                 ADD COLUMN reset_token VARCHAR(64) NULL AFTER facsimile",
-                
-                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                 ADD COLUMN reset_expires DATETIME NULL AFTER reset_token",
-                
-                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                 ADD COLUMN confirmed TINYINT(1) DEFAULT 1 AFTER reset_expires",
-                
-                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                 ADD COLUMN confirmation_token VARCHAR(64) NULL AFTER confirmed"
-            ];
-
-            foreach ($migrations as $sql) {
-                if (!$this->db->query($sql)) {
-                    throw new Exception("Failed to execute: " . $sql);
-                }
-            }
-
-            // Add indexes for performance
-            $this->db->query("ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD INDEX idx_reset_token (reset_token)");
-            $this->db->query("ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD INDEX idx_confirm_token (confirmation_token)");
-
-            return true;
-        } catch (Exception $e) {
-            error_log("Migration 1 failed: " . $e->getMessage());
-            echo "<div style='background: #fee; border: 1px solid #fcc; padding: 15px; margin: 10px; border-radius: 4px;'>";
-            echo "<strong>ERROR:</strong> Migration 1 failed: " . htmlspecialchars($e->getMessage());
-            echo "</div>";
-            return false;
-        }
+    private function recordMigration($version, $name) {
+        $query = "INSERT INTO " . $this->migrations_table . " (version, migration_name) 
+                  VALUES (" . intval($version) . ", '" . addslashes($name) . "')";
+        return $this->db->query($query);
     }
 
     /**
@@ -149,54 +86,128 @@ class MigrationManager {
     public function runPendingMigrations() {
         $current_version = $this->getCurrentVersion();
         $migrations_run = array();
+        
+        // Ensure migrations table exists
+        if ($current_version === 0) {
+            if (!$this->createMigrationsTable()) {
+                return false;
+            }
+        }
+        
+        // Migration 1: User registration fields (if not already present)
+        if ($current_version < 1) {
+            if ($this->runMigration1()) {
+                $migrations_run[] = 'User registration fields';
+                $this->recordMigration(1, 'User registration fields');
+            }
+        }
+        
+        // Migration 2: Theme preference field
+        if ($current_version < 2) {
+            if ($this->runMigration2()) {
+                $migrations_run[] = 'Theme preference field';
+                $this->recordMigration(2, 'Theme preference field');
+            }
+        }
+        
+        return $migrations_run;
+    }
 
+    /**
+     * Migration 1: User registration fields
+     */
+    private function runMigration1() {
         try {
-            // Migration 1: User registration and password recovery fields
-            if ($current_version < 1) {
-                if ($this->runMigration1()) {
-                    $migrations_run[] = 'Added user registration and password recovery database fields';
-                    $this->recordMigration(1, 'Added user registration and password recovery database fields');
-                } else {
-                    return false; // Stop if migration fails
+            // Check if fields already exist
+            $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'reset_token'";
+            $this->db->query($query);
+            if ($this->db->next_record()) {
+                return true; // Already exists
+            }
+            
+            // Add registration and password reset fields
+            $queries = array(
+                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD COLUMN reset_token VARCHAR(64) NULL AFTER facsimile",
+                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD COLUMN reset_expires DATETIME NULL AFTER reset_token",
+                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD COLUMN email_confirmed TINYINT(1) DEFAULT 1 AFTER reset_expires",
+                "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD COLUMN confirmation_token VARCHAR(64) NULL AFTER email_confirmed"
+            );
+            
+            foreach ($queries as $query) {
+                if (!$this->db->query($query)) {
+                    return false;
                 }
             }
-
-            return $migrations_run;
+            
+            return true;
         } catch (Exception $e) {
-            error_log("Error running migrations: " . $e->getMessage());
-            echo "<div style='background: #fee; border: 1px solid #fcc; padding: 15px; margin: 10px; border-radius: 4px;'>";
-            echo "<strong>ERROR:</strong> Migration system error: " . htmlspecialchars($e->getMessage());
-            echo "</div>";
+            error_log("Migration 1 failed: " . $e->getMessage());
             return false;
         }
     }
-
+    
     /**
-     * Get migration status for display
+     * Migration 2: Theme preference field
      */
-    public function getMigrationStatus() {
-        $current = $this->getCurrentVersion();
-        $target = $this->current_version;
-        
-        return [
-            'current_version' => $current,
-            'target_version' => $target,
-            'migrations_needed' => $current < $target,
-            'migrations_table_exists' => $this->migrationsTableExists()
-        ];
-    }
-
-    /**
-     * Check if migrations table exists
-     */
-    private function migrationsTableExists() {
+    private function runMigration2() {
         try {
-            $query = "SHOW TABLES LIKE '" . $this->migrations_table . "'";
+            // Check if field already exists
+            $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'theme_preference'";
             $this->db->query($query);
-            return $this->db->next_record();
+            if ($this->db->next_record()) {
+                return true; // Already exists
+            }
+            
+            // Add theme preference field
+            $query = "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " ADD COLUMN theme_preference VARCHAR(10) DEFAULT 'system' AFTER facsimile";
+            return $this->db->query($query);
+            
         } catch (Exception $e) {
+            error_log("Migration 2 failed: " . $e->getMessage());
             return false;
         }
+    }
+    
+    /**
+     * Get migration history
+     */
+    public function getMigrationHistory() {
+        $query = "SELECT * FROM " . $this->migrations_table . " ORDER BY version";
+        $this->db->query($query);
+        
+        $history = array();
+        while ($this->db->next_record()) {
+            $history[] = $this->db->Record;
+        }
+        
+        return $history;
+    }
+}
+
+/**
+ * Check and run migrations if needed
+ * Call this function during login/bootstrap
+ */
+function checkAndRunMigrations() {
+    try {
+        $migration_manager = new MigrationManager();
+        
+        if ($migration_manager->migrationsNeeded()) {
+            $migrations_run = $migration_manager->runPendingMigrations();
+            
+            // Log successful migrations
+            if (!empty($migrations_run)) {
+                error_log("TimeEffect: Automatic migrations completed: " . implode(', ', $migrations_run));
+            }
+            
+            return $migrations_run;
+        }
+        
+        return array(); // No migrations needed
+        
+    } catch (Exception $e) {
+        error_log("TimeEffect: Migration check failed: " . $e->getMessage());
+        return false;
     }
 }
 ?>

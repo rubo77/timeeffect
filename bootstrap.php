@@ -157,4 +157,7 @@ checkTimeEffectMigration();
 // Load Session/Auth compatibility layer for PHP 8.4
 require_once __DIR__ . '/include/auth_compatibility.php';
 
+// Note: Automatic database migrations are loaded after Database class is available
+// See include/config.inc.php for migration execution
+
 // Legacy PEAR compatibility is automatically loaded via composer.json files section

@@ -1,9 +1,41 @@
-<!--IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/help.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle"><A CLASS="topNav" HREF="JavaScript:openPopUp('<?php if(!empty($GLOBALS['_PJ_help_script'])) echo $GLOBALS['_PJ_help_script'] ?>', 600, 500)"><?php if(!empty($GLOBALS['_PJ_strings']['help'])) echo $GLOBALS['_PJ_strings']['help'] ?></A>&nbsp;-->
+<!-- Modern topnav: Actions, theme, user avatar as settings, logout -->
+<div class="topnav-modern" style="display: flex; align-items: center; gap: 0.75rem; justify-content: flex-end;">
+	<?php if($_PJ_auth->checkPermission('agent')) { ?>
+	<!-- Action buttons -->
+	<button id="start-anything-btn" class="topNav-btn start-anything-btn" onclick="startAnything()" title="<?php echo $GLOBALS['_PJ_strings']['start_activity_title']; ?>">▶</button>
+	<button id="stop-all-btn" class="topNav-btn stop-all-btn" onclick="stopAllActivities()" title="<?php echo $GLOBALS['_PJ_strings']['stop_all_activities_title']; ?>">🛑</button>
+	<?php } ?>
 
-<?php if(isset($_SESSION['switched_by_admin']) && $_SESSION['switched_by_admin']): ?>
-<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/user.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">
-<A CLASS="topNav" HREF="<?= $GLOBALS['_PJ_http_root'] ?>/return_to_admin.php" title="<?= $GLOBALS['_PJ_strings']['return_to_admin'] ?>"><?= $GLOBALS['_PJ_strings']['return_to_admin'] ?></A>&nbsp;
-<?php endif; ?>
+	<!-- Theme toggle -->
+	<button id="theme-toggle" class="theme-toggle-btn" title="Toggle Dark/Light Mode">🌙</button>
 
-<IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/logout.gif" WIDTH="16" HEIGHT="16" BORDER="0" ALIGN="absmiddle">
-<A ID="logout" CLASS="topNav" HREF="<?php if(!empty($GLOBALS['PHP_SELF'])) echo $GLOBALS['PHP_SELF'] ?>?logout=1" title="<?php if(!empty($GLOBALS['_PJ_strings']['logout'])) echo $GLOBALS['_PJ_strings']['logout'] ?>">⏏</A>
+	<!-- User dropdown menu -->
+	<div class="user-dropdown">
+		<!-- User initial in circle -->
+		<div class="user-avatar" title="<?php echo $_PJ_auth->giveValue('firstname') . ' ' . $_PJ_auth->giveValue('lastname'); ?>">
+			<a href="<?php echo $GLOBALS['_PJ_http_root']; ?>/user/settings.php"><?php 
+				$firstname = $_PJ_auth->giveValue('firstname');
+				$lastname = $_PJ_auth->giveValue('lastname');
+				$initial = '';
+				if(!empty($firstname)) {
+					$initial = strtoupper(substr($firstname, 0, 1));
+				} elseif(!empty($lastname)) {
+					$initial = strtoupper(substr($lastname, 0, 1));
+				} else {
+					$initial = strtoupper(substr($_PJ_auth->giveValue('username'), 0, 1));
+				}
+				echo $initial;
+			?></a>
+		</div>
+
+		<!-- Dropdown menu -->
+		<div class="user-dropdown-menu">
+			<a href="<?php echo $GLOBALS['_PJ_http_root']; ?>/user/settings.php" class="dropdown-item">
+				⚙️ <?php echo !empty($GLOBALS['_PJ_strings']['settings']) ? $GLOBALS['_PJ_strings']['settings'] : 'Settings'; ?>
+			</a>
+			<a href="<?php if(!empty($GLOBALS['PHP_SELF'])) echo $GLOBALS['PHP_SELF'] ?>?logout=1" class="dropdown-item logout">
+				⏏ <?php echo !empty($GLOBALS['_PJ_strings']['logout']) ? $GLOBALS['_PJ_strings']['logout'] : 'Logout'; ?>
+			</a>
+		</div>
+	</div>
+</div>

@@ -5,6 +5,7 @@
 	}
 
 	require_once('Auth/Auth.php');
+	require_once(__DIR__ . '/security.inc.php');
 
 	class PJAuth extends Auth {
 		// global permissions for checking user access rights
@@ -64,26 +65,29 @@
 			} else {
 				$password = $this->giveValue('password');
 			}
-			$query = sprintf("UPDATE %s SET %s = '%s', firstname = '%s', lastname = '%s', email = '%s', telephone = '%s', facsimile = '%s', allow_nc = '%s' WHERE id='%s'",
-							 $this->storage->options['table'],
-							 $this->storage->options['passwordcol'],
-							 $password,
-							 $this->giveValue('firstname'),
-							 $this->giveValue('lastname'),
-							 $data['email'],
-							 $data['telephone'],
-							 $data['facsimile'],
-							 $data['allow_nc'],
-							 $data['id']
-							 );
+			
+			// Use secure query building to prevent SQL injection
+			$updateData = array(
+				$this->storage->options['passwordcol'] => $password,
+				'firstname' => $this->giveValue('firstname'),
+				'lastname' => $this->giveValue('lastname'),
+				'email' => DatabaseSecurity::validateInput($data['email'], 'email', ''),
+				'telephone' => DatabaseSecurity::validateInput($data['telephone'], 'string', ''),
+				'facsimile' => DatabaseSecurity::validateInput($data['facsimile'], 'string', ''),
+				'allow_nc' => DatabaseSecurity::validateInput($data['allow_nc'], 'string', '')
+			);
+			
+			$whereClause = DatabaseSecurity::buildWhereId('id', $data['id']);
+			$query = DatabaseSecurity::buildUpdate($this->storage->options['table'], $updateData, $whereClause);
+			
 			$res = $this->storage->query($query);
 
 			if (DB::isError($res)) {
 				$error = PEAR::raiseError("", $res->code, PEAR_ERROR_DIE);
 			}
-			$this->data['email']		= $data['email'];
-			$this->data['telephone']	= $data['telephone'];
-			$this->data['facsimile']	= $data['facsimile'];
+			$this->data['email']		= $updateData['email'];
+			$this->data['telephone']	= $updateData['telephone'];
+			$this->data['facsimile']	= $updateData['facsimile'];
 			return NULL;
 		}
 
@@ -129,11 +133,22 @@
 			$retVal = array();
 
 			$session = &Auth::_importGlobalVariable("session");
-			$query = sprintf("SELECT * FROM `%s` WHERE %s='%s'",
-							 $this->storage->options['table'],
-							 $this->storage->options['usernamecol'],
-							 $this->getUsername()
-							 );
+			
+			// Use secure query building to prevent SQL injection
+			// Create a proper mysqli connection for DatabaseSecurity functions
+			$db = new Database();
+			$db->connect(
+				$GLOBALS['_PJ_db_database'],
+				$GLOBALS['_PJ_db_host'],
+				$GLOBALS['_PJ_db_user'],
+				$GLOBALS['_PJ_db_password']
+			);
+			$whereClause = DatabaseSecurity::buildWhereString(
+				$this->storage->options['usernamecol'], 
+				$this->getUsername(),
+				$db->Link_ID
+			);
+			$query = "SELECT * FROM `" . DatabaseSecurity::sanitizeColumnName($this->storage->options['table']) . "` WHERE " . $whereClause;
 
 			$res = $this->storage->query($query);
 			if (DB::isError($res)) {
@@ -154,7 +169,8 @@
 		}
 
 		function fetchPermissions() {
-			$query = sprintf("SELECT * FROM `%s`", $GLOBALS['_PJ_group_table']);
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_group_table']);
+			$query = "SELECT * FROM `{$safeTable}`";
 			$res = $this->storage->query($query);
 			if (DB::isError($res)) {
 				return PEAR::raiseError("", $res->code, PEAR_ERROR_DIE);
@@ -165,7 +181,8 @@
 		}
 
 		function fetchGIDs() {
-			$query = sprintf("SELECT * FROM `%s`", $GLOBALS['_PJ_gid_table']);
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_gid_table']);
+			$query = "SELECT * FROM `{$safeTable}`";
 			$res = $this->storage->query($query);
 			if (DB::isError($res)) {
 				return PEAR::raiseError("", $res->code, PEAR_ERROR_DIE);

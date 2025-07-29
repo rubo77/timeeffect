@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>Simple Dark Theme Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/modern.css">
+    <style>
+        /* Force dark theme with direct values for testing */
+        [data-theme="dark"] body {
+            background: #0f172a !important;
+            color: #f1f5f9 !important;
+        }
+        
+        [data-theme="dark"] .test-box {
+            background: #1e293b !important;
+            border: 1px solid #334155 !important;
+            color: #f1f5f9 !important;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+        }
+        
+        [data-theme="dark"] .test-button {
+            background: #818cf8 !important;
+            color: white !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Also test without data-theme for comparison */
+        .force-dark {
+            background: #0f172a !important;
+            color: #f1f5f9 !important;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="force-dark">
+
+<div style="padding: 20px;">
+    <h1 style="color: #f1f5f9;">Simple Dark Theme Test</h1>
+    <p style="color: #94a3b8;">This page should appear in dark mode with forced CSS values.</p>
+    
+    <div class="test-box">
+        <h3>Test Box with Dark Background</h3>
+        <p>This box should have a dark slate background (#1e293b) and light text.</p>
+        <button class="test-button">Test Button</button>
+    </div>
+    
+    <div style="background: #1e293b; color: #f1f5f9; padding: 20px; margin: 20px; border-radius: 8px; border: 1px solid #334155;">
+        <h3>Inline Styled Dark Box</h3>
+        <p>This box uses inline styles with exact dark mode colors:</p>
+        <ul>
+            <li>Background: #1e293b (dark slate)</li>
+            <li>Text: #f1f5f9 (light)</li>
+            <li>Border: #334155 (slate)</li>
+        </ul>
+    </div>
+    
+    <div style="margin: 20px; padding: 20px; background: white; color: black; border-radius: 8px;">
+        <h3 style="color: black;">Light Box for Comparison</h3>
+        <p style="color: black;">This box should be white/light for comparison.</p>
+    </div>
+    
+    <div style="margin: 20px;">
+        <h3 style="color: #f1f5f9;">Links to Other Tests</h3>
+        <a href="theme-debug.html" style="color: #818cf8; text-decoration: none; margin-right: 20px;">Debug Page</a>
+        <a href="theme-test-dark.html" style="color: #a78bfa; text-decoration: none;">CSS Variables Test</a>
+    </div>
+</div>
+
+<script>
+console.log('Page loaded with data-theme:', document.documentElement.getAttribute('data-theme'));
+console.log('Body background color:', getComputedStyle(document.body).backgroundColor);
+console.log('Body text color:', getComputedStyle(document.body).color);
+</script>
+
+</body>
+</html>

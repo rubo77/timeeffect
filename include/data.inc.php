@@ -85,9 +85,18 @@
 				return array('read' => true, 'write' => true, 'new' => true);
 			}
 			$u_gids			= explode(',', $this->user->giveValue('gids'));
-			$access_owner	= substr($this->giveValue('access'), 0, 3);
-			$access_group	= substr($this->giveValue('access'), 3, 3);
-			$access_world	= substr($this->giveValue('access'), 6, 3);
+			// Fix: Add null checks for substr() to prevent PHP 8.4 deprecation warnings
+			$access_value = $this->giveValue('access');
+			// FATAL: access field is null - this should never happen!
+			if ($access_value === null) {
+				$error_msg = "FATAL ERROR: access field is null - class: " . get_class($this) . ", user_id: " . ($this->user ? $this->user->giveValue('id') : 'no_user') . ", object_id: " . ($this->giveValue('id') ?? 'no_id');
+				error_log($error_msg);
+				die($error_msg . " - This indicates a programming error that must be fixed!");
+			}
+			
+			$access_owner	= substr($access_value, 0, 3);
+			$access_group	= substr($access_value, 3, 3);
+			$access_world	= substr($access_value, 6, 3);
 			if(substr($access_world, 0, 1) == 'r' ||
 			   (in_array($this->giveValue('gid'), $u_gids) && substr($access_group, 0, 1) == 'r') ||
 			   ($this->giveValue('user') == $this->user->giveValue('id') && substr($access_owner, 0, 1) == 'r')

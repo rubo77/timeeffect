@@ -4,8 +4,8 @@
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	// Fix: Initialize request variables to prevent undefined variable warnings
-	$pid = $_REQUEST['pid'] ?? '';
-	$cid = $_REQUEST['cid'] ?? '';
+	$pid = $_REQUEST['pid'] ?? null;
+	$cid = $_REQUEST['cid'] ?? null;
 	$shown = $_REQUEST['shown'] ?? [];
 	$report = $_REQUEST['report'] ?? null;
 	$syear = $_REQUEST['syear'] ?? null;
@@ -19,8 +19,9 @@
 	$emonth = $_REQUEST['emonth'] ?? null;
 	$eday = $_REQUEST['eday'] ?? null;
 
-	$customer 			= new Customer($_PJ_auth, $cid);
-	$project 			= new Project($customer, $_PJ_auth, $pid);
+	// Only create Customer object if valid cid is provided
+	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
+	$project = ($customer && $pid) ? new Project($customer, $_PJ_auth, $pid) : null;
 
 	$center_template	= "report";
 

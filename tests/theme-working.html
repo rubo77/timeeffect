@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <title>Working Dark Theme Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/project.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/modern.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <style>
+        /* Override CSS variables with higher specificity for dark theme */
+        html[data-theme="dark"] {
+            --primary-color: #818cf8 !important;
+            --primary-hover: #6366f1 !important;
+            --primary-light: #a5b4fc !important;
+            --secondary-color: #a78bfa !important;
+            --secondary-light: #c4b5fd !important;
+            --success-color: #4ade80 !important;
+            --success-light: #86efac !important;
+            --warning-color: #facc15 !important;
+            --warning-light: #fef08a !important;
+            --danger-color: #f87171 !important;
+            --danger-light: #fca5a5 !important;
+            --background-color: #0f172a !important;
+            --background-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+            --surface-color: #1e293b !important;
+            --surface-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+            --text-primary: #f1f5f9 !important;
+            --text-secondary: #94a3b8 !important;
+            --border-color: #334155 !important;
+            --border-focus: #818cf8 !important;
+            --glow-color: rgba(129, 140, 248, 0.4) !important;
+        }
+        
+        /* Force body to use dark theme variables */
+        html[data-theme="dark"] body {
+            background: var(--background-gradient) !important;
+            color: var(--text-primary) !important;
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 20px;">
+    <h1>Working Dark Theme Test</h1>
+    <p>This page uses CSS variables with !important to override any conflicts.</p>
+    
+    <div style="margin: 20px 0; padding: 20px; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px;">
+        <h3>CSS Variables Test</h3>
+        <p>This should now appear in dark mode using CSS variables:</p>
+        <ul>
+            <li>Background: var(--background-color) = #0f172a</li>
+            <li>Surface: var(--surface-color) = #1e293b</li>
+            <li>Text: var(--text-primary) = #f1f5f9</li>
+            <li>Border: var(--border-color) = #334155</li>
+        </ul>
+        
+        <div style="margin-top: 15px;">
+            <button style="background: var(--primary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Primary Button</button>
+            <button style="background: var(--secondary-color); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-left: 10px;">Secondary Button</button>
+        </div>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 20px; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px;">
+        <h3>Comparison</h3>
+        <p>Compare these test pages:</p>
+        <ul>
+            <li><a href="theme-test-dark.html" style="color: var(--primary-color);">Original CSS Variables Test</a> (should be light)</li>
+            <li><a href="theme-simple.html" style="color: var(--secondary-color);">Direct CSS Values Test</a> (should be dark)</li>
+            <li><strong>This page</strong> (should be dark with !important overrides)</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+console.log('=== Dark Theme Debug ===');
+console.log('data-theme attribute:', document.documentElement.getAttribute('data-theme'));
+
+const rootStyles = getComputedStyle(document.documentElement);
+const bodyStyles = getComputedStyle(document.body);
+
+console.log('CSS Variables:');
+console.log('--background-color:', rootStyles.getPropertyValue('--background-color'));
+console.log('--surface-color:', rootStyles.getPropertyValue('--surface-color'));
+console.log('--text-primary:', rootStyles.getPropertyValue('--text-primary'));
+
+console.log('Computed Styles:');
+console.log('body background:', bodyStyles.backgroundColor);
+console.log('body color:', bodyStyles.color);
+</script>
+
+</body>
+</html>

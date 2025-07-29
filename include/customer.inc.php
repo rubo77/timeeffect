@@ -1,4 +1,7 @@
 <?php
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+	
 	class CustomerList {
 		var $db;
 		var $data;
@@ -25,6 +28,8 @@
 				$query .= " WHERE 1";
 			}
 			$access_query="";
+			// ACL_DEBUG: Log user permissions and ACL query
+			error_log("ACL_DEBUG CustomerList: user_id=" . $user->giveValue('id') . ", is_admin=" . ($user->checkPermission('admin') ? 'YES' : 'NO') . ", gids=" . $user->giveValue('gids'));
 			if(!$user->checkPermission('admin')) {
 				$access_query  = " AND (";
 				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
@@ -33,9 +38,13 @@
 				$access_query .= " OR ";
 				$access_query .= " (access LIKE '______r__')";
 				$access_query .= " ) ";
+				error_log("ACL_DEBUG CustomerList access_query: " . $access_query);
+			} else {
+				error_log("ACL_DEBUG CustomerList: User is admin - no ACL filtering applied");
 			}
 			$query .= $access_query;
 			$query .= " ORDER BY customer_name";
+			error_log("ACL_DEBUG CustomerList final query: " . $query);
 		
 			if($debugmessage) {
 				echo 'Query: ' . htmlspecialchars($query) . '<br>';
@@ -49,6 +58,7 @@
 					echo 'Raw DB Record: <pre>' . print_r($this->db->Record, true) . '</pre>';
 				}
 				$customer = new Customer($user, $this->db->Record);
+				error_log("ACL_DEBUG CustomerList loaded customer: id=" . $this->db->Record['id'] . ", name=" . $this->db->Record['customer_name'] . ", access=" . $this->db->Record['access'] . ", user=" . $this->db->Record['user'] . ", gid=" . $this->db->Record['gid']);
 				$this->customers[] = $customer;
 				$name = $customer->giveValue('customer_name');
 				$id = $customer->giveValue('id');
@@ -107,7 +117,8 @@
 					echo 'Customer constructor: No data provided<br>';
 				}
 			}
-			$this->user_access				= $this->getUserAccess();
+			// Always call getUserAccess() - it handles null access values properly
+			$this->user_access = $this->getUserAccess();
 		}
 
 		function load($id) {
@@ -115,18 +126,33 @@
 				$this->db = new Database;
 			}
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE id='$id'";
+			$safeId = DatabaseSecurity::escapeInt($id);
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+			$query = "SELECT * FROM {$safeTable} WHERE id={$safeId}";
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
 			}
-			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id='$id'";
+			
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$query = "SELECT COUNT(id) FROM {$safeProjectTable} WHERE customer_id={$safeId}";
 			$access_query="";
 			if(!$this->user->checkPermission('admin')) {
+				// Ensure database connection is established
+				if(empty($this->db->Link_ID)) {
+					$this->db->connect(
+						$GLOBALS['_PJ_db_database'],
+						$GLOBALS['_PJ_db_host'],
+						$GLOBALS['_PJ_db_user'],
+						$GLOBALS['_PJ_db_password']
+					);
+				}
+				$safeUserId = DatabaseSecurity::escapeInt($this->user->giveValue('id'));
+				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'), $this->db->Link_ID);
 				$access_query  = " AND (";
-				$access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
 				$access_query .= " OR ";
-				$access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$access_query .= " (gid IN ({$safeUserGids}) AND access LIKE '___r_____')";
 				$access_query .= " OR ";
 				$access_query .= " (access LIKE '______r__')";
 				$access_query .= " ) ";
@@ -151,7 +177,9 @@
 				return 0; // Wenn keine ID vorhanden ist, gibt es keine Projekte
 			}
 
-			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_project_table'] . " WHERE customer_id='" . $this->data['id'] . "'";
+			$safeCustomerId = DatabaseSecurity::escapeInt($this->data['id']);
+			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
+			$query = "SELECT COUNT(id) FROM {$safeProjectTable} WHERE customer_id={$safeCustomerId}";
 			$access_query="";
 			
 			// Überprüfen, ob $this->user ein Objekt ist
@@ -160,10 +188,21 @@
 			} 
 			// Nur wenn $this->user ein Objekt ist, prüfen wir die Berechtigung
 			elseif(!$this->user->checkPermission('admin')) {
+				// Ensure database connection is established
+				if(empty($this->db->Link_ID)) {
+					$this->db->connect(
+						$GLOBALS['_PJ_db_database'],
+						$GLOBALS['_PJ_db_host'],
+						$GLOBALS['_PJ_db_user'],
+						$GLOBALS['_PJ_db_password']
+					);
+				}
+				$safeUserId = DatabaseSecurity::escapeInt($this->user->giveValue('id'));
+				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'), $this->db->Link_ID);
 				$access_query  = " AND (";
-				$access_query .= " (user = '" . $this->user->giveValue('id') . "' AND access LIKE 'r________')";
+				$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
 				$access_query .= " OR ";
-				$access_query .= " (gid IN (" . $this->user->giveValue('gids') . ") AND access LIKE '___r_____')";
+				$access_query .= " (gid IN ({$safeUserGids}) AND access LIKE '___r_____')";
 				$access_query .= " OR ";
 				$access_query .= " (access LIKE '______r__')";
 				$access_query .= " ) ";
@@ -205,11 +244,12 @@
 			// FIX: Fehlende Formularfelder aus REQUEST übernehmen (analog zu Group/User)
 			foreach (array('id', 'user', 'gid', 'active', 'customer_name') as $field) {
 				if (isset($_REQUEST[$field]) && (!isset($this->data[$field]) || empty($this->data[$field]))) {
-					$this->data[$field] = $_REQUEST[$field];
+					$this->data[$field] = DatabaseSecurity::validateInput($_REQUEST[$field], 'string');
 				}
 			}
 
-			$query = "REPLACE INTO " . $GLOBALS['_PJ_customer_table'] . " (";
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+			$query = "REPLACE INTO {$safeTable} (";
 
 			// FIX: Prüfung auf isset für alle Array-Keys (PHP 8.4 Kompatibilität)
 			if(isset($this->data['id']) && $this->data['id']) {
@@ -217,18 +257,33 @@
 			}
 			$query .= "active, user, gid, access, readforeignefforts, customer_name, customer_desc, customer_budget, customer_budget_currency, customer_logo) VALUES(";
 			if(isset($this->data['id']) && $this->data['id']) {
-				$query .= $this->data['id'] . ", ";
+				$safeId = DatabaseSecurity::escapeInt($this->data['id']);
+				$query .= $safeId . ", ";
 			}
-			$query .= "'" . (isset($this->data['active']) ? $this->data['active'] : 'yes') . "', ";
-			$query .= "'" . (isset($this->data['user']) ? $this->data['user'] : '') . "', ";
-			$query .= "'" . (isset($this->data['gid']) ? $this->data['gid'] : '') . "', ";
-			$query .= "'" . (isset($this->data['access']) ? $this->data['access'] : 'rwxr-xr--') . "', ";
-			$query .= "'" . (isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0') . "', ";
-			$query .= "'" . (isset($this->data['customer_name']) ? $this->data['customer_name'] : '') . "', ";
-			$query .= "'" . (isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '') . "', ";
-			$query .= "'" . (isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0') . "', ";
-			$query .= "'" . (isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR') . "', ";
-			$query .= "'" . (isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '') . "')";
+			
+			// Sanitize all input values
+			$safeActive = DatabaseSecurity::escapeString(isset($this->data['active']) ? $this->data['active'] : 'yes');
+			$safeUser = DatabaseSecurity::escapeString(isset($this->data['user']) ? $this->data['user'] : '');
+			$safeGid = DatabaseSecurity::escapeString(isset($this->data['gid']) ? $this->data['gid'] : '');
+			$safeAccess = DatabaseSecurity::escapeString(isset($this->data['access']) ? $this->data['access'] : 'rwxr-xr--');
+			$safeReadForeignEfforts = DatabaseSecurity::escapeString(isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0');
+			$safeCustomerName = DatabaseSecurity::escapeString(isset($this->data['customer_name']) ? $this->data['customer_name'] : '');
+			$safeCustomerDesc = DatabaseSecurity::escapeString(isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '');
+			$safeCustomerBudget = DatabaseSecurity::escapeString(isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0');
+			$safeCustomerBudgetCurrency = DatabaseSecurity::escapeString(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR');
+			$safeCustomerLogo = DatabaseSecurity::escapeString(isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '');
+			
+			$query .= "'{$safeActive}', ";
+			$query .= "'{$safeUser}', ";
+			$query .= "'{$safeGid}', ";
+			$query .= "'{$safeAccess}', ";
+			$query .= "'{$safeReadForeignEfforts}', ";
+			$query .= "'{$safeCustomerName}', ";
+			$query .= "'{$safeCustomerDesc}', ";
+			$query .= "'{$safeCustomerBudget}', ";
+			$query .= "'{$safeCustomerBudgetCurrency}', ";
+			$query .= "'{$safeCustomerLogo}')";
+			
 			if($this->db->query($query)) {
 				$this->data['id'] = $this->db->insert_id();
 				
@@ -261,7 +316,9 @@
 				return;
 			}
 
-			$query = "DELETE FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE id=" . $this->data['id'];
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
+			$safeId = DatabaseSecurity::escapeInt($this->data['id']);
+			$query = "DELETE FROM {$safeTable} WHERE id={$safeId}";
 			$project_list = new ProjectList($this, $this->user);
 			while($project_list->nextProject()) {
 				$project = $project_list->giveProject();

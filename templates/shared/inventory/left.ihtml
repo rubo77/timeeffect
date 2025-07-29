@@ -21,7 +21,7 @@
 	</div>
 	
 	<!-- Main Navigation Items -->
-	<div style="padding: 0 0.5rem;">
+	<div id="main_nav_items" style="padding: 0 0.5rem;">
 		<a href="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
 			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 				<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
@@ -66,13 +66,15 @@
 		</a>
 		
 		<!-- Efforts Navigation -->
-		<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
-			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<circle cx="12" cy="12" r="10"/>
-				<polyline points="12,6 12,12 16,14"/>
-			</svg>
-			<span><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></span>
-		</a>
+		<div style="display: flex; align-items: center; gap: 0.5rem;">
+			<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="12" cy="12" r="10"/>
+					<polyline points="12,6 12,12 16,14"/>
+				</svg>
+				<span><?php if(!empty($GLOBALS['_PJ_strings']['efforts'])) echo $GLOBALS['_PJ_strings']['efforts'] ?></span>
+			</a>
+		</div>
 		
 		<!-- Statistics Navigation -->
 		<a href="<?php if(!empty($GLOBALS['_PJ_projects_statistics_script'])) echo $GLOBALS['_PJ_projects_statistics_script'] ?>" class="nav-item" style="display: flex; align-items: center; gap: 0.75rem;">
@@ -103,15 +105,19 @@
 				while($__PJ_open_efforts->nextEffort()) {
 					$__effort = $__PJ_open_efforts->giveEffort();
 			?>
-			<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>" 
-			   class="nav-item" 
-			   style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; margin-bottom: 0.25rem; font-size: 0.875rem;">
-				<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.6; color: var(--success-color);">
-					<circle cx="12" cy="12" r="10"/>
-					<polygon points="10,8 16,12 10,16"/>
-				</svg>
-				<span><?= substr($__effort->giveValue('description'), 0, 16) ?><?php if(strlen($__effort->giveValue('description')) > 16) print "..."; ?></span>
-			</a>
+			<div class="nav-item" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.75rem; margin-bottom: 0.25rem; font-size: 0.875rem;">
+				<a href="<?php if(!empty($GLOBALS['_PJ_efforts_inventory_script'])) echo $GLOBALS['_PJ_efforts_inventory_script'] ?>?edit=1&eid=<?= $__effort->giveValue('id'); ?>" 
+				style="display: flex; align-items: center; gap: 0.5rem; flex: 1; text-decoration: none; color: inherit;">
+					<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.6; color: var(--success-color);">
+						<circle cx="12" cy="12" r="10"/>
+						<polygon points="10,8 16,12 10,16"/>
+					</svg>
+					<span><?= substr($__effort->giveValue('description'), 0, 16) ?><?php if(strlen($__effort->giveValue('description')) > 16) print "..."; ?></span>
+				</a>
+				<a href="<?= $GLOBALS['_PJ_efforts_inventory_script'] . '?stop=1&eid=' . $__effort->giveValue('id'); ?>" 
+				class="nav-stop-link"
+				title="<?php if(!empty($GLOBALS['_PJ_strings']['stop'])) echo $GLOBALS['_PJ_strings']['stop'] ?>">🛑</a>
+			</div>
 			<?php
 				}
 			?>

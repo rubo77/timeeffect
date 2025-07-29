@@ -1,4 +1,7 @@
 <?php
+	// Include security layer
+	require_once(__DIR__ . '/security.inc.php');
+	
 	class Rates {
 		var $rate_count = 0;
 		var $data		= array();
@@ -21,9 +24,11 @@
 				return;
 			}
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_rate_table'];
+			$safeRateTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_rate_table']);
+			$query = "SELECT * FROM {$safeRateTable}";
 			if(intval($data) > 0) {
-				$query .= " WHERE customer_id=$data";
+				$safeCustomerId = DatabaseSecurity::escapeInt($data);
+				$query .= " WHERE customer_id={$safeCustomerId}";
 			}
 
 			$this->db->query($query);
@@ -76,7 +81,9 @@
 
 			foreach ($this->data as $id=>$data) {
 				if($data['name'] == '') {
-					$query = "DELETE FROM " . $GLOBALS['_PJ_rate_table'] . " WHERE id='" . $data['id'] . "'";
+					$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_rate_table']);
+					$safeId = DatabaseSecurity::escapeInt($data['id']);
+					$query = "DELETE FROM {$safeTable} WHERE id={$safeId}";
 				} else {
 					$query = "REPLACE INTO " . $GLOBALS['_PJ_rate_table'] . " (id, customer_id, name, price, currency)";
 					$query .= " VALUES(";
@@ -99,7 +106,9 @@
 			if(!$this->data['id']) {
 				return;
 			}
-			$query = "DELETE FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE id=" . $this->data['id'];
+			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
+			$safeId = DatabaseSecurity::escapeInt($this->data['id']);
+			$query = "DELETE FROM {$safeTable} WHERE id={$safeId}";
 			$this->db->query($query);
 		}
 
