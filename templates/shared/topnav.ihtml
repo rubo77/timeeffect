@@ -1,14 +1,8 @@
 <!-- Stop all activities and Start anything buttons -->
 <?php if($_PJ_auth->checkPermission('agent')) { ?>
-<button id="stop-all-btn" class="topNav-btn stop-all-btn" onclick="stopAllActivities()" title="<?php echo $GLOBALS['_PJ_strings']['stop_all_activities_title']; ?>">
-    <img src="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/stop.gif" width="16" height="16" border="0" align="absmiddle" alt="Stop">
-    <?php echo $GLOBALS['_PJ_strings']['stop_all_activities']; ?>
-</button>
+<button id="stop-all-btn" class="topNav-btn stop-all-btn" onclick="stopAllActivities()" title="<?php echo $GLOBALS['_PJ_strings']['stop_all_activities_title']; ?>"> 🛑 </button>
 &nbsp;
-<button id="start-anything-btn" class="topNav-btn start-anything-btn" onclick="startAnything()" title="<?php echo $GLOBALS['_PJ_strings']['start_activity_title']; ?>">
-    <img src="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/new.gif" width="16" height="16" border="0" align="absmiddle" alt="Start">
-    <?php echo $GLOBALS['_PJ_strings']['start_activity']; ?>
-</button>
+<button id="start-anything-btn" class="topNav-btn start-anything-btn" onclick="startAnything()" title="<?php echo $GLOBALS['_PJ_strings']['start_activity_title']; ?>"> ▶ </button>
 &nbsp;
 <?php } ?>
 

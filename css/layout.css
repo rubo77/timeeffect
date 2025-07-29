@@ -23,6 +23,17 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+a.nav-stop-link , .nav-stop-link {
+    color: var(--danger-color);
+    text-decoration: none;
+    transition: var(--transition-normal);
+}
+
+a.nav-stop-link:hover, .nav-stop-link:hover {
+    color: var(--danger-highlight);
+    text-decoration: none;
+}
+
 .navigation-sidebar::-webkit-scrollbar {
     width: 6px;
 }
