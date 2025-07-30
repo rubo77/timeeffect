@@ -521,20 +521,36 @@
 		}
 
 		function stop() {
+			$GLOBALS['_PJ_debug'] = true; // Enable debug for this method
+			debugLog('EFFORT_STOP', 'stop() method called for effort ID: ' . $this->giveValue('id'));
+		
 			// Fix: Add safe array handling for explode results to prevent undefined array key warnings
 			$date_parts = explode("-", $this->data['date']);
 			$year = isset($date_parts[0]) ? $date_parts[0] : date('Y');
 			$month = isset($date_parts[1]) ? $date_parts[1] : date('m');
 			$day = isset($date_parts[2]) ? $date_parts[2] : date('d');
-			
+		
 			$begin_parts = explode(":", $this->data['begin']);
 			$hour = isset($begin_parts[0]) ? $begin_parts[0] : 0;
 			$minute = isset($begin_parts[1]) ? $begin_parts[1] : 0;
 			$second = isset($begin_parts[2]) ? $begin_parts[2] : 0;
 			$b_time 			= mktime($hour, $minute, $second, $month, $day, $year);
-			if($b_time > time() || $this->giveValue('begin') != $this->giveValue('end')) {
+		
+			debugLog('EFFORT_STOP', 'Effort data - begin: ' . $this->giveValue('begin') . ', end: ' . $this->giveValue('end') . ', b_time: ' . $b_time . ', current_time: ' . time());
+		
+			// Fix: Clear logic for stoppable efforts
+			if($b_time > time()) {
+				// Future efforts cannot be stopped
+				debugLog('EFFORT_STOP', 'Cannot stop: Future effort (b_time > current_time)');
 				return;
 			}
+			if($this->giveValue('begin') != $this->giveValue('end')) {
+				// Already stopped efforts cannot be stopped again
+				debugLog('EFFORT_STOP', 'Cannot stop: Already stopped effort (begin != end)');
+				return;
+			}
+			// Running effort (begin == end, not in future) - can be stopped
+			debugLog('EFFORT_STOP', 'Effort can be stopped - proceeding with stop logic');
 			$e_time 			= mktime(date('H'), date('i'), date('s'));
 			if($b_time > $e_time) {
 				$e_time = mktime(date('H'), date('i'), date('s'), date('m', $b_time+86400), date('d', $b_time+86400), date('Y', $b_time+86400));
@@ -542,17 +558,34 @@
 			$diff_time 			= $e_time - $b_time;
 			$hours				= floor($diff_time / 3600);
 			$minutes			= floor($diff_time / 60 -(floor($diff_time / 3600)*60));
-			if($hours > 23) {
-				$hours = 23;
-				$minutes = 59;
+		
+			// Fix: Workaround for zero-duration efforts (stopped immediately after creation)
+			if($diff_time < 60) { // Less than 1 minute
+				debugLog('EFFORT_STOP', 'Zero-duration effort detected - applying 1-minute workaround');
+				// Move start time 1 minute back and set duration to 1 minute
+				$b_time = $b_time - 60; // 1 minute earlier
+				$hours = 0;
+				$minutes = 1; // 1 minute duration
+				// Update begin time in data
+				$this->data['begin'] = sprintf('%02d:%02d:00', date('H', $b_time), date('i', $b_time));
+				debugLog('EFFORT_STOP', 'Adjusted begin time to: ' . $this->data['begin'] . ' (1 minute earlier)');
+			} else {
+				// Normal duration calculation for efforts running longer than 1 minute
+				if($hours > 23) {
+					$hours = 23;
+					$minutes = 59;
+				}
+				if($minutes != 59) {
+					$minutes		= round($minutes/5)*5;
+				}
 			}
-			if($minutes != 59) {
-				$minutes		= round($minutes/5)*5;
-			}
-			
+		
 			$e_time = $b_time + $hours*3600 + $minutes*60;
 			$this->data['end'] = sprintf('%02d:%02d:00', date('H', $e_time), date('i', $e_time));
+			debugLog('EFFORT_STOP', 'Calculated end time: ' . $this->data['end'] . ', hours: ' . $hours . ', minutes: ' . $minutes);
+			debugLog('EFFORT_STOP', 'Calling save() method to persist stopped effort');
 			$this->save();
+			debugLog('EFFORT_STOP', 'save() method completed - effort should now be stopped');
 		}
 
 		function copy(&$user) {
