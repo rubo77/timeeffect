@@ -152,6 +152,3 @@ function PEAR_isError($data)
 {
     return PEAR::isError($data);
 }
-
-echo "<!-- Modern PEAR Compatibility Layer loaded -->\n";
-?>

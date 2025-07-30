@@ -1,5 +1,9 @@
 <?php
     require_once(__DIR__ . "/bootstrap.php"); // Modern PHP 8.4 compatibility
+	
+	// Start output buffering to prevent "headers already sent" errors
+	ob_start();
+	
 	include_once("include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
@@ -46,7 +50,8 @@
 	$_SESSION['original_admin_username'] = $_SESSION['original_admin_username'] ?? null;
 	$_SESSION['switched_by_admin'] = true;
 
+	error_log("[USER_SWITCH] Switched to user " . $user->giveValue('username') . " with ID " . $user->giveValue('id') . " output: '" . ob_get_clean() . "'");
+
 	// Redirect to main page
 	header('Location: ' . $_PJ_http_root . '/');
 	exit;
-?>
