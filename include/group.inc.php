@@ -250,9 +250,15 @@ class Group {
         $debug_output .= "<b>SQL Query:</b> " . htmlspecialchars($query) . "</pre>";
 
         $this->db->query($query);
-        
-        // Debug-Ausgabe nur im Fehlerfall anzeigen
-        // Prüfen, ob die Gruppe erfolgreich gespeichert wurde
+    
+    // CRITICAL FIX: Set the ID after insert for new groups
+    if(empty($this->data['id'])) {
+        $this->data['id'] = $this->db->insert_id();
+        debugLog('GROUP_SAVE', 'New group created with ID: ' . $this->data['id']);
+    }
+    
+    // Debug-Ausgabe nur im Fehlerfall anzeigen
+    // Prüfen, ob die Gruppe erfolgreich gespeichert wurde
         $success = false;
         $check_query = "SELECT COUNT(*) AS count FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='" . $this->data['name'] . "'";
         $this->db->query($check_query);
@@ -267,7 +273,7 @@ class Group {
         } else {
             // Erfolgs-Nachricht anzeigen
             echo '<div style="background-color: #dff0d8; color: #3c763d; padding: 10px; margin: 10px; border: 1px solid #d6e9c6; border-radius: 4px;">';
-            echo '<strong>Erfolg!</strong> Die Gruppe "' . htmlspecialchars($this->data['name']) . '" wurde erfolgreich gespeichert.';
+            echo 'Group "' . htmlspecialchars($this->data['name']) . '" saved.';
             echo '</div>';
         }
     }

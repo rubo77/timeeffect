@@ -27,6 +27,7 @@
 	$ro_css_firstname = '';
 	$ro_css_lastname = '';
 	if(isset($user) && is_object($user) && $user->giveValue('id')) {
+		// Edit existing user - populate with user data
 		$ro_username		= ' READONLY';
 		$ro_css_username	= 'RO';
 		$id					= $user->giveValue('id');
@@ -40,8 +41,19 @@
 		$permissions		= explode(',', $user->giveValue('permissions'));
 		$gids				= explode(',', $user->giveValue('gids'));
 		// Password fields will be handled by mode-based validation
-	} else if(!is_array($gids)) {
-		$gids			= $_PJ_auth->gids;
+	} else {
+		// New user - initialize empty values (don't use current user data)
+		$ro_username		= '';
+		$ro_css_username	= '';
+		$id					= '';
+		$firstname			= '';
+		$lastname			= '';
+		$email				= '';
+		$telephone			= '';
+		$facsimile			= '';
+		$allow_nc			= '';
+		$permissions		= array();
+		$gids				= array(); // No group membership for new users
 	}
 	if($username == '') {
 		$username = $login;
@@ -210,6 +222,26 @@ function togglePasswordFields() {
         button.style.background = '#007cba';
     }
 }
+// Auto-suggest username as firstname/lastname for new users
+function suggestNameFromUsername() {
+    var usernameField = document.querySelector('input[name="login"]');
+    var firstnameField = document.querySelector('input[name="firstname"]');
+    var lastnameField = document.querySelector('input[name="lastname"]');
+    var isNewUser = <?php echo empty($id) ? 'true' : 'false'; ?>;
+    
+    if (!isNewUser || !usernameField || !firstnameField || !lastnameField) {
+        return; // Only for new users
+    }
+    
+    var username = usernameField.value.trim();
+    
+    // Only suggest if firstname and lastname are empty
+    if (username !== '' && firstnameField.value.trim() === '' && lastnameField.value.trim() === '') {
+        firstnameField.value = username;
+        lastnameField.value = username;
+    }
+}
+
 // Personal group management for new users
 function updatePersonalGroup() {
     var usernameField = document.querySelector('input[name="login"]');
@@ -250,10 +282,18 @@ function updatePersonalGroup() {
 document.addEventListener('DOMContentLoaded', function() {
     var usernameField = document.querySelector('input[name="login"]');
     if (usernameField) {
-        usernameField.addEventListener('input', updatePersonalGroup);
-        usernameField.addEventListener('change', updatePersonalGroup);
+        // Add listeners for both personal group and name suggestion
+        usernameField.addEventListener('input', function() {
+            updatePersonalGroup();
+            suggestNameFromUsername();
+        });
+        usernameField.addEventListener('change', function() {
+            updatePersonalGroup();
+            suggestNameFromUsername();
+        });
         // Initialize on page load
         updatePersonalGroup();
+        suggestNameFromUsername();
     }
 });
 </script>

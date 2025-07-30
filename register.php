@@ -111,6 +111,40 @@
 			exit;
 		}
 
+		// Auto-create personal group for new user
+		if ($message == '') {
+			$username = $data['username'];
+			$user_id = $new_user->giveValue('id');
+			
+			// Create personal group with unique name to avoid conflicts
+			$group_name = $username . '_personal';
+			$group_data = array(
+				'id' => null,
+				'name' => $group_name,
+				'description' => 'Personal group for ' . $username
+			);
+			
+			$new_group = new Group($group_data);
+			$group_message = $new_group->save();
+			
+			if ($group_message == '') {
+				// Group created successfully - assign user to group
+				$group_id = $new_group->giveValue('id');
+				
+				// Add user to the new group
+				$db = new Database();
+				$db->connect($_PJ_db_host, $_PJ_db_user, $_PJ_db_password, $_PJ_db_name);
+				
+				$insert_query = "INSERT INTO " . $_PJ_table_prefix . "user_group (user_id, group_id) VALUES ('$user_id', '$group_id')";
+				$db->query($insert_query);
+				
+				debugLog('REGISTRATION', 'Auto-created group "' . $group_name . '" (ID: ' . $group_id . ') for user "' . $username . '" (ID: ' . $user_id . ')');
+			} else {
+				// Group creation failed - log but don't fail registration
+				debugLog('REGISTRATION', 'Failed to create auto-group "' . $group_name . '" for user "' . $username . '": ' . $group_message);
+			}
+		}
+
 		// Registration successful
 		if (isset($_PJ_registration_email_confirm) && $_PJ_registration_email_confirm && $data['confirmation_token']) {
 			// Send confirmation email

@@ -103,6 +103,14 @@
 	// Only create Effort object if valid eid is provided
 	$effort = $eid ? new Effort($eid, $_PJ_auth) : null;
 	if(!empty($stop)) {
+		// Check if effort object exists (eid parameter required)
+		if(!$effort) {
+			$error_message = 'Error: No effort ID specified for stop operation.';
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		
 		if($eid && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 			include("$_PJ_root/templates/error.ihtml");
