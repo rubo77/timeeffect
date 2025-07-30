@@ -771,6 +771,15 @@ html[data-theme="dark"] {
     --glow-color: rgba(129, 140, 248, 0.4);
 }
 
+/* Dark mode logo border */
+html[data-theme="dark"] img[src*="logo_te_150.png"] {
+    border: 1px solid rgba(241, 245, 249, 0.3) !important;
+    border-radius: 4px;
+    padding: 4px;
+    background: rgba(30, 41, 59, 0.5);
+    box-shadow: 0 0 8px rgba(129, 140, 248, 0.2);
+}
+
 /* Dark mode form elements */
 html[data-theme="dark"] input:not([type="radio"]):not([type="submit"]):not([type="checkbox"]),
 html[data-theme="dark"] textarea,
