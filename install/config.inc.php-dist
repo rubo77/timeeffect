@@ -28,12 +28,12 @@
 	$_PJ_db_password	= '<%db_password%>';
 
 	// define maximum session length in seconds. Users will be automatically logged of after this period.
-	   If set to 0 automated logout will be disabled.
+	// If set to 0 automated logout will be disabled.
 	$_PJ_session_length			= <%session_length%>;
 
 	// define database table prefix for TIMEEFFECT.
-	   NOTE: you have to change the table names in 'sql/timeeffect.sql' according to the prefix
-	   A more comfortable installation routine is issue of future releases
+	// NOTE: you have to change the table names in 'sql/timeeffect.sql' according to the prefix
+	// A more comfortable installation routine is issue of future releases
 	$_PJ_table_prefix 	= '<%db_prefix%>';
 
 	// agents are allow to delete efforts
