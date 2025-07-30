@@ -103,7 +103,11 @@ class Group {
     }
 
     function load($id = '') {
-        $query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id='$id'";
+        // SQL injection protection: escape the ID parameter
+        $db = new Database();
+        $db->connect();
+        $safeId = DatabaseSecurity::escapeString($id, $db->Link_ID);
+        $query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id='$safeId'";
         $this->db->query($query);
 
         if($this->db->next_record()) {
@@ -136,7 +140,11 @@ class Group {
         
         // Bei leerer ID einen sicheren WHERE-Teil verwenden
         $id_condition = !empty($this->data['id']) ? " AND id <> '" . $this->data['id'] . "'" : "";
-        $query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='$name'" . $id_condition;
+        // SQL injection protection: escape the name parameter
+        $db = new Database();
+        $db->connect();
+        $safeName = DatabaseSecurity::escapeString($name, $db->Link_ID);
+        $query = "SELECT * FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE name='$safeName'" . $id_condition;
         $debug_output .= "<b>SQL Query:</b> " . htmlspecialchars($query);
         $debug_output .= "</pre>";
         $this->db->query($query);
@@ -151,7 +159,11 @@ class Group {
     }
 
     function retrieve($id, $value) {
-        $query = "SELECT $value FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id='$id'";
+        // SQL injection protection: escape the ID parameter
+        $db = new Database();
+        $db->connect();
+        $safeId = DatabaseSecurity::escapeString($id, $db->Link_ID);
+        $query = "SELECT $value FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id='$safeId'";
         $this->db->query($query);
 
         if($this->db->next_record()) {

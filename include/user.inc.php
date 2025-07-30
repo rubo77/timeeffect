@@ -134,7 +134,11 @@ else return null;
 			}
 			
 			$id_condition = !empty($this->data['id']) ? " AND id <> '" . $this->data['id'] . "'" : "";
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$username'" . $id_condition;
+			// SQL injection protection: escape the username parameter
+			$db = new Database();
+			$db->connect();
+			$safeUsername = DatabaseSecurity::escapeString($username, $db->Link_ID);
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE username='$safeUsername'" . $id_condition;
 			$this->db->query($query);
 
 			if($this->db->next_record()) {
@@ -144,7 +148,11 @@ else return null;
 		}
 
 		function retrieve($id, $value) {
-			$query = "SELECT $value FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE id='$id'";
+			// SQL injection protection: escape the ID parameter
+			$db = new Database();
+			$db->connect();
+			$safeId = DatabaseSecurity::escapeString($id, $db->Link_ID);
+			$query = "SELECT $value FROM " . $GLOBALS['_PJ_auth_table'] . " WHERE id='$safeId'";
 			$this->db->query($query);
 
 			if($this->db->next_record()) {

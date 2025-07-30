@@ -164,8 +164,12 @@ else return null;
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
+			// Ensure database connection is established
+			$this->db->connect();
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'] . " WHERE id='$id'";
+			// SQL injection protection: escape the ID parameter
+			$safeId = DatabaseSecurity::escapeString($id, $this->db->Link_ID);
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_project_table'] . " WHERE id='$safeId'";
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
@@ -176,8 +180,12 @@ else return null;
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
+			// Ensure database connection is established
+			$this->db->connect();
 
-			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE project_id='" . $this->data['id'] . "'";
+			// SQL injection protection: escape the project ID parameter
+			$safeProjectId = DatabaseSecurity::escapeString($this->data['id'], $this->db->Link_ID);
+			$query = "SELECT COUNT(id) FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE project_id='$safeProjectId'";
 			if(empty($billed)) {
 					$query .= " AND billed IS NULL";
 			}

@@ -273,8 +273,12 @@
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}
+			// Ensure database connection is established
+			$this->db->connect();
 
-			$query = "SELECT * FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE id='$id'";
+			// SQL injection protection: escape the ID parameter
+			$safeId = DatabaseSecurity::escapeString($id, $this->db->Link_ID);
+			$query = "SELECT * FROM " . $GLOBALS['_PJ_effort_table'] . " WHERE id='$safeId'";
 			$this->db->query($query);
 			if($this->db->next_record()) {
 				$this->data = $this->db->Record;
@@ -475,7 +479,9 @@
 
 			// Only update project timestamp if we have a valid project_id
 			if(isset($this->data['project_id']) && !empty($this->data['project_id']) && $this->data['project_id'] !== '0') {
-				$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='" . $this->data['project_id'] . "'";
+				// SQL injection protection: escape the project ID parameter
+				$safeProjectId = DatabaseSecurity::escapeString($this->data['project_id'], $this->db->Link_ID);
+				$query = "UPDATE " . $GLOBALS['_PJ_project_table'] . " SET last=NOW() WHERE id='$safeProjectId'";
 				$this->db->query($query);
 			}
 			
