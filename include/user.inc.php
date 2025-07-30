@@ -52,7 +52,7 @@
 
 		function giveValue($key) {
 			if(isset($this->data[$key])) return $this->data[$key];
-else return null;
+			else return null;
 		}
 	}
 
@@ -172,6 +172,13 @@ else return null;
 		}
 
 		function save() {
+			// Debug logging for firstname/lastname
+			if(isset($GLOBALS['_PJ_debug']) && $GLOBALS['_PJ_debug']) {
+				error_log("USER_SAVE_DEBUG: firstname in data: '" . ($this->data['firstname'] ?? 'NOT_SET') . "'");
+				error_log("USER_SAVE_DEBUG: lastname in data: '" . ($this->data['lastname'] ?? 'NOT_SET') . "'");
+				error_log("USER_SAVE_DEBUG: user data: " . print_r($this->data, true));
+			}
+			
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
 			}

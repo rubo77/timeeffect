@@ -198,14 +198,19 @@
 					);
 				}
 				$safeUserId = DatabaseSecurity::escapeInt($this->user->giveValue('id'));
-				$safeUserGids = DatabaseSecurity::escapeString($this->user->giveValue('gids'), $this->db->Link_ID);
-				$access_query  = " AND (";
-				$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
-				$access_query .= " OR ";
-				$access_query .= " (gid IN ({$safeUserGids}) AND access LIKE '___r_____')";
-				$access_query .= " OR ";
-				$access_query .= " (access LIKE '______r__')";
-				$access_query .= " ) ";
+			$userGids = trim($this->user->giveValue('gids'));
+			
+			$access_query  = " AND (";
+			$access_query .= " (user = '{$safeUserId}' AND access LIKE 'r________')";
+			
+			// Only add group clause if user has groups
+			if(!empty($userGids)) {
+				$safeUserGids = DatabaseSecurity::escapeString($userGids, $this->db->Link_ID);
+				$access_query .= " OR (gid IN ({$safeUserGids}) AND access LIKE '___r_____')";
+			}
+			
+			$access_query .= " OR (access LIKE '______r__')";
+			$access_query .= " ) ";
 			}
 			if(empty($closed)) {
 					$query .= " AND closed = 'No'";

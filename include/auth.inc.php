@@ -71,16 +71,20 @@
 			// Use secure query building to prevent SQL injection
 			$updateData = array(
 				$this->storage->options['passwordcol'] => $password,
-				'firstname' => $this->giveValue('firstname'),
-				'lastname' => $this->giveValue('lastname'),
+				'firstname' => DatabaseSecurity::validateInput($data['firstname'] ?? '', 'string', ''),
+				'lastname' => DatabaseSecurity::validateInput($data['lastname'] ?? '', 'string', ''),
 				'email' => DatabaseSecurity::validateInput($data['email'], 'email', ''),
 				'telephone' => DatabaseSecurity::validateInput($data['telephone'], 'string', ''),
 				'facsimile' => DatabaseSecurity::validateInput($data['facsimile'], 'string', ''),
 				'allow_nc' => DatabaseSecurity::validateInput($data['allow_nc'], 'string', '')
 			);
 			
+			// Create mysqli connection for DatabaseSecurity functions
+			$db = new Database();
+			$db->connect();
+			
 			$whereClause = DatabaseSecurity::buildWhereId('id', $data['id']);
-			$query = DatabaseSecurity::buildUpdate($this->storage->options['table'], $updateData, $whereClause);
+			$query = DatabaseSecurity::buildUpdate($this->storage->options['table'], $updateData, $whereClause, $db->Link_ID);
 			
 			$res = $this->storage->query($query);
 

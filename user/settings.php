@@ -7,6 +7,8 @@
 	// Initialize variables from request
 	$altered = $_REQUEST['altered'] ?? null;
 	$id = $_REQUEST['id'] ?? null;
+	$firstname = $_REQUEST['firstname'] ?? '';
+	$lastname = $_REQUEST['lastname'] ?? '';
 	$telephone = $_REQUEST['telephone'] ?? '';
 	$facsimile = $_REQUEST['facsimile'] ?? '';
 	$email = $_REQUEST['email'] ?? '';
@@ -32,7 +34,11 @@
 		}
 		
 		// Handle regular user data updates
-		$data['id']					= $id;
+		// Use current user ID if no ID provided (normal user editing own settings)
+		$data['id']					= $id ?: $_PJ_auth->giveValue('id');
+		$data['mode']				= 'edit'; // Always edit mode for settings
+		$data['firstname']			= $firstname;
+		$data['lastname']			= $lastname;
 		$data['telephone']			= $telephone;
 		$data['facsimile']			= $facsimile;
 		$data['email']				= $email;
@@ -49,6 +55,9 @@
 			$message = "<FONT COLOR=\"red\"><B>$error</B></FONT>";
 		} else {
 			$message = "<FONT COLOR=\"green\"><B>Settings updated successfully.</B></FONT>";
+			
+			// Refresh auth data to show changes immediately
+			$_PJ_auth->fetchAdditionalData();
 		}
 	}
 	$form_action = $GLOBALS['_PJ_own_user_script'];

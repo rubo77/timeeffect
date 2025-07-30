@@ -1,5 +1,4 @@
 <!-- user/form.ihtml - START -->
-
 <?php
 	$gids = array();
 	$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : '';
@@ -7,119 +6,71 @@
 	$login = isset($_REQUEST['login']) ? $_REQUEST['login'] : '';
 	$own = isset($_REQUEST['own']) ? $_REQUEST['own'] : '';
 	$permissions = array();
-
 	if(isset($permissions) and !is_array($permissions)) {
-
-		$permissions = array();
-
-	}
-
+			$permissions = array();
+		}
 	if(empty($form_action)) {
-
-		$form_action = $GLOBALS['_PJ_user_script'];
-
-	}
-
+			$form_action = $GLOBALS['_PJ_user_script'];
+		}
+	/*
 	if(!$_PJ_auth->checkPermission('admin')) {
-
 		$ro_firstname	= ' READONLY';
-
 		$ro_lastname	= ' READONLY';
-
 		$ro_css_firstname	= 'RO';
-
 		$ro_css_lastname	= 'RO';
-
 	}
-
+	*/
+	
+	// Explicitly clear readonly variables to ensure firstname/lastname are editable
+	$ro_firstname = '';
+	$ro_lastname = '';
+	$ro_css_firstname = '';
+	$ro_css_lastname = '';
 	if(isset($user) && is_object($user) && $user->giveValue('id')) {
-
 		$ro_username		= ' READONLY';
-
 		$ro_css_username	= 'RO';
-
 		$id					= $user->giveValue('id');
-
 		$firstname			= $user->giveValue('firstname');
-
 		$lastname			= $user->giveValue('lastname');
-
 		$username			= $user->giveValue('username');
-
 		$email				= $user->giveValue('email');
-
 		$telephone			= $user->giveValue('telephone');
-
 		$facsimile			= $user->giveValue('facsimile');
-
 		$allow_nc			= $user->giveValue('allow_nc');
-
 		$permissions		= explode(',', $user->giveValue('permissions'));
-
 		$gids				= explode(',', $user->giveValue('gids'));
-
 		// Password fields will be handled by mode-based validation
-
 	} else if(!is_array($gids)) {
-
 		$gids			= $_PJ_auth->gids;
-
 	}
-
 	if($username == '') {
-
 		$username = $login;
-
 	}
-
 	$a_permissions	= $_PJ_auth->permissions;
-
 	$a_gids			= $_PJ_auth->gids;
-
 	if(!$id && (!is_array($a_gids) || !count($a_gids))) {
-
 		print '<br><center><span class="errorMessage"><b>' . $GLOBALS['_PJ_strings']['missing_groups'] . '</b></center></span>';
-
 		return;
-
 	}
-
 	include($GLOBALS['_PJ_root'] . '/templates/user/options/edit.ihtml');
-
-?>
-
+	?>
 <FORM ACTION="<?= $form_action; ?>" METHOD="<?= $_PJ_form_method; ?>">
-
 <INPUT TYPE="hidden" NAME="uid" VALUE="<?php if(isset($id)) echo $id; ?>">
 <INPUT TYPE="hidden" NAME="mode" VALUE="<?php echo empty($id) ? 'new' : 'edit'; ?>">
-
 <INPUT TYPE="hidden" NAME="own" VALUE="<?php if(isset($own)) echo $own; ?>">
-
 <INPUT TYPE="hidden" NAME="edit" VALUE="1">
-
 <INPUT TYPE="hidden" NAME="altered" VALUE="1">
-
 	<CENTER>
-
-	<TABLE WIDTH="90%" BORDER="0" CELLPADDING="3" CELLSPACING="0">
-
-		<TR>
-
-			<TD CLASS="content">
-
-			<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
-
-				<TR>
-
-					<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['username'])) echo $GLOBALS['_PJ_strings']['username'] ?>*:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField<?php if(isset($ro_css_username)) echo $ro_css_username; ?>" NAME="login" VALUE="<?php if(isset($username)) echo $username; ?>"<?php if(isset($ro_username)) echo $ro_username; ?>></TD>
-
-				</TR>
+		<TABLE WIDTH="90%" BORDER="0" CELLPADDING="3" CELLSPACING="0">
+			<TR>
+					<TD CLASS="content">
+						<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+							<TR>
+									<TD CLASS="Error" COLSPAN="2"><?php if(isset($message)) echo $message; ?></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['username'])) echo $GLOBALS['_PJ_strings']['username'] ?>*:</TD>
+										<TD CLASS="FormField"><INPUT CLASS="FormField<?php if(isset($ro_css_username)) echo $ro_css_username; ?>" NAME="login" VALUE="<?php if(isset($username)) echo $username; ?>"<?php if(isset($ro_username)) echo $ro_username; ?>></TD>
+									</TR>
 				<?php if(isset($user) && is_object($user) && $user->giveValue('id')): ?>
 					<!-- Existing user: Show password change button -->
 					<TR>
@@ -139,152 +90,84 @@
 						<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="" autocomplete="new-password" required></TD>
 					</TR>
 				<?php endif; ?>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['firstname'])) echo $GLOBALS['_PJ_strings']['firstname'] ?>:</TD>
-
-					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField<?php if(isset($ro_css_firstname)) echo $ro_css_firstname; ?>" NAME="firstname" VALUE="<?php if(isset($firstname)) echo $firstname; ?>"<?php if(isset($ro_firstname)) echo $ro_firstname; ?>></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['lastname'])) echo $GLOBALS['_PJ_strings']['lastname'] ?>*:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField<?php if(isset($ro_css_lastname)) echo $ro_css_lastname; ?>" NAME="lastname" VALUE="<?php if(isset($lastname)) echo $lastname; ?>"<?php if(isset($ro_lastname)) echo $ro_lastname; ?>></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['email'])) echo $GLOBALS['_PJ_strings']['email'] ?>:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="email" VALUE="<?php if(isset($email)) echo $email; ?>"></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['telephone'])) echo $GLOBALS['_PJ_strings']['telephone'] ?>:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="telephone" VALUE="<?php if(isset($telephone)) echo $telephone; ?>"></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['facsimile'])) echo $GLOBALS['_PJ_strings']['facsimile'] ?>:</TD>
-
-					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="facsimile" VALUE="<?php if(isset($facsimile)) echo $facsimile; ?>"></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName">Theme:</TD>
-
-					<TD CLASS="FormField"><SELECT CLASS="FormField" NAME="theme_preference">
+								</TR><TR>
+									<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['firstname'])) echo $GLOBALS['_PJ_strings']['firstname'] ?>:</TD>
+										<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>"><INPUT CLASS="FormField<?php if(isset($ro_css_firstname)) echo $ro_css_firstname; ?>" NAME="firstname" VALUE="<?php if(isset($firstname)) echo $firstname; ?>"<?php if(isset($ro_firstname)) echo $ro_firstname; ?>></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['lastname'])) echo $GLOBALS['_PJ_strings']['lastname'] ?>*:</TD>
+										<TD CLASS="FormField"><INPUT CLASS="FormField<?php if(isset($ro_css_lastname)) echo $ro_css_lastname; ?>" NAME="lastname" VALUE="<?php if(isset($lastname)) echo $lastname; ?>"<?php if(isset($ro_lastname)) echo $ro_lastname; ?>></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['email'])) echo $GLOBALS['_PJ_strings']['email'] ?>:</TD>
+										<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="email" VALUE="<?php if(isset($email)) echo $email; ?>"></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['telephone'])) echo $GLOBALS['_PJ_strings']['telephone'] ?>:</TD>
+										<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="telephone" VALUE="<?php if(isset($telephone)) echo $telephone; ?>"></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['facsimile'])) echo $GLOBALS['_PJ_strings']['facsimile'] ?>:</TD>
+										<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="facsimile" VALUE="<?php if(isset($facsimile)) echo $facsimile; ?>"></TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName">Theme:</TD>
+										<TD CLASS="FormField"><SELECT CLASS="FormField" NAME="theme_preference">
 						<OPTION VALUE="system"<?php if((!isset($user) || $user->giveValue('theme_preference') == 'system' || $user->giveValue('theme_preference') == '')) print ' SELECTED'; ?>>System Default</OPTION>
 						<OPTION VALUE="light"<?php if(isset($user) && $user->giveValue('theme_preference') == 'light') print ' SELECTED'; ?>>Light</OPTION>
 						<OPTION VALUE="dark"<?php if(isset($user) && $user->giveValue('theme_preference') == 'dark') print ' SELECTED'; ?>>Dark</OPTION>
 					</SELECT></TD>
-
-<?php
-
+					<?php
 if($_PJ_auth->checkPermission('admin')) {
-
-?>
-
+	?>
 				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['allow_nc'])) echo $GLOBALS['_PJ_strings']['allow_nc'] ?>:</TD>
-
-					<TD CLASS="FormField"><SELECT NAME="allow_nc">
-
-						<OPTION VALUE="0"<?php if(!empty($allow_nc) and $allow_nc == '0') print ' SELECTED'; ?>><?php if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
-
-						<OPTION VALUE="1"<?php if(!empty($allow_nc) and $allow_nc == '1') print ' SELECTED'; ?>><?php if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
-
-					</SELECT>
-
-					</TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['permissions'])) echo $GLOBALS['_PJ_strings']['permissions'] ?>*:</TD>
-
-					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="permissions[]" multiple="multiple">
-
-<?php
-
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['allow_nc'])) echo $GLOBALS['_PJ_strings']['allow_nc'] ?>:</TD>
+										<TD CLASS="FormField"><SELECT NAME="allow_nc">
+											<OPTION VALUE="0"<?php if(!empty($allow_nc) and $allow_nc == '0') print ' SELECTED'; ?>><?php if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
+												<OPTION VALUE="1"<?php if(!empty($allow_nc) and $allow_nc == '1') print ' SELECTED'; ?>><?php if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
+											</SELECT>
+										</TD>
+									</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['permissions'])) echo $GLOBALS['_PJ_strings']['permissions'] ?>*:</TD>
+										<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="permissions[]" multiple="multiple">
+					<?php
 	reset($a_permissions);
-
-	foreach($a_permissions as $name => $key) {
-
-?>
-
+		foreach($a_permissions as $name => $key) {
+		?>
 						<OPTION VALUE="<?php if(isset($name)) echo $name; ?>"<?php if(in_array($name, $permissions)) print ' SELECTED'; ?>><?= $GLOBALS['_PJ_permission_names'][$name] ?>
-
-<?php
-
+						<?php
 	}
-
-?>
-
+	?>
 					 </SELECT></TD>
-
-				</TR><TR>
-
-					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gids'])) echo $GLOBALS['_PJ_strings']['gids'] ?>*:</TD>
-
-					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple" id="gids-select">
-
-<?php
+					 				</TR><TR>
+									<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gids'])) echo $GLOBALS['_PJ_strings']['gids'] ?>*:</TD>
+										<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple" id="gids-select">
+					<?php
 	// For new users, add personal group option
 	if(empty($id) && !empty($username)) {
 		echo '<OPTION SELECTED value="new_personal_group" id="personal-group-option">' . htmlspecialchars($username) . ' (Personal Group)</OPTION>';
 	}
-
-	reset($a_gids);
-
-	foreach($a_gids as $gid => $name) {
-
-?>
-
+		reset($a_gids);
+		foreach($a_gids as $gid => $name) {
+		?>
 						<OPTION<?php if(in_array($gid, $gids)) print ' SELECTED'; ?> value="<?php if(isset($gid)) echo $gid; ?>"><?php if(isset($name)) echo $name; ?>
-
-<?php
-
+						<?php
 	}
-
-?>
-
+	?>
 					 </SELECT></TD>
-
-<?php
-
+					 <?php
 }
-
 ?>
-
 				</TR><TR>
-
-					<TD>&nbsp;</TD>
-
-					<TD>&nbsp;</TD>
-
-				</TR><TR>
-
-					<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
-
-				</TR>
-
+									<TD>&nbsp;</TD>
+										<TD>&nbsp;</TD>
+									</TR><TR>
+									<TD COLSPAN="2"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['save'])) echo $GLOBALS['_PJ_strings']['save'] ?> >>"></TD>
+									</TR>
+							</TABLE>
+						</TD>
+					</TR>
 			</TABLE>
-
-			</TD>
-
-		</TR>
-
-	</TABLE>
-
-</FORM>
-
+	</FORM>
 <script>
 // Get localized strings from PHP
 var passwordLabel = '<?php if(!empty($GLOBALS["_PJ_strings"]["password"])) echo addslashes($GLOBALS["_PJ_strings"]["password"]); else echo "Password"; ?>';
 var passwordRetypeLabel = '<?php if(!empty($GLOBALS["_PJ_strings"]["password_retype"])) echo addslashes($GLOBALS["_PJ_strings"]["password_retype"]); else echo "Retype Password"; ?>';
-
 function togglePasswordFields() {
     var button = document.getElementById('change-password-btn');
     var existingFields = document.getElementById('password-fields');
@@ -327,7 +210,6 @@ function togglePasswordFields() {
         button.style.background = '#007cba';
     }
 }
-
 // Personal group management for new users
 function updatePersonalGroup() {
     var usernameField = document.querySelector('input[name="login"]');
@@ -364,7 +246,6 @@ function updatePersonalGroup() {
         }
     }
 }
-
 // Add event listener when page loads
 document.addEventListener('DOMContentLoaded', function() {
     var usernameField = document.querySelector('input[name="login"]');
@@ -376,6 +257,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
 <!-- user/form.ihtml - END -->
-
