@@ -47,7 +47,7 @@
 			}
 			$query  = "SELECT "	. $GLOBALS['_PJ_effort_table'] . ".* ";
 			$query .= " FROM "	. $GLOBALS['_PJ_effort_table'];
-			$query .= " WHERE project_id IN ($pids)";
+			$query .= " WHERE (project_id IN ($pids) OR project_id = 0)";
 			$query .= " AND `billed` IS NULL";
 			$query .= " AND `begin` = `END`";
 			$order_query = ' ORDER BY date DESC, begin, last DESC';
