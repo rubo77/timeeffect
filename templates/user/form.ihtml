@@ -124,16 +124,26 @@
 
 					<TD CLASS="FormField"><INPUT CLASS="FormField<?php if(isset($ro_css_username)) echo $ro_css_username; ?>" NAME="login" VALUE="<?php if(isset($username)) echo $username; ?>"<?php if(isset($ro_username)) echo $ro_username; ?>></TD>
 
-				</TR><TR>
-
-					<TD CLASS="FormFieldName">Password:</TD>
-
-					<TD CLASS="FormField">
-						<button type="button" id="change-password-btn" onclick="togglePasswordFields()" style="background: #007cba; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Change Password</button>
-					</TD>
-
 				</TR>
-				<!-- Password fields will be dynamically inserted here by JavaScript -->
+				<?php if(isset($user) && is_object($user) && $user->giveValue('id')): ?>
+					<!-- Existing user: Show password change button -->
+					<TR>
+						<TD CLASS="FormFieldName">Password:</TD>
+						<TD CLASS="FormField">
+							<button type="button" id="change-password-btn" onclick="togglePasswordFields()" style="background: #007cba; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Change Password</button>
+						</TD>
+					</TR>
+					<!-- Password fields will be dynamically inserted here by JavaScript -->
+				<?php else: ?>
+					<!-- New user: Show password fields directly -->
+					<TR>
+						<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password'])) echo $GLOBALS['_PJ_strings']['password']; else echo 'Password'; ?>*:</TD>
+						<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password" VALUE="" autocomplete="new-password" required></TD>
+					</TR><TR>
+						<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password_retype'])) echo $GLOBALS['_PJ_strings']['password_retype']; else echo 'Retype Password'; ?>*:</TD>
+						<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="" autocomplete="new-password" required></TD>
+					</TR>
+				<?php endif; ?>
 
 				</TR><TR>
 
