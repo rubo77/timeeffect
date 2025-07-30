@@ -98,14 +98,13 @@
 		$billing_day = isset($billing_parts[2]) ? $billing_parts[2] : date('d');
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/edit.ihtml');
 	} else {
-		// last_description mod by Ruben Barkow -- START
+		// default settings for new efforts
 		//$description				= $GLOBALS['_PJ_strings']['no_description'];
 		if(isset($_SESSION['last_description'])) {
 			$description	= $_SESSION['last_description'];
 		} else {
 			$description	= $GLOBALS['_PJ_strings']['no_description'];
 		}
-		// last_description mod by Ruben Barkow -- END
 		$user						= $_PJ_auth->giveValue('id');
 		
 		// LOG_EFFORT_FORM: Check project object before accessing gid
@@ -120,7 +119,7 @@
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';
 		$effort_access_group		= 'r--';
-		$effort_access_world		= 'r--';
+		$effort_access_world		= '---';
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/effort/options/new.ihtml');
 	}
 ?>

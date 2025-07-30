@@ -21,13 +21,14 @@
 		$project_access_world		= substr($project->giveValue('access'), 6, 3);
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/edit.ihtml');
 	} else {
+		// default settings for new projects
 		$project_name				= $GLOBALS['_PJ_strings']['no_name'];
 		$user_access['write']		= true;
 		$user						= $_PJ_auth->giveValue('id');
 		$project_gid				= $customer->giveValue('gid');
 		$project_access_owner		= 'rwx';
 		$project_access_group		= 'r-x';
-		$project_access_world		= 'r--';
+		$project_access_world		= '---';
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/new.ihtml');
 	}
 	$project_budget_currency	= $GLOBALS['_PJ_currency'];
