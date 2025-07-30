@@ -26,6 +26,21 @@
 	$access_world = $_REQUEST['access_world'] ?? '';
 	$expand = $_REQUEST['expand'] ?? '';
 
+	// Auto-lookup CID from database if pid is provided but cid is missing
+	if ($pid && !$cid) {
+		$db = new Database();
+		$db->connect();
+		$safePid = DatabaseSecurity::escapeString($pid, $db->Link_ID);
+		$query = "SELECT customer_id FROM " . $GLOBALS['_PJ_project_table'] . " WHERE id='$safePid'";
+		$db->query($query);
+		if ($db->next_record()) {
+			$cid = $db->Record['customer_id'];
+			debugLog("LOG_CID_LOOKUP", "Auto-loaded cid=$cid for pid=$pid");
+		} else {
+			debugLog("LOG_CID_LOOKUP", "Failed to find project with pid=$pid");
+		}
+	}
+
 	// Only create Customer object if valid cid is provided
 	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
 	

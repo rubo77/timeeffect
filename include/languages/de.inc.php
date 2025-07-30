@@ -96,6 +96,7 @@
 	$GLOBALS['_PJ_strings']['group_basic_data']			= 'Gruppendaten';
 	$GLOBALS['_PJ_strings']['group_list']				= 'Gruppenliste';
 	$GLOBALS['_PJ_strings']['groups']					= 'Gruppen';
+	$GLOBALS['_PJ_strings']['group_assignments']		= 'Gruppenzuweisungen';
 	$GLOBALS['_PJ_strings']['help']						= 'Hilfe';
 	$GLOBALS['_PJ_strings']['hide_closed_customers']	= 'inaktive Kunden verstecken';
 	$GLOBALS['_PJ_strings']['hide_closed_efforts']		= 'abgerechnete Aufw&auml;nde verstecken';

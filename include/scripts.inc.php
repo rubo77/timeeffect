@@ -4,7 +4,9 @@
 	$GLOBALS['_PJ_timeeffect_date']				= '07/25/2025 15:14:32';
 
 	$GLOBALS['_PJ_customer_inventory_script']	= $GLOBALS['_PJ_http_root'] . '/inventory/customer.'	. $GLOBALS['_PJ_php_suffix'];
+	$GLOBALS['_PJ_customer_script']				= $GLOBALS['_PJ_customer_inventory_script']; // Alias for template compatibility
 	$GLOBALS['_PJ_projects_inventory_script']	= $GLOBALS['_PJ_http_root'] . '/inventory/projects.'	. $GLOBALS['_PJ_php_suffix'];
+	$GLOBALS['_PJ_project_script']				= $GLOBALS['_PJ_projects_inventory_script']; // Alias for template compatibility
 	$GLOBALS['_PJ_efforts_inventory_script']	= $GLOBALS['_PJ_http_root'] . '/inventory/efforts.'		. $GLOBALS['_PJ_php_suffix'];
 
 	$GLOBALS['_PJ_customer_statistics_script']	= $GLOBALS['_PJ_http_root'] . '/statistic/customer.'	. $GLOBALS['_PJ_php_suffix'];
@@ -26,4 +28,3 @@
 	$GLOBALS['_PJ_own_user_script']				= $GLOBALS['_PJ_http_root'] . '/user/settings.'		. $GLOBALS['_PJ_php_suffix'];
 
 	$GLOBALS['_PJ_group_script']				= $GLOBALS['_PJ_http_root'] . '/groups/index.'	. $GLOBALS['_PJ_php_suffix'];
-?>
