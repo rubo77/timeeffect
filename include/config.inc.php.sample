@@ -71,6 +71,19 @@
 	$_PJ_allow_password_recovery = 1;
 	
 	/*
+	   secure default permissions for new registered users
+	   if enabled, new users can only see their own customers/projects
+	*/
+	$_PJ_registration_secure_defaults = 1;
+	
+	/*
+	   default access permissions for new customers/projects created by registered users
+	   format: owner/group/other (rwx format)
+	   'rwxr-----' = owner: full access, group: read only, others: no access
+	*/
+	$_PJ_registration_default_access = 'rwxr-----';
+	
+	/*
 		 Database charset encoding
 	*/
 	$GLOBALS['mysql_charset']='utf8';

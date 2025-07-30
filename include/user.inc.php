@@ -197,7 +197,9 @@ else return null;
 	        	return $GLOBALS['_PJ_strings']['error_perm_empty'];
 	        }
 
-			if(strpos($this->data['permissions'], 'admin') === false && $this->data['gids'] == '') {
+			// Allow empty gids for secure registration (no group membership)
+		// Only require groups for admin users who need specific group assignments
+		if(strpos($this->data['permissions'], 'admin') !== false && $this->data['gids'] == '') {
 	        	return $GLOBALS['_PJ_strings']['error_gids_empty'];
 	        }
 

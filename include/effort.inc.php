@@ -1,4 +1,6 @@
 <?php
+	// Include centralized ACL query functions
+	require_once(__DIR__ . '/acl_query.inc.php');
 	if(!isset($_PJ_root)) {
 		print "<b>FEHLER:</b> \$_PJ_root ist <b>nicht festgelegt</b>! (" . __FILE__ . ", Zeile: " . __LINE__ . ")";
 		exit;
@@ -20,24 +22,9 @@
 		function __construct(&$_user) {
 			$this->__user		= $_user;
 			$this->__db = new Database;
-			if(!$_user->checkPermission('admin')) {
-				$access_query  = " AND (";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $_user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
-				$access_query .= " OR ";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $_user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
-				$access_query .= " OR ";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
-				$access_query .= " ) ";
-				$raw_access_query  = " AND (";
-				$raw_access_query .= " (user = '" . $_user->giveValue('id') . "' AND access LIKE 'r________')";
-				$raw_access_query .= " OR ";
-				$raw_access_query .= " (gid IN (" . $_user->giveValue('gids') . ") AND access LIKE '___r_____')";
-				$raw_access_query .= " OR ";
-				$raw_access_query .= " (access LIKE '______r__')";
-				$raw_access_query .= " ) ";
-			} else {
-				$raw_access_query="";
-			}
+			// Use centralized ACL query functions
+			$access_query = buildEffortAclQuery($_user, $GLOBALS['_PJ_effort_table']);
+			$raw_access_query = buildRawAclQuery($_user, 'r');
 			$this->__db->query("SELECT id FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE 1 $raw_access_query");
 			while($this->__db->next_record()) {
 				if(!empty($cids)) {
@@ -118,24 +105,9 @@
 			$this->showBilled($show_billed);
 
 			$access_query='';
-			if(!$user->checkPermission('admin')) {
-				$access_query  = " AND (";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".user = '" . $user->giveValue('id') . "' AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE 'r________')";
-				$access_query .= " OR ";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".gid IN (" . $user->giveValue('gids') . ") AND "	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '___r_____')";
-				$access_query .= " OR ";
-				$access_query .= " ("	. $GLOBALS['_PJ_effort_table'] . ".access LIKE '______r__')";
-				$access_query .= " ) ";
-				$raw_access_query  = " AND (";
-				$raw_access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
-				$raw_access_query .= " OR ";
-				$raw_access_query .= " (gid IN (" . $user->giveValue('gids') . ") AND access LIKE '___r_____')";
-				$raw_access_query .= " OR ";
-				$raw_access_query .= " (access LIKE '______r__')";
-				$raw_access_query .= " ) ";
-			} else {
-				$raw_access_query="";
-			}
+			// Use centralized ACL query functions
+			$access_query = buildEffortAclQuery($user, $GLOBALS['_PJ_effort_table']);
+			$raw_access_query = buildRawAclQuery($user, 'r');
 
 			$safeEffortTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_effort_table']);
 			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);

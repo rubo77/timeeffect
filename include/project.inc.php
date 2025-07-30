@@ -1,4 +1,8 @@
 <?php
+	// Include secure defaults for new user permissions
+	require_once(__DIR__ . '/secure_defaults.inc.php');
+	// Include centralized ACL query functions
+	require_once(__DIR__ . '/acl_query.inc.php');
 	if(!isset($_PJ_root)) {
 		print "<b>FEHLER:</b> \$_PJ_root ist <b>nicht festgelegt</b>! (" . __FILE__ . ", Zeile: " . __LINE__ . ")";
 		exit;
@@ -28,15 +32,8 @@
 			$this->showClosed($show_closed);
 
 			$access_query='';
-			if(!$user->checkPermission('admin')) {
-				$access_query  = " AND (";
-				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
-				$access_query .= " OR ";
-				$access_query .= " (gid IN (" . $user->giveValue('gids') . ") AND access LIKE '___r_____')";
-				$access_query .= " OR ";
-				$access_query .= " (access LIKE '______r__')";
-				$access_query .= " ) ";
-			}
+			// Use centralized ACL query function
+			$access_query = buildProjectAclQuery($user);
 
 			$safeProjectTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_project_table']);
 			$query = "SELECT * FROM {$safeProjectTable}";
@@ -224,6 +221,21 @@ else return null;
 		function save () {
 			if(!isset($this->db) or !is_object($this->db)) {
 				$this->db = new Database;
+			}
+
+			// Apply secure defaults for new projects if enabled
+			if (isSecureDefaultsEnabled()) {
+				global $_PJ_auth;
+				if (isset($_PJ_auth) && is_object($_PJ_auth)) {
+					$current_user_id = $_PJ_auth->giveValue('id');
+					$current_group_id = $_PJ_auth->giveValue('gid');
+					
+					// Apply secure project defaults
+					$this->data = applySecureProjectDefaults($this->data, $current_user_id, $current_group_id);
+					
+					// Log security action for audit
+					logSecurityAction('project_created', $current_user_id, $this->data);
+				}
 			}
 
 			$query = "REPLACE INTO " . $GLOBALS['_PJ_project_table'] . " (";

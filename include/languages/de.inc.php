@@ -91,6 +91,7 @@
 	$GLOBALS['_PJ_strings']['fullbudget']				= 'Budget';
 	$GLOBALS['_PJ_strings']['gid']						= 'geh&ouml;rt Gruppe';
 	$GLOBALS['_PJ_strings']['gids']						= 'Gruppenzugeh&ouml;rigkeit';
+	$GLOBALS['_PJ_strings']['no_group']					= 'Keine Gruppenzugehörigkeit (sicher)';
 	$GLOBALS['_PJ_strings']['group']					= 'Gruppe';
 	$GLOBALS['_PJ_strings']['group_basic_data']			= 'Gruppendaten';
 	$GLOBALS['_PJ_strings']['group_list']				= 'Gruppenliste';

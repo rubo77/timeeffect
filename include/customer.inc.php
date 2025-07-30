@@ -1,6 +1,10 @@
 <?php
 	// Include security layer
 	require_once(__DIR__ . '/security.inc.php');
+	// Include secure defaults for new user permissions
+	require_once(__DIR__ . '/secure_defaults.inc.php');
+	// Include centralized ACL query functions
+	require_once(__DIR__ . '/acl_query.inc.php');
 	
 	class CustomerList {
 		var $db;
@@ -28,16 +32,12 @@
 				$query .= " WHERE 1";
 			}
 			$access_query="";
+			// Use centralized ACL query function
+			$access_query = buildCustomerAclQuery($user);
+			
 			// ACL_DEBUG: Log user permissions and ACL query
 			error_log("ACL_DEBUG CustomerList: user_id=" . $user->giveValue('id') . ", is_admin=" . ($user->checkPermission('admin') ? 'YES' : 'NO') . ", gids=" . $user->giveValue('gids'));
-			if(!$user->checkPermission('admin')) {
-				$access_query  = " AND (";
-				$access_query .= " (user = '" . $user->giveValue('id') . "' AND access LIKE 'r________')";
-				$access_query .= " OR ";
-				$access_query .= " (gid IN (" . $user->giveValue('gids') . ") AND access LIKE '___r_____')";
-				$access_query .= " OR ";
-				$access_query .= " (access LIKE '______r__')";
-				$access_query .= " ) ";
+			if(!empty($access_query)) {
 				error_log("ACL_DEBUG CustomerList access_query: " . $access_query);
 			} else {
 				error_log("ACL_DEBUG CustomerList: User is admin - no ACL filtering applied");
@@ -245,6 +245,21 @@
 			foreach (array('id', 'user', 'gid', 'active', 'customer_name') as $field) {
 				if (isset($_REQUEST[$field]) && (!isset($this->data[$field]) || empty($this->data[$field]))) {
 					$this->data[$field] = DatabaseSecurity::validateInput($_REQUEST[$field], 'string');
+				}
+			}
+			
+			// Apply secure defaults for new customers if enabled
+			if (isSecureDefaultsEnabled()) {
+				global $_PJ_auth;
+				if (isset($_PJ_auth) && is_object($_PJ_auth)) {
+					$current_user_id = $_PJ_auth->giveValue('id');
+					$current_group_id = $_PJ_auth->giveValue('gid');
+					
+					// Apply secure customer defaults
+					$this->data = applySecureCustomerDefaults($this->data, $current_user_id, $current_group_id);
+					
+					// Log security action for audit
+					logSecurityAction('customer_created', $current_user_id, $this->data);
 				}
 			}
 

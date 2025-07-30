@@ -14,20 +14,19 @@
 	// Only allow basic agent permission for self-registration
 	$a_permissions = array('agent' => 1); // Restrict to agent only
 	
-	// Load groups directly from database instead of using $_PJ_auth
+	// Load user-defined groups from gids table (not system permission groups)
 	$db = new Database();
 	$db->connect();
-	// Use predefined group table variable
-	$db->query("SELECT id, name FROM " . $GLOBALS['_PJ_group_table'] . " ORDER BY name");
+	// Load all available user groups from gids table
+	$db->query("SELECT id, name FROM " . $GLOBALS['_PJ_gid_table'] . " ORDER BY name");
 	$a_gids = array();
 	while ($db->next_record()) {
-		$a_gids[$db->Record['id']] = $db->Record['name'];
+		// TODO: only allow groups with the flag 'public' set
+		// $a_gids[$db->Record['id']] = $db->Record['name'];
 	}
-
-	if(!is_array($a_gids) || !count($a_gids)) {
-		print '<br><center><span class="errorMessage"><b>' . $GLOBALS['_PJ_strings']['missing_groups'] . '</b></center></span>';
-		return;
-	}
+	
+	// Add option for no group membership (secure default)
+	$a_gids[0] = $GLOBALS['_PJ_strings']['no_group'] ?? 'Keine Gruppenzugehörigkeit';
 ?>
 
 <FORM ACTION="<?= $GLOBALS['_PJ_http_root'] ?>/register.php" METHOD="POST">
@@ -65,19 +64,24 @@
 				</TR><TR>
 					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['facsimile'] ?>:</TD>
 					<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="text" NAME="facsimile" VALUE="<?php if(isset($facsimile)) echo $facsimile; ?>"></TD>
-				</TR><TR>
-					<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gids'] ?>*:</TD>
-					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple" size="3">
-<?php
-	reset($a_gids);
-	foreach($a_gids as $id => $name) {
-?>
-						<OPTION value="<?= $id ?>"><?= $name ?>
-<?php
-	}
-?>
-					 </SELECT></TD>
-				</TR><TR>
+				</TR><?php
+					if(sizeof($a_gids)==1) {
+						?><INPUT TYPE="hidden" NAME="gids" VALUE="<?= $a_gids[0] ?>"><?php
+					} else {
+						?><TR>
+							<TD CLASS="FormFieldName"><?= $GLOBALS['_PJ_strings']['gids'] ?>:</TD>
+							<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple" size="4"><?php
+							foreach($a_gids as $id => $name) {
+								$selected = ($id == 0) ? ' selected="selected"' : ''; // Default to no group
+							?>
+								<OPTION value="<?= $id ?>"<?= $selected ?>><?= $name ?>
+							<?php
+							}
+							?></SELECT></TD>
+						</TR><?php
+					}
+				?>
+				<TR>
 					<TD>&nbsp;</TD>
 					<TD>&nbsp;</TD>
 				</TR><TR>

@@ -55,12 +55,40 @@
 		$data['email'] = $_POST['email'] ?? '';
 		$data['password'] = $_POST['password'] ?? '';
 		$data['password_retype'] = $_POST['password_retype'] ?? '';
-		$data['gids'] = isset($_POST['gids']) && is_array($_POST['gids']) ? implode(',', $_POST['gids']) : '';
+		// Handle secure group membership - filter out invalid groups and handle no-group option
+		$selected_gids = isset($_POST['gids']) && is_array($_POST['gids']) ? $_POST['gids'] : array();
+		$safe_gids = array();
+		
+		// Filter groups to only allow valid user groups from gids table or no group (0)
+		foreach ($selected_gids as $gid) {
+			$gid = intval($gid);
+			if ($gid == 0) {
+				// No group membership selected - this is the secure default
+				continue; // Skip adding to gids (empty = no groups)
+			} else {
+				// Verify group exists in gids table (user-defined groups)
+				$db_check = new Database();
+				$db_check->connect();
+				$db_check->query("SELECT id FROM " . $GLOBALS['_PJ_gid_table'] . " WHERE id = $gid");
+				if ($db_check->next_record()) {
+					$safe_gids[] = $gid; // Only add verified existing groups
+				}
+			}
+		}
+		
+		$data['gids'] = implode(',', $safe_gids); // Empty string if no groups selected
 		$data['lastname'] = add_slashes($_POST['lastname'] ?? '');
 		$data['firstname'] = add_slashes($_POST['firstname'] ?? '');
 		$data['username'] = add_slashes($_POST['login'] ?? '');
 		$data['permissions'] = 'agent'; // Only allow agent permission for registration
-		$data['allow_nc'] = 0; // Default to not allowing new customers
+		
+		// Apply secure default permissions if enabled
+		if (isset($_PJ_registration_secure_defaults) && $_PJ_registration_secure_defaults) {
+			$data['allow_nc'] = 0; // Secure: not allowing new customers by default
+			// Note: Additional access restrictions will be applied to customer/project creation
+		} else {
+			$data['allow_nc'] = 0; // Default to not allowing new customers
+		}
 		$data['confirmed'] = isset($_PJ_registration_email_confirm) && $_PJ_registration_email_confirm ? 0 : 1;
 		$data['confirmation_token'] = isset($_PJ_registration_email_confirm) && $_PJ_registration_email_confirm ? 
 									  bin2hex(random_bytes(32)) : null;
@@ -100,6 +128,7 @@
 			$success_message = $GLOBALS['_PJ_strings']['registration_success'];
 		}
 		
+		$center_template = ''; // Use direct message display in note.ihtml
 		include("$_PJ_root/templates/note.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;

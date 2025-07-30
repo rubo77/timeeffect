@@ -81,42 +81,38 @@
 - [x] Anzeige von Success-/Info-Messages aus URL-Parameter `message` in customer.php und list.ihtml (grüne Box über Kundenliste).
 - [x] Migration-Konflikt gelöst: Theme-Preference-Migration ist im MigrationManager integriert (migrations.inc.php), migrate_theme_preference.php entfernt, Syntaxfehler und Merge-Konflikte beseitigt.
 - NEU: Plan ergänzt: Merge-Konflikt in include/database.inc.php als nächsten Schritt aufnehmen.
-{{ ... }}
-- [x] Migration-Konflikt beheben: Theme-Preference-Migration in MigrationManager integrieren (siehe docs/DATABASE_MIGRATIONS.md), migrate_theme_preference.php entfernen
-{{ ... }}
-Backend/UX Restarbeiten: Header/Output, PHP Notices, Unittest
-Migration-Konflikt: Theme-Preference-Migration sauber integrieren
+- NEU: Registrierung: Default-Permissions für neue User sind aktuell nur 'agent', allow_nc=0. Es gibt aber keine explizite Einschränkung, dass User nur eigene Kunden/Projekte sehen dürfen. Berechtigungskonzept für "Besitzer darf", "Gruppenmitglieder dürfen", "Alle Agenten dürfen" etc. muss geklärt und ggf. angepasst werden.
+- NEU: Registrierung: Sichere Default-Berechtigungen für neue User müssen implementiert werden, um sicherzustellen, dass neue User nur auf eigene Kunden/Projekte zugreifen können.
+- [x] Sichere Default-Berechtigungen für neue User implementieren: Nur eigene Kunden/Projekte sichtbar, keine fremden Aufwände
+- [x] Registrierung: Gruppenauswahl bei Registrierung einschränken (nur agent/client), neue User erhalten keine Gruppenzugehörigkeit per Default
+- NEU: Es gibt zwei Arten von Gruppen: (1) Systemgruppen (admin, agent, client, accountant), die Berechtigungsrollen definieren, und (2) benutzerdefinierte Gruppen, die von Admins angelegt werden können und eigene IDs haben. IDs und Bedeutungen dürfen nicht verwechselt werden.
+- NEU: Bug: Registrierung ohne Gruppe ist aktuell nicht möglich (Fehlermeldung "Bitte wählen Sie mindestens eine Gruppe für diesen Benutzer!"). Außerdem werden bei Auswahl z.B. von 'client' fälschlich IDs von benutzerdefinierten Gruppen zugeordnet. Analyse und Fix erforderlich.
+- FIX: Registrierung nutzt jetzt korrekt die gids-Tabelle (benutzerdefinierte Gruppen) für Gruppenzuweisungen, Systemgruppen werden nur für Berechtigungsrollen verwendet. Registrierung ohne Gruppe ist für Nicht-Admins möglich, keine automatische Zuweisung zu falschen Gruppen-IDs mehr. Validierung und UI/UX angepasst.
+- NEU: SQL-Syntax-Fehler: Wenn gids leer ist, wird ein ungültiges SQL "gid IN ()" generiert. Das führt zu einem Syntax-Fehler und muss im Query-Building abgefangen werden (kein OR-Block für Gruppen, wenn gids leer ist).
+- NEU: Note and task for systematic SQL-Syntax-Fix for gid IN () in all modules
+- [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
+- NEU: DRY-Prinzip: Es wird eine zentrale Funktion zur Generierung des ACL-Query-Teils für Gruppenrechte erstellt (z.B. buildAclGroupQuery($user, $tableAlias = '')), die überall verwendet wird. Alle bisherigen Query-Builds werden darauf umgestellt.
+- 7.6. 14:37 "ACL"
+Die Umstellung auf eine zentrale ACL-Query-Funktion ist abgeschlossen und in allen relevanten Modulen (customer.inc.php, effort.inc.php, project.inc.php) implementiert. Ein umfassendes Test-Script validiert die Funktionalität, insbesondere die Vermeidung von "gid IN ()" Fehlern und die DRY-Prinzip-Umsetzung.
 
 ## Task List
 - [x] Fix include paths in migrate_theme_preference.php after move
-{{ ... }}
 - [x] Fehler: $_PJ_auth ist null im register.ihtml – Ursache analysieren und Initialisierung sicherstellen
 - [x] Fehler: Falscher Parameter-Typ bei mysqli_real_escape_string() in password_reset.php – DB-Connection korrekt übergeben
 - [x] Fehler: Migrationen (z.B. confirmed-Spalte) werden nicht ausgeführt – Ursache analysieren und Migrations-Timing/Trigger reparieren
 - [x] Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, Register/Create-User robust machen
-
-## Current Goal
-Migrationen werden nicht ausgeführt: Migrations-Timing/Trigger debuggen und reparieren
-- NEU: Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, damit Register-Seite und andere No-Login-Seiten robust funktionieren
-- User-Klasse prüft jetzt, ob Migrationsspalten existieren, bevor sie diese verwendet (Fallback auf altes Schema, wenn Migrationen fehlen).
-- Register-Seite lädt Gruppen jetzt direkt aus der DB, nicht mehr über $_PJ_auth.
-- Nächster Schritt: Migrations-Trigger und Auth-Initialisierung an das Login-Seiten-Schema angleichen, sodass Register/Create-User robust funktionieren – auch wenn Migrationen fehlen.
-- NEU: Template-Fehler: $center_template ist in note.ihtml nicht gesetzt (password_reset).
-- NEU: Template-Fehler: $_PJ_db_prefix ist in register.ihtml nicht gesetzt (Register-Seite).
-- NEU: SQL-Fehler: SELECT ... FROM group ... benötigt Backticks um group.
-- NEU: Kritischer Fehler: Register-Seite sucht Tabelle 'te_' statt 'te_group' – Prefix falsch oder leer. Ursache für fehlende Gruppenanzeige und SQL-Fehler identifizieren und beheben.
+- [x] Template-Include-Fehler: note.ihtml erwartet /templates/password_reset/note.ihtml, das nicht existiert – Template-Handling für Info/Success/Fallback-Nachrichten anpassen.
 - [x] Template-Include-Fehler: note.ihtml versucht /templates/password_reset/note.ihtml zu includen, das nicht existiert. Template-Handling für password_reset/note/ihtml anpassen.
 - [x] Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, Register/Create-User robust machen
 - [x] Template-Include-Fehler: note.ihtml erwartet /templates/password_reset/note.ihtml, das nicht existiert – Template-Handling für Info/Success/Fallback-Nachrichten anpassen
+- [x] Success-Message-Display: Erfolgs-/Info-Messages nach Passwort-Reset und User-Registrierung korrekt anzeigen (note.ihtml fixen)
+- [x] Registrierung: Gruppenauswahl bei Registrierung einschränken (nur agent/client), neue User erhalten keine Gruppenzugehörigkeit per Default
+- [x] SQL-Query für gids robust machen: Kein OR-Block für Gruppen, wenn gids leer ist
+- [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
+- [x] Zentrale Funktion buildAclGroupQuery($user, $tableAlias = '') erstellen und überall verwenden (DRY, robust)
+- [x] Alle Query-Builds auf die neue Funktion buildAclGroupQuery($user, $tableAlias = '') umstellen
 
 ## Current Goal
-Migrationen werden nicht ausgeführt: Migrations-Timing/Trigger debuggen und reparieren
-- NEU: Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, damit Register-Seite und andere No-Login-Seiten robust funktionieren
-- User-Klasse prüft jetzt, ob Migrationsspalten existieren, bevor sie diese verwendet (Fallback auf altes Schema, wenn Migrationen fehlen).
-- Register-Seite lädt Gruppen jetzt direkt aus der DB, nicht mehr über $_PJ_auth.
-- Nächster Schritt: Migrations-Trigger und Auth-Initialisierung an das Login-Seiten-Schema angleichen, sodass Register/Create-User robust funktionieren – auch wenn Migrationen fehlen.
-- NEU: Template-Fehler: $center_template ist in note.ihtml nicht gesetzt (password_reset).
-- NEU: Template-Fehler: $_PJ_db_prefix ist in register.ihtml nicht gesetzt (Register-Seite).
-- NEU: SQL-Fehler: SELECT ... FROM group ... benötigt Backticks um group.
-- NEU: Kritischer Fehler: Register-Seite sucht Tabelle 'te_' statt 'te_group' – Prefix falsch oder leer. Ursache für fehlende Gruppenanzeige und SQL-Fehler identifizieren und beheben.
-- NEU: Template-Include-Fehler: note.ihtml erwartet /templates/password_reset/note.ihtml, das nicht existiert – Template-Handling für Info/Success/Fallback-Nachrichten anpassen.
+Backend/UX Restarbeiten: Header/Output, PHP Notices, Unittest, Success-Message-Display
+Migration-Konflikt: Theme-Preference-Migration sauber integrieren
+ACL/SQL-Query-Fix: Zentrale DRY-Funktion für Gruppenrechte überall verwenden

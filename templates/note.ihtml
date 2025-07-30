@@ -27,6 +27,15 @@
 <?php
 	if($center_template != '') {
 		include("$_PJ_root/templates/$center_template/note.ihtml");
+	} else {
+		// Display success or error message directly when no center_template is specified
+		if (isset($success_message) && $success_message != '') {
+			echo '<div class="success-message"><h2>✅ ' . htmlspecialchars($success_message) . '</h2></div>';
+		} elseif (isset($error_message) && $error_message != '') {
+			echo '<div class="error-message"><h2>❌ ' . htmlspecialchars($error_message) . '</h2></div>';
+		} else {
+			echo '<div class="info-message"><h2>ℹ️ No message to display</h2></div>';
+		}
 	}
 ?>
 		</TD>
