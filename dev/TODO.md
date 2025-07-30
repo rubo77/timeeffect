@@ -17,3 +17,5 @@
 - elaube nur das löchen von gruppen ohne zugeordneten Benutzer oder irgendwelchen Objekten
 
 - links in in Bearbeitung tauchen effords ohne Project noch nicht auf
+
+- das handling mit dem passwort ist nicht kkorrekt , es kommt beim editieren eines exstierenden users immer noch "Sie müssen ein Passwort eingeben!" aber bei der zweiten anzeige scheint er inden new-modus zu wechseln, wo das passwort aendern buttn nicht mehr angezeigt wird

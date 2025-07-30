@@ -271,6 +271,55 @@ else return null;
         }
 
 			$this->db->query($query);
+			
+			// Auto-create personal group for new users
+			if(empty($this->data['id'])) {
+				$this->createPersonalGroup();
+			}
+		}
+
+		/**
+		 * Create a personal group for a new user and assign the user to it
+		 * This ensures each user has their own group for secure default permissions
+		 */
+		function createPersonalGroup() {
+			if(empty($this->data['username'])) {
+				return; // Cannot create group without username
+			}
+			
+			// Create new group with username as group name
+			$group_data = array(
+				'name' => $this->data['username'],
+				'description' => 'Personal group for user: ' . $this->data['username']
+			);
+			
+			$new_group = new Group($group_data);
+			$group_save_result = $new_group->save();
+			
+			if($group_save_result == '') {
+				// Group created successfully, get the new group ID
+				$group_id = $new_group->giveValue('id');
+				
+				if($group_id) {
+					// Update user's gids to include the new personal group
+					$current_gids = $this->data['gids'];
+					$new_gids = empty($current_gids) ? $group_id : $current_gids . ',' . $group_id;
+					
+					// Update the user record with the new group assignment (SQL injection protection)
+					$this->db->connect(); // Ensure database connection
+					$safeGids = DatabaseSecurity::escapeString($new_gids, $this->db->Link_ID);
+					$safeUsername = DatabaseSecurity::escapeString($this->data['username'], $this->db->Link_ID);
+					$update_query = sprintf("UPDATE %s SET gids='%s' WHERE username='%s'",
+						$GLOBALS['_PJ_auth_table'],
+						$safeGids,
+						$safeUsername
+					);
+					$this->db->query($update_query);
+					
+					// Update local data for consistency
+					$this->data['gids'] = $new_gids;
+				}
+			}
 		}
 
 		function reset() {

@@ -233,17 +233,21 @@ if($_PJ_auth->checkPermission('admin')) {
 
 					<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['gids'])) echo $GLOBALS['_PJ_strings']['gids'] ?>*:</TD>
 
-					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple">
+					<TD CLASS="FormField"><SELECT CLASS="FormSelect" NAME="gids[]" multiple="multiple" id="gids-select">
 
 <?php
+	// For new users, add personal group option
+	if(empty($id) && !empty($username)) {
+		echo '<OPTION SELECTED value="new_personal_group" id="personal-group-option">' . htmlspecialchars($username) . ' (Personal Group)</OPTION>';
+	}
 
 	reset($a_gids);
 
-	foreach($a_gids as $id => $name) {
+	foreach($a_gids as $gid => $name) {
 
 ?>
 
-						<OPTION<?php if(in_array($id, $gids)) print ' SELECTED'; ?> value="<?php if(isset($id)) echo $id; ?>"><?php if(isset($name)) echo $name; ?>
+						<OPTION<?php if(in_array($gid, $gids)) print ' SELECTED'; ?> value="<?php if(isset($gid)) echo $gid; ?>"><?php if(isset($name)) echo $name; ?>
 
 <?php
 
@@ -328,6 +332,54 @@ function togglePasswordFields() {
         button.style.background = '#007cba';
     }
 }
+
+// Personal group management for new users
+function updatePersonalGroup() {
+    var usernameField = document.querySelector('input[name="login"]');
+    var gidsSelect = document.getElementById('gids-select');
+    var personalGroupOption = document.getElementById('personal-group-option');
+    var isNewUser = <?php echo empty($id) ? 'true' : 'false'; ?>;
+    
+    if (!isNewUser || !usernameField || !gidsSelect) {
+        return; // Only for new users
+    }
+    
+    var username = usernameField.value.trim();
+    
+    if (username === '') {
+        // Remove personal group option if username is empty
+        if (personalGroupOption) {
+            personalGroupOption.remove();
+        }
+    } else {
+        // Update or create personal group option
+        if (personalGroupOption) {
+            personalGroupOption.textContent = username + ' (Personal Group)';
+            personalGroupOption.value = 'new_personal_group';
+        } else {
+            // Create new personal group option
+            var newOption = document.createElement('option');
+            newOption.id = 'personal-group-option';
+            newOption.value = 'new_personal_group';
+            newOption.textContent = username + ' (Personal Group)';
+            newOption.selected = true;
+            
+            // Insert as first option
+            gidsSelect.insertBefore(newOption, gidsSelect.firstChild);
+        }
+    }
+}
+
+// Add event listener when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    var usernameField = document.querySelector('input[name="login"]');
+    if (usernameField) {
+        usernameField.addEventListener('input', updatePersonalGroup);
+        usernameField.addEventListener('change', updatePersonalGroup);
+        // Initialize on page load
+        updatePersonalGroup();
+    }
+});
 </script>
 
 <!-- user/form.ihtml - END -->

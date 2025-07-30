@@ -57,7 +57,15 @@
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
 			// FIX: Sicherstellung, dass $gids ein Array ist (verhindert implode-Fehler)
-			$data['gids']				= isset($gids) && is_array($gids) ? implode(',', $gids) : '';
+			// Filter out 'new_personal_group' placeholder - actual group will be created automatically
+			if(isset($gids) && is_array($gids)) {
+				$filtered_gids = array_filter($gids, function($gid) {
+					return $gid !== 'new_personal_group';
+				});
+				$data['gids'] = implode(',', $filtered_gids);
+			} else {
+				$data['gids'] = '';
+			}
 			$data['lastname']			= add_slashes($lastname);
 			$data['firstname']			= add_slashes($firstname);
 			$data['username']			= add_slashes($login);
