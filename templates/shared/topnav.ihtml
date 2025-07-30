@@ -39,3 +39,6 @@
 		</div>
 	</div>
 </div>
+
+<!-- Mobile Navigation Touch Fix -->
+<script src="<?php echo $GLOBALS['_PJ_http_root']; ?>/js/mobile-nav.js"></script>

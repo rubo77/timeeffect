@@ -98,11 +98,26 @@ a.nav-stop-link:hover, .nav-stop-link:hover {
     margin-top: 0.5rem;
 }
 
-/* Show dropdown on hover */
+/* Show dropdown on hover (desktop) */
 .user-dropdown:hover .user-dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+/* Mobile touch behavior */
+.user-dropdown.mobile-device:hover .user-dropdown-menu {
+    /* Disable hover on mobile devices */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+}
+
+/* Mobile dropdown show state */
+.user-dropdown-menu.mobile-show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
 }
 
 /* Dropdown items */
