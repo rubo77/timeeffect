@@ -817,6 +817,10 @@ html[data-theme="dark"] #mainOptions a {
     color: #64748b !important;
 }
 
+html[data-theme="dark"] .topnav-modern {
+    background-color: #1e293b !important;
+}
+
 /* Dark mode mainOptions text even darker */
 html[data-theme="dark"] #mainOptions {
     color: #475569 !important;

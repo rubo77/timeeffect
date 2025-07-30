@@ -143,7 +143,7 @@
 	$GLOBALS['_PJ_strings']['new_user']					= 'Add new user';
 	$GLOBALS['_PJ_strings']['next']						= 'Next';
 	$GLOBALS['_PJ_strings']['no']						= 'no';
-	$GLOBALS['_PJ_strings']['no_description']			= 'No description';
+	$GLOBALS['_PJ_strings']['no_description']			= 'Effort time';
 	$GLOBALS['_PJ_strings']['no_name']					= 'No Name';
 	$GLOBALS['_PJ_strings']['not_implemented']			= 'not yet implemented';
 	$GLOBALS['_PJ_strings']['note']						= 'Note';
