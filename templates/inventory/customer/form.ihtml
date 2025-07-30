@@ -25,13 +25,14 @@
 //		$customer_logo				= $customer->giveValue('customer_logo');
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/edit.ihtml');
 	} else {
+		// default values
 		$active						= 'yes';
 		$customer_name				= $GLOBALS['_PJ_strings']['no_name'];
 		$user_access['write']		= true;
 		$user						= $_PJ_auth->giveValue('id');
 		$customer_access_owner		= 'rwx';
 		$customer_access_group		= 'r-x';
-		$customer_access_world		= 'r--';
+		$customer_access_world		= '---';
 		include($GLOBALS['_PJ_root'] . '/templates/inventory/customer/options/new.ihtml');
 	}
 	$customer_budget_currency	= $GLOBALS['_PJ_currency'];
