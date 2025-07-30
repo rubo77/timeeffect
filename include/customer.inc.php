@@ -281,17 +281,26 @@
 				$query .= $safeId . ", ";
 			}
 			
+			// Ensure database connection for escapeString
+			$this->db->connect();
+			
 			// Sanitize all input values
-			$safeActive = DatabaseSecurity::escapeString(isset($this->data['active']) ? $this->data['active'] : 'yes');
-			$safeUser = DatabaseSecurity::escapeString(isset($this->data['user']) ? $this->data['user'] : '');
-			$safeGid = DatabaseSecurity::escapeString(isset($this->data['gid']) ? $this->data['gid'] : '');
-			$safeAccess = DatabaseSecurity::escapeString(isset($this->data['access']) ? $this->data['access'] : 'rwxr-xr--');
-			$safeReadForeignEfforts = DatabaseSecurity::escapeString(isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0');
-			$safeCustomerName = DatabaseSecurity::escapeString(isset($this->data['customer_name']) ? $this->data['customer_name'] : '');
-			$safeCustomerDesc = DatabaseSecurity::escapeString(isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '');
-			$safeCustomerBudget = DatabaseSecurity::escapeString(isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0');
-			$safeCustomerBudgetCurrency = DatabaseSecurity::escapeString(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR');
-			$safeCustomerLogo = DatabaseSecurity::escapeString(isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '');
+			$safeActive = DatabaseSecurity::escapeString(isset($this->data['active']) ? $this->data['active'] : 'yes', $this->db->Link_ID);
+			$safeUser = DatabaseSecurity::escapeString(isset($this->data['user']) ? $this->data['user'] : '', $this->db->Link_ID);
+			$safeGid = DatabaseSecurity::escapeString(isset($this->data['gid']) ? $this->data['gid'] : '', $this->db->Link_ID);
+			$safeAccess = DatabaseSecurity::escapeString(isset($this->data['access']) ? $this->data['access'] : 'rwxr-xr--', $this->db->Link_ID);
+			$safeReadForeignEfforts = DatabaseSecurity::escapeString(isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0', $this->db->Link_ID);
+			$safeCustomerName = DatabaseSecurity::escapeString(isset($this->data['customer_name']) ? $this->data['customer_name'] : '', $this->db->Link_ID);
+			$safeCustomerDesc = DatabaseSecurity::escapeString(isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '', $this->db->Link_ID);
+			// Fix: Convert empty budget to 0 for MySQL integer column
+			$budgetValue = isset($this->data['customer_budget']) && $this->data['customer_budget'] !== '' ? $this->data['customer_budget'] : '0';
+			// if budgetValue is not a number, set it to 0
+			if (!is_numeric($budgetValue)) {
+				$budgetValue = '0';
+			}
+			$safeCustomerBudget = DatabaseSecurity::escapeString($budgetValue, $this->db->Link_ID);
+			$safeCustomerBudgetCurrency = DatabaseSecurity::escapeString(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR', $this->db->Link_ID);
+			$safeCustomerLogo = DatabaseSecurity::escapeString(isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '', $this->db->Link_ID);
 			
 			$query .= "'{$safeActive}', ";
 			$query .= "'{$safeUser}', ";
@@ -300,7 +309,7 @@
 			$query .= "'{$safeReadForeignEfforts}', ";
 			$query .= "'{$safeCustomerName}', ";
 			$query .= "'{$safeCustomerDesc}', ";
-			$query .= "'{$safeCustomerBudget}', ";
+			$query .= "{$safeCustomerBudget}, "; // Integer without quotes
 			$query .= "'{$safeCustomerBudgetCurrency}', ";
 			$query .= "'{$safeCustomerLogo}')";
 			

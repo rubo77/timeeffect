@@ -192,7 +192,8 @@ class User {
 		}
 
 		// Clean mode-based password validation
-		if($this->data['mode'] === 'new') {
+		$mode = isset($this->data['mode']) ? $this->data['mode'] : 'new'; // Default to 'new' for registration
+		if($mode === 'new') {
 			// New user: password is required
 			if($this->data['password'] == '') {
 				return $GLOBALS['_PJ_strings']['error_pw_empty'];
