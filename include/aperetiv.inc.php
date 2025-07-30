@@ -83,7 +83,6 @@ $_PJ_group_table	= $_PJ_table_prefix	. 'group';
 $_PJ_gid_table		= $_PJ_table_prefix	. 'gids';
 
 $_PJ_form_method	= 'POST';
-$_PJ_password_dummy	= 'nOcHaNgEs';
 $_PJ_php_suffix		= 'php';
 
 if(empty($last)) {

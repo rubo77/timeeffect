@@ -57,12 +57,14 @@
 		}
 
 		function save($data) {
-			if($data['password'] != $GLOBALS['_PJ_password_dummy']) {
+			// Clean password validation: only change if password is provided
+			if(!empty($data['password'])) {
 				if($data['password'] != $data['password_retype']) {
 					return $GLOBALS['_PJ_strings']['error_pw_retype'];
 				}
 				$password = md5($data['password']);
 			} else {
+				// Keep existing password if no new password provided
 				$password = $this->giveValue('password');
 			}
 			

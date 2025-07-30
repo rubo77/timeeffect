@@ -36,11 +36,8 @@
 		$data['telephone']			= $telephone;
 		$data['facsimile']			= $facsimile;
 		$data['email']				= $email;
-		// Use password dummy if no password provided (no change)
-		if(empty($password)) {
-			$data['password']			= $GLOBALS['_PJ_password_dummy'];
-			$data['password_retype']	= $GLOBALS['_PJ_password_dummy'];
-		} else {
+		// on user edit no password is needed (no change)
+		if(!empty($password)) {
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
 		}

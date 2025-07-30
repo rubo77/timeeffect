@@ -58,13 +58,7 @@
 
 		$gids				= explode(',', $user->giveValue('gids'));
 
-		if(!isset($password)) {
-
-			$password			= $GLOBALS['_PJ_password_dummy'];
-
-			$password_retype		= $GLOBALS['_PJ_password_dummy'];
-
-		}
+		// Password fields will be handled by mode-based validation
 
 	} else if(!is_array($gids)) {
 
@@ -96,7 +90,8 @@
 
 <FORM ACTION="<?= $form_action; ?>" METHOD="<?= $_PJ_form_method; ?>">
 
-<INPUT TYPE="hidden" NAME="id" VALUE="<?php if(isset($id)) echo $id; ?>">
+<INPUT TYPE="hidden" NAME="uid" VALUE="<?php if(isset($id)) echo $id; ?>">
+<INPUT TYPE="hidden" NAME="mode" VALUE="<?php echo empty($id) ? 'new' : 'edit'; ?>">
 
 <INPUT TYPE="hidden" NAME="own" VALUE="<?php if(isset($own)) echo $own; ?>">
 

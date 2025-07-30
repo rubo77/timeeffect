@@ -25,6 +25,7 @@
 	$allow_nc = $_REQUEST['allow_nc'] ?? '';
 	$gids = $_REQUEST['gids'] ?? [];
 	$permissions = $_REQUEST['permissions'] ?? [];
+	$mode = $_REQUEST['mode'] ?? 'new'; // new or edit
 
 	$center_template	= "user";
 	$center_title		= $GLOBALS['_PJ_strings']['user'];
@@ -50,7 +51,8 @@
 	if(isset($edit)) {
 		if(isset($altered)) {
 			$data = array();
-			$data['id']					= $id;
+			$data['id']					= $uid; // Use uid for existing users
+			$data['mode']				= $mode; // new or edit
 			$data['telephone']			= $telephone;
 			$data['facsimile']			= $facsimile;
 			$data['email']				= $email;

@@ -184,17 +184,9 @@ else return null;
 	        	return $GLOBALS['_PJ_strings']['error_user_exists'];
 	        }
 
-			// Password validation: only require password for new users or when changing password
-		if(empty($this->data['id'])) {
-			// New user: password is required
-			if($this->data['password'] == '') {
-				return $GLOBALS['_PJ_strings']['error_pw_empty'];
-			}
-			$password = md5($this->data['password']);
-		} else {
-			// Existing user: only validate password if it's being changed
-			if($this->data['password'] != $GLOBALS['_PJ_password_dummy']) {
-				// Password is being changed
+			// Clean mode-based password validation
+			if($this->data['mode'] === 'new') {
+				// New user: password is required
 				if($this->data['password'] == '') {
 					return $GLOBALS['_PJ_strings']['error_pw_empty'];
 				}
@@ -203,10 +195,18 @@ else return null;
 				}
 				$password = md5($this->data['password']);
 			} else {
-				// Password not being changed, keep existing password
-				$password = $this->retrieve($this->data['id'], 'password');
+				// Edit mode: only validate password if it's being changed (not empty)
+				if($this->data['password'] != '') {
+					// Password is being changed
+					if($this->data['password'] != $this->data['password_retype']) {
+						return $GLOBALS['_PJ_strings']['error_pw_retype'];
+					}
+					$password = md5($this->data['password']);
+				} else {
+					// Password not being changed, keep existing password
+					$password = $this->retrieve($this->data['id'], 'password');
+				}
 			}
-		}
 
 			if($this->data['lastname'] == '') {
 	        	return $GLOBALS['_PJ_strings']['error_name_empty'];
