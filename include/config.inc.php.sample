@@ -5,9 +5,6 @@
 /* customizable variables - START                           */
 /* ******************************************************** */
 
-	// set debug true to get error output on the site:
-	$GLOBALS['debug']=false;
-	
 	// change $_PJ_http_root to the http root directory to be entered in the browser
 	// e.g for 'http://www.soin.de/timeffect' the $_PJ_http_root should be set to '/timeffect'
 	$_PJ_http_root		= '/timeeffect';

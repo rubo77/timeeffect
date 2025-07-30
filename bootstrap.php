@@ -17,7 +17,7 @@ if (file_exists(__DIR__ . '/.env')) {
 
 // Set up error reporting for development
 if (isset($_ENV['APP_ENV']) && $_ENV['APP_ENV'] === 'development') {
-    error_reporting(E_ALL | E_STRICT);
+    error_reporting(E_ALL);
     ini_set('display_errors', 1);
 } else {
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
