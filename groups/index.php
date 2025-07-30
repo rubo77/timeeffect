@@ -60,6 +60,25 @@
 	}
 
 	if(isset($delete) && !isset($cancel)) {
+		// Check if group has assigned users or objects before allowing deletion
+		require_once($_PJ_include_path . '/group_assignments.inc.php');
+		$counts = Group_getAssignmentCounts($group);
+		
+		if($counts['users'] > 0 || $counts['customers'] > 0 || $counts['projects'] > 0 || $counts['efforts'] > 0) {
+			// Group has assignments, prevent deletion
+			$error_message = sprintf(
+				"Cannot delete group '%s'. It has %d users, %d customers, %d projects, and %d efforts assigned. Remove all assignments first.",
+				$group->giveValue('name'),
+				$counts['users'],
+				$counts['customers'],
+				$counts['projects'],
+				$counts['efforts']
+			);
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		
 		if(isset($confirm)) {
 			$group->delete();
 			$list = 1;
