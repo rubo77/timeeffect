@@ -94,7 +94,7 @@ class DB_Sql {
       
       // if host if empty or mysql/localhost (Docker environment)
       if (empty($Host) || $Host == 'mysql' || $Host == 'localhost') {
-        error_log("HINT: this is a problem only on docker: Host was empty or 'mysql' in DSN, should be set to 'db'");
+        debugLog("HINT", "this is a problem only on docker: Host was empty or 'mysql' in DSN, should be set to 'db'");
       }
       
       // if user is empty

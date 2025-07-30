@@ -7,9 +7,9 @@
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
 	// Debug: Log request start
-	error_log("LOG_EFFORTS_START: Request method: " . $_SERVER['REQUEST_METHOD'] . ", URI: " . $_SERVER['REQUEST_URI']);
+	debugLog("LOG_EFFORTS_START", "Request method: " . $_SERVER['REQUEST_METHOD'] . ", URI: " . $_SERVER['REQUEST_URI']);
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
-		error_log("LOG_EFFORTS_POST: POST data keys: " . implode(', ', array_keys($_POST)));
+		debugLog("LOG_EFFORTS_POST", "POST data keys: " . implode(', ', array_keys($_POST)));
 	}
 
 	$eid = $_REQUEST['eid'] ?? null;
@@ -68,7 +68,7 @@
 	$new = $_REQUEST['new'] ?? null;
 	$edit = $_REQUEST['edit'] ?? null;
 	$altered = $_REQUEST['altered'] ?? null;
-	error_log("LOG_EFFORTS_VARS: altered=" . ($altered ? 'SET' : 'NULL') . ", edit=" . ($edit ? 'SET' : 'NULL') . ", new=" . ($new ? 'SET' : 'NULL'));
+	debugLog("LOG_EFFORTS_VARS", "altered=" . ($altered ? 'SET' : 'NULL') . ", edit=" . ($edit ? 'SET' : 'NULL') . ", new=" . ($new ? 'SET' : 'NULL'));
 	$year = $_REQUEST['year'] ?? null;
 	$month = $_REQUEST['month'] ?? null;
 	$day = $_REQUEST['day'] ?? null;
@@ -166,15 +166,15 @@
 			exit;
 		}
 		if(isset($altered)) {
-			error_log("LOG_EFFORTS_ALTERED: Starting save process");
+			debugLog("LOG_EFFORTS_ALTERED", "Starting save process");
 			
 			// Check if user is authenticated before saving
 			if(!$_PJ_auth || !$_PJ_auth->giveValue('id')) {
-				error_log("LOG_EFFORT_SAVE_ERROR: User not authenticated, redirecting to login");
+				debugLog("LOG_EFFORT_SAVE_ERROR", "User not authenticated, redirecting to login");
 				header("Location: /inventory/efforts.php");
 				exit;
 			}
-			error_log("LOG_EFFORTS_AUTH: User authenticated: " . $_PJ_auth->giveValue('id'));
+			debugLog("LOG_EFFORTS_AUTH", "User authenticated: " . $_PJ_auth->giveValue('id'));
 			
 			// last_description mod by Ruben Barkow -- START
 			$_SESSION['last_description'] = $description;
@@ -278,11 +278,11 @@
 				if ($effort && $effort->giveValue('user')) {
 					// Use existing effort's user
 					$data['user'] = $effort->giveValue('user');
-					error_log("LOG_EFFORT_SAVE: Using existing effort user: " . $data['user']);
+					debugLog("LOG_EFFORT_SAVE", "Using existing effort user: " . $data['user']);
 				} else {
 					// Use current user for new efforts
 					$data['user'] = $_PJ_auth->giveValue('id');
-					error_log("LOG_EFFORT_SAVE: Using current user for new effort: " . $data['user']);
+					debugLog("LOG_EFFORT_SAVE", "Using current user for new effort: " . $data['user']);
 				}
 			}
 			if($data['user'] == '') {
@@ -292,22 +292,22 @@
 				if ($effort && $effort->giveValue('gid')) {
 					// Use existing effort's gid
 					$data['gid'] = $effort->giveValue('gid');
-					error_log("LOG_EFFORT_SAVE: Using existing effort gid: " . $data['gid']);
+					debugLog("LOG_EFFORT_SAVE", "Using existing effort gid: " . $data['gid']);
 				} else {
 					// Use user's default gid for new efforts
 					$data['gid'] = $_PJ_auth->giveValue('gid');
-					error_log("LOG_EFFORT_SAVE: Using user default gid for new effort: " . $data['gid']);
+					debugLog("LOG_EFFORT_SAVE", "Using user default gid for new effort: " . $data['gid']);
 				}
 			}
 			if($data['access'] == '') {
 				if ($effort && $effort->giveValue('access')) {
 					// Use existing effort's access
 					$data['access'] = $effort->giveValue('access');
-					error_log("LOG_EFFORT_SAVE: Using existing effort access: " . $data['access']);
+					debugLog("LOG_EFFORT_SAVE", "Using existing effort access: " . $data['access']);
 				} else {
 					// Use default access for new efforts (owner: read/write, group: read, world: none)
 					$data['access'] = 'rw-r-----';
-					error_log("LOG_EFFORT_SAVE: Using default access for new effort: " . $data['access']);
+					debugLog("LOG_EFFORT_SAVE", "Using default access for new effort: " . $data['access']);
 				}
 			}
 			if(date("Y", strtotime("$billing_day/$billing_month/$billing_year")) > 1970) {
@@ -316,19 +316,19 @@
 				$data['billed']			= "NULL";
 			}
 	
-			error_log("LOG_EFFORTS_BEFORE_SAVE: Creating new effort with data: " . json_encode(array_keys($data)));
+			debugLog("LOG_EFFORTS_BEFORE_SAVE", "Creating new effort with data: " . json_encode(array_keys($data)));
 			$new_effort = new Effort($data, $_PJ_auth);
 			$new_effort->setEndTime("$hours:$minutes");
-			error_log("LOG_EFFORTS_CALLING_SAVE: About to call save()");
+			debugLog("LOG_EFFORTS_CALLING_SAVE", "About to call save()");
 			$message = $new_effort->save();
-			error_log("LOG_EFFORTS_AFTER_SAVE: Save completed");
+			debugLog("LOG_EFFORTS_AFTER_SAVE", "Save completed");
 			
 			// Debug: Log save result
-			error_log("LOG_EFFORT_SAVE_RESULT: Save message: '" . $message . "', Effort ID: " . ($new_effort->giveValue('id') ?: 'NULL'));
+			debugLog("LOG_EFFORT_SAVE_RESULT", "Save message: '" . $message . "', Effort ID: " . ($new_effort->giveValue('id') ?: 'NULL'));
 			
 			if($message != '') {
 				// Save failed - show error message with redirect back to form
-				error_log("LOG_EFFORT_SAVE_ERROR: Save failed with message: " . $message);
+				debugLog("LOG_EFFORT_SAVE_ERROR", "Save failed with message: " . $message);
 				
 				$error_message = "Fehler beim Speichern des Aufwands:<br><strong>" . htmlspecialchars($message) . "</strong><br><br>";
 				$error_message .= "<a href='" . $_SERVER['PHP_SELF'] . "?new=1'>Neuen Aufwand anlegen</a> | ";
@@ -371,9 +371,9 @@
 				// Use the same database instance that was used for the save
 				if(isset($new_effort->db) && is_object($new_effort->db)) {
 					$effort_id = $new_effort->db->insert_id();
-					error_log("LOG_EFFORT_ID: Retrieved new effort ID from effort->db->insert_id(): " . $effort_id);
+					debugLog("LOG_EFFORT_ID", "Retrieved new effort ID from effort->db->insert_id(): " . $effort_id);
 				} else {
-					error_log("LOG_EFFORT_ID: No database connection available for insert_id()");
+					debugLog("LOG_EFFORT_ID", "No database connection available for insert_id()");
 				}
 			}
 			
@@ -444,28 +444,28 @@
 
 	// LOG_PROJECT_ACCESS: Check project object before accessing checkUserAccess method
 	if($pid && $project && !$project->checkUserAccess('read')) {
-		error_log("LOG_PROJECT_ACCESS: Access denied for project $pid by user " . $_PJ_auth->giveValue('id'));
+		debugLog("LOG_PROJECT_ACCESS", "Access denied for project $pid by user " . $_PJ_auth->giveValue('id'));
 		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
 		include("$_PJ_root/templates/error.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	} elseif ($pid && !$project) {
-		error_log("LOG_PROJECT_ACCESS: No project object available for pid=$pid, allowing access");
+		debugLog("LOG_PROJECT_ACCESS", "No project object available for pid=$pid, allowing access");
 	}
 	$sort_order = $_GET['sort'] ?? 'desc';
 	$efforts			= new EffortList($customer, $project, $_PJ_auth, isset($shown['be']) ? $shown['be'] : false, NULL, $sort_order);
 	// LOG_TITLE_GENERATION: Set appropriate title based on project context
 	if ($project && $project->giveValue('project_name')) {
 		// Single project view
-		error_log("LOG_TITLE_GENERATION: Generating title for single project: " . $project->giveValue('project_name'));
+		debugLog("LOG_TITLE_GENERATION", "Generating title for single project: " . $project->giveValue('project_name'));
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $project->giveValue('project_name');
 	} elseif ($customer && $customer->giveValue('customer_name')) {
 		// Customer-specific efforts view
-		error_log("LOG_TITLE_GENERATION: Generating title for customer efforts: " . $customer->giveValue('customer_name'));
+		debugLog("LOG_TITLE_GENERATION", "Generating title for customer efforts: " . $customer->giveValue('customer_name'));
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'] . " " . $customer->giveValue('customer_name');
 	} else {
 		// All efforts view
-		error_log("LOG_TITLE_GENERATION: Generating title for all efforts view");
+		debugLog("LOG_TITLE_GENERATION", "Generating title for all efforts view");
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort_list'];
 	}
 	

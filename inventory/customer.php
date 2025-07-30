@@ -139,11 +139,11 @@
 						if ($customer && $customer->giveValue('user')) {
 							// Use existing customer's user
 							$data['user'] = $customer->giveValue('user');
-							error_log("LOG_CUSTOMER_SAVE: Using existing customer user: " . $data['user']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using existing customer user: " . $data['user']);
 						} else {
 							// Use current user for new customers
 							$data['user'] = $_PJ_auth->giveValue('id');
-							error_log("LOG_CUSTOMER_SAVE: Using current user for new customer: " . $data['user']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using current user for new customer: " . $data['user']);
 						}
 					}
 					if($data['user'] == '') {
@@ -153,33 +153,33 @@
 						if ($customer && $customer->giveValue('gid')) {
 							// Use existing customer's gid
 							$data['gid'] = $customer->giveValue('gid');
-							error_log("LOG_CUSTOMER_SAVE: Using existing customer gid: " . $data['gid']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using existing customer gid: " . $data['gid']);
 						} else {
 							// Use user's default gid for new customers
 							$data['gid'] = $_PJ_auth->giveValue('gid');
-							error_log("LOG_CUSTOMER_SAVE: Using user default gid for new customer: " . $data['gid']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using user default gid for new customer: " . $data['gid']);
 						}
 					}
 					if($data['access'] == '') {
 						if ($customer && $customer->giveValue('access')) {
 							// Use existing customer's access
 							$data['access'] = $customer->giveValue('access');
-							error_log("LOG_CUSTOMER_SAVE: Using existing customer access: " . $data['access']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using existing customer access: " . $data['access']);
 						} else {
 							// Use default access for new customers (owner: read/write, group: read, world: read)
 							$data['access'] = 'rwxr--r--';
-							error_log("LOG_CUSTOMER_SAVE: Using default access for new customer: " . $data['access']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using default access for new customer: " . $data['access']);
 						}
 					}
 					if($data['readforeignefforts'] == '') {
 						if ($customer && $customer->giveValue('readforeignefforts') !== null) {
 							// Use existing customer's readforeignefforts setting
 							$data['readforeignefforts'] = $customer->giveValue('readforeignefforts');
-							error_log("LOG_CUSTOMER_SAVE: Using existing customer readforeignefforts: " . $data['readforeignefforts']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using existing customer readforeignefforts: " . $data['readforeignefforts']);
 						} else {
 							// Use default readforeignefforts for new customers (allow reading foreign efforts)
 							$data['readforeignefforts'] = 1;
-							error_log("LOG_CUSTOMER_SAVE: Using default readforeignefforts for new customer: " . $data['readforeignefforts']);
+							debugLog("LOG_CUSTOMER_SAVE", "Using default readforeignefforts for new customer: " . $data['readforeignefforts']);
 						}
 					}
 					

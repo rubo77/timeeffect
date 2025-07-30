@@ -5,87 +5,63 @@
 /* customizable variables - START                           */
 /* ******************************************************** */
 
-	/*
-	   set debug true to get error output on the site:
-	*/
+	// set debug true to get error output on the site:
 	$GLOBALS['debug']=false;
 	
-	/*
-	   change $_PJ_http_root to the http root directory to be entered in the browser
-	   e.g for 'http://www.soin.de/timeffect' the $_PJ_http_root should be set to '/timeffect'
-	*/
+	// change $_PJ_http_root to the http root directory to be entered in the browser
+	// e.g for 'http://www.soin.de/timeffect' the $_PJ_http_root should be set to '/timeffect'
 	$_PJ_http_root		= '/timeeffect';
-	/*
-	   change $_PJ_root to the directory where timeeffect is located on your web server
-	*/
+	
+	// change $_PJ_root to the directory where timeeffect is located on your web server
 	$_PJ_root			= $_SERVER['DOCUMENT_ROOT'] . '/timeeffect';
 
-	/*
-	   select default language ('en' or 'de' are currently availlable
-	*/
-	$_PJ_default_language		= 'de';
+	// select default language ('en', 'fr' or 'de' are currently availlable)
+	$_PJ_default_language = 'de';
+
+	// Global debug flag
+	$_PJ_debug = false; // Set to true to enable debug logging
 
 	$_PJ_decimal_point			= ',';
 	$_PJ_thousands_seperator	= '.';
 	$_PJ_currency				= 'EUR';
 
-	/*
-	   enter database parameters ($_PJ_db_type is currently used for PEAR Module Auth only
-	*/
+	// enter database parameters
 	$_PJ_db_host		= 'localhost';
 	$_PJ_db_database	= 'timeeffect_db';
 	$_PJ_db_user		= 'timeeffect';
 	$_PJ_db_password	= 'very_unsecure_timeeffect_PW1';
 
-	/*
-	   define maximum session length in seconds. Users will be automatically logged of after this period.
-	   If set to 0 automated logout will be disabled.
-	*/
+	// define maximum session length in seconds. Users will be automatically logged of after this period.
+	// If set to 0 automated logout will be disabled.
 	$_PJ_session_length			= 3600;
 
-	/*
-	   define database table prefix for TIMEEFFECT.
-	   NOTE: you have to change the table names in 'sql/timeeffect.sql' according to the prefix
-	   A more comfortable installation routine is issue of future releases
-	*/
+	// define database table prefix for TIMEEFFECT
+	// NOTE: you have to change the table names in 'sql/timeeffect.sql' according to the prefix
+	// A more comfortable installation routine is issue of future releases
 	$_PJ_table_prefix 	= 'te_';
 
-	/*
-	   agents are allow to delete efforts
-	*/
+	// agents are allow to delete efforts
 	$_PJ_agents_allow_delete 	= 1;
 	
-	/*
-	   allow users to register themselves
-	*/
+	// allow users to register themselves
 	$_PJ_allow_registration 	= 1;
 	
-	/*
-	   enable email confirmation for new registrations
-	*/
+	// enable email confirmation for new registrations
 	$_PJ_registration_email_confirm = 1;
 	
-	/*
-	   enable password recovery functionality
-	*/
+	// enable password recovery functionality
 	$_PJ_allow_password_recovery = 1;
 	
-	/*
-	   secure default permissions for new registered users
-	   if enabled, new users can only see their own customers/projects
-	*/
+	// secure default permissions for new registered users
+	// if enabled, new users can only see their own customers/projects
 	$_PJ_registration_secure_defaults = 1;
 	
-	/*
-	   default access permissions for new customers/projects created by registered users
-	   format: owner/group/other (rwx format)
-	   'rwxr-----' = owner: full access, group: read only, others: no access
-	*/
+	// default access permissions for new customers/projects created by registered users
+	// format: owner/group/other (rwx format)
+	// 'rwxr-----' = owner: full access, group: read only, others: no access
 	$_PJ_registration_default_access = 'rwxr-----';
 	
-	/*
-		 Database charset encoding
-	*/
+	// Database charset encoding
 	$GLOBALS['mysql_charset']='utf8';
 
 /* ******************************************************** */

@@ -131,6 +131,7 @@
 		$center_template = ''; // Use direct message display in note.ihtml
 		include("$_PJ_root/templates/note.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
+		
 		exit;
 	}
 

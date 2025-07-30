@@ -14,7 +14,7 @@
 		$rates = new Rates($customer->giveValue("id"));
 		$customer_id = $customer->giveValue('id');
 	} else {
-		error_log("LOG_EFFORT_FORM: No customer object available, using default rates");
+		debugLog("LOG_EFFORT_FORM", "No customer object available, using default rates");
 		$rates = new Rates(0); // Default rates
 		$customer_id = 0;
 	}
@@ -23,7 +23,7 @@
 	if ($project && $project->giveValue('project_name')) {
 		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>' . $project->giveValue('project_name') . '</b>';
 	} else {
-		error_log("LOG_EFFORT_FORM: No project object available, using project ID only");
+		debugLog("LOG_EFFORT_FORM", "No project object available, using project ID only");
 		$project_input = '<INPUT TYPE="hidden" NAME="pid" VALUE="' . $pid . '"><b>Project ID: ' . $pid . '</b>';
 	}
 	if(isset($effort) && is_object($effort) && $effort->giveValue('id')) {
@@ -111,11 +111,11 @@
 		// LOG_EFFORT_FORM: Check project object before accessing gid
 		if ($project && $project->giveValue('gid')) {
 			$effort_gid = $project->giveValue('gid');
-			error_log("LOG_EFFORT_FORM: Using project gid: " . $effort_gid);
+			debugLog("LOG_EFFORT_FORM", "Using project gid: " . $effort_gid);
 		} else {
 			// Use user's default gid for new efforts
 			$effort_gid = $_PJ_auth->giveValue('gid');
-			error_log("LOG_EFFORT_FORM: No project gid available, using user default gid: " . $effort_gid);
+			debugLog("LOG_EFFORT_FORM", "No project gid available, using user default gid: " . $effort_gid);
 		}
 		$user_access['write']		= true;
 		$effort_access_owner		= 'rw-';

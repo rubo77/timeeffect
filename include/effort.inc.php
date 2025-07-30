@@ -262,7 +262,7 @@
 				$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
 				$this->data['user'] = $user ? $user->giveValue('id') : '';
 				$this->data['gid'] = $user ? $user->giveValue('gid') : '';
-				error_log("LOG_EFFORT_INIT: Initialized empty effort with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
+				debugLog("LOG_EFFORT_INIT", "Initialized empty effort with default access for user: " . ($user ? $user->giveValue('id') : 'no_user'));
 			}
 			// Always call getUserAccess() - now safe because access field is always set
 			$this->user_access = $this->getUserAccess();
@@ -281,7 +281,7 @@
 				// LOG_EFFORT_LOAD: Ensure access field is never null after loading from database
 				if(empty($this->data['access']) || $this->data['access'] === null) {
 					$this->data['access'] = 'rwxr--r--'; // Default access: owner read/write, group read, world read
-					error_log("LOG_EFFORT_LOAD: Fixed null access field for effort ID: $id, set to default access");
+					debugLog("LOG_EFFORT_LOAD", "Fixed null access field for effort ID: $id, set to default access");
 				}
 			}
 		}

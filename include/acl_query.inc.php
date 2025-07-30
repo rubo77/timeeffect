@@ -107,8 +107,8 @@ function logAclQuery($context, $user, $final_query) {
     $is_admin = $user->checkPermission('admin') ? 'YES' : 'NO';
     $gids = $user->giveValue('gids');
     
-    error_log("ACL_DEBUG $context: user_id=$user_id, is_admin=$is_admin, gids=$gids");
-    error_log("ACL_DEBUG $context final query: $final_query");
+    debugLog("ACL_DEBUG", "$context: user_id=$user_id, is_admin=$is_admin, gids=$gids");
+    debugLog("ACL_DEBUG", "$context final query: $final_query");
 }
 
 /**

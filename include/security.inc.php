@@ -287,7 +287,7 @@ if (class_exists('Database')) {
         public function secureQuery($query) {
             // Log potentially unsafe queries for monitoring
             if (preg_match('/WHERE.*\$|INSERT.*\$|UPDATE.*\$|DELETE.*\$/', $query)) {
-                error_log("SECURITY WARNING: Potentially unsafe query detected: " . $query);
+                debugLog("SECURITY WARNING", "Potentially unsafe query detected: " . $query);
             }
             
             return $this->query($query);

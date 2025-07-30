@@ -72,7 +72,7 @@ function DB_Connect($dsn) {
     if (empty($parsed['hostspec']) || $parsed['hostspec'] === 'mysql') {
         // Override the host if it's set incorrectly (common problem)
         $parsed['hostspec'] = 'db';
-        error_log("WARNING: Host was empty or 'mysql' in DSN, overriding to 'db'");
+        debugLog("WARNING", "Host was empty or 'mysql' in DSN, overriding to 'db'");
     }
     
     // Create connection using mysqli

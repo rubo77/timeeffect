@@ -31,17 +31,17 @@
 	
 	// LOG_CUSTOMER_INIT: Log customer initialization status
 	if (!$customer) {
-		error_log("LOG_CUSTOMER_INIT: No customer ID provided, customer object is null");
+		debugLog("LOG_CUSTOMER_INIT", "No customer ID provided, customer object is null");
 	}
 
 	// Create Project object only if valid customer and pid are provided
 	if ($customer && $pid) {
 		// LOG_PROJECT_INIT: Loading existing project
-		error_log("LOG_PROJECT_INIT: Loading existing project with pid=$pid for customer $cid");
+		debugLog("LOG_PROJECT_INIT", "Loading existing project with pid=$pid for customer $cid");
 		$project = new Project($customer, $_PJ_auth, $pid);
 	} else {
 		// LOG_PROJECT_INIT: No project object for new projects or missing data
-		error_log("LOG_PROJECT_INIT: No project object created - new project or missing customer/pid");
+		debugLog("LOG_PROJECT_INIT", "No project object created - new project or missing customer/pid");
 		$project = null;
 	}
 
@@ -86,33 +86,33 @@
 				if ($project && $project->giveValue('gid')) {
 					// Use existing project's gid
 					$data['gid'] = $project->giveValue('gid');
-					error_log("LOG_PROJECT_SAVE: Using existing project gid: " . $data['gid']);
+					debugLog("LOG_PROJECT_SAVE", "Using existing project gid: " . $data['gid']);
 				} else {
 					// Use user's default gid for new projects
 					$data['gid'] = $_PJ_auth->giveValue('gid');
-					error_log("LOG_PROJECT_SAVE: Using user default gid for new project: " . $data['gid']);
+					debugLog("LOG_PROJECT_SAVE", "Using user default gid for new project: " . $data['gid']);
 				}
 			}
 			if($data['access'] == '') {
 				if ($project && $project->giveValue('access')) {
 					// Use existing project's access
 					$data['access'] = $project->giveValue('access');
-					error_log("LOG_PROJECT_SAVE: Using existing project access: " . $data['access']);
+					debugLog("LOG_PROJECT_SAVE", "Using existing project access: " . $data['access']);
 				} else {
 					// Use default access for new projects (owner: read/write, group: read, world: none)
 					$data['access'] = 'rw-r-----';
-					error_log("LOG_PROJECT_SAVE: Using default access for new project: " . $data['access']);
+					debugLog("LOG_PROJECT_SAVE", "Using default access for new project: " . $data['access']);
 				}
 			}
 			if($data['user'] == '') {
 				if ($project && $project->giveValue('user')) {
 					// Use existing project's user
 					$data['user'] = $project->giveValue('user');
-					error_log("LOG_PROJECT_SAVE: Using existing project user: " . $data['user']);
+					debugLog("LOG_PROJECT_SAVE", "Using existing project user: " . $data['user']);
 				} else {
 					// Use current user for new projects
 					$data['user'] = $_PJ_auth->giveValue('id');
-					error_log("LOG_PROJECT_SAVE: Using current user for new project: " . $data['user']);
+					debugLog("LOG_PROJECT_SAVE", "Using current user for new project: " . $data['user']);
 				}
 			}
 			if($data['user'] == '') {
@@ -160,11 +160,11 @@
 	// LOG_TITLE_GENERATION: Set appropriate title based on customer context
 	if ($customer) {
 		// Single customer view
-		error_log("LOG_TITLE_GENERATION: Generating title for single customer: " . $customer->giveValue('customer_name'));
+		debugLog("LOG_TITLE_GENERATION", "Generating title for single customer: " . $customer->giveValue('customer_name'));
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['project_list'] . " " . $customer->giveValue('customer_name');
 	} else {
 		// All projects view
-		error_log("LOG_TITLE_GENERATION: Generating title for all projects view");
+		debugLog("LOG_TITLE_GENERATION", "Generating title for all projects view");
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['project_list'];
 	}
 	include("$_PJ_root/templates/list.ihtml");

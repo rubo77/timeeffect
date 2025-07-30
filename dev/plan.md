@@ -94,6 +94,8 @@
 - NEU: DRY-Prinzip: Es wird eine zentrale Funktion zur Generierung des ACL-Query-Teils für Gruppenrechte erstellt (z.B. buildAclGroupQuery($user, $tableAlias = '')), die überall verwendet wird. Alle bisherigen Query-Builds werden darauf umgestellt.
 - 7.6. 14:37 "ACL"
 Die Umstellung auf eine zentrale ACL-Query-Funktion ist abgeschlossen und in allen relevanten Modulen (customer.inc.php, effort.inc.php, project.inc.php) implementiert. Ein umfassendes Test-Script validiert die Funktionalität, insbesondere die Vermeidung von "gid IN ()" Fehlern und die DRY-Prinzip-Umsetzung.
+- 7.6. 06:23 "DEBUG-Global"
+Debug-Logging wird jetzt zentral über die globale Variable $GLOBALS['_PJ_debug'] in config.inc.php und config.inc.php.sample gesteuert. Die Funktion debugLog() prüft nur noch dieses Flag. Damit ist Debug-Ausgabe überall zentral aktivierbar/deaktivierbar.
 
 ## Task List
 - [x] Fix include paths in migrate_theme_preference.php after move

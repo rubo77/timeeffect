@@ -13,5 +13,7 @@
 - in https://te.eclabs.de/groups/index.php?edit=1&gid=2 
   - zeige alle benutzer an, die der Gruppe zugeordnet sind
   - zeige alle objekte an, die der Gruppe zugeordnet sind
-  
+
 - elaube nur das löchen von gruppen ohne zugeordneten Benutzer oder irgendwelchen Objekten
+
+- links in in Bearbeitung tauchen effords ohne Project noch nicht auf
