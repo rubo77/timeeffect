@@ -245,10 +245,26 @@ private function runMigrationZ() {
 - Error logs: Check PHP error logs and application logs
 - Current version: Use `MigrationManager::getCurrentVersion()`
 
+## Migration Types in TimeEffect
+
+### Automatic Migrations (Recommended)
+Implemented in `include/migrations.inc.php` as PHP methods:
+- Run automatically on user login
+- Version tracking in `migrations` table
+- Idempotent (safe to run multiple times)
+- Error handling and rollback support
+
+### Manual Migrations
+SQL files in `sql/` directory:
+- Must be executed manually by administrator
+- No automatic version tracking
+- Use for complex schema changes or data migrations
+
 ## Examples from TimeEffect
 
-### Migration 1: User Registration Fields
+### Automatic Migration 1: User Registration Fields
 ```php
+// Implemented in migrations.inc.php runMigration1()
 // Added password reset and email confirmation fields
 ALTER TABLE auth ADD COLUMN reset_token VARCHAR(64) NULL AFTER facsimile;
 ALTER TABLE auth ADD COLUMN reset_expires DATETIME NULL AFTER reset_token;
@@ -256,10 +272,21 @@ ALTER TABLE auth ADD COLUMN email_confirmed TINYINT(1) DEFAULT 1 AFTER reset_exp
 ALTER TABLE auth ADD COLUMN confirmation_token VARCHAR(64) NULL AFTER email_confirmed;
 ```
 
-### Migration 2: Theme Preference
+### Automatic Migration 2: Theme Preference
 ```php
+// Implemented in migrations.inc.php runMigration2()
 // Added user theme preference for dark/light mode
 ALTER TABLE auth ADD COLUMN theme_preference VARCHAR(10) DEFAULT 'system' AFTER facsimile;
+```
+
+### Manual Migration Example
+```sql
+-- File: sql/migration_add_registration_features.sql
+-- Execute manually: mysql -u user -p database < sql/migration_add_registration_features.sql
+-- Replace <%table_prefix%> with your actual table prefix (e.g. te_)
+ALTER TABLE `<%table_prefix%>auth` 
+ADD COLUMN `confirmed` tinyint(1) NOT NULL DEFAULT '1' AFTER `facsimile`,
+ADD COLUMN `confirmation_token` varchar(64) DEFAULT NULL AFTER `confirmed`;
 ```
 
 ## Future Enhancements
