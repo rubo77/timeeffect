@@ -19,9 +19,12 @@
 	$emonth = $_REQUEST['emonth'] ?? null;
 	$eday = $_REQUEST['eday'] ?? null;
 
-	// Only create Customer object if valid cid is provided
-	$customer = $cid ? new Customer($_PJ_auth, $cid) : null;
+	// Only create Customer object if valid cid is provided (but not for 'unassigned' special case)
+	$customer = ($cid && $cid !== 'unassigned') ? new Customer($_PJ_auth, $cid) : null;
 	$project = ($customer && $pid) ? new Project($customer, $_PJ_auth, $pid) : null;
+	
+	// Handle unassigned efforts special case
+	$show_unassigned = ($cid === 'unassigned');
 
 	$center_template	= "report";
 
@@ -53,7 +56,7 @@
 		$eday = intval(date('d'));
 	}
 
-	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode);
+	$statistic	= new Statistics($_PJ_auth, false, $customer, $project, $users, $mode, $show_unassigned);
 	if($_PJ_auth->checkPermission('accountant') && is_array($charge)) {
 		$statistic->billEfforts(date('Y-m-d'), implode(',', array_keys($charge)));
 	}

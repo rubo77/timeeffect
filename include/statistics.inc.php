@@ -18,14 +18,16 @@
 		// Fix: Explicit property declarations for PHP 8.4 compatibility
 		var $mode;
 		var $users;
+		var $show_unassigned;
 
 		// Fix: Replace deprecated PHP4-style constructor with modern __construct for PHP 8.4 compatibility
-	function __construct(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL) {
+	function __construct(&$user, $load = false, $customer = NULL, $project = NULL, $users = NULL, $mode = NULL, $show_unassigned = false) {
 			$this->customer	= $customer;
 			$this->project	= $project;
 			$this->mode		= $mode;
 			$this->user		= $user;
 			$this->users	= $users;
+			$this->show_unassigned = $show_unassigned;
 			// Fix: Initialize arrays to prevent undefined array key warnings
 			$this->data = array('seconds' => 0, 'billed_seconds' => 0);
 			$this->months = array('open' => array(), 'billed' => array());
@@ -493,18 +495,32 @@
 				}
 			}
 
-			$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
-					 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id, " .
-					 $GLOBALS['_PJ_project_table'] . ".project_name " .
-					 " FROM " .
-					 $GLOBALS['_PJ_effort_table'] . ", " .
-					 $GLOBALS['_PJ_customer_table'] . ", " .
-					 $GLOBALS['_PJ_project_table'] .
-					 " WHERE " .
-					 $GLOBALS['_PJ_effort_table'] . ".project_id=" . $GLOBALS['_PJ_project_table'] . ".id" . 
-					 "  AND " .
-					 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			// Build query with LEFT JOIN for unassigned efforts or INNER JOIN for regular reports
+			if ($this->show_unassigned) {
+				// Use LEFT JOIN to include efforts without project/customer assignment
+				$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
+						 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
+						 $GLOBALS['_PJ_project_table'] . ".customer_id, " .
+						 $GLOBALS['_PJ_project_table'] . ".project_name " .
+						 " FROM " . $GLOBALS['_PJ_effort_table'] .
+						 " LEFT JOIN " . $GLOBALS['_PJ_project_table'] . " ON " . $GLOBALS['_PJ_effort_table'] . ".project_id = " . $GLOBALS['_PJ_project_table'] . ".id" .
+						 " LEFT JOIN " . $GLOBALS['_PJ_customer_table'] . " ON " . $GLOBALS['_PJ_project_table'] . ".customer_id = " . $GLOBALS['_PJ_customer_table'] . ".id" .
+						 " WHERE (" . $GLOBALS['_PJ_effort_table'] . ".project_id = 0 OR " . $GLOBALS['_PJ_effort_table'] . ".project_id IS NULL)";
+			} else {
+				// Use INNER JOIN for regular reports (existing behavior)
+				$query = "SELECT " . $GLOBALS['_PJ_effort_table'] . ".*, " .
+						 $GLOBALS['_PJ_customer_table'] . ".customer_name, " .
+						 $GLOBALS['_PJ_project_table'] . ".customer_id, " .
+						 $GLOBALS['_PJ_project_table'] . ".project_name " .
+						 " FROM " .
+						 $GLOBALS['_PJ_effort_table'] . ", " .
+						 $GLOBALS['_PJ_customer_table'] . ", " .
+						 $GLOBALS['_PJ_project_table'] .
+						 " WHERE " .
+						 $GLOBALS['_PJ_effort_table'] . ".project_id=" . $GLOBALS['_PJ_project_table'] . ".id" . 
+						 "  AND " .
+						 $GLOBALS['_PJ_project_table'] . ".customer_id=" . $GLOBALS['_PJ_customer_table'] . ".id";
+			}
 			if(is_object($this->customer) && $this->customer->giveValue('id')) {
 				$query .= " AND " .
 						  $GLOBALS['_PJ_project_table'] . ".customer_id='" . $this->customer->giveValue('id') . "'";

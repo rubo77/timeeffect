@@ -137,6 +137,7 @@
 	$GLOBALS['_PJ_strings']['password_reset_success']	= 'Ihr Passwort wurde erfolgreich zurückgesetzt.';
 	$GLOBALS['_PJ_strings']['password_reset_error']		= 'Ungültiger oder abgelaufener Token zum Zurücksetzen des Passworts.';
 	$GLOBALS['_PJ_strings']['email_confirm_sent']		= 'Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet.';
+	$GLOBALS['_PJ_strings']['unassigned_efforts']		= 'Unzugeordnete Aufwände';
 	$GLOBALS['_PJ_strings']['email_confirm_success']	= 'E-Mail-Adresse erfolgreich bestätigt. Sie können sich jetzt anmelden.';
 	$GLOBALS['_PJ_strings']['email_confirm_error']		= 'Ungültiger oder abgelaufener Bestätigungstoken.';
 	$GLOBALS['_PJ_strings']['registration_success']		= 'Registrierung erfolgreich. Bitte überprüfen Sie Ihre E-Mail für Bestätigungsanweisungen.';

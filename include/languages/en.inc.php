@@ -131,6 +131,7 @@
 	$GLOBALS['_PJ_strings']['password_reset_success']	= 'Your password has been successfully reset.';
 	$GLOBALS['_PJ_strings']['password_reset_error']		= 'Invalid or expired password reset token.';
 	$GLOBALS['_PJ_strings']['email_confirm_sent']		= 'A confirmation email has been sent to your email address.';
+	$GLOBALS['_PJ_strings']['unassigned_efforts']		= 'Unassigned Efforts';
 	$GLOBALS['_PJ_strings']['email_confirm_success']	= 'Email address confirmed successfully. You may now log in.';
 	$GLOBALS['_PJ_strings']['email_confirm_error']		= 'Invalid or expired confirmation token.';
 	$GLOBALS['_PJ_strings']['registration_success']		= 'Registration successful. Please check your email for confirmation instructions.';
