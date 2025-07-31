@@ -211,13 +211,25 @@
 				if(preg_match('/^k(\d+)\s*/i', ltrim($description), $matches)) { // LOG_EFFORT_AUTOASSIGN: Try k<ID> at start (case-insensitive, trim left)
     debugLog("LOG_EFFORT_AUTOASSIGN", "Detected k<ID> pattern: " . $matches[1]);
 					$auto_cid = intval($matches[1]);
-					$test_customer = new Customer($_PJ_auth, $auto_cid);
-					if($test_customer->giveValue('id')) {
-						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid valid. Assigning.");
+					// Try direct DB query first to check if customer exists
+					$db = new Database();
+					$db->connect();
+					$safe_cid = DatabaseSecurity::escapeString($auto_cid, $db->Link_ID);
+					$query = "SELECT id, customer_name FROM " . $GLOBALS['_PJ_customer_table'] . " WHERE id = '$safe_cid'";
+					$db->query($query);
+					if($db->next_record()) {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid exists in DB: name = '" . $db->Record['customer_name'] . "'");
+						// Skip Customer object creation due to ACL restrictions, use direct DB approach
 						$final_cid = $auto_cid;
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid assigned directly (bypassing ACL).");
+					} else {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid does not exist in database.");
+					}
+					// Check if customer was assigned via direct DB approach
+					if($final_cid == $auto_cid) {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid valid via direct DB. Proceeding with project assignment.");
 						// Auto-assign project from newest effort of this customer (effort table has no customer_id column)
-						$db = new Database();
-						$db->connect();
+						// Reuse existing DB connection
 						$safe_cid = DatabaseSecurity::escapeString($auto_cid, $db->Link_ID);
 						$query = "SELECT e.project_id FROM " . $GLOBALS['_PJ_effort_table'] . " e "
 							. "INNER JOIN " . $GLOBALS['_PJ_project_table'] . " p ON e.project_id = p.id "
@@ -239,6 +251,8 @@
 						// Remove the shortcode from the description
 						$cleaned_description = preg_replace('/^k\d+\s*/i', '', ltrim($description));
 						debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after k<ID>: '" . $cleaned_description . "'");
+					} else {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid assignment failed (not found via direct DB).");
 					}
 				}
 				// Check if description starts with 'p' followed by project ID

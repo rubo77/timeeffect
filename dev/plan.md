@@ -146,31 +146,10 @@
 - [x] Rate-Limiting-Logik im Password-Reset prüft jetzt nur noch auf aktive Tokens, nicht mehr auf reset_expires/24h – verhindert False Positives beim Reset.
 - [x] Session-basiertes Rate-Limiting (10 Sekunden Cooldown) für Passwort-Reset implementiert (funktioniert jetzt wie erwartet)
 - [x] Session-basiertes Rate-Limiting und Template/Session-Probleme sind behoben
+- [x] Fix: Autozuordnung für k<ID> schlägt fehl, Customer-Objekt wird nicht gefunden (auch wenn ID existiert)
+- [x] Bugfix: Report-Fehler beheben – Wenn nur ein Projekt gewählt wird, aber kein Kunde, soll der Kunde automatisch ermittelt werden, um Fatal Error zu verhindern
+- [x] Fix: Customer-Objekt wird nicht gefunden, wenn k<ID> verwendet wird
+- [ ] Bugfix: Report-Projekt-Kunde-Fehler beheben
 
 ## Current Goal
-- NEU: Analyse/Fix: Automatische Kunden- und Projektzuordnung im Effort-Formular funktioniert nicht wie erwartet ("k<ID>", "p<ID>", Kundenname in Beschreibung). Debugging und Fix der Regex-/Zuweisungslogik in inventory/efforts.php ist aktuell in Arbeit.
-- 31.7. 08:20 "Autozuordnung Debug": Es wurde ein globales Debug-Log (LOG_EFFORTS_SAVE_REQUEST) am Anfang des Save-Blocks ergänzt, um alle relevanten Request- und lokalen Variablen sichtbar zu machen. Nächster Schritt: Analyse der Log-Ausgaben und weitere Ursachenforschung, warum die Zuordnung nicht greift.
-- 31.7. 08:29 "Autozuordnung customer_id-Feld-Fix": Die Ursache für das Nicht-Speichern der Customer-ID war, dass das Feld customer_id nicht ins Datenarray übernommen wurde. Das ist jetzt gefixt. Die Autozuordnung funktioniert jetzt für Kundennamen, aber nicht für IDs, die nicht existieren.
-- 31.7. 08:30 "Project Constructor Reference-Fix": Fatal Error bei Project::__construct() (by reference) bei der Autozuordnung von Projekten wurde behoben (Dummy-Variable für by-ref-Parameter, kein null mehr).
-- 31.7. 08:31 "Autozuordnung vollständig gefixt": Die automatische Kunden-/Projektzuordnung funktioniert jetzt für k<ID>, p<ID> und Kundennamen, inklusive Speicherung und Bearbeitung.
-- 31.7. 08:32 "Reference-Fix": Die Autozuordnung von Kunden und Projekten im Effort-Formular wurde erfolgreich gefixt und getestet. Die Zuordnung funktioniert jetzt korrekt für k<ID>, p<ID> und Kundennamen.
-- 31.7. 08:33 "Abschluss Autozuordnung": Die automatische Kunden- und Projektzuordnung im Effort-Formular ist jetzt vollständig implementiert und getestet. Die Zuordnung funktioniert korrekt für k<ID>, p<ID> und Kundennamen.
-- 31.7. 08:37 "Intelligente Projektzuordnung bei Auto-Kunde":
-    - Bei Kundenerkennung (k<ID> oder Kundenname) wird jetzt das Projekt aus dem neuesten bisherigen Effort des Kunden automatisch zugewiesen (ORDER BY e.last DESC, LIMIT 1).
-    - Fallback: Falls kein Effort existiert, wird weiterhin das erste verfügbare Projekt des Kunden genommen.
-    - Die Zuordnung bleibt für p<ID> (Projekt direkt) unverändert.
-- 31.7. 08:38 "Auto-Kunden-Zuordnung Update": Die Auto-Kunden-Zuordnung im Effort-Formular wurde aktualisiert, um die neuesten Efforts des Kunden zu berücksichtigen. Die Zuordnung funktioniert jetzt korrekt für k<ID>, p<ID> und Kundennamen.
-
-## Task List
-- [x] Auto-Group-Creation für Registrierung (register.php): Nach Registrierung Gruppe anlegen und Nutzer zuordnen
-- [x] Logo im Dark Mode: Hellen, dünnen Border um das Logo ergänzen
-- [x] Gruppennamen bei Registrierung eindeutig mit _personal suffix
-- [x] Null-Check für Effort-Stop-Funktion (Fehlerseite bei fehlendem eid)
-- [x] Globale Passwort-Validierungsfunktionen (JS+PHP) implementieren und in password_reset.php + settings.php integrieren
-- [x] Rate-Limiting für Passwort-Reset-E-Mails (1 Minute Cooldown) implementieren
-- [x] note.ihtml-Template mit moderner App-Optik, Padding und Rück-Link ergänzen
-- [x] Passwort-Validierung und Rate-Limiting in settings.php integrieren
-- [x] Template-Kaskade für no_login Scripts (password_reset.php) absichern (Checks für $_PJ_auth, $_PJ_session_timeout in allen shared-Templates)
-- [x] Rate-Limiting-Logik im Password-Reset prüft jetzt nur noch auf aktive Tokens, nicht mehr auf reset_expires/24h – verhindert False Positives beim Reset.
-- [x] Session-basiertes Rate-Limiting (10 Sekunden Cooldown) für Passwort-Reset implementiert (funktioniert jetzt wie erwartet)
-- [x] Session-basiertes Rate-Limiting und Template/Session-Probleme sind behoben
+- NEU: ACL-unabhängige, robuste Autozuordnung für k<ID> und automatische Kundenerkennung im Report-Formular testen und ggf. letzte Details nachschärfen.
