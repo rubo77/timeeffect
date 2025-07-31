@@ -102,76 +102,6 @@
 - NEU: SQL-Syntax-Fehler: Wenn gids leer ist, wird ein ungültiges SQL "gid IN ()" generiert. Das führt zu einem Syntax-Fehler und muss im Query-Building abgefangen werden (kein OR-Block für Gruppen, wenn gids leer ist).
 - NEU: Note and task for systematic SQL-Syntax-Fix for gid IN () in all modules
 - [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
-- NEU: DRY-Prinzip: Es wird eine zentrale Funktion zur Generierung des ACL-Query-Teils für Gruppenrechte erstellt (z.B. buildAclGroupQuery($user, $tableAlias = '')), die überall verwendet wird. Alle bisherigen Query-Builds werden darauf umgestellt.
-- 7.6. 14:37 "ACL"
-Die Umstellung auf eine zentrale ACL-Query-Funktion ist abgeschlossen und in allen relevanten Modulen (customer.inc.php, effort.inc.php, project.inc.php) implementiert. Ein umfassendes Test-Script validiert die Funktionalität, insbesondere die Vermeidung von "gid IN ()" Fehlern und die DRY-Prinzip-Umsetzung.
-- 7.6. 06:23 "DEBUG-Global"
-Debug-Logging wird jetzt zentral über die globale Variable $GLOBALS['_PJ_debug'] in config.inc.php und config.inc.php.sample gesteuert. Die Funktion debugLog() prüft nur noch dieses Flag. Damit ist Debug-Ausgabe überall zentral aktivierbar/deaktivierbar.
-- 7.6. 06:44 "SQL-Injection-Analyse"
-Commit f05b0db5 hat SQL-Injection-Schutz in einigen Modulen verbessert, aber das Kernproblem in project.inc.php (Project::load()) nicht gelöst: Dort werden weiterhin ungefilterte Parameter (z.B. pid aus $_REQUEST) direkt in SQL-Queries verwendet. Exploits wie ?pid=' OR 1=1 -- sind daher weiterhin möglich. Task: Systematische Absicherung aller ID-Parameter gegen SQL-Injection, insbesondere in Project::load().
-- 7.6. 06:51 "SQL-Injection-Fix"
-Alle kritischen load- und lookup-Methoden (Project::load, Effort::load, User, Group) sind jetzt mit DatabaseSecurity::escapeString() und expliziter DB-Verbindung abgesichert. Testskript meldet aber noch DELETE-Statements mit ungefilterten IDs als potenziell verwundbar. Task: Auch alle DELETE-Statements systematisch absichern.
-- 7.6. 07:00 "SQL-Injection-Fix count()"
-Auch Project::count() ist jetzt mit expliziter DB-Verbindung und EscapeString abgesichert. Alle load- und count-Methoden in project.inc.php sind damit sicher gegen SQL-Injection.
-- 7.6. 07:02 "Password-Validation-Fix"
-Bug: Die Passwort-Validierung in User::save() war zu strikt und hat auch bei nicht aktivierter Passwort-Änderung ein leeres Passwort verlangt. Fix: Passwort ist nur bei neuen Usern Pflicht, bei bestehenden Usern nur wenn wirklich geändert wird. Logik entsprechend angepasst und getestet.
-- 7.6. 07:04 "User-Form-UI-Fix"
-Bug: Bei neuen Usern wurde fälschlich der JS-Button zum Anzeigen der Passwortfelder angezeigt. Jetzt erscheinen die Passwortfelder direkt, der Button nur bei bestehenden Usern. Template-Logik in form.ihtml angepasst und getestet.
-- 7.6. 07:06 "Auto-Group-Creation"
-Neue Anforderung: Bei Neuanlage eines Users wird automatisch eine persönliche Gruppe mit dem Usernamen als Gruppennamen erstellt. Diese Gruppe erscheint direkt im Gruppenzugehörigkeits-Dropdown und ist vorausgewählt.
-- 7.6. 07:07 "Auto-Group-Creation abgeschlossen"
-Die automatische Gruppenerstellung für neue User ist implementiert: Backend legt Gruppe an, Dropdown zeigt sie direkt an und wählt sie aus. JavaScript aktualisiert die Anzeige dynamisch beim Tippen des Usernamens.
-- 7.6. 07:14 "Group-Members-Display"
-Neue Anforderung: Beim Bearbeiten einer Gruppe (groups/index.php?edit=1&gid=X) sollen alle zugeordneten Benutzer und Objekte (Kunden, Projekte, Aufwände) angezeigt werden.
-- 7.6. 07:15 "Group-Members-Display umgesetzt"
-Neue Datei group_assignments.inc.php liefert Methoden zur Anzeige aller zugeordneten Benutzer und Objekte im Gruppen-Edit. Template und Lokalisierung ergänzt, Syntax geprüft.
-- [x] Anzeige aller zugeordneten Benutzer und Objekte beim Gruppen-Edit (groups/index.php?edit=1&gid=X)
-- 7.6. 07:19 "Group-Display-Bugfixes"
-Bug: User-Links im Gruppen-Edit ergänzen (Link auf User-Edit). SQL-Fix: ORDER BY name in Group_getAssignedCustomers() führt zu Fehler, da Spalte evtl. anders heißt (z.B. kundenname). Task: Spaltennamen prüfen und Query anpassen.
-- 7.6. 07:21 "Null-Value-Fix"
-Fix: htmlspecialchars() deprecated warning durch robustes Null-Handling im Template (?? '' bei allen Werten). PHP-Syntax geprüft, keine weiteren Deprecated-Fehler.
-- 7.6. 07:22 "Project-Constructor-Fix"
-Bug: Project::__construct() erwartet mindestens 2 Argumente (customer, user), aber in group_assignments.inc.php wird nur ein Array übergeben. Task: Überall, wo Project-Objekte aus DB-Records erzeugt werden, müssen die richtigen Argumente übergeben werden (z.B. Dummy-User oder Customer, falls nicht vorhanden). Siehe group_assignments.inc.php und ähnliche Stellen.
-- 7.6. 07:23 "Project-Constructor-Fix umgesetzt"
-Fix: Überall, wo Customer, Project, Effort-Objekte aus DB-Records erzeugt werden (group_assignments.inc.php), werden jetzt Dummy-Objekte für user/customer übergeben, damit keine ArgumentCountError mehr auftreten. PHP-Syntax geprüft.
-- [x] Anzeige aller zugeordneten Benutzer und Objekte beim Gruppen-Edit (groups/index.php?edit=1&gid=X)
-- [x] Project-Constructor-Fix: Überall Dummy-Objekte für user/customer beim Erzeugen aus DB-Records verwenden (group_assignments.inc.php)
-- 7.6. 07:25 "Dummy-Objekt-Refactoring-Diskussion"
-Hinweis: Die Nutzung von Dummy-Objekten (DummyUser, DummyCustomer) für reine Anzeige in group_assignments.inc.php ist unelegant und ein Designproblem. Die starke Kopplung der Datenklassen an User/Customer-Objekte für ACL sollte langfristig durch eleganteres Design (z.B. optionale ACL-Prüfung, Factory/Display-Objekte) ersetzt werden. Task für Refactoring offen.
-- 7.6. 07:26 "Raw-DB-Records-Refactoring abgeschlossen"
-Fix: Dummy-Objekte entfernt, alle Anzeige-Funktionen in group_assignments.inc.php nutzen jetzt direkt die DB-Records (Arrays) für die Anzeige. Das Template wurde angepasst, arbeitet jetzt mit Arrays statt Objekten. Keine Kopplung/ACL-Probleme mehr, keine Dummy-Methoden nötig. PHP-Syntax geprüft.
-- [x] Raw-DB-Records-Refactoring: Anzeige aller Gruppen-Zuordnungen nutzt jetzt direkt DB-Records (keine Dummy-Objekte mehr)
-- 7.6. 07:28 "PHP-Closing-Tag-Fix"
-Neue User-Präferenz: Am Ende von PHP-Dateien, die mit PHP-Code enden, immer das abschließende ?> weglassen (PSR/Best Practice). Bereits in scripts.inc.php und group_assignments.inc.php umgesetzt.
-- 7.6. 07:28 "$_PJ_project_script-Fix"
-Fix: Fehlende Variable $_PJ_project_script in scripts.inc.php ergänzt (Alias auf _PJ_projects_inventory_script), damit Template-Kompatibilität gewährleistet ist.
-- 7.6. 07:34 "Project-CID-Auto-Lookup"
-Hinweis: In inventory/projects.php soll, falls cid fehlt, diese vor dem ACL-Test aus der DB gelesen werden (Kompatibilität für Links aus Gruppenverwaltung).
-- [x] Dummy-Objekt-Refactoring: Dummy-Objekte entfernt, alle Anzeige-Funktionen in group_assignments.inc.php nutzen jetzt direkt die DB-Records (Arrays) für die Anzeige
-- [x] Auto-Lookup der cid in inventory/projects.php vor ACL-Test
-- 7.6. 08:36 "Password-Handling-Bug"
-Bug: Beim Editieren eines bestehenden Users wird das Passwort immer verlangt, weil das hidden uid-Feld fehlt und der Modus nach dem Speichern auf "new" wechselt. Task: Hidden-uid-Feld sicher übergeben und Passwort-Logik/Modus robust prüfen und fixen.
-- 7.6. 08:43 "Password-Handling-Refactoring"
-Die Dummy-Passwort-Lösung wird entfernt. Stattdessen wird ein Hidden-Feld für den Modus (new/edit) eingeführt und die Passwort-Validierung in User::save() sowie das Template entsprechend angepasst. Dadurch ist die Erkennung des Edit-Modus eindeutig und robust.
-- 7.6. 08:51 "Auth-Passwort-Refactoring"
-Die Dummy-Passwort-Logik in auth.inc.php wird entfernt und auf die neue Mode-basierte Logik umgestellt. Unit-Test für User-Edit und User-Creation ist als nächster Schritt offen.
-- 7.6. 08:53 "Password-Validation-Standalone-Test"
-Die Dummy-Passwort-Logik ist jetzt auch in auth.inc.php entfernt. Ein eigenständiger Unittest für die Passwort-Validierungslogik (ohne DB/Web-Abhängigkeit) wurde erstellt und erfolgreich ausgeführt. Die neue Mode-basierte Logik ist damit vollumfänglich getestet und produktionsreif.
-- NEU: "switch user" Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/include/pear/PEAR.php:154) in /var/www/html/switch_user.php on line 50. Muss behoben werden.
-- NEU: Löschen von Gruppen nur erlauben, wenn keine Benutzer oder Objekte zugeordnet sind.
-- NEU: In der Nav "in Bearbeitung" sollen Efforts ohne Project korrekt angezeigt werden.
-- 7.6. 09:31 "Switch User Header-Fix"
-Fix: Output-Buffering in switch_user.php hinzugefügt, um "headers already sent"-Fehler beim Wechseln des Users zu verhindern.
-- 7.6. 09:31 "Group-Delete-Protection"
-Fix: Gruppen können jetzt nur gelöscht werden, wenn keine Benutzer oder Objekte zugeordnet sind. Schutz-Logik in groups/index.php implementiert.
-- 7.6. 09:31 "Navigation-Efforts-Fix"
-Fix: Efforts ohne Project (project_id=0) werden jetzt in der Navigation "in Bearbeitung" korrekt angezeigt (OpenEfforts-Query angepasst).
-- NEU: ArgumentCountError: DatabaseSecurity::buildUpdate() in auth.inc.php: Fehlender DB-Link-Parameter muss ergänzt werden (siehe security.inc.php:152). Task für Fix und Testabdeckung aufgenommen.
-- 7.6. 11:37 "DatabaseSecurity-buildUpdate-Fix"
-Fix: Fehlender DB-Link-Parameter an DatabaseSecurity::buildUpdate() in auth.inc.php ergänzt. Fehler ist behoben, Syntax geprüft.
-- NEU: SQL-Syntax-Fehler: Wenn gids leer ist, wird ein ungültiges SQL "gid IN ()" generiert. Das führt zu einem Syntax-Fehler und muss im Query-Building abgefangen werden (kein OR-Block für Gruppen, wenn gids leer ist).
-- NEU: Note and task for systematic SQL-Syntax-Fix for gid IN () in all modules
-- [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
 - NEU: Bug: User-Settings werden von normalen Usern nicht gespeichert, weil die ID im settings.php nicht korrekt gesetzt wird. Fix: Immer aktuelle User-ID verwenden, wenn keine ID im Request ist.
 - [x] Bugfix: User-Register-Flow: mode-Handling robust machen (kein PHP-Warning)
 - [x] Bugfix: Customer-Save: DatabaseSecurity::escapeString() immer mit Link_ID aufrufen
@@ -218,21 +148,29 @@ Fix: Fehlender DB-Link-Parameter an DatabaseSecurity::buildUpdate() in auth.inc.
 - [x] Session-basiertes Rate-Limiting und Template/Session-Probleme sind behoben
 
 ## Current Goal
-- NEU: User-Request: Username-in-Klammern-Logik (wie in report/form.ihtml) wurde im Kundenformular (Bearbeiter-Selectbox) umgesetzt.
-- NEU: Systematische Prüfung und Vereinheitlichung aller weiteren User-Selectboxen in den Templates auf diese Logik ist als nächster Schritt geplant.
-- [x] Passwortlängen-/Stärkenprüfung bei User-Anlage/Edit als Admin ergänzen
-- [x] Username-in-Klammern-Logik für Bearbeiter-Selectbox im Kundenformular ergänzt
-- [ ] Alle weiteren User-Selectboxen systematisch auf Username-in-Klammern-Logik prüfen und ggf. anpassen
-- NEU: User-Request: In der Benutzer-Auswahl von report/index.php soll der Username in Klammern angezeigt werden, wenn er vom Namen abweicht.
-- NEU: User-Request: Beim Anlegen eines neuen Users soll das Namens-Autofill-JS nur bei onblur() (nicht bei jedem Keystroke) auslösen, wenn das Namensfeld leer ist.
-- NEU: User-Request: Beim Anlegen/Editieren eines Users als Admin fehlt die Passwortlängen-/Stärkenprüfung noch (analog zu password_reset.php).
+- NEU: Analyse/Fix: Automatische Kunden- und Projektzuordnung im Effort-Formular funktioniert nicht wie erwartet ("k<ID>", "p<ID>", Kundenname in Beschreibung). Debugging und Fix der Regex-/Zuweisungslogik in inventory/efforts.php ist aktuell in Arbeit.
+- 31.7. 08:20 "Autozuordnung Debug": Es wurde ein globales Debug-Log (LOG_EFFORTS_SAVE_REQUEST) am Anfang des Save-Blocks ergänzt, um alle relevanten Request- und lokalen Variablen sichtbar zu machen. Nächster Schritt: Analyse der Log-Ausgaben und weitere Ursachenforschung, warum die Zuordnung nicht greift.
+- 31.7. 08:29 "Autozuordnung customer_id-Feld-Fix": Die Ursache für das Nicht-Speichern der Customer-ID war, dass das Feld customer_id nicht ins Datenarray übernommen wurde. Das ist jetzt gefixt. Die Autozuordnung funktioniert jetzt für Kundennamen, aber nicht für IDs, die nicht existieren.
+- 31.7. 08:30 "Project Constructor Reference-Fix": Fatal Error bei Project::__construct() (by reference) bei der Autozuordnung von Projekten wurde behoben (Dummy-Variable für by-ref-Parameter, kein null mehr).
+- 31.7. 08:31 "Autozuordnung vollständig gefixt": Die automatische Kunden-/Projektzuordnung funktioniert jetzt für k<ID>, p<ID> und Kundennamen, inklusive Speicherung und Bearbeitung.
+- 31.7. 08:32 "Reference-Fix": Die Autozuordnung von Kunden und Projekten im Effort-Formular wurde erfolgreich gefixt und getestet. Die Zuordnung funktioniert jetzt korrekt für k<ID>, p<ID> und Kundennamen.
+- 31.7. 08:33 "Abschluss Autozuordnung": Die automatische Kunden- und Projektzuordnung im Effort-Formular ist jetzt vollständig implementiert und getestet. Die Zuordnung funktioniert korrekt für k<ID>, p<ID> und Kundennamen.
+- 31.7. 08:37 "Intelligente Projektzuordnung bei Auto-Kunde":
+    - Bei Kundenerkennung (k<ID> oder Kundenname) wird jetzt das Projekt aus dem neuesten bisherigen Effort des Kunden automatisch zugewiesen (ORDER BY e.last DESC, LIMIT 1).
+    - Fallback: Falls kein Effort existiert, wird weiterhin das erste verfügbare Projekt des Kunden genommen.
+    - Die Zuordnung bleibt für p<ID> (Projekt direkt) unverändert.
+- 31.7. 08:38 "Auto-Kunden-Zuordnung Update": Die Auto-Kunden-Zuordnung im Effort-Formular wurde aktualisiert, um die neuesten Efforts des Kunden zu berücksichtigen. Die Zuordnung funktioniert jetzt korrekt für k<ID>, p<ID> und Kundennamen.
 
 ## Task List
-- [x] Username in report/index.php User-Auswahl anzeigen, wenn abweichend
-- [x] JS: Namensvorschlag bei User-Anlage nur bei onblur() und leerem Namensfeld
-- [x] Passwortlängen-/Stärkenprüfung bei User-Anlage/Edit als Admin ergänzen
-- [ ] Username-Anzeige in allen relevanten User-Selectboxen vereinheitlichen
-
-## Current Goal
-Nächsten User-Request abwarten
-- [ ] Username-Anzeige in allen relevanten User-Selectboxen vereinheitlichen
+- [x] Auto-Group-Creation für Registrierung (register.php): Nach Registrierung Gruppe anlegen und Nutzer zuordnen
+- [x] Logo im Dark Mode: Hellen, dünnen Border um das Logo ergänzen
+- [x] Gruppennamen bei Registrierung eindeutig mit _personal suffix
+- [x] Null-Check für Effort-Stop-Funktion (Fehlerseite bei fehlendem eid)
+- [x] Globale Passwort-Validierungsfunktionen (JS+PHP) implementieren und in password_reset.php + settings.php integrieren
+- [x] Rate-Limiting für Passwort-Reset-E-Mails (1 Minute Cooldown) implementieren
+- [x] note.ihtml-Template mit moderner App-Optik, Padding und Rück-Link ergänzen
+- [x] Passwort-Validierung und Rate-Limiting in settings.php integrieren
+- [x] Template-Kaskade für no_login Scripts (password_reset.php) absichern (Checks für $_PJ_auth, $_PJ_session_timeout in allen shared-Templates)
+- [x] Rate-Limiting-Logik im Password-Reset prüft jetzt nur noch auf aktive Tokens, nicht mehr auf reset_expires/24h – verhindert False Positives beim Reset.
+- [x] Session-basiertes Rate-Limiting (10 Sekunden Cooldown) für Passwort-Reset implementiert (funktioniert jetzt wie erwartet)
+- [x] Session-basiertes Rate-Limiting und Template/Session-Probleme sind behoben

@@ -174,6 +174,7 @@
 			exit;
 		}
 		if(isset($altered)) {
+    debugLog("LOG_EFFORTS_SAVE_REQUEST", "REQUEST: " . json_encode($_REQUEST) . ", description='" . ($description ?? '') . "', selected_cid='" . ($selected_cid ?? '') . "', selected_pid='" . ($selected_pid ?? '') . "', final_pid='" . ($final_pid ?? '') . "', final_cid='" . ($final_cid ?? '') . "'");
 			debugLog("LOG_EFFORTS_ALTERED", "Starting save process");
 			
 			// Check if user is authenticated before saving
@@ -207,25 +208,54 @@
 			$cleaned_description = $description;
 			if(empty($final_pid) && !empty($description)) {
 				// Check if description starts with 'k' followed by customer ID
-				if(preg_match('/^k(\d+)\s*/', $description, $matches)) {
+				if(preg_match('/^k(\d+)\s*/i', ltrim($description), $matches)) { // LOG_EFFORT_AUTOASSIGN: Try k<ID> at start (case-insensitive, trim left)
+    debugLog("LOG_EFFORT_AUTOASSIGN", "Detected k<ID> pattern: " . $matches[1]);
 					$auto_cid = intval($matches[1]);
 					$test_customer = new Customer($_PJ_auth, $auto_cid);
 					if($test_customer->giveValue('id')) {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Customer ID $auto_cid valid. Assigning.");
 						$final_cid = $auto_cid;
+						// Auto-assign project from newest effort of this customer (effort table has no customer_id column)
+						$db = new Database();
+						$db->connect();
+						$safe_cid = DatabaseSecurity::escapeString($auto_cid, $db->Link_ID);
+						$query = "SELECT e.project_id FROM " . $GLOBALS['_PJ_effort_table'] . " e "
+							. "INNER JOIN " . $GLOBALS['_PJ_project_table'] . " p ON e.project_id = p.id "
+							. "WHERE p.customer_id = '$safe_cid' AND e.project_id > 0 "
+							. "ORDER BY e.last DESC LIMIT 1";
+						$db->query($query);
+						if($db->next_record()) {
+							$final_pid = $db->Record['project_id'];
+							debugLog("LOG_EFFORT_AUTOASSIGN", "Auto-assigned project from newest effort of customer: pid=" . $final_pid);
+						} else {
+							// Fallback: Use first available project if no previous efforts exist
+							$project_list = new ProjectList($test_customer, $_PJ_auth);
+							if($project_list->nextProject()) {
+								$first_project = $project_list->giveProject();
+								$final_pid = $first_project->giveValue('id');
+								debugLog("LOG_EFFORT_AUTOASSIGN", "Fallback: Auto-assigned first available project of customer: pid=" . $final_pid);
+							}
+						}
 						// Remove the shortcode from the description
-						$cleaned_description = preg_replace('/^k\d+\s*/', '', $description);
+						$cleaned_description = preg_replace('/^k\d+\s*/i', '', ltrim($description));
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after k<ID>: '" . $cleaned_description . "'");
 					}
 				}
 				// Check if description starts with 'p' followed by project ID
-				elseif(preg_match('/^p(\d+)\s*/', $description, $matches)) {
+				elseif(preg_match('/^p(\d+)\s*/i', ltrim($description), $matches)) { // LOG_EFFORT_AUTOASSIGN: Try p<ID> at start (case-insensitive, trim left)
+    debugLog("LOG_EFFORT_AUTOASSIGN", "Detected p<ID> pattern: " . $matches[1]);
 					$auto_pid = intval($matches[1]);
 					// Verify project exists and user has access
-					$test_project = new Project(null, $_PJ_auth, $auto_pid);
+					// Fix: Create dummy customer variable for by-reference parameter
+					$dummy_customer = null;
+					$test_project = new Project($dummy_customer, $_PJ_auth, $auto_pid);
 					if($test_project->giveValue('id')) {
+						debugLog("LOG_EFFORT_AUTOASSIGN", "Project ID $auto_pid valid. Assigning.");
 						$final_pid = $auto_pid;
 						$final_cid = $test_project->giveValue('customer_id');
 						// Remove the shortcode from the description
-						$cleaned_description = preg_replace('/^p\d+\s*/', '', $description);
+						$cleaned_description = preg_replace('/^p\d+\s*/i', '', ltrim($description));
+debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleaned_description . "'");
 					}
 				}
 				// Check if customer name appears in description
@@ -235,7 +265,29 @@
 						$customer_check = $customer_list->giveCustomer();
 						$customer_name = $customer_check->giveValue('customer_name');
 						if(!empty($customer_name) && stripos($description, $customer_name) !== false) {
+    debugLog("LOG_EFFORT_AUTOASSIGN", "Found customer name '$customer_name' in description. Assigning customer ID " . $customer_check->giveValue('id'));
 							$final_cid = $customer_check->giveValue('id');
+							// Auto-assign project from newest effort of this customer (effort table has no customer_id column)
+							$db = new Database();
+							$db->connect();
+							$safe_cid = DatabaseSecurity::escapeString($customer_check->giveValue('id'), $db->Link_ID);
+							$query = "SELECT e.project_id FROM " . $GLOBALS['_PJ_effort_table'] . " e "
+								. "INNER JOIN " . $GLOBALS['_PJ_project_table'] . " p ON e.project_id = p.id "
+								. "WHERE p.customer_id = '$safe_cid' AND e.project_id > 0 "
+								. "ORDER BY e.last DESC LIMIT 1";
+							$db->query($query);
+							if($db->next_record()) {
+								$final_pid = $db->Record['project_id'];
+								debugLog("LOG_EFFORT_AUTOASSIGN", "Auto-assigned project from newest effort of customer '$customer_name': pid=" . $final_pid);
+							} else {
+								// Fallback: Use first available project if no previous efforts exist
+								$project_list = new ProjectList($customer_check, $_PJ_auth);
+								if($project_list->nextProject()) {
+									$first_project = $project_list->giveProject();
+									$final_pid = $first_project->giveValue('id');
+									debugLog("LOG_EFFORT_AUTOASSIGN", "Fallback: Auto-assigned first available project of customer '$customer_name': pid=" . $final_pid);
+								}
+							}
 							break;
 						}
 					}
@@ -256,13 +308,24 @@
 			// Update global variables with final values
 			$pid = $final_pid;
 			$cid = $final_cid;
-			
+			// Ensure cid/pid are available globally for all later logic (especially for object creation and downstream logic)
+			$_REQUEST['cid'] = $cid;
+			$_REQUEST['pid'] = $pid;
+			debugLog("LOG_EFFORT_AUTOASSIGN", "Final assignment: pid=$pid, cid=$cid, cleaned_description='$cleaned_description'");
 			// Recreate customer and project objects with updated values
 			if($cid) {
 				$customer = new Customer($_PJ_auth, $cid);
+				debugLog("LOG_EFFORT_AUTOASSIGN", "Customer object created for cid=$cid, name='" . ($customer ? $customer->giveValue('customer_name') : '') . "'");
+			} else {
+				$customer = null;
+				debugLog("LOG_EFFORT_AUTOASSIGN", "No customer object created (cid empty)");
 			}
 			if($pid) {
 				$project = new Project($customer, $_PJ_auth, $pid);
+				debugLog("LOG_EFFORT_AUTOASSIGN", "Project object created for pid=$pid, name='" . ($project ? $project->giveValue('project_name') : '') . "'");
+			} else {
+				$project = null;
+				debugLog("LOG_EFFORT_AUTOASSIGN", "No project object created (pid empty)");
 			}
 			
 			// Convert empty project_id to NULL for database compatibility
@@ -273,8 +336,12 @@
 				// Skip project_id entirely if empty - let Effort class handle it
 				unset($data['project_id']);
 			}
+			
+			// Note: customer_id field removed - effort table has no customer_id column, using project_id instead
+			// Customer association is handled via project_id (projects belong to customers)
 			$data['date']			= "$year-$month-$day";
 			$data['begin']			= sprintf('%02d:%02d:%02d', intval($hour), intval($minute), intval($second));
+			// LOG_EFFORT_AUTOASSIGN: Save cleaned description
 			$data['description']	= add_slashes($cleaned_description);
 			$data['note']			= add_slashes($note);
 			$data['rate']			= $rate;
