@@ -4,6 +4,22 @@
 	include_once("include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
 
+	// Enable debug logging for password reset troubleshooting
+	$GLOBALS['_PJ_debug'] = true;
+	
+	// Check if reset_token column exists first
+	$check_query = "SHOW COLUMNS FROM {$GLOBALS['_PJ_auth_table']} LIKE 'reset_token'";
+	$db = new Database();
+	$db->query($check_query);
+	if (!$db->next_record()) {
+		debugLog('PASSWORD_RESET_ERROR', 'Column reset_token does not exist in ' . $GLOBALS['_PJ_auth_table']);
+		// Skip the update and show error to user
+		$error_message = 'Database schema not up to date. Please run migrations.';
+		include("$_PJ_root/templates/error.ihtml");
+		include_once("$_PJ_include_path/degestiv.inc.php");
+		exit;
+	}
+
 	// Check if password recovery is enabled
 	if (!isset($_PJ_allow_password_recovery) || !$_PJ_allow_password_recovery) {
 		$error_message = $GLOBALS['_PJ_strings']['not_implemented'];
@@ -23,7 +39,6 @@
 
 	// Handle password reset with token
 	if (isset($token)) {
-		$db = new Database();
 		$query = sprintf("SELECT * FROM %s WHERE reset_token='%s' AND reset_expires > NOW()", 
 						 $GLOBALS['_PJ_auth_table'], 
 						 mysqli_real_escape_string($db->Link_ID, $token));
@@ -48,6 +63,7 @@
 					$db->query($query);
 					
 					$success_message = $GLOBALS['_PJ_strings']['password_reset_success'];
+					$center_template = ''; // additional template content for the notification
 					include("$_PJ_root/templates/note.ihtml");
 					include_once("$_PJ_include_path/degestiv.inc.php");
 					exit;
@@ -114,12 +130,15 @@
 	if (isset($reset) && $email != '') {
 		$db = new Database();
 		$db->connect(); // Ensure database connection is established
-		$query = sprintf("SELECT * FROM %s WHERE email='%s'", 
+		$user_query = sprintf("SELECT * FROM %s WHERE email='%s'", 
 						 $GLOBALS['_PJ_auth_table'], 
 						 mysqli_real_escape_string($db->Link_ID, $email));
-		$db->query($query);
+		$db->query($user_query);
 		
 		if ($db->next_record()) {
+			// Store user ID before any other queries
+			$user_id = $db->f('id');
+			
 			// Generate reset token
 			$reset_token = bin2hex(random_bytes(32));
 			$expires = date('Y-m-d H:i:s', strtotime('+24 hours'));
@@ -128,23 +147,40 @@
 							 $GLOBALS['_PJ_auth_table'], 
 							 $reset_token, 
 							 $expires, 
-							 $db->f('id'));
-			$db->query($query);
+							 $user_id);
+			$result = $db->query($query);
+			if (!$result) {
+				die('PASSWORD_RESET_ERROR: SQL Error: ' . $db->Error . ' (Errno: ' . $db->Errno . ')');exit;
+			} else {
+				// die('PASSWORD_RESET: Token saved successfully for user ID: ' . $user_id);exit;
+			}
 			
 			// Send reset email
 			$subject = "TIMEEFFECT - Password Reset";
 			$message_body = "Please click the following link to reset your password:\n\n";
-			$message_body .= $_PJ_http_root . "/password_reset.php?token=" . $reset_token . "\n\n";
+			
+			// Construct full URL with domain
+			$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+			$domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+			$reset_url = $protocol . '://' . $domain . '/password_reset.php?token=' . $reset_token;
+			
+			$message_body .= $reset_url . "\n\n";
 			$message_body .= "This link will expire in 24 hours. If you did not request this reset, please ignore this email.";
 			
 			if (function_exists('mail')) {
 				mail($email, $subject, $message_body);
+				// die('PASSWORD_RESET: Email sent successfully to ' . $email);
+				debugLog('PASSWORD_RESET', 'Email sent successfully to ' . $email);
+			} else {
+				die('PASSWORD_RESET_ERROR: Email function not available');
 			}
+		} else {
+			// die('PASSWORD_RESET_ERROR: User not found for email: ' . $email . ' in ' . $GLOBALS['_PJ_auth_table'] . ' with query: ' . $user_query); exit;// DEBUG
+			debugLog('PASSWORD_RESET_ERROR', 'User not found for email: ' . $email . ' in ' . $GLOBALS['_PJ_auth_table']);
 		}
-		
 		// Always show success message to prevent email enumeration
 		$success_message = $GLOBALS['_PJ_strings']['password_reset_sent'];
-		$center_template = ''; // Leave empty to avoid trying to include non-existent template
+		$center_template = ''; // additional template content for the notification
 		include("$_PJ_root/templates/note.ihtml");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
