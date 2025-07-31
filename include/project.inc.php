@@ -232,7 +232,7 @@ else return null;
 			}
 
 			// Apply secure defaults for new projects if enabled
-			if (isSecureDefaultsEnabled()) {
+			if (isSecureDefaultsEnabled() && !isset($this->data['id'])) {
 				global $_PJ_auth;
 				if (isset($_PJ_auth) && is_object($_PJ_auth)) {
 					$current_user_id = $_PJ_auth->giveValue('id');

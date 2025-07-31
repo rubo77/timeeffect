@@ -159,7 +159,7 @@ class DB_Sql {
     if ($this->Debug)
       printf("Debug: query = %s<br>\n", $Query_String);
 
-    $this->Query_ID = @mysqli_query($this->Link_ID, $Query_String);
+    $this->Query_ID = mysqli_query($this->Link_ID, $Query_String);
     $this->Row   = 0;
     $this->Errno = mysqli_errno($this->Link_ID);
     $this->Error = mysqli_error($this->Link_ID);
@@ -397,8 +397,8 @@ class DB_Sql {
 
   /* private: error handling */
   function halt($msg) {
-    $this->Error = @mysqli_error($this->Link_ID);
-    $this->Errno = @mysqli_errno($this->Link_ID);
+    $this->Error = mysqli_error($this->Link_ID);
+    $this->Errno = mysqli_errno($this->Link_ID);
     if ($this->Halt_On_Error == "no")
       return;
 

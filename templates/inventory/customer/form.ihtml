@@ -130,8 +130,15 @@ if($_PJ_auth->checkPermission('admin') || !($customer && $customer->giveValue('i
 					<TD CLASS="FormFieldName" WIDTH="<?php if(isset($_PJ_form_field_name_width)) echo $_PJ_form_field_name_width; ?>"><?php if(!empty($GLOBALS['_PJ_strings']['readforeignefforts'])) echo $GLOBALS['_PJ_strings']['readforeignefforts'] ?>:</TD>
 					<TD CLASS="FormField" WIDTH="<?php if(isset($_PJ_form_field_width)) echo $_PJ_form_field_width; ?>">
 					<SELECT NAME="readforeignefforts">
-						<OPTION VALUE="1"<?php if(!empty($readforeignefforts) and $readforeignefforts == '1') print ' SELECTED' ?>>&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'] ?>
-						<OPTION VALUE="0"<?php if(!empty($readforeignefforts) and $readforeignefforts == '0') print ' SELECTED' ?>>&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'] ?>
+						<OPTION VALUE="1"<?php 
+						if(!empty($readforeignefforts) and $readforeignefforts == '1') print ' SELECTED';
+						?>>&nbsp;<?php
+						if(!empty($GLOBALS['_PJ_strings']['yes'])) echo $GLOBALS['_PJ_strings']['yes'];
+						?>
+						<OPTION VALUE="0"<?php
+						if(isset($readforeignefforts) and $readforeignefforts === '0') print ' SELECTED' ?>>&nbsp;<?php
+						if(!empty($GLOBALS['_PJ_strings']['no'])) echo $GLOBALS['_PJ_strings']['no'];
+						?>
 					</SELECT>
 					</TD>
 <?php

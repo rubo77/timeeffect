@@ -43,6 +43,7 @@
 	$GLOBALS['_PJ_strings']['createcsv']				= 'g&eacute;n&eacute;rer le CSV';
 	$GLOBALS['_PJ_strings']['createpdf']				= 'g&eacute;n&eacute;rer le PDF';
 	$GLOBALS['_PJ_strings']['customer']					= 'Client';
+	$GLOBALS['_PJ_strings']['saved']					= 'sauvegardé';
 	$GLOBALS['_PJ_strings']['customer_basic_data']		= 'donn&eacute;es de base';
 	$GLOBALS['_PJ_strings']['customer_list']			= 'Liste de clients';
 	$GLOBALS['_PJ_strings']['customer_rates_data']		= 'Taux';
@@ -202,7 +203,7 @@
 	$GLOBALS['_PJ_strings']['subtotals']				= 'sous-totaux';
 	$GLOBALS['_PJ_strings']['sum']						= 'total';
 	$GLOBALS['_PJ_strings']['telephone']				= 'T&eacute;l&eacute;phone';
-	$GLOBALS['_PJ_strings']['time']						= 'from/to';
+	$GLOBALS['_PJ_strings']['time']						= $GLOBALS['_PJ_strings']['from_to'];
 	$GLOBALS['_PJ_strings']['time_of_beginning']		= 'Heure de d&eacute;but';
 	$GLOBALS['_PJ_strings']['translations']				= '<b>&Eacute;quipe de traduction</b><br>&nbsp;&nbsp;&nbsp;Fran&ccedil;aise:&nbsp;Yann Laviolette';
 	$GLOBALS['_PJ_strings']['usebilled']				= 'Utiliser les efforts charg&eacute;s';

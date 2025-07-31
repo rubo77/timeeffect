@@ -43,6 +43,7 @@
 	$GLOBALS['_PJ_strings']['createcsv']				= 'generate CSV';
 	$GLOBALS['_PJ_strings']['createpdf']				= 'generate PDF';
 	$GLOBALS['_PJ_strings']['customer']					= 'Customer';
+	$GLOBALS['_PJ_strings']['saved']					= 'saved';
 	$GLOBALS['_PJ_strings']['customer_basic_data']		= 'basic data';
 	$GLOBALS['_PJ_strings']['customer_list']			= 'Customer list';
 	$GLOBALS['_PJ_strings']['customer_rates_data']		= 'Rates';

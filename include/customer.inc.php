@@ -246,15 +246,30 @@
 				$this->db = new Database;
 			}
 
-			// FIX: Fehlende Formularfelder aus REQUEST übernehmen (analog zu Group/User)
-			foreach (array('id', 'user', 'gid', 'active', 'customer_name') as $field) {
+			// Formularfelder aus REQUEST übernehmen (analog zu Group/User)
+			$table_fields = array('active', 'user', 'gid', 'access', 'readforeignefforts', 'customer_name', 'customer_desc', 'customer_budget', 'customer_budget_currency', 'customer_logo');
+			foreach ($table_fields as $field) {
 				if (isset($_REQUEST[$field]) && (!isset($this->data[$field]) || empty($this->data[$field]))) {
 					$this->data[$field] = DatabaseSecurity::validateInput($_REQUEST[$field], 'string');
 				}
 			}
 			
+			// Checkbox fields - set to 0 when not present in REQUEST (unchecked)
+			if (!isset($_REQUEST['readforeignefforts'])) {
+				$this->data['readforeignefforts'] = '0';
+				debugLog('CUSTOMER_CHECKBOX', 'readforeignefforts set to 0 (unchecked)');
+			} else {
+				debugLog('CUSTOMER_CHECKBOX', 'readforeignefforts from REQUEST: ' . $_REQUEST['readforeignefforts']);
+			}
+			
+			// Access-Rights aus einzelnen Feldern zusammenbauen
+			if (isset($_REQUEST['access_owner']) && isset($_REQUEST['access_group']) && isset($_REQUEST['access_world'])) {
+				$this->data['access'] = $_REQUEST['access_owner'] . $_REQUEST['access_group'] . $_REQUEST['access_world'];
+				debugLog('CUSTOMER_ACCESS', 'Assembled access from form: ' . $this->data['access']);
+			}
+			
 			// Apply secure defaults for new customers if enabled
-			if (isSecureDefaultsEnabled()) {
+			if (isSecureDefaultsEnabled() && !isset($this->data['id'])) {
 				global $_PJ_auth;
 				if (isset($_PJ_auth) && is_object($_PJ_auth)) {
 					$current_user_id = $_PJ_auth->giveValue('id');
@@ -271,11 +286,12 @@
 			$safeTable = DatabaseSecurity::sanitizeColumnName($GLOBALS['_PJ_customer_table']);
 			$query = "REPLACE INTO {$safeTable} (";
 
-			// FIX: Prüfung auf isset für alle Array-Keys (PHP 8.4 Kompatibilität)
+			// Prüfung auf isset für alle Array-Keys (PHP 8.4 Kompatibilität)
 			if(isset($this->data['id']) && $this->data['id']) {
 				$query .= "id, ";
 			}
-			$query .= "active, user, gid, access, readforeignefforts, customer_name, customer_desc, customer_budget, customer_budget_currency, customer_logo) VALUES(";
+			$query .= implode(", ", $table_fields) . ")
+			VALUES(";
 			if(isset($this->data['id']) && $this->data['id']) {
 				$safeId = DatabaseSecurity::escapeInt($this->data['id']);
 				$query .= $safeId . ", ";
@@ -292,7 +308,7 @@
 			$safeReadForeignEfforts = DatabaseSecurity::escapeString(isset($this->data['readforeignefforts']) ? $this->data['readforeignefforts'] : '0', $this->db->Link_ID);
 			$safeCustomerName = DatabaseSecurity::escapeString(isset($this->data['customer_name']) ? $this->data['customer_name'] : '', $this->db->Link_ID);
 			$safeCustomerDesc = DatabaseSecurity::escapeString(isset($this->data['customer_desc']) ? $this->data['customer_desc'] : '', $this->db->Link_ID);
-			// Fix: Convert empty budget to 0 for MySQL integer column
+			// Convert empty budget to 0 for MySQL integer column
 			$budgetValue = isset($this->data['customer_budget']) && $this->data['customer_budget'] !== '' ? $this->data['customer_budget'] : '0';
 			// if budgetValue is not a number, set it to 0
 			if (!is_numeric($budgetValue)) {
@@ -302,23 +318,23 @@
 			$safeCustomerBudgetCurrency = DatabaseSecurity::escapeString(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR', $this->db->Link_ID);
 			$safeCustomerLogo = DatabaseSecurity::escapeString(isset($this->data['customer_logo']) ? $this->data['customer_logo'] : '', $this->db->Link_ID);
 			
-			$query .= "'{$safeActive}', ";
-			$query .= "'{$safeUser}', ";
-			$query .= "'{$safeGid}', ";
-			$query .= "'{$safeAccess}', ";
-			$query .= "'{$safeReadForeignEfforts}', ";
-			$query .= "'{$safeCustomerName}', ";
-			$query .= "'{$safeCustomerDesc}', ";
-			$query .= "{$safeCustomerBudget}, "; // Integer without quotes
-			$query .= "'{$safeCustomerBudgetCurrency}', ";
-			$query .= "'{$safeCustomerLogo}')";
-			
+			$query .= "'{$safeActive}', \t\t";
+			$query .= "'{$safeUser}', \t\t";
+			$query .= "'{$safeGid}', \t\t";
+			$query .= "'{$safeAccess}', \t\t";
+			$query .= "'{$safeReadForeignEfforts}', \t\t";
+			$query .= "'{$safeCustomerName}', \t\t";
+			$query .= "'{$safeCustomerDesc}', \t\t";
+			$query .= "{$safeCustomerBudget}, \t\t"; // Integer without quotes
+			$query .= "'{$safeCustomerBudgetCurrency}', \t\t";
+			$query .= "'{$safeCustomerLogo}')\t\t";
+			//var_dump($this->data);var_dump($_REQUEST);var_dump($this->data['gid']);die($query);
 			if($this->db->query($query)) {
 				$this->data['id'] = $this->db->insert_id();
 				
 				// Erfolgsmeldung anzeigen
 				echo '<div style="background-color: #dff0d8; color: #3c763d; padding: 15px; margin: 15px; border: 1px solid #d6e9c6; border-radius: 4px;">';
-				echo '<strong>Erfolg!</strong> Der Kunde wurde erfolgreich angelegt:<br><br>';
+				echo '<strong>'.$GLOBALS['_PJ_strings']['customer']	.' '. $GLOBALS['_PJ_strings']['saved'].'<br><br>';
 				echo '<strong>Name:</strong> ' . htmlspecialchars(isset($this->data['customer_name']) ? $this->data['customer_name'] : 'Unbekannt') . '<br>';
 				echo '<strong>Budget:</strong> ' . htmlspecialchars(isset($this->data['customer_budget']) ? $this->data['customer_budget'] : '0') . ' ' . htmlspecialchars(isset($this->data['customer_budget_currency']) ? $this->data['customer_budget_currency'] : 'EUR') . '<br>';
 				echo '<strong>Status:</strong> ' . (isset($this->data['active']) && $this->data['active'] == 'yes' ? 'Aktiv' : 'Inaktiv') . '<br>';
@@ -329,7 +345,7 @@
 			} else {
 				// Fehler beim Speichern - Debug-Ausgaben anzeigen
 				echo '<div style="background-color: #f2dede; color: #a94442; padding: 15px; margin: 15px; border: 1px solid #ebccd1; border-radius: 4px;">';
-				echo '<strong>Fehler!</strong> Der Kunde konnte nicht gespeichert werden.<br><br>';
+				echo '<strong>Error!</strong> saving Customer.<br><br>';
 				echo '<strong>Datenbankfehler:</strong> ' . htmlspecialchars($this->db->Error) . '<br>';
 				echo '<strong>SQL-Query:</strong> ' . htmlspecialchars($query) . '<br>';
 				echo '</div>';

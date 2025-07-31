@@ -1,7 +1,10 @@
 # TODO
 
-- [ ] in dark mode
-    - [ ] surround the logo with a light thin border
-
-- wenn sich ein user über register registiert, dann sol automatisch eine gruppe mit dem selben namen wie der username erstellt werden
- - der neuer nutzer über die register seite soll auch automatisch der gruppe zugeordnet werden, die den selben namen wie der username hat
+- inventory/customer.php?edit=1&cid=5 kunden edit funktiniert das aendern dieser felder nicht:
+        Bearbeiter: 	
+        gehört Gruppe: 	
+        Besitzer darf: 	
+        Gruppenmitglieder dürfen: 	
+        Alle Agenten dürfen: 	
+        Agenten dürfen fremde Aufwände einsehen: 	
+        aktiv
