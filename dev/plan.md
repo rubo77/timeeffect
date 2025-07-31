@@ -11,6 +11,17 @@
 - CSS fixes have been added to eliminate the gap caused by option-sb.gif and to force proper input colors and color-scheme on Android Chrome, including compatibility fixes for standard properties.
 - User reverted previous CSS changes and fixed syntax errors, but dark mode is still not working on Chrome for Android (works on Firefox).
 - Added Chrome Android-specific JS and CSS fallbacks for dark mode detection and styling.
+- 31.7. 05:23 "Customer-Save-Fix"
+    - Customer-Save übernimmt jetzt alle Felder aus $_REQUEST, unabhängig vom bisherigen DB-Wert (REQUEST hat Vorrang).
+    - Column-Count-Bug in customer.inc.php behoben: access-Spalte ist jetzt Teil des $table_fields-Arrays.
+    - Secure Defaults werden nur noch bei neuen Datensätzen angewendet (!isset($this->data['id'])).
+    - Debug-Logging für Datenübernahme ist temporär aktiv.
+    - In project.inc.php wurde Secure Defaults analog gefixt.
+    - In db_mysql.inc.php wurden alle @-Operatoren entfernt, Fehler werden nicht mehr unterdrückt.
+    - Checkbox-Fix: readforeignefforts wird jetzt immer korrekt gespeichert (auch wenn Checkbox nicht gesetzt, dann Wert '0').
+    - Template-Fix: Im customer-Formular wird jetzt isset($readforeignefforts) and $readforeignefforts === '0' verwendet, um das Problem mit !empty('0') zu beheben.
+    - Migration-Strategie: Automatische Migrationen werden in migrations.inc.php als PHP-Methoden implementiert und laufen beim Login, manuelle Migrationen (z.B. sql/migration_add_registration_features.sql) müssen explizit ausgeführt werden. Dokumentation in DATABASE_MIGRATIONS.md ist jetzt konsistent und beschreibt beide Wege.
+    - Password-Reset: Debug-Logging für Token-Update in password_reset.php aktiviert, um SQL-Fehler (z.B. fehlende Spalten) zu erkennen. Debug-Flag global aktiviert.
 - User requests: When saving settings, the theme (dark/light) should be forced to the saved setting, overriding the toggle button state.
 - This is now implemented: saving settings forces the theme, overriding the toggle button state and updating UI elements accordingly.
 - Previous implementation did not reliably override the toggle; new robust JS event-based fix applied, ensuring theme is always forced after settings save, even if toggled before.
@@ -96,25 +107,132 @@
 Die Umstellung auf eine zentrale ACL-Query-Funktion ist abgeschlossen und in allen relevanten Modulen (customer.inc.php, effort.inc.php, project.inc.php) implementiert. Ein umfassendes Test-Script validiert die Funktionalität, insbesondere die Vermeidung von "gid IN ()" Fehlern und die DRY-Prinzip-Umsetzung.
 - 7.6. 06:23 "DEBUG-Global"
 Debug-Logging wird jetzt zentral über die globale Variable $GLOBALS['_PJ_debug'] in config.inc.php und config.inc.php.sample gesteuert. Die Funktion debugLog() prüft nur noch dieses Flag. Damit ist Debug-Ausgabe überall zentral aktivierbar/deaktivierbar.
+- 7.6. 06:44 "SQL-Injection-Analyse"
+Commit f05b0db5 hat SQL-Injection-Schutz in einigen Modulen verbessert, aber das Kernproblem in project.inc.php (Project::load()) nicht gelöst: Dort werden weiterhin ungefilterte Parameter (z.B. pid aus $_REQUEST) direkt in SQL-Queries verwendet. Exploits wie ?pid=' OR 1=1 -- sind daher weiterhin möglich. Task: Systematische Absicherung aller ID-Parameter gegen SQL-Injection, insbesondere in Project::load().
+- 7.6. 06:51 "SQL-Injection-Fix"
+Alle kritischen load- und lookup-Methoden (Project::load, Effort::load, User, Group) sind jetzt mit DatabaseSecurity::escapeString() und expliziter DB-Verbindung abgesichert. Testskript meldet aber noch DELETE-Statements mit ungefilterten IDs als potenziell verwundbar. Task: Auch alle DELETE-Statements systematisch absichern.
+- 7.6. 07:00 "SQL-Injection-Fix count()"
+Auch Project::count() ist jetzt mit expliziter DB-Verbindung und EscapeString abgesichert. Alle load- und count-Methoden in project.inc.php sind damit sicher gegen SQL-Injection.
+- 7.6. 07:02 "Password-Validation-Fix"
+Bug: Die Passwort-Validierung in User::save() war zu strikt und hat auch bei nicht aktivierter Passwort-Änderung ein leeres Passwort verlangt. Fix: Passwort ist nur bei neuen Usern Pflicht, bei bestehenden Usern nur wenn wirklich geändert wird. Logik entsprechend angepasst und getestet.
+- 7.6. 07:04 "User-Form-UI-Fix"
+Bug: Bei neuen Usern wurde fälschlich der JS-Button zum Anzeigen der Passwortfelder angezeigt. Jetzt erscheinen die Passwortfelder direkt, der Button nur bei bestehenden Usern. Template-Logik in form.ihtml angepasst und getestet.
+- 7.6. 07:06 "Auto-Group-Creation"
+Neue Anforderung: Bei Neuanlage eines Users wird automatisch eine persönliche Gruppe mit dem Usernamen als Gruppennamen erstellt. Diese Gruppe erscheint direkt im Gruppenzugehörigkeits-Dropdown und ist vorausgewählt.
+- 7.6. 07:07 "Auto-Group-Creation abgeschlossen"
+Die automatische Gruppenerstellung für neue User ist implementiert: Backend legt Gruppe an, Dropdown zeigt sie direkt an und wählt sie aus. JavaScript aktualisiert die Anzeige dynamisch beim Tippen des Usernamens.
+- 7.6. 07:14 "Group-Members-Display"
+Neue Anforderung: Beim Bearbeiten einer Gruppe (groups/index.php?edit=1&gid=X) sollen alle zugeordneten Benutzer und Objekte (Kunden, Projekte, Aufwände) angezeigt werden.
+- 7.6. 07:15 "Group-Members-Display umgesetzt"
+Neue Datei group_assignments.inc.php liefert Methoden zur Anzeige aller zugeordneten Benutzer und Objekte im Gruppen-Edit. Template und Lokalisierung ergänzt, Syntax geprüft.
+- [x] Anzeige aller zugeordneten Benutzer und Objekte beim Gruppen-Edit (groups/index.php?edit=1&gid=X)
+- 7.6. 07:19 "Group-Display-Bugfixes"
+Bug: User-Links im Gruppen-Edit ergänzen (Link auf User-Edit). SQL-Fix: ORDER BY name in Group_getAssignedCustomers() führt zu Fehler, da Spalte evtl. anders heißt (z.B. kundenname). Task: Spaltennamen prüfen und Query anpassen.
+- 7.6. 07:21 "Null-Value-Fix"
+Fix: htmlspecialchars() deprecated warning durch robustes Null-Handling im Template (?? '' bei allen Werten). PHP-Syntax geprüft, keine weiteren Deprecated-Fehler.
+- 7.6. 07:22 "Project-Constructor-Fix"
+Bug: Project::__construct() erwartet mindestens 2 Argumente (customer, user), aber in group_assignments.inc.php wird nur ein Array übergeben. Task: Überall, wo Project-Objekte aus DB-Records erzeugt werden, müssen die richtigen Argumente übergeben werden (z.B. Dummy-User oder Customer, falls nicht vorhanden). Siehe group_assignments.inc.php und ähnliche Stellen.
+- 7.6. 07:23 "Project-Constructor-Fix umgesetzt"
+Fix: Überall, wo Customer, Project, Effort-Objekte aus DB-Records erzeugt werden (group_assignments.inc.php), werden jetzt Dummy-Objekte für user/customer übergeben, damit keine ArgumentCountError mehr auftreten. PHP-Syntax geprüft.
+- [x] Anzeige aller zugeordneten Benutzer und Objekte beim Gruppen-Edit (groups/index.php?edit=1&gid=X)
+- [x] Project-Constructor-Fix: Überall Dummy-Objekte für user/customer beim Erzeugen aus DB-Records verwenden (group_assignments.inc.php)
+- 7.6. 07:25 "Dummy-Objekt-Refactoring-Diskussion"
+Hinweis: Die Nutzung von Dummy-Objekten (DummyUser, DummyCustomer) für reine Anzeige in group_assignments.inc.php ist unelegant und ein Designproblem. Die starke Kopplung der Datenklassen an User/Customer-Objekte für ACL sollte langfristig durch eleganteres Design (z.B. optionale ACL-Prüfung, Factory/Display-Objekte) ersetzt werden. Task für Refactoring offen.
+- 7.6. 07:26 "Raw-DB-Records-Refactoring abgeschlossen"
+Fix: Dummy-Objekte entfernt, alle Anzeige-Funktionen in group_assignments.inc.php nutzen jetzt direkt die DB-Records (Arrays) für die Anzeige. Das Template wurde angepasst, arbeitet jetzt mit Arrays statt Objekten. Keine Kopplung/ACL-Probleme mehr, keine Dummy-Methoden nötig. PHP-Syntax geprüft.
+- [x] Raw-DB-Records-Refactoring: Anzeige aller Gruppen-Zuordnungen nutzt jetzt direkt DB-Records (keine Dummy-Objekte mehr)
+- 7.6. 07:28 "PHP-Closing-Tag-Fix"
+Neue User-Präferenz: Am Ende von PHP-Dateien, die mit PHP-Code enden, immer das abschließende ?> weglassen (PSR/Best Practice). Bereits in scripts.inc.php und group_assignments.inc.php umgesetzt.
+- 7.6. 07:28 "$_PJ_project_script-Fix"
+Fix: Fehlende Variable $_PJ_project_script in scripts.inc.php ergänzt (Alias auf _PJ_projects_inventory_script), damit Template-Kompatibilität gewährleistet ist.
+- 7.6. 07:34 "Project-CID-Auto-Lookup"
+Hinweis: In inventory/projects.php soll, falls cid fehlt, diese vor dem ACL-Test aus der DB gelesen werden (Kompatibilität für Links aus Gruppenverwaltung).
+- [x] Dummy-Objekt-Refactoring: Dummy-Objekte entfernt, alle Anzeige-Funktionen in group_assignments.inc.php nutzen jetzt direkt die DB-Records (Arrays) für die Anzeige
+- [x] Auto-Lookup der cid in inventory/projects.php vor ACL-Test
+- 7.6. 08:36 "Password-Handling-Bug"
+Bug: Beim Editieren eines bestehenden Users wird das Passwort immer verlangt, weil das hidden uid-Feld fehlt und der Modus nach dem Speichern auf "new" wechselt. Task: Hidden-uid-Feld sicher übergeben und Passwort-Logik/Modus robust prüfen und fixen.
+- 7.6. 08:43 "Password-Handling-Refactoring"
+Die Dummy-Passwort-Lösung wird entfernt. Stattdessen wird ein Hidden-Feld für den Modus (new/edit) eingeführt und die Passwort-Validierung in User::save() sowie das Template entsprechend angepasst. Dadurch ist die Erkennung des Edit-Modus eindeutig und robust.
+- 7.6. 08:51 "Auth-Passwort-Refactoring"
+Die Dummy-Passwort-Logik in auth.inc.php wird entfernt und auf die neue Mode-basierte Logik umgestellt. Unit-Test für User-Edit und User-Creation ist als nächster Schritt offen.
+- 7.6. 08:53 "Password-Validation-Standalone-Test"
+Die Dummy-Passwort-Logik ist jetzt auch in auth.inc.php entfernt. Ein eigenständiger Unittest für die Passwort-Validierungslogik (ohne DB/Web-Abhängigkeit) wurde erstellt und erfolgreich ausgeführt. Die neue Mode-basierte Logik ist damit vollumfänglich getestet und produktionsreif.
+- NEU: "switch user" Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/include/pear/PEAR.php:154) in /var/www/html/switch_user.php on line 50. Muss behoben werden.
+- NEU: Löschen von Gruppen nur erlauben, wenn keine Benutzer oder Objekte zugeordnet sind.
+- NEU: In der Nav "in Bearbeitung" sollen Efforts ohne Project korrekt angezeigt werden.
+- 7.6. 09:31 "Switch User Header-Fix"
+Fix: Output-Buffering in switch_user.php hinzugefügt, um "headers already sent"-Fehler beim Wechseln des Users zu verhindern.
+- 7.6. 09:31 "Group-Delete-Protection"
+Fix: Gruppen können jetzt nur gelöscht werden, wenn keine Benutzer oder Objekte zugeordnet sind. Schutz-Logik in groups/index.php implementiert.
+- 7.6. 09:31 "Navigation-Efforts-Fix"
+Fix: Efforts ohne Project (project_id=0) werden jetzt in der Navigation "in Bearbeitung" korrekt angezeigt (OpenEfforts-Query angepasst).
+- NEU: ArgumentCountError: DatabaseSecurity::buildUpdate() in auth.inc.php: Fehlender DB-Link-Parameter muss ergänzt werden (siehe security.inc.php:152). Task für Fix und Testabdeckung aufgenommen.
+- 7.6. 11:37 "DatabaseSecurity-buildUpdate-Fix"
+Fix: Fehlender DB-Link-Parameter an DatabaseSecurity::buildUpdate() in auth.inc.php ergänzt. Fehler ist behoben, Syntax geprüft.
+- NEU: SQL-Syntax-Fehler: Wenn gids leer ist, wird ein ungültiges SQL "gid IN ()" generiert. Das führt zu einem Syntax-Fehler und muss im Query-Building abgefangen werden (kein OR-Block für Gruppen, wenn gids leer ist).
+- NEU: Note and task for systematic SQL-Syntax-Fix for gid IN () in all modules
+- [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
+- NEU: Bug: User-Settings werden von normalen Usern nicht gespeichert, weil die ID im settings.php nicht korrekt gesetzt wird. Fix: Immer aktuelle User-ID verwenden, wenn keine ID im Request ist.
+- [x] Bugfix: User-Register-Flow: mode-Handling robust machen (kein PHP-Warning)
+- [x] Bugfix: Customer-Save: DatabaseSecurity::escapeString() immer mit Link_ID aufrufen
+- NEU: Bug: Vor- und Nachname wurden beim Speichern der User-Settings nicht übernommen, weil sie in settings.php nicht aus dem Request gelesen und nicht an save() übergeben wurden. Fix ist implementiert.
+- [x] Vor-/Nachname-Fix: User-Settings speichern jetzt auch Vor- und Nachname korrekt (settings.php angepasst).
+- NEU: Bug: Firstname wurde trotz Fix nicht gespeichert, weil das Feld im Template durch einen alten Scope-Effekt weiterhin readonly war. Fix: readonly-Status wird jetzt explizit gelöscht, Felder sind wieder editierbar und übertragbar. Debug-Analyse und Lösung dokumentiert.
+- NEU: Bug: readonly-Problem für firstname/lastname: readonly-Status wird jetzt explizit gelöscht, Felder sind wieder editierbar und übertragbar. Debug-Analyse und Lösung dokumentiert.
+- NEU: Bug: Auth-Layer-Save: In auth.inc.php wurde beim Speichern von User-Settings weiterhin der alte Wert aus $this->giveValue('firstname')/$this->giveValue('lastname') statt der neuen Werte aus $data verwendet. Fix: Jetzt werden die Werte aus $data genommen und korrekt gespeichert. (Root Cause für das Nicht-Speichern trotz POST und Debug-Logs)
+- NEU: Bug: Nach erfolgreichem Speichern der User-Settings wurden Änderungen erst nach Reload sichtbar, weil das Auth-Objekt nicht aktualisiert wurde. Fix: Nach save() wird jetzt fetchAdditionalData() aufgerufen, damit Änderungen sofort im UI erscheinen.
+- NEU: Bug: Vor- und Nachname wurden beim Speichern der User-Settings nicht übernommen, weil sie in settings.php nicht aus dem Request gelesen und nicht an save() übergeben wurden. Fix ist implementiert.
+- [x] Vor-/Nachname-Fix: User-Settings speichern jetzt auch Vor- und Nachname korrekt (settings.php angepasst).
+- NEU: Bug: Firstname wurde trotz Fix nicht gespeichert, weil das Feld im Template durch einen alten Scope-Effekt weiterhin readonly war. Fix: readonly-Status wird jetzt explizit gelöscht, Felder sind wieder editierbar und übertragbar. Debug-Analyse und Lösung dokumentiert.
+- NEU: Bug: readonly-Problem für firstname/lastname: readonly-Status wird jetzt explizit gelöscht, Felder sind wieder editierbar und übertragbar. Debug-Analyse und Lösung dokumentiert.
+- NEU: Bug: Auth-Layer-Save: In auth.inc.php wurde beim Speichern von User-Settings weiterhin der alte Wert aus $this->giveValue('firstname')/$this->giveValue('lastname') statt der neuen Werte aus $data verwendet. Fix: Jetzt werden die Werte aus $data genommen und korrekt gespeichert. (Root Cause für das Nicht-Speichern trotz POST und Debug-Logs)
+- NEU: Bug: Nach erfolgreichem Speichern der User-Settings wurden Änderungen erst nach Reload sichtbar, weil das Auth-Objekt nicht aktualisiert wurde. Fix: Nach save() wird jetzt fetchAdditionalData() aufgerufen, damit Änderungen sofort im UI erscheinen.
+- NEU: Es existieren zwei Konfigurations-Templates: `/include/config.inc.php.sample` (vollständig, modern, für Entwickler) und `/install/config.inc.php-dist` (Install-Template, bisher veraltet und unvollständig, mit Platzhaltern). Die Install-Template wurde jetzt mit allen modernen Features (Debug, Registration, Security-Defaults) aus der Sample-Datei synchronisiert und Syntax-Probleme wurden behoben. Die Templates sind jetzt konsistent und PHP-lint geprüft.
+- NEU: Mobile Touch-Fix: Der User-Avatar-Dropdown (Logout-Link) ist jetzt auf Touch-Geräten (Mobile) per Touch-Click-Toggle erreichbar, sodass der Logout-Link auch auf mobilen Geräten zuverlässig funktioniert. JS/CSS und Template sind angepasst und getestet.
+- [x] Mobile/Touch Dropdown-Fix für User-Avatar (Option A: Touch-Click Toggle)
+- NEU: Bugfix: Gerade erstellte/laufende Efforts (begin == end) konnten wegen invertierter Logik in effort.inc.php::stop() nicht gestoppt oder gelöscht werden. Die Logik ist jetzt klar und korrekt: Nur laufende Efforts (begin == end, nicht in der Zukunft) können gestoppt/gelöscht werden. Fix implementiert und getestet.
+- NEU: Workaround: Wenn ein Aufwand sofort gestoppt wird (Dauer < 1 Minute), wird der Startzeitpunkt automatisch um 1 Minute zurückgesetzt und die Dauer auf 1 Minute gesetzt. Dadurch erscheinen auch diese Aufwände korrekt als gestoppt und nicht mehr als offen. (UX/Data-Fix, effort.inc.php)
+- NEU: Gruppennamen-Validierung: Die Auto-Group-Creation bei Registrierung verwendet jetzt immer den eindeutigen Gruppennamen `username_personal` (Option 3), um Namenskonflikte zu vermeiden.
+- NEU: Bugfix: In efforts.php wird jetzt vor dem Aufruf von $effort->stop() geprüft, ob ein gültiges Effort-Objekt existiert (Fehlerseite bei fehlendem eid), um Fatal Errors zu verhindern.
+- NEU: Bugfix: Auch beim manuellen Anlegen von Usern durch Admins wird jetzt die Auto-Group-Creation mit eindeutigem Gruppennamen (`username_personal`) und korrektem id-Feld durchgeführt, sodass keine PHP-Warning mehr auftritt und die Gruppe zuverlässig erstellt wird.
+- NEU: Bug: Beim manuellen Anlegen eines Users durch Admins wird der neue User nicht automatisch der neuen persönlichen Gruppe zugeordnet. Analyse und Fix erforderlich (User muss nach Group-Creation der Gruppe hinzugefügt werden).
+- NEU: UX-Bug: Beim Anlegen eines neuen Users werden Vor- und Nachname-Felder mit den Daten des aktuellen Benutzers vorausgefüllt; sie sollten leer sein. Zusätzlich sollte beim Eintippen des Usernamens dieser als Name vorgeschlagen werden (Auto-Vorschlag via JS).
+- [x] Bugfix: Nach User-Anlage (Admin) neuen User automatisch persönlicher Gruppe zuordnen
+- [x] UX-Fix: User-Formular bei Neuanlage – Vor-/Nachname leer, Username als Name vorschlagen
+- NEU: Neue Anforderung: Im Template empty/left.ihtml soll das Logo immer angezeigt werden, aber die Navigation ("Navigation"-Text) und der GitHub-Link nur für eingeloggte User. Die letzte Änderung hat zu viel versteckt, jetzt ist die Logik selektiv umgesetzt.
+- [x] Navigation und GitHub-Link in empty/left.ihtml werden jetzt selektiv für eingeloggte User angezeigt, das Logo bleibt immer sichtbar
+- [x] HTML-Tabellenstruktur in empty/left.ihtml korrigiert (keine kaputten <tr>-Tags mehr, alles valide)
 
 ## Task List
-- [x] Fix include paths in migrate_theme_preference.php after move
-- [x] Fehler: $_PJ_auth ist null im register.ihtml – Ursache analysieren und Initialisierung sicherstellen
-- [x] Fehler: Falscher Parameter-Typ bei mysqli_real_escape_string() in password_reset.php – DB-Connection korrekt übergeben
-- [x] Fehler: Migrationen (z.B. confirmed-Spalte) werden nicht ausgeführt – Ursache analysieren und Migrations-Timing/Trigger reparieren
-- [x] Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, Register/Create-User robust machen
-- [x] Template-Include-Fehler: note.ihtml erwartet /templates/password_reset/note.ihtml, das nicht existiert – Template-Handling für Info/Success/Fallback-Nachrichten anpassen.
-- [x] Template-Include-Fehler: note.ihtml versucht /templates/password_reset/note.ihtml zu includen, das nicht existiert. Template-Handling für password_reset/note/ihtml anpassen.
-- [x] Migrations-Trigger und Auth-Initialisierung an Login-Seite orientieren, Register/Create-User robust machen
-- [x] Template-Include-Fehler: note.ihtml erwartet /templates/password_reset/note.ihtml, das nicht existiert – Template-Handling für Info/Success/Fallback-Nachrichten anpassen
-- [x] Success-Message-Display: Erfolgs-/Info-Messages nach Passwort-Reset und User-Registrierung korrekt anzeigen (note.ihtml fixen)
-- [x] Registrierung: Gruppenauswahl bei Registrierung einschränken (nur agent/client), neue User erhalten keine Gruppenzugehörigkeit per Default
-- [x] SQL-Query für gids robust machen: Kein OR-Block für Gruppen, wenn gids leer ist
-- [x] SQL-Syntax-Fixes systematisch in allen Query-Building-Stellen: Kein "gid IN ()" mehr bei leeren Gruppen (customer.inc.php, effort.inc.php, statistics.inc.php, project.inc.php etc.)
-- [x] Zentrale Funktion buildAclGroupQuery($user, $tableAlias = '') erstellen und überall verwenden (DRY, robust)
-- [x] Alle Query-Builds auf die neue Funktion buildAclGroupQuery($user, $tableAlias = '') umstellen
+- [x] Auto-Group-Creation für Registrierung (register.php): Nach Registrierung Gruppe anlegen und Nutzer zuordnen
+- [x] Logo im Dark Mode: Hellen, dünnen Border um das Logo ergänzen
+- [x] Gruppennamen bei Registrierung eindeutig mit _personal suffix
+- [x] Null-Check für Effort-Stop-Funktion (Fehlerseite bei fehlendem eid)
+- [x] Globale Passwort-Validierungsfunktionen (JS+PHP) implementieren und in password_reset.php + settings.php integrieren
+- [x] Rate-Limiting für Passwort-Reset-E-Mails (1 Minute Cooldown) implementieren
+- [x] note.ihtml-Template mit moderner App-Optik, Padding und Rück-Link ergänzen
+- [x] Passwort-Validierung und Rate-Limiting in settings.php integrieren
+- [x] Template-Kaskade für no_login Scripts (password_reset.php) absichern (Checks für $_PJ_auth, $_PJ_session_timeout in allen shared-Templates)
+- [x] Rate-Limiting-Logik im Password-Reset prüft jetzt nur noch auf aktive Tokens, nicht mehr auf reset_expires/24h – verhindert False Positives beim Reset.
+- [x] Session-basiertes Rate-Limiting (10 Sekunden Cooldown) für Passwort-Reset implementiert (funktioniert jetzt wie erwartet)
+- [x] Session-basiertes Rate-Limiting und Template/Session-Probleme sind behoben
 
 ## Current Goal
-Backend/UX Restarbeiten: Header/Output, PHP Notices, Unittest, Success-Message-Display
-Migration-Konflikt: Theme-Preference-Migration sauber integrieren
-ACL/SQL-Query-Fix: Zentrale DRY-Funktion für Gruppenrechte überall verwenden
+- NEU: User-Request: Username-in-Klammern-Logik (wie in report/form.ihtml) wurde im Kundenformular (Bearbeiter-Selectbox) umgesetzt.
+- NEU: Systematische Prüfung und Vereinheitlichung aller weiteren User-Selectboxen in den Templates auf diese Logik ist als nächster Schritt geplant.
+- [x] Passwortlängen-/Stärkenprüfung bei User-Anlage/Edit als Admin ergänzen
+- [x] Username-in-Klammern-Logik für Bearbeiter-Selectbox im Kundenformular ergänzt
+- [ ] Alle weiteren User-Selectboxen systematisch auf Username-in-Klammern-Logik prüfen und ggf. anpassen
+- NEU: User-Request: In der Benutzer-Auswahl von report/index.php soll der Username in Klammern angezeigt werden, wenn er vom Namen abweicht.
+- NEU: User-Request: Beim Anlegen eines neuen Users soll das Namens-Autofill-JS nur bei onblur() (nicht bei jedem Keystroke) auslösen, wenn das Namensfeld leer ist.
+- NEU: User-Request: Beim Anlegen/Editieren eines Users als Admin fehlt die Passwortlängen-/Stärkenprüfung noch (analog zu password_reset.php).
+
+## Task List
+- [x] Username in report/index.php User-Auswahl anzeigen, wenn abweichend
+- [x] JS: Namensvorschlag bei User-Anlage nur bei onblur() und leerem Namensfeld
+- [x] Passwortlängen-/Stärkenprüfung bei User-Anlage/Edit als Admin ergänzen
+- [ ] Username-Anzeige in allen relevanten User-Selectboxen vereinheitlichen
+
+## Current Goal
+Nächsten User-Request abwarten
+- [ ] Username-Anzeige in allen relevanten User-Selectboxen vereinheitlichen

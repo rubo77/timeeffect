@@ -96,7 +96,10 @@
 					<!-- New user: Show password fields directly -->
 					<TR>
 						<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password'])) echo $GLOBALS['_PJ_strings']['password']; else echo 'Password'; ?>*:</TD>
-						<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password" VALUE="" autocomplete="new-password" required></TD>
+						<TD CLASS="FormField">
+							<INPUT CLASS="FormField" TYPE="password" NAME="password" ID="password" VALUE="" autocomplete="new-password" required>
+							<div id="password-strength" style="margin-top: 5px; font-size: 12px;"></div>
+						</TD>
 					</TR><TR>
 						<TD CLASS="FormFieldName"><?php if(!empty($GLOBALS['_PJ_strings']['password_retype'])) echo $GLOBALS['_PJ_strings']['password_retype']; else echo 'Retype Password'; ?>*:</TD>
 						<TD CLASS="FormField"><INPUT CLASS="FormField" TYPE="password" NAME="password_retype" VALUE="" autocomplete="new-password" required></TD>
@@ -176,6 +179,7 @@ if($_PJ_auth->checkPermission('admin')) {
 					</TR>
 			</TABLE>
 	</FORM>
+<?php if (empty($_REQUEST['debug'])): ?>
 <script>
 // Get localized strings from PHP
 var passwordLabel = '<?php if(!empty($GLOBALS["_PJ_strings"]["password"])) echo addslashes($GLOBALS["_PJ_strings"]["password"]); else echo "Password"; ?>';
@@ -278,23 +282,99 @@ function updatePersonalGroup() {
         }
     }
 }
+// Password validation function (from functions.js)
+function validatePasswordStrength(password) {
+    if (password.length >= 12) {
+        return { valid: true, message: 'Strong password', class: 'password-strong' };
+    }
+    
+    if (password.length >= 8) {
+        var hasNumber = /\d/.test(password);
+        var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+        
+        if (hasNumber && hasSpecial) {
+            return { valid: true, message: 'Strong password', class: 'password-strong' };
+        } else if (hasNumber || hasSpecial) {
+            return { valid: false, message: 'Password needs both number and special character', class: 'password-weak' };
+        } else {
+            return { valid: false, message: 'Password needs number and special character', class: 'password-weak' };
+        }
+    }
+    
+    return { valid: false, message: 'Password too short (minimum 8 characters)', class: 'password-weak' };
+}
+
 // Add event listener when page loads
 document.addEventListener('DOMContentLoaded', function() {
     var usernameField = document.querySelector('input[name="login"]');
+    var passwordField = document.getElementById('password');
+    var strengthIndicator = document.getElementById('password-strength');
+    var form = document.querySelector('form');
+    
     if (usernameField) {
-        // Add listeners for both personal group and name suggestion
+        // Update personal group on input (real-time)
         usernameField.addEventListener('input', function() {
             updatePersonalGroup();
-            suggestNameFromUsername();
         });
-        usernameField.addEventListener('change', function() {
-            updatePersonalGroup();
-            suggestNameFromUsername();
+        
+        // Suggest name only on blur and only if name fields are empty
+        usernameField.addEventListener('blur', function() {
+            var firstnameField = document.querySelector('input[name="firstname"]');
+            var lastnameField = document.querySelector('input[name="lastname"]');
+            
+            // Only suggest if both name fields are empty
+            if (firstnameField && lastnameField && 
+                firstnameField.value.trim() === '' && lastnameField.value.trim() === '') {
+                suggestNameFromUsername();
+            }
         });
-        // Initialize on page load
+        
+        // Initialize personal group on page load
         updatePersonalGroup();
-        suggestNameFromUsername();
+    }
+    
+    // Password strength validation for new users
+    if (passwordField && strengthIndicator) {
+        passwordField.addEventListener('input', function() {
+            var result = validatePasswordStrength(this.value);
+            strengthIndicator.textContent = result.message;
+            strengthIndicator.className = result.class;
+            
+            // Add CSS styles
+            if (result.valid) {
+                strengthIndicator.style.color = '#28a745';
+            } else {
+                strengthIndicator.style.color = '#dc3545';
+            }
+        });
+    }
+    
+    // Form validation on submit
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            var passwordField = document.getElementById('password');
+            var retypeField = document.querySelector('input[name="password_retype"]');
+            
+            // Only validate for new users or when changing password
+            if (passwordField && passwordField.value !== '') {
+                var result = validatePasswordStrength(passwordField.value);
+                
+                if (!result.valid) {
+                    alert('Password validation failed: ' + result.message);
+                    e.preventDefault();
+                    return false;
+                }
+                
+                // Check password match
+                if (retypeField && passwordField.value !== retypeField.value) {
+                    alert('Passwords do not match!');
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
     }
 });
 </script>
+<?php endif; ?>
 <!-- user/form.ihtml - END -->

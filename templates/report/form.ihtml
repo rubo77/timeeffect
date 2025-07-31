@@ -56,8 +56,16 @@
 						$a_user = isset($user) ? $user : null;
 					if(isset($all_users) && is_array($all_users)) {
 						foreach($all_users as $cnt => $o_user) {
+							// Build display name with username in parentheses if different
+							$display_name = trim($o_user['firstname'] . ' ' . $o_user['lastname']);
+							$username = $o_user['username'] ?? '';
+							
+							// Show username in parentheses if it differs from the name
+							if (!empty($username) && strtolower($username) !== strtolower(str_replace(' ', '', $display_name))) {
+								$display_name .= ' (' . htmlspecialchars($username) . ')';
+							}
 ?>
-						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if(isset($users) && is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= $o_user['firstname'] . " " . $o_user['lastname'] ?>
+						<OPTION VALUE="<?php if(!empty($o_user['id'])) echo $o_user['id'] ?>"<?php if(isset($users) && is_array($users) && in_array($users, $o_user['id'])) print ' SELECTED'; ?>><?= htmlspecialchars($display_name) ?>
 <?php
 						}
 					}
