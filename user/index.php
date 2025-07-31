@@ -58,16 +58,11 @@
 			$data['email']				= $email;
 			$data['password']			= $password;
 			$data['password_retype']	= $password_retype;
-			// FIX: Sicherstellung, dass $gids ein Array ist (verhindert implode-Fehler)
-			// Filter out 'new_personal_group' placeholder - actual group will be created automatically
-			if(isset($gids) && is_array($gids)) {
-				$filtered_gids = array_filter($gids, function($gid) {
-					return $gid !== 'new_personal_group';
-				});
-				$data['gids'] = implode(',', $filtered_gids);
-			} else {
-				$data['gids'] = '';
+			// FIX: Use DRY function for group ID processing
+			if (!function_exists('processGroupIds')) {
+				include_once($_PJ_include_path . '/functions.inc.php');
 			}
+			$data['gids'] = processGroupIds($gids, '');
 			$data['lastname']			= add_slashes($lastname);
 			$data['firstname']			= add_slashes($firstname);
 			$data['username']			= add_slashes($login);

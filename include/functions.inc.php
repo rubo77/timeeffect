@@ -140,3 +140,24 @@ function validatePasswordStrength($password) {
 		'message' => 'Password does not meet requirements'
 	);
 }
+
+/**
+ * Process group IDs from request data for user forms
+ * DRY function to handle group assignment logic consistently
+ * 
+ * @param array|null $gids Group IDs from request
+ * @param string $fallback_gids Fallback group IDs if no new ones provided
+ * @return string Comma-separated group IDs
+ */
+function processGroupIds($gids, $fallback_gids = '') {
+	// Filter out placeholder values and ensure we have a valid array
+	if(isset($gids) && is_array($gids)) {
+		$filtered_gids = array_filter($gids, function($gid) {
+			return $gid !== 'new_personal_group' && !empty($gid);
+		});
+		return implode(',', $filtered_gids);
+	}
+	
+	// Return fallback if no new gids provided
+	return $fallback_gids;
+}

@@ -15,6 +15,7 @@
 	$password = $_REQUEST['password'] ?? '';
 	$password_retype = $_REQUEST['password_retype'] ?? '';
 	$theme_preference = $_REQUEST['theme_preference'] ?? null;
+	$gids = $_REQUEST['gids'] ?? [];
 
 	$center_template	= "user";
 	$center_title		= 'Benutzer';
@@ -48,7 +49,16 @@
 			$data['password_retype']	= $password_retype;
 		}
 		$data['permissions']		= $_PJ_auth->giveValue('permissions');
-		$data['gids']				= $_PJ_auth->giveValue('gids');
+		// Fix: Use gids from request instead of overwriting with old values (DRY function)
+		if (!function_exists('processGroupIds')) {
+			include_once($_PJ_include_path . '/functions.inc.php');
+		}
+		// Debug logging for group saving
+		$GLOBALS['_PJ_debug'] = true;
+		debugLog('SETTINGS_GROUPS_DEBUG', 'Raw gids from request: ' . print_r($gids, true));
+		debugLog('SETTINGS_GROUPS_DEBUG', 'Current gids from auth: ' . $_PJ_auth->giveValue('gids'));
+		$data['gids'] = processGroupIds($gids, $_PJ_auth->giveValue('gids'));
+		debugLog('SETTINGS_GROUPS_DEBUG', 'Processed gids for save: ' . $data['gids']);
 		$data['allow_nc']			= $_PJ_auth->giveValue('allow_nc');
 		
 		if($error = $_PJ_auth->save($data)) {
