@@ -557,7 +557,16 @@
 			$this->data['minutes']			= round(($this->data['seconds']	/ 60), 2);
 			$this->data['hours']			= round(($this->data['minutes']	/ 60), 2);
 			$this->data['days']				= round(($this->data['minutes']	/ 60 / 8), 2);
-			$this->data['customer_id']		= $this->customer->giveValue('id');
+			// Fix: Auto-detect customer from project if customer is null but project is set
+			if($this->customer) {
+				$this->data['customer_id'] = $this->customer->giveValue('id');
+			} elseif($this->project && $this->project->giveValue('customer_id')) {
+				// Auto-detect customer from project
+				$this->data['customer_id'] = $this->project->giveValue('customer_id');
+				debugLog("LOG_STATISTICS_AUTOFIX", "Auto-detected customer ID from project: " . $this->data['customer_id']);
+			} else {
+				$this->data['customer_id'] = null;
+			}
 		}
 
 		function giveValue($key) {
