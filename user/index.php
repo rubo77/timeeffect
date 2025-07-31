@@ -75,6 +75,31 @@
 			$data['permissions']		= isset($permissions) && is_array($permissions) ? implode(',', $permissions) : '';
 			$data['allow_nc']			= $allow_nc;
 
+			// Server-side password validation (if password is being changed)
+			if (!empty($password)) {
+				// Check password strength
+				if (!function_exists('validatePasswordStrength')) {
+					include_once($_PJ_include_path . '/functions.inc.php');
+				}
+				$validation_result = validatePasswordStrength($password);
+				if (!$validation_result['valid']) {
+					$message = 'Password validation failed: ' . $validation_result['message'];
+					$center_title = $GLOBALS['_PJ_strings']['edit_user'];
+					include("$_PJ_root/templates/edit.ihtml");
+					include_once("$_PJ_include_path/degestiv.inc.php");
+					exit;
+				}
+				
+				// Check password match
+				if ($password !== $password_retype) {
+					$message = 'Passwords do not match!';
+					$center_title = $GLOBALS['_PJ_strings']['edit_user'];
+					include("$_PJ_root/templates/edit.ihtml");
+					include_once("$_PJ_include_path/degestiv.inc.php");
+					exit;
+				}
+			}
+
 			$new_user = new User($data);
 			$message = $new_user->save();
 			if($message != '') {

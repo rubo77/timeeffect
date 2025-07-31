@@ -149,7 +149,11 @@
 - [x] Fix: Autozuordnung für k<ID> schlägt fehl, Customer-Objekt wird nicht gefunden (auch wenn ID existiert)
 - [x] Bugfix: Report-Fehler beheben – Wenn nur ein Projekt gewählt wird, aber kein Kunde, soll der Kunde automatisch ermittelt werden, um Fatal Error zu verhindern
 - [x] Fix: Customer-Objekt wird nicht gefunden, wenn k<ID> verwendet wird
-- [ ] Bugfix: Report-Projekt-Kunde-Fehler beheben
+- [x] Bugfix: Report-Projekt-Kunde-Fehler beheben
+- [x] Bugfix: Bei Passwort-Fehlern im User-Edit dürfen die Passwortfelder nicht mehr hinter dem Button versteckt sein (sie müssen sofort sichtbar werden)
+- [x] Bugfix: Passwort-Längen-/Stärkenprüfung im User-Formular (Neuanlage & Edit) systematisch implementieren (analog zu password_reset.php/settings.php)
+- [x] Bugfix: Passwortfelder sofort anzeigen, wenn Fehler auftreten
+- [x] Bugfix: Systematische Passwortvalidierung für User-Formulare (Neuanlage & Edit) implementieren
 
 ## Current Goal
 - NEU: ACL-unabhängige, robuste Autozuordnung für k<ID> und automatische Kundenerkennung im Report-Formular testen und ggf. letzte Details nachschärfen.

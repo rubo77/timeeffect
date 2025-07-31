@@ -215,7 +215,30 @@ function togglePasswordFields() {
         button.style.background = '#dc3545';
         
         // Focus first password field
-        document.getElementById('password-field').focus();
+        var dynamicPasswordField = document.getElementById('password-field');
+        dynamicPasswordField.focus();
+        
+        // Add password validation to dynamic field
+        dynamicPasswordField.addEventListener('input', function() {
+            var result = validatePasswordStrength(this.value);
+            var strengthDiv = document.getElementById('password-strength-dynamic');
+            if (!strengthDiv) {
+                // Create strength indicator for dynamic field
+                strengthDiv = document.createElement('div');
+                strengthDiv.id = 'password-strength-dynamic';
+                strengthDiv.style.marginTop = '5px';
+                strengthDiv.style.fontSize = '12px';
+                this.parentNode.appendChild(strengthDiv);
+            }
+            strengthDiv.textContent = result.message;
+            strengthDiv.className = result.class;
+            
+            if (result.valid) {
+                strengthDiv.style.color = '#28a745';
+            } else {
+                strengthDiv.style.color = '#dc3545';
+            }
+        });
     } else {
         // Remove password fields completely
         document.getElementById('password-fields').remove();
@@ -311,6 +334,20 @@ document.addEventListener('DOMContentLoaded', function() {
     var strengthIndicator = document.getElementById('password-strength');
     var form = document.querySelector('form');
     
+    // Check if there are password-related errors and auto-show password fields
+    var hasPasswordError = <?php echo (isset($message) && (strpos($message, 'password') !== false || strpos($message, 'Password') !== false)) ? 'true' : 'false'; ?>;
+    var isEditMode = <?php echo (!empty($id)) ? 'true' : 'false'; ?>;
+    
+    if (hasPasswordError && isEditMode) {
+        // Auto-show password fields if there are password errors
+        setTimeout(function() {
+            var changePasswordBtn = document.getElementById('change-password-btn');
+            if (changePasswordBtn && !document.getElementById('password-fields')) {
+                togglePasswordFields();
+            }
+        }, 100);
+    }
+    
     if (usernameField) {
         // Update personal group on input (real-time)
         usernameField.addEventListener('input', function() {
@@ -352,7 +389,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form validation on submit
     if (form) {
         form.addEventListener('submit', function(e) {
-            var passwordField = document.getElementById('password');
+            // Check for both static and dynamic password fields
+            var passwordField = document.getElementById('password') || document.getElementById('password-field');
             var retypeField = document.querySelector('input[name="password_retype"]');
             
             // Only validate for new users or when changing password
@@ -361,6 +399,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (!result.valid) {
                     alert('Password validation failed: ' + result.message);
+                    // Auto-show password fields if they're hidden
+                    if (isEditMode && !document.getElementById('password-fields')) {
+                        togglePasswordFields();
+                    }
                     e.preventDefault();
                     return false;
                 }
@@ -368,6 +410,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Check password match
                 if (retypeField && passwordField.value !== retypeField.value) {
                     alert('Passwords do not match!');
+                    // Auto-show password fields if they're hidden
+                    if (isEditMode && !document.getElementById('password-fields')) {
+                        togglePasswordFields();
+                    }
                     e.preventDefault();
                     return false;
                 }
