@@ -123,7 +123,7 @@
 	$GLOBALS['_PJ_strings']['account_locked']			= 'Konto gesperrt';
 	$GLOBALS['_PJ_strings']['lockout_ip_message']		= 'Zu viele fehlgeschlagene Anmeldeversuche von Ihrer IP-Adresse.';
 	$GLOBALS['_PJ_strings']['lockout_user_message']		= 'Zu viele fehlgeschlagene Anmeldeversuche für diesen Benutzernamen.';
-	$GLOBALS['_PJ_strings']['lockout_until']			= 'Bitte versuchen Sie es nach';
+	$GLOBALS['_PJ_strings']['lockout_until']			= 'Bitte versuchen Sie es in';
 	$GLOBALS['_PJ_strings']['login_failed']				= 'Anmeldung fehlgeschlagen';
 	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Verbleibende Versuche';
 	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Ihr Konto wird nach zu vielen fehlgeschlagenen Versuchen vorübergehend gesperrt.';

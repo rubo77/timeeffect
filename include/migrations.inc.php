@@ -8,7 +8,7 @@
 
 class MigrationManager {
     private $db;
-    private $current_version = 2; // Current target version - increment for new migrations
+    private $current_version = 3; // Current target version - increment for new migrations
     private $migrations_table;
 
     public function __construct() {
@@ -110,6 +110,14 @@ class MigrationManager {
             }
         }
         
+        // Migration 3: Login attempts table for brute force protection
+        if ($current_version < 3) {
+            if ($this->runMigration3()) {
+                $migrations_run[] = 'Login attempts table for brute force protection';
+                $this->recordMigration(3, 'Login attempts table for brute force protection');
+            }
+        }
+        
         return $migrations_run;
     }
 
@@ -164,6 +172,49 @@ class MigrationManager {
             
         } catch (Exception $e) {
             error_log("Migration 2 failed: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Migration 3: Login attempts table for brute force protection
+     */
+    private function runMigration3() {
+        try {
+            // Check if table already exists
+            $query = "SHOW TABLES LIKE '" . $this->migrations_table . "'";
+            $this->db->query($query);
+            if (!$this->db->next_record()) {
+                // Migrations table doesn't exist yet, create it first
+                if (!$this->createMigrationsTable()) {
+                    return false;
+                }
+            }
+            
+            // Check if login_attempts table already exists
+            $login_attempts_table = $GLOBALS['_PJ_table_prefix'] . 'login_attempts';
+            $query = "SHOW TABLES LIKE '" . $login_attempts_table . "'";
+            $this->db->query($query);
+            if ($this->db->next_record()) {
+                return true; // Already exists
+            }
+            
+            // Create login_attempts table
+            $query = "CREATE TABLE " . $login_attempts_table . " (
+                id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                ip_address VARCHAR(45) NOT NULL COMMENT 'IP address of the attempt',
+                username VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'Username attempted',
+                attempt_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                success TINYINT(1) NOT NULL DEFAULT 0,
+                PRIMARY KEY (id),
+                KEY ip_time (ip_address, attempt_time),
+                KEY username_time (username, attempt_time)
+            ) ENGINE=MyISAM COMMENT='Tracks login attempts for brute force protection'";
+            
+            return $this->db->query($query);
+            
+        } catch (Exception $e) {
+            error_log("Migration 3 failed: " . $e->getMessage());
             return false;
         }
     }

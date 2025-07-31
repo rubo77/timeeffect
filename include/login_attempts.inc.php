@@ -97,7 +97,7 @@ class LoginAttemptTracker {
                     'locked' => true,
                     'reason' => 'ip',
                     'attempts' => $this->db->f('attempt_count'),
-                    'lockout_until' => date('H:i:s', time() + self::LOCKOUT_DURATION)
+                    'lockout_until' => ceil(self::LOCKOUT_DURATION / 60) . ' Minuten'
                 ];
             }
         }
@@ -118,7 +118,7 @@ class LoginAttemptTracker {
                         'locked' => true,
                         'reason' => 'username',
                         'attempts' => $this->db->f('attempt_count'),
-                        'lockout_until' => date('H:i:s', time() + self::LOCKOUT_DURATION)
+                        'lockout_until' => ceil(self::LOCKOUT_DURATION / 60) . ' Minuten'
                     ];
                 }
             }

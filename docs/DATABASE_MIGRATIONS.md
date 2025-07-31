@@ -1,152 +1,44 @@
-# Database Migration System
+# Database Migrations
 
-This document describes the database migration system implemented in TimeEffect to handle schema changes and upgrades automatically.
+TimeEffect automatically updates the database schema every time a user logs in.
+Only exceptional, non-additive operations (e.g. renaming a table) require a manual SQL script.
 
-## Overview
+## Automatic flow
+File | Role
+---- | ----
+`include/migrations.inc.php` | `MigrationManager` with incremental `runMigrationX()` methods.
+`include/database.inc.php`  | Triggers migrations during login.
 
-The migration system allows for automatic database schema updates when users log in, ensuring that all installations can be upgraded seamlessly without manual intervention.
+### Adding a migration
+1. Increment `private $current_version` in `MigrationManager`.
+2. Add `runMigrationX()` containing idempotent SQL (use `SHOW TABLES/COLUMNS`).
+3. Deploy – the migration runs automatically on the next login.
 
-## Architecture
+## Manual scripts (rare)
+Place SQL files in `sql/migrations/` only when an automatic PHP migration is impossible.
+Run `php sql/migrate.php` once; applied files are tracked in `{prefix}migrations`.
 
-### Core Components
+## Guidelines
+* Prefer additive changes (new columns/tables); they never need rollback.
+* Avoid destructive changes; if unavoidable, provide a rollback script.
+* Use clear sequential names like `002_add_invoice_number.sql`.
+* Always test on a copy of production data.
 
-1. **MigrationManager Class** (`include/migrations.inc.php`)
-   - Manages migration execution and tracking
-   - Tracks current schema version
-   - Executes pending migrations automatically
+- **Trigger**: Automatic during login via `database.inc.php`
+- **Tracking**: `{prefix}migrations` table
+- **Safety**: Idempotent with rollback support
 
-2. **Migration Table** (`{prefix}migrations`)
-   - Stores executed migration history
-   - Tracks version numbers and execution timestamps
-   - Prevents duplicate execution of migrations
+### Adding New Automatic Migration
 
-3. **Integration Points**
-   - Automatically executed during login process (`database.inc.php`)
-   - Runs after database connection is established
-   - Only executes when configuration is properly loaded
-
-## How It Works
-
-### Migration Execution Flow
-
-1. **Login Process**: When a user logs in, migrations are checked automatically
-2. **Version Check**: System compares current DB version with target version
-3. **Execution**: Only pending migrations are executed in sequence
-4. **Tracking**: Each successful migration is recorded in the migrations table
-5. **Error Handling**: Failed migrations are logged and prevent further execution
-
-### Migration Versioning
-
-- Each migration has a unique version number (integer)
-- Migrations are executed in sequential order
-- Current target version is defined in `MigrationManager::$current_version`
-- Database tracks the highest executed migration version
-
-## Creating New Migrations
-
-### Step 1: Update MigrationManager Class
-
-1. **Increment Version Number**:
-   ```php
-   private $current_version = 3; // Increment this number in migrations.inc.php
-   ```
-
-2. **Add Migration Method**:
-   ```php
-   private function runMigration3() {
-       try {
-           // Check if migration is already applied
-           $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'new_field'";
-           $this->db->query($query);
-           if ($this->db->next_record()) {
-               return true; // Already applied
-           }
-           
-           // Execute migration SQL
-           $query = "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                     ADD COLUMN new_field VARCHAR(50) DEFAULT 'default_value' 
-                     AFTER existing_field";
-           return $this->db->query($query);
-           
-       } catch (Exception $e) {
-           error_log("Migration 3 failed: " . $e->getMessage());
-           return false;
-       }
-   }
-   ```
-
-3. **Add to Execution Logic**:
-   ```php
-   public function runPendingMigrations() {
-       $current_version = $this->getCurrentVersion();
-       $migrations_run = array();
-       
-       // Add your new migration here
-       if ($current_version < 3) {
-           if ($this->runMigration3()) {
-               $migrations_run[] = 'Description of Migration 3';
-               $this->recordMigration(3, 'Description of Migration 3');
-           }
-       }
-       
-       return $migrations_run;
-   }
-   ```
-
-### Step 2: Migration Best Practices
-
-#### Safety Checks
-- Always check if the migration is already applied
-- Use `SHOW COLUMNS`, `SHOW TABLES`, or similar to detect existing changes
-- Return `true` if migration is already applied
-
-#### Error Handling
-- Wrap all SQL operations in try-catch blocks
-- Log detailed error messages with `error_log()` and also show the ERROR directly on screen
-- Return `false` on failure to prevent further migrations
-
-#### SQL Guidelines
-- Use global variables for table names (`$GLOBALS['_PJ_auth_table']`)
-- Use `addslashes()` for string escaping (not `add_slashes()`)
-- Specify column positions with `AFTER column_name` when relevant
-- Use appropriate data types and defaults
-
-#### Example Migration Patterns
-
-**Adding a Column**:
+1. **Increment version** in `MigrationManager::$current_version`
+2. **Add migration method**:
 ```php
 private function runMigrationX() {
     try {
-        // Check if column exists
-        $query = "SHOW COLUMNS FROM " . $GLOBALS['_PJ_auth_table'] . " LIKE 'new_column'";
-        $this->db->query($query);
-        if ($this->db->next_record()) {
-            return true; // Already exists
-        }
-        
-        // Add column
-        $query = "ALTER TABLE " . $GLOBALS['_PJ_auth_table'] . " 
-                  ADD COLUMN new_column VARCHAR(255) DEFAULT NULL 
-                  AFTER existing_column";
-        return $this->db->query($query);
-        
-    } catch (Exception $e) {
-        error_log("Migration X failed: " . $e->getMessage());
-        return false;
-    }
-}
-```
-
-**Creating a Table**:
-```php
-private function runMigrationY() {
-    try {
-        // Check if table exists
+        // Safety check
         $query = "SHOW TABLES LIKE '" . $GLOBALS['_PJ_db_prefix'] . "new_table'";
         $this->db->query($query);
-        if ($this->db->next_record()) {
-            return true; // Already exists
-        }
+        if ($this->db->next_record()) return true;
         
         // Create table
         $query = "CREATE TABLE " . $GLOBALS['_PJ_db_prefix'] . "new_table (
@@ -156,41 +48,39 @@ private function runMigrationY() {
             INDEX(name)
         ) ENGINE=MyISAM";
         return $this->db->query($query);
-        
     } catch (Exception $e) {
-        error_log("Migration Y failed: " . $e->getMessage());
+        error_log("Migration X failed: " . $e->getMessage());
         return false;
     }
 }
 ```
+3. **Add to execution logic** in `runPendingMigrations()`
 
-**Modifying Existing Data**:
-```php
-private function runMigrationZ() {
-    try {
-        // Check if migration was already applied (use a marker or check data state)
-        $query = "SELECT COUNT(*) as count FROM " . $GLOBALS['_PJ_auth_table'] . " 
-                  WHERE some_field = 'new_value'";
-        $this->db->query($query);
-        $this->db->next_record();
-        if ($this->db->Record['count'] > 0) {
-            return true; // Already applied
-        }
-        
-        // Update data
-        $query = "UPDATE " . $GLOBALS['_PJ_auth_table'] . " 
-                  SET some_field = 'new_value' 
-                  WHERE some_condition = 'old_value'";
-        return $this->db->query($query);
-        
-    } catch (Exception $e) {
-        error_log("Migration Z failed: " . $e->getMessage());
-        return false;
-    }
-}
+### Manual Migrations
+
+### When to Use
+- Complex schema changes
+- Data migrations
+- One-time administrative tasks
+
+### File Structure
+- **Location**: `sql/migrations/`
+- **Naming**: `XXX_description.sql`
+- **Execution**: `cd sql && php migrate.php`
+
+### Template
+```sql
+-- Migration: Description
+-- Date: YYYY-MM-DD
+-- Rollback: DROP TABLE `<%db_prefix%>table_name`;
+
+CREATE TABLE IF NOT EXISTS `<%db_prefix%>table_name` (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  -- columns here
+) ENGINE=MyISAM;
 ```
 
-## Testing Migrations
+### Testing Migrations
 
 ### Local Testing
 1. **Backup Database**: Always backup before testing migrations
@@ -204,7 +94,7 @@ private function runMigrationZ() {
 3. Confirm application functionality works with new schema
 4. Test that migration doesn't run twice (idempotent)
 
-## Deployment Considerations
+### Deployment Considerations
 
 ### Production Deployment
 - Migrations run automatically on first user login after deployment
@@ -220,8 +110,6 @@ private function runMigrationZ() {
 - Large table alterations may cause downtime
 - Consider maintenance windows for significant schema changes
 - Test migration performance on production-sized datasets
-
-## Troubleshooting
 
 ### Common Issues
 
@@ -244,40 +132,6 @@ private function runMigrationZ() {
 - Migration history: Check `{prefix}migrations` table
 - Error logs: Check PHP error logs and application logs
 - Current version: Use `MigrationManager::getCurrentVersion()`
-
-## Migration Types in TimeEffect
-
-### Automatic Migrations (Recommended)
-Implemented in `include/migrations.inc.php` as PHP methods:
-- Run automatically on user login
-- Version tracking in `migrations` table
-- Idempotent (safe to run multiple times)
-- Error handling and rollback support
-
-### Manual Migrations
-SQL files in `sql/` directory:
-- Must be executed manually by administrator
-- No automatic version tracking
-- Use for complex schema changes or data migrations
-
-## Examples from TimeEffect
-
-### Automatic Migration 1: User Registration Fields
-```php
-// Implemented in migrations.inc.php runMigration1()
-// Added password reset and email confirmation fields
-ALTER TABLE auth ADD COLUMN reset_token VARCHAR(64) NULL AFTER facsimile;
-ALTER TABLE auth ADD COLUMN reset_expires DATETIME NULL AFTER reset_token;
-ALTER TABLE auth ADD COLUMN email_confirmed TINYINT(1) DEFAULT 1 AFTER reset_expires;
-ALTER TABLE auth ADD COLUMN confirmation_token VARCHAR(64) NULL AFTER email_confirmed;
-```
-
-### Automatic Migration 2: Theme Preference
-```php
-// Implemented in migrations.inc.php runMigration2()
-// Added user theme preference for dark/light mode
-ALTER TABLE auth ADD COLUMN theme_preference VARCHAR(10) DEFAULT 'system' AFTER facsimile;
-```
 
 ### Manual Migration Example
 ```sql
@@ -322,47 +176,6 @@ ADD COLUMN `confirmation_token` varchar(64) DEFAULT NULL AFTER `confirmed`;
 - `include/migrations.inc.php` - Migration manager class
 - `include/database.inc.php` - Migration execution trigger
 - `docs/DATABASE_MIGRATIONS.md` - This documentation
-
-### Migration Table Schema
-```sql
-CREATE TABLE {prefix}migrations (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    version INT NOT NULL UNIQUE,
-    migration_name VARCHAR(255) NOT NULL,
-    executed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    INDEX(version)
-) ENGINE=MyISAM;
-```
-
-# Brute force Database Migrations
-
-This document describes the database migration system for TimeEffect.
-
-## Overview
-
-The migration system allows you to:
-- Apply database schema changes in a controlled manner
-- Track which migrations have been applied
-- Ensure all environments have the same database structure
-- Roll back changes if needed
-
-## Migration Files
-
-Migration files are stored in `sql/migrations/` and follow the naming convention:
-```
-XXX_description_of_change.sql
-```
-
-Where:
-- `XXX` is a three-digit sequence number (001, 002, etc.)
-- `description_of_change` describes what the migration does
-- Files are processed in alphabetical order
-
-## Running Migrations
-
-### For New Installations
-
-New installations automatically include all tables through `install/timeeffect.sql`. No additional migration is needed.
 
 ### For Existing Installations
 
