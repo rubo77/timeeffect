@@ -54,6 +54,11 @@
 				} elseif ($password != $password_retype) {
 					$message = $GLOBALS['_PJ_strings']['error_pw_retype'];
 				} else {
+					// Validate password strength
+					$validation = validatePasswordStrength($password);
+					if (!$validation['valid']) {
+						$message = $validation['message'];
+					} else {
 					// Update password and clear reset token
 					$new_password = md5($password);
 					$query = sprintf("UPDATE %s SET password='%s', reset_token=NULL, reset_expires=NULL WHERE id='%s'", 
@@ -67,6 +72,7 @@
 					include("$_PJ_root/templates/note.ihtml");
 					include_once("$_PJ_include_path/degestiv.inc.php");
 					exit;
+					}
 				}
 			}
 			
@@ -99,6 +105,7 @@
 					<div class="form-group">
 						<label class="form-label" for="password"><?= $GLOBALS['_PJ_strings']['password'] ?>*:</label>
 						<input type="password" id="password" name="password" required>
+						<div id="password-strength" class="form-help" style="margin-top: 0.5rem; font-size: 0.9rem;"></div>
 					</div>
 					
 					<div class="form-group">
@@ -114,6 +121,44 @@
 					</FORM>
 				</div>
 			</div>
+			<script>
+			// Real-time password strength validation
+			document.getElementById('password').addEventListener('input', function() {
+				var password = this.value;
+				var strengthDiv = document.getElementById('password-strength');
+				
+				if (password.length === 0) {
+					strengthDiv.innerHTML = '';
+					return;
+				}
+				
+				var validation = validatePasswordStrength(password);
+				if (validation.valid) {
+					strengthDiv.innerHTML = '<span style="color: green;">✓ ' + validation.message + '</span>';
+				} else {
+					strengthDiv.innerHTML = '<span style="color: red;">✗ ' + validation.message + '</span>';
+				}
+			});
+			
+			// Form validation on submit
+			document.querySelector('form').addEventListener('submit', function(e) {
+				var password = document.getElementById('password').value;
+				var passwordRetype = document.getElementById('password_retype').value;
+				
+				var validation = validatePasswordStrength(password);
+				if (!validation.valid) {
+					e.preventDefault();
+					alert('Password validation failed: ' + validation.message);
+					return false;
+				}
+				
+				if (password !== passwordRetype) {
+					e.preventDefault();
+					alert('Passwords do not match.');
+					return false;
+				}
+			});
+			</script>
 			</BODY>
 			</HTML>
 			<?php
@@ -130,6 +175,27 @@
 	if (isset($reset) && $email != '') {
 		$db = new Database();
 		$db->connect(); // Ensure database connection is established
+		
+		// Rate limiting: Use session or file-based approach for 10-second cooldown
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
+		$rate_limit_key = 'password_reset_' . md5($email);
+		$last_request_time = $_SESSION[$rate_limit_key] ?? 0;
+		$current_time = time();
+		
+		if (($current_time - $last_request_time) < 10) {
+			$wait_seconds = 10 - ($current_time - $last_request_time);
+			debugLog('PASSWORD_RESET_RATE_LIMIT', 'Rate limit exceeded for email: ' . $email . ' - must wait ' . $wait_seconds . ' seconds');
+			$error_message = 'Please wait ' . $wait_seconds . ' seconds before requesting another password reset.';
+			include("$_PJ_root/templates/error.ihtml");
+			include_once("$_PJ_include_path/degestiv.inc.php");
+			exit;
+		}
+		
+		// Store current request time
+		$_SESSION[$rate_limit_key] = $current_time;
+		
 		$user_query = sprintf("SELECT * FROM %s WHERE email='%s'", 
 						 $GLOBALS['_PJ_auth_table'], 
 						 mysqli_real_escape_string($db->Link_ID, $email));

@@ -86,3 +86,57 @@ function debugLog($context, $message) {
 		}
 	}
 }
+
+/**
+ * Validate password strength according to policy:
+ * - Minimum 8 characters with at least one number and one special character
+ * - OR minimum 12 characters without special requirements
+ * 
+ * @param string $password The password to validate
+ * @return array Array with 'valid' (bool) and 'message' (string)
+ */
+function validatePasswordStrength($password) {
+	$length = strlen($password);
+	
+	if ($length < 8) {
+		return array(
+			'valid' => false,
+			'message' => 'Password must be at least 8 characters long'
+		);
+	}
+	
+	// Check for 12+ character rule (no special requirements)
+	if ($length >= 12) {
+		return array(
+			'valid' => true,
+			'message' => 'Password meets length requirement'
+		);
+	}
+	
+	// Check for 8+ character rule (needs number and special char)
+	if ($length >= 8) {
+		$hasNumber = preg_match('/[0-9]/', $password);
+		$hasSpecial = preg_match('/[^a-zA-Z0-9]/', $password);
+		
+		if ($hasNumber && $hasSpecial) {
+			return array(
+				'valid' => true,
+				'message' => 'Password meets complexity requirements'
+			);
+		} else {
+			$missing = array();
+			if (!$hasNumber) $missing[] = 'number';
+			if (!$hasSpecial) $missing[] = 'special character';
+			
+			return array(
+				'valid' => false,
+				'message' => 'Password needs: ' . implode(' and ', $missing) . ' (or be 12+ characters)'
+			);
+		}
+	}
+	
+	return array(
+		'valid' => false,
+		'message' => 'Password does not meet requirements'
+	);
+}

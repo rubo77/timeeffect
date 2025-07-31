@@ -34,6 +34,12 @@
 <!-- shared/main-options.ihtml - START -->
 <div id="mainOptions" class="modern-tabs">
 <?php
+// Check if auth is available and properly initialized
+if(!isset($_PJ_auth) || !is_object($_PJ_auth)) {
+	debugLog('TEMPLATE_ERROR', 'Auth object not available in main-options template');
+	// Skip main options if no auth - this can happen in no_login scripts like password_reset.php
+	return;
+}
 if($_PJ_auth->checkPermission('agent')) {
 ?>
 	<a class="modern-tab<?= ($inventory_selection == 's') ? ' active' : '' ?>" href="<?php if(!empty($GLOBALS['_PJ_customer_inventory_script'])) echo $GLOBALS['_PJ_customer_inventory_script'] ?>"><?=$GLOBALS['_PJ_strings']['inventory']?></a>
