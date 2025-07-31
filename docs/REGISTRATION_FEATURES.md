@@ -133,7 +133,7 @@ New language strings added:
 - `password_reset.php` - Password recovery script
 - `switch_user.php` - Admin user switching script
 - `return_to_admin.php` - Return to admin script
-- `templates/user/register.ihtml` - Registration form template
+- `templates/user/register.ihtml.php` - Registration form template
 - `sql/migration_add_registration_features.sql` - Database migration
 - `migrate.php` - Automated migration page for existing installations
 
@@ -141,11 +141,11 @@ New language strings added:
 - `include/config.inc.php.sample` - Added new configuration options
 - `include/user.inc.php` - Updated User class for new fields
 - `include/auth.inc.php` - Added email confirmation check during login
-- `templates/shared/login.ihtml` - Added registration and password recovery links
-- `templates/shared/top.ihtml` - Added admin switch indicator
-- `templates/shared/topnav.ihtml` - Added return to admin button
-- `templates/user/list.ihtml` - Added actions column header
-- `templates/user/row.ihtml` - Added switch to user button
+- `templates/shared/login.ihtml.php` - Added registration and password recovery links
+- `templates/shared/top.ihtml.php` - Added admin switch indicator
+- `templates/shared/topnav.ihtml.php` - Added return to admin button
+- `templates/user/list.ihtml.php` - Added actions column header
+- `templates/user/row.ihtml.php` - Added switch to user button
 - `sql/timeffect.sql` - Updated schema with new fields
 - `include/languages/en.inc.php` - Added English strings
 - `include/languages/de.inc.php` - Added German strings

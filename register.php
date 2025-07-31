@@ -7,7 +7,7 @@
 	// Check if registration is enabled
 	if (!isset($_PJ_allow_registration) || !$_PJ_allow_registration) {
 		$error_message = $GLOBALS['_PJ_strings']['registration_disabled'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -37,10 +37,10 @@
 			$db->query($query);
 			
 			$success_message = $GLOBALS['_PJ_strings']['email_confirm_success'];
-			include("$_PJ_root/templates/note.ihtml");
+			include("$_PJ_root/templates/note.ihtml.php");
 		} else {
 			$error_message = $GLOBALS['_PJ_strings']['email_confirm_error'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 		}
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
@@ -106,7 +106,7 @@
 			$telephone = $_POST['telephone'] ?? '';
 			$facsimile = $_POST['facsimile'] ?? '';
 			
-			include("$_PJ_root/templates/user/register.ihtml");
+			include("$_PJ_root/templates/user/register.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -163,13 +163,13 @@
 		}
 		
 		$center_template = ''; // Use direct message display in note.ihtml
-		include("$_PJ_root/templates/note.ihtml");
+		include("$_PJ_root/templates/note.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		
 		exit;
 	}
 
 	// Show registration form
-	include("$_PJ_root/templates/user/register.ihtml");
+	include("$_PJ_root/templates/user/register.ihtml.php");
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

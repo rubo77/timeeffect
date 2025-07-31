@@ -364,7 +364,7 @@
 	} // class PJAuth
 
 	function PJ_login() {
-		include($GLOBALS['_PJ_root'] . '/templates/shared/login.ihtml');
+		include($GLOBALS['_PJ_root'] . '/templates/shared/login.ihtml.php');
 		exit;
 	}
 

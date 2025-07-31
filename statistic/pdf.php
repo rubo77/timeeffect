@@ -12,7 +12,7 @@
 	$project	= new Project($customer, $_PJ_auth, $pid);
 
 	$center_template	= "statistic/pdf";
-	include("$_PJ_root/templates/statistic/pdf/list.ihtml");
+	include("$_PJ_root/templates/statistic/pdf/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

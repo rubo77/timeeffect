@@ -10,7 +10,7 @@
 	// Check admin permission
 	if(!$_PJ_auth->checkPermission('admin')) {
 		$error_message = $GLOBALS['_PJ_strings']['error_access'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -19,7 +19,7 @@
 	
 	if(!$uid || !intval($uid)) {
 		$error_message = 'Invalid user ID';
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -33,7 +33,7 @@
 	$user = new User($uid);
 	if(!$user->giveValue('id')) {
 		$error_message = 'User not found';
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}

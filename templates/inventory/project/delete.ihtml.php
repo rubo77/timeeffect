@@ -1,0 +1,38 @@
+<!-- inventory/project/delete.ihtml - START -->
+<?php
+	if(isset($project) && is_object($project)) {
+		$pid						= $project->giveValue('id');
+		$cid				= $project->giveValue('customer_id');
+		$project_name				= $project->giveValue('project_name');
+		$project_desc				= $project->giveValue('project_desc');
+		$project_budget				= $project->giveValue('project_budget');
+		$closed						= $project->giveValue('closed');
+		include($GLOBALS['_PJ_root'] . '/templates/inventory/project/options/delete.ihtml.php');
+	} else {
+		exit;
+	}
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_projects_inventory_script']; ?>" METHOD="<?php if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
+	<INPUT TYPE="hidden" NAME="cid" VALUE="<?php if(isset($cid)) echo $cid; ?>">
+	<INPUT TYPE="hidden" NAME="pid" VALUE="<?php if(isset($pid)) echo $pid; ?>">
+	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+				<TR>
+					<TD CLASS="MessageAsk" COLSPAN="2"><?php if(!empty($GLOBALS['_PJ_strings']['ask_project_delete'])) echo $GLOBALS['_PJ_strings']['ask_project_delete'] ?></TD>
+				</TR><TR>
+					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <?php if(!empty($GLOBALS['_PJ_strings']['cancel'])) echo $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
+					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+<!-- inventory/project/delete.ihtml - END -->

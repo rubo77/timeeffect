@@ -70,7 +70,7 @@ The existing authentication class in `include/auth.inc.php` has been enhanced to
 - Clear attempts on successful authentication
 
 ### Login Template Updates
-The login form (`templates/shared/login.ihtml`) now displays:
+The login form (`templates/shared/login.ihtml.php`) now displays:
 - Lockout warnings with countdown timers
 - Progressive attempt warnings
 - Multi-language security messages
@@ -149,7 +149,7 @@ Monitor these areas for security insights:
 ## Files Modified
 
 - `include/auth.inc.php` - Enhanced authentication class
-- `templates/shared/login.ihtml` - Updated login form
+- `templates/shared/login.ihtml.php` - Updated login form
 - `include/languages/en.inc.php` - English security messages
 - `include/languages/de.inc.php` - German security messages  
 - `include/languages/fr.inc.php` - French security messages

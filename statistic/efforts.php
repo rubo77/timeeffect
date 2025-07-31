@@ -34,7 +34,7 @@
 
 	if(!empty($detail)) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $effort->giveValue('description');
-		include("$_PJ_root/templates/note.ihtml");
+		include("$_PJ_root/templates/note.ihtml.php");
 		exit;
 	}
 
@@ -42,7 +42,7 @@
 		// Fix: Add isset check for array key 'be' to prevent array offset warning
 		$be_value = isset($shown['be']) ? $shown['be'] : false;
 		$efforts = new EffortList($customer, $project, $_PJ_auth, $be_value);
-		include("$_PJ_root/templates/statistic/effort/pdf.ihtml");
+		include("$_PJ_root/templates/statistic/effort/pdf.ihtml.php");
 		exit;
 	}
 
@@ -53,7 +53,7 @@
 	if(!empty($pid)) {
 		$center_title		= $GLOBALS['_PJ_strings']['statistics'] . ': ' . $GLOBALS['_PJ_strings']['effort_for'] . " '" . $project->giveValue('project_name') . "'";
 	}
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

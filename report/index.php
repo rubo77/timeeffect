@@ -33,13 +33,13 @@
 	if(!isset($report)) {
 		$customers = new CustomerList($_PJ_auth, @$shown['ic']);
 		$projects = new ProjectList($customer, $_PJ_auth, isset($shown['cp']) ? $shown['cp'] : false, 0);
-		include("$_PJ_root/templates/edit.ihtml");
+		include("$_PJ_root/templates/edit.ihtml.php");
 		exit;
 	} elseif(!$syear || !$eyear) {
-		include("$_PJ_root/templates/edit.ihtml");
+		include("$_PJ_root/templates/edit.ihtml.php");
 		exit;
 	} elseif(!empty($pdf)) {
-		include("$_PJ_root/templates/statistic/pdf/list.ihtml");
+		include("$_PJ_root/templates/statistic/pdf/list.ihtml.php");
 		exit;
 	}
 
@@ -62,7 +62,7 @@
 	}
 
 	$statistic->loadTime("$syear-$smonth-$sday", "$eyear-$emonth-$eday", $mode);
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

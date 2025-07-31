@@ -12,7 +12,7 @@
 
 	if(!$_PJ_auth->checkPermission('admin')) {
 		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -32,7 +32,7 @@
 		}
 		if(!($pfile = @fopen($_PJ_include_path . '/pdflayout.inc.php', 'w'))) {
 			$error_message		= "$_PJ_include_path/pdflayout.inc.php:<br>" . $GLOBALS['_PJ_strings']['error_fopen'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -40,6 +40,6 @@
 		fclose($pfile);
 		include($_PJ_include_path . '/pdflayout.inc.php');
 	}
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

@@ -15,7 +15,7 @@
 		debugLog('PASSWORD_RESET_ERROR', 'Column reset_token does not exist in ' . $GLOBALS['_PJ_auth_table']);
 		// Skip the update and show error to user
 		$error_message = 'Database schema not up to date. Please run migrations.';
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -23,7 +23,7 @@
 	// Check if password recovery is enabled
 	if (!isset($_PJ_allow_password_recovery) || !$_PJ_allow_password_recovery) {
 		$error_message = $GLOBALS['_PJ_strings']['not_implemented'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -69,7 +69,7 @@
 					
 					$success_message = $GLOBALS['_PJ_strings']['password_reset_success'];
 					$center_template = ''; // additional template content for the notification
-					include("$_PJ_root/templates/note.ihtml");
+					include("$_PJ_root/templates/note.ihtml.php");
 					include_once("$_PJ_include_path/degestiv.inc.php");
 					exit;
 					}
@@ -165,7 +165,7 @@
 			exit;
 		} else {
 			$error_message = $GLOBALS['_PJ_strings']['password_reset_error'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -188,7 +188,7 @@
 			$wait_seconds = 10 - ($current_time - $last_request_time);
 			debugLog('PASSWORD_RESET_RATE_LIMIT', 'Rate limit exceeded for email: ' . $email . ' - must wait ' . $wait_seconds . ' seconds');
 			$error_message = 'Please wait ' . $wait_seconds . ' seconds before requesting another password reset.';
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -247,7 +247,7 @@
 		// Always show success message to prevent email enumeration
 		$success_message = $GLOBALS['_PJ_strings']['password_reset_sent'];
 		$center_template = ''; // additional template content for the notification
-		include("$_PJ_root/templates/note.ihtml");
+		include("$_PJ_root/templates/note.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}

@@ -99,7 +99,7 @@ if($step == 3) {
 if(!empty($error_message)) {
 	print '<span class="errorMessage"><b>ERROR: ' . $error_message . '</b></span><br><br>';
 }
-include("step$step.ihtml"); //step1 till step4
+include("step$step.ihtml.php"); //step1 till step4
 ?>
 				</TD>
 <!-- END - content -->

@@ -7,7 +7,7 @@
 	if(!isset($_SESSION['switched_by_admin']) || !$_SESSION['switched_by_admin'] || 
 	   !isset($_SESSION['original_admin_id'])) {
 		$error_message = 'Not logged in via admin switch';
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -18,7 +18,7 @@
 	$admin_user = new User($original_admin_id);
 	if(!$admin_user->giveValue('id')) {
 		$error_message = 'Original admin user not found';
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}

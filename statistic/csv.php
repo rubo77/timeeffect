@@ -15,7 +15,7 @@
 	$project	= new Project($customer, $_PJ_auth, $pid);
 
 	$center_template	= "statistic/csv";
-	include("$_PJ_root/templates/statistic/csv/list.ihtml");
+	include("$_PJ_root/templates/statistic/csv/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

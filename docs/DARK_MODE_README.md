@@ -37,14 +37,14 @@ This implementation adds comprehensive dark mode support to the TimeEffect appli
 - `js/theme.js` - Theme management JavaScript class
 - `user/settings.php` - User settings page with theme preferences
 - `user/save-theme.php` - AJAX endpoint for theme preference saving
-- `templates/user/settings.ihtml` - User settings page template
+- `templates/user/settings.ihtml.php` - User settings page template
 - `sql/add_theme_support.sql` - Database migration for theme preferences
 - `dark-mode-demo.html` - Demonstration page (can be removed)
 
 ### Modified Files
 - `css/modern.css` - Enhanced with comprehensive dark mode CSS
-- `templates/*.ihtml` - All main templates updated with theme JavaScript
-- `templates/shared/topnav.ihtml` - Added theme toggle button and settings link
+- `templates/*.ihtml.php` - All main templates updated with theme JavaScript
+- `templates/shared/topnav.ihtml.php` - Added theme toggle button and settings link
 
 ## Database Changes
 

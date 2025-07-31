@@ -1,0 +1,37 @@
+<!-- inventory/customer/row.ihtml - START -->
+	<TR>
+		<TD COLSPAN="10"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/gray.gif" WIDTH="100%" HEIGHT="1" BORDER="0" ALIGN="absmiddle"></TD>
+	</TR><TR HEIGHT="25">
+		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php
+		if($customer->count() && $customer->checkUserAccess('read')) {
+			if(isset($expanded) && (!empty($expanded['cid'][$customer->giveValue('id')]) || !empty($expanded['cid']['all']))) {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&coc=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-d.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			} else {
+		?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?cid=".@$cid.'&pid='.@$pid.'&eid='.@$eid."&exc=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/triangle-l.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"></A><?php
+			}
+		} else {
+		?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_image_path'])) echo $GLOBALS['_PJ_image_path'] ?>/abstand.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle"><?php
+		}
+		?>&nbsp;<?php if($customer->checkUserAccess('write')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?edit=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $customer->giveValue('customer_name') ?></A><?php } else { ?><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/customer<?php if($customer->giveValue('active') == 'no') print 'i' ?>.gif" BORDER="0" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?= $customer->giveValue('customer_name') ?><?php } ?></TD>
+		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>">&nbsp;</TD>
+		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if($customer->checkUserAccess('new')) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?new=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/project.gif" BORDER="0" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['create'])) echo $GLOBALS['_PJ_strings']['create'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['create'])) echo $GLOBALS['_PJ_strings']['create'] ?></A><?php } ?></TD>
+		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php
+if($customer->count()) {
+	?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_projects_inventory_script'] . "?list=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/list.gif" BORDER="0" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['overview'])) echo $GLOBALS['_PJ_strings']['overview'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['overview'])) echo $GLOBALS['_PJ_strings']['overview'] ?></A><?php
+} else { ?>&nbsp;<?php
+} ?></TD>
+		<TD CLASS="list<?php if(isset($rowclass)) echo $rowclass; ?>"><?php if($customer->checkUserAccess('write') && ($_PJ_auth->checkPermission('admin') || $GLOBALS['_PJ_agents_allow_delete'])) { ?><A CLASS="list" HREF="<?= $GLOBALS['_PJ_customer_inventory_script'] . "?delete=1&cid=" . $customer->giveValue('id') ?>"><IMG SRC="<?php if(!empty($GLOBALS['_PJ_icon_path'])) echo $GLOBALS['_PJ_icon_path'] ?>/delete.gif" BORDER="0" ALT="<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?>" WIDTH="16" HEIGHT="16" ALIGN="absmiddle">&nbsp;<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?></A><?php } ?></TD>
+	</TR><?php
+	if(!empty($expanded['cid'][$customer->giveValue('id')])) {
+		$projects	= new ProjectList($customer, $customer->user);
+		while($projects->nextProject()) {
+			$project = $projects->giveProject();
+			$row_class = !$row_class;
+			if(!empty($expanded['cid']['all'])) {
+				$expanded['pid'][$project->giveValue('id')] = 1;
+			}
+			include("$_PJ_root/templates/inventory/customer/project/row.ihtml.php");
+		}
+	}
+	?>
+<!-- inventory/customer/row.ihtml - END -->

@@ -64,7 +64,7 @@
 	if(isset($new)) {
 		if(!$_PJ_auth->checkPermission('admin') && !intval($_PJ_auth->giveValue('allow_nc'))) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -76,14 +76,14 @@
 		}
 		
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_customer'];
-		include("$_PJ_root/templates/add.ihtml");
+		include("$_PJ_root/templates/add.ihtml.php");
 		exit;
 	}
 
 	if(isset($edit)) {
 		if($cid && !$customer->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -111,11 +111,11 @@
 				unset($rates);
 				$center_template	= "inventory/customer/rates";
 				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_rate'];
-				include("$_PJ_root/templates/edit.ihtml");
+				include("$_PJ_root/templates/edit.ihtml.php");
 			} else {
 				$center_template	= "inventory/customer/rates";
 				$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_rate'];
-				include("$_PJ_root/templates/edit.ihtml");
+				include("$_PJ_root/templates/edit.ihtml.php");
 			}
 			exit;
 		} else {
@@ -218,7 +218,7 @@
 			}
 			$center_template	= "inventory/customer";
 			$center_title		= $GLOBALS['_PJ_strings']['edit_customer'];
-			include("$_PJ_root/templates/edit.ihtml");
+			include("$_PJ_root/templates/edit.ihtml.php");
 		}
 		exit;
 	}
@@ -226,7 +226,7 @@
 	if(isset($delete) && !isset($cancel)) {
 		if(!$customer->checkUserAccess('write') || (!$_PJ_auth->checkPermission('accountant') && !$GLOBALS['_PJ_agents_allow_delete'])) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -235,7 +235,7 @@
 		} else {
 			$center_template	= "inventory/customer";
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['customer'] . " '" . $customer->giveValue('customer_name') . "' " . $GLOBALS['_PJ_strings']['action_delete'];
-			include("$_PJ_root/templates/delete.ihtml");
+			include("$_PJ_root/templates/delete.ihtml.php");
 			exit;
 		}
 	}
@@ -244,6 +244,6 @@
 	$center_template	= "inventory/customer";
 	$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['customer_list'];
 
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

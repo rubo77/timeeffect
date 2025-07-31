@@ -1,0 +1,33 @@
+<!-- group/delete.ihtml - START -->
+<?php
+	if(isset($group) && is_object($group)) {
+		$uid				= $group->giveValue('id');
+		$name				= $group->giveValue('name');
+		include($GLOBALS['_PJ_root'] . '/templates/group/options/delete.ihtml.php');
+	} else {
+		return;
+	}
+?>
+	<FORM ACTION="<? print $GLOBALS['_PJ_group_script']; ?>" METHOD="<?php if(!empty($GLOBALS['_PJ_form_method'])) echo $GLOBALS['_PJ_form_method']; ?>">
+	<INPUT TYPE="hidden" NAME="gid" VALUE="<?php if(isset($gid)) echo $gid; ?>">
+	<INPUT TYPE="hidden" NAME="delete" VALUE="1">
+	<CENTER>
+	<TABLE	WIDTH="90%"
+			BORDER="<?php print($_PJ_inner_frame_border); ?>"
+			CELLPADDING="<?php print($_PJ_inner_frame_cellpadding); ?>"
+			CELLSPACING="<?php print($_PJ_inner_frame_cellspacing ); ?>">
+		<TR>
+			<TD CLASS="content">
+			<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+				<TR>
+					<TD CLASS="MessageAsk" COLSPAN="2"><?php if(!empty($GLOBALS['_PJ_strings']['ask_group_delete'])) echo $GLOBALS['_PJ_strings']['ask_group_delete'] ?></TD>
+				</TR><TR>
+					<TD ALIGN="left"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="cancel" VALUE="<< <?php if(!empty($GLOBALS['_PJ_strings']['cancel'])) echo $GLOBALS['_PJ_strings']['cancel'] ?>"></TD>
+					<TD ALIGN="right"><INPUT CLASS="FormSubmit" TYPE="SUBMIT" NAME="confirm" VALUE="<?php if(!empty($GLOBALS['_PJ_strings']['delete'])) echo $GLOBALS['_PJ_strings']['delete'] ?> >>"></TD>
+				</TR>
+			</TABLE></TD>
+		</TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+<!-- group/delete.ihtml - END -->

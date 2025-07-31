@@ -68,18 +68,18 @@
 	if(isset($new)) {
 		if(!$customer->checkUserAccess('new')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_project'];
-		include("$_PJ_root/templates/add.ihtml");
+		include("$_PJ_root/templates/add.ihtml.php");
 		exit;
 	}
 	if(isset($edit)) {
 		if($pid && !$project->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -139,7 +139,7 @@
 		} else {
 			$project_id 		= $pid;
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_project'];
-			include("$_PJ_root/templates/edit.ihtml");
+			include("$_PJ_root/templates/edit.ihtml.php");
 			exit;
 		}
 	}
@@ -147,7 +147,7 @@
 	if(isset($delete) && !isset($cancel)) {
 		if(!$project->checkUserAccess('write') || (!$_PJ_auth->checkPermission('accountant') && !$GLOBALS['_PJ_agents_allow_delete'])) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -156,14 +156,14 @@
 			$list = 1;
 		} else {
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['project'] . " '" . $project->giveValue('project_name') . "' " . $GLOBALS['_PJ_strings']['action_delete'];
-			include("$_PJ_root/templates/delete.ihtml");
+			include("$_PJ_root/templates/delete.ihtml.php");
 			exit;
 		}
 	}
 
 	if($cid && !$customer->checkUserAccess('read')) {
 		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
@@ -182,7 +182,7 @@
 		debugLog("LOG_TITLE_GENERATION", "Generating title for all projects view");
 		$center_title = $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['project_list'];
 	}
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

@@ -73,7 +73,7 @@
 	$form_action = $GLOBALS['_PJ_own_user_script'];
 	$user			= $_PJ_auth;
 	$center_title	= $GLOBALS['_PJ_strings']['edit_user'];
-	include("$_PJ_root/templates/edit.ihtml");
+	include("$_PJ_root/templates/edit.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

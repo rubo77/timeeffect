@@ -32,11 +32,11 @@
 
 	if(isset($pdf)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth, $shown['be']);
-		include("$_PJ_root/templates/statistic/project/pdf.ihtml");
+		include("$_PJ_root/templates/statistic/project/pdf.ihtml.php");
 		exit;
 	}
 
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

@@ -106,14 +106,14 @@
 		// Check if effort object exists (eid parameter required)
 		if(!$effort) {
 			$error_message = 'Error: No effort ID specified for stop operation.';
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
 		
 		if($eid && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -151,7 +151,7 @@
 	if(!empty($cont)) {
 		if($eid && !$project->checkUserAccess('new')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -161,7 +161,7 @@
 
 	if(isset($new)) {
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['new_effort'];
-		include("$_PJ_root/templates/add.ihtml");
+		include("$_PJ_root/templates/add.ihtml.php");
 		exit;
 	}
 
@@ -169,7 +169,7 @@
 		// Check access only for existing efforts (when editing)
 		if($eid && $effort && !$effort->checkUserAccess('write')) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -496,27 +496,27 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 			$list = 1;
 		} else {
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['edit_effort'];
-			include("$_PJ_root/templates/edit.ihtml");
+			include("$_PJ_root/templates/edit.ihtml.php");
 			exit;
 		}
 	}
 
 	if(isset($detail)) {
 		$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $effort->giveValue('description');
-		include("$_PJ_root/templates/note.ihtml");
+		include("$_PJ_root/templates/note.ihtml.php");
 		exit;
 	}
 
 	if(isset($pdf)) {
 		$efforts = new EffortList($customer, $project, $_PJ_auth, $shown['be']);
-		include("$_PJ_root/templates/effort/pdf.ihtml");
+		include("$_PJ_root/templates/effort/pdf.ihtml.php");
 		exit;
 	}
 
 	if(isset($delete) && !isset($cancel)) {
 		if(!$effort->checkUserAccess('write') || (!$_PJ_auth->checkPermission('accountant') && !$GLOBALS['_PJ_agents_allow_delete'])) {
 			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-			include("$_PJ_root/templates/error.ihtml");
+			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
@@ -526,7 +526,7 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 			$list = 1;
 		} else {
 			$center_title		= $GLOBALS['_PJ_strings']['inventory'] . ': ' . $GLOBALS['_PJ_strings']['effort'] . " '" . $effort->giveValue('description') . "' " . $GLOBALS['_PJ_strings']['action_delete'];
-			include("$_PJ_root/templates/delete.ihtml");
+			include("$_PJ_root/templates/delete.ihtml.php");
 			exit;
 		}
 	}
@@ -535,7 +535,7 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 	if($pid && $project && !$project->checkUserAccess('read')) {
 		debugLog("LOG_PROJECT_ACCESS", "Access denied for project $pid by user " . $_PJ_auth->giveValue('id'));
 		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
-		include("$_PJ_root/templates/error.ihtml");
+		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	} elseif ($pid && !$project) {
@@ -574,7 +574,7 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 		echo '</div>';
 	}
 	
-	include("$_PJ_root/templates/list.ihtml");
+	include("$_PJ_root/templates/list.ihtml.php");
 
 	include_once("$_PJ_include_path/degestiv.inc.php");
 ?>

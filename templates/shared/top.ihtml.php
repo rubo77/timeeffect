@@ -1,0 +1,12 @@
+<TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%">
+
+	<TR HEIGHT="50">
+
+		<TD CLASS="mainOptionFrame" VALIGN="bottom"><?php include("$_PJ_root/templates/shared/main-options.ihtml.php"); ?></TD>
+
+		<TD CLASS="topNav" VALIGN="bottom" ALIGN="right"><?php include("$_PJ_root/templates/shared/topnav.ihtml.php"); ?></TD>
+
+	</TR>
+
+</TABLE>
+
