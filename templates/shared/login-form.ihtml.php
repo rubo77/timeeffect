@@ -65,7 +65,7 @@ if(!empty($GLOBALS['login_lockout'])) {
 			</p>
 		</div>
 <?php
-} elseif (!empty($GLOBALS['username']) && !empty($GLOBALS['_PJ_strings']['login_error_msg'])) {
+} elseif (!empty($GLOBALS['username']) && !empty($GLOBALS['_PJ_strings']['login_error_msg']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 		<div class="alert alert-danger" style="margin: 1rem 0; padding: 1rem; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 0.25rem; color: #721c24;">
 			<?php echo $GLOBALS['_PJ_strings']['login_error_msg'] ?>
