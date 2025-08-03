@@ -2,8 +2,8 @@
 <div class="topnav-modern" style="display: flex; align-items: center; gap: 0.75rem; justify-content: flex-end;">
 	<?php if(isset($_PJ_auth) && is_object($_PJ_auth) && $_PJ_auth->checkPermission('agent')) { ?>
 	<!-- Action buttons -->
-	<button id="start-anything-btn" class="topNav-btn start-anything-btn" onclick="startAnything()" title="<?php echo $GLOBALS['_PJ_strings']['start_activity_title']; ?>">▶</button>
-	<button id="stop-all-btn" class="topNav-btn stop-all-btn" onclick="stopAllActivities()" title="<?php echo $GLOBALS['_PJ_strings']['stop_all_activities_title']; ?>">🛑</button>
+	<a href="/inventory/efforts.php?new=1" id="start-anything-btn" class="topNav-btn start-anything-btn nav-link-button" title="<?php echo $GLOBALS['_PJ_strings']['start_activity_title']; ?>">▶</a>
+	<a href="/inventory/efforts.php?stop_all=1" id="stop-all-btn" class="topNav-btn stop-all-btn nav-link-button" title="<?php echo $GLOBALS['_PJ_strings']['stop_all_activities_title']; ?>" onclick="return confirm('Möchten Sie wirklich alle laufenden Aktivitäten stoppen?')">🛑</a>
 	<?php } ?>
 
 	<!-- Theme toggle -->

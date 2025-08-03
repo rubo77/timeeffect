@@ -1,33 +1,8 @@
 <!-- add.ihtml - START -->
 <?php
-// Get user theme preference for data-theme attribute
-$user_theme = 'system'; // default
-if(isset($_PJ_auth) && is_object($_PJ_auth) && method_exists($_PJ_auth, 'giveValue')) {
-    $theme_pref = $_PJ_auth->giveValue('theme_preference');
-    if(!empty($theme_pref)) {
-        $user_theme = $theme_pref;
-    }
-}
+// Include unified header
+include_once(__DIR__ . '/shared/header.ihtml.php');
 ?>
-<HTML<?php if($user_theme !== 'system') echo ' data-theme="' . htmlspecialchars($user_theme) . '"'; ?>>
-<HEAD>
-<TITLE>TIMEEFFECT - <?= $center_title; ?></TITLE>
-<!-- Mobile viewport and PWA meta tags for Phase 1 mobile optimization -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#007bff">
-<!-- Original CSS -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/project.css" TYPE="text/css">
-<!-- Responsive CSS for mobile optimization -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/responsive.css" TYPE="text/css">
-<!-- Modern UI Design Framework -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/modern.css" TYPE="text/css">
-<!-- Modern Layout System -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/layout.css" TYPE="text/css">
-</HEAD>
-<SCRIPT LANGUAGE="Javascript1.2" SRC="<?php print $_PJ_http_root; ?>/include/functions.js" type="text/javascript"></SCRIPT>
 
 <BODY>
 

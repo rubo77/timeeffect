@@ -128,6 +128,18 @@
 	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Verbleibende Versuche';
 	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Ihr Konto wird nach zu vielen fehlgeschlagenen Versuchen vorübergehend gesperrt.';
 	
+	// Template message headers
+	$GLOBALS['_PJ_strings']['success']					= 'Erfolg';
+	$GLOBALS['_PJ_strings']['error']					= 'Fehler';
+	$GLOBALS['_PJ_strings']['information']				= 'Information';
+	$GLOBALS['_PJ_strings']['no_message_to_display']	= 'Keine Nachricht anzuzeigen';
+	
+	// Activity stop messages
+	$GLOBALS['_PJ_strings']['activities_stopped']		= 'Aktivitäten gestoppt';
+	$GLOBALS['_PJ_strings']['no_activities_stopped']	= 'Es wurden keine Aktivitäten gestoppt.';
+	$GLOBALS['_PJ_strings']['one_activity_stopped']		= 'Es wurde 1 Aktivität gestoppt.';
+	$GLOBALS['_PJ_strings']['multiple_activities_stopped'] = 'Es wurden %d Aktivitäten gestoppt.';
+	
 	// Registration and password recovery strings
 	$GLOBALS['_PJ_strings']['register']					= 'Registrieren';
 	$GLOBALS['_PJ_strings']['register_new_account']		= 'Neues Konto registrieren';

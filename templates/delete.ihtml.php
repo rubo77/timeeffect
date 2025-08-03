@@ -1,16 +1,8 @@
 <!-- delete.ihtml - START -->
-<HTML>
-<HEAD>
-<TITLE>TIMEEFFECT - <?= $center_title; ?></TITLE>
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/project.css" TYPE="text/css">
-<!-- Modern UI Design Framework -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/modern.css" TYPE="text/css">
-<!-- Modern Layout System -->
-<LINK REL="stylesheet" HREF="<?php print $_PJ_css_path; ?>/layout.css" TYPE="text/css">
-</HEAD>
-<SCRIPT LANGUAGE="Javascript1.2" SRC="<?php print $_PJ_http_root; ?>/include/functions.js" type="text/javascript"></SCRIPT>
-
-<BODY>
+<?php
+// Include unified header
+include_once(__DIR__ . '/shared/header.ihtml.php');
+?>
 <script>
 // Initialize user theme preference from PHP
 (function() {

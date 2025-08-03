@@ -1,7 +1,4 @@
 <?php
-	// Start output buffering to prevent "headers already sent" errors
-	ob_start();
-	
     require_once(__DIR__ . "/../bootstrap.php"); // Modern PHP 8.4 compatibility
 	include_once("../include/config.inc.php");
 	include_once($_PJ_include_path . '/scripts.inc.php');
@@ -33,29 +30,16 @@
 			}
 		}
 		
-		// Show success message or redirect
-		$success_message = "Es wurden $stopped_count Aktivitäten gestoppt.";
-		// Redirect to customer list after stopping all
-		$redirect_url = $GLOBALS['_PJ_customer_inventory_script'] . "?message=" . urlencode($success_message);
-		?><html>
-			<head>
-				<title>Stop</title>
-				<meta http-equiv="refresh" content="5;url=<?php echo $redirect_url ?>">
-				<style>
-					.success-message {
-						font-size: 1.5rem;
-						font-weight: bold;
-						color: #222;
-					}
-				</style>
-			</head>
-			<body>
-			<span class="success-message">
-				<a href="<?php echo $redirect_url ?>">
-					<?php echo $success_message; ?>
-				</a>
-			</span>
-		</body></html><?php
+		$redirect_url = $GLOBALS['_PJ_customer_inventory_script'];
+		$favicon = '/images/stop.png';
+		// Use modern template structure
+		$center_title = $GLOBALS['_PJ_strings']['activities_stopped'];
+		if ($stopped_count==0) $info_message = $GLOBALS['_PJ_strings']['no_activities_stopped'];
+		else if ($stopped_count==1) $success_message = $GLOBALS['_PJ_strings']['one_activity_stopped'];
+		else $success_message = sprintf($GLOBALS['_PJ_strings']['multiple_activities_stopped'], $stopped_count);
+
+		include("$_PJ_root/templates/note.ihtml.php");
+		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;
 	}
 	$pid = $_REQUEST['pid'] ?? null;
@@ -106,13 +90,15 @@
 		// Check if effort object exists (eid parameter required)
 		if(!$effort) {
 			$error_message = 'Error: No effort ID specified for stop operation.';
+			$center_title = $GLOBALS['_PJ_strings']['error'];
 			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
 		}
 		
 		if($eid && !$effort->checkUserAccess('write')) {
-			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			$error_message = $GLOBALS['_PJ_strings']['error_access'];
+			$center_title = $GLOBALS['_PJ_strings']['error'];
 			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
@@ -150,7 +136,8 @@
 
 	if(!empty($cont)) {
 		if($eid && !$project->checkUserAccess('new')) {
-			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			$error_message = $GLOBALS['_PJ_strings']['error_access'];
+			$center_title = $GLOBALS['_PJ_strings']['error'];
 			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
@@ -168,7 +155,8 @@
 	if(isset($edit)) {
 		// Check access only for existing efforts (when editing)
 		if($eid && $effort && !$effort->checkUserAccess('write')) {
-			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			$error_message = $GLOBALS['_PJ_strings']['error_access'];
+			$center_title = $GLOBALS['_PJ_strings']['error'];
 			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
@@ -490,8 +478,8 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 			// Redirect with success message only when createing a new efford
 			if($is_new_entry) {
 				$redirect_url = $_SERVER['PHP_SELF'] . "?message=" . urlencode($success_message);
-			header("Location: $redirect_url");
-			exit;
+				header("Location: $redirect_url");
+				exit;
 			}
 			$list = 1;
 		} else {
@@ -515,7 +503,8 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 
 	if(isset($delete) && !isset($cancel)) {
 		if(!$effort->checkUserAccess('write') || (!$_PJ_auth->checkPermission('accountant') && !$GLOBALS['_PJ_agents_allow_delete'])) {
-			$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+			$error_message = $GLOBALS['_PJ_strings']['error_access'];
+			$center_title = $GLOBALS['_PJ_strings']['error'];
 			include("$_PJ_root/templates/error.ihtml.php");
 			include_once("$_PJ_include_path/degestiv.inc.php");
 			exit;
@@ -534,7 +523,8 @@ debugLog("LOG_EFFORT_AUTOASSIGN", "Cleaned description after p<ID>: '" . $cleane
 	// LOG_PROJECT_ACCESS: Check project object before accessing checkUserAccess method
 	if($pid && $project && !$project->checkUserAccess('read')) {
 		debugLog("LOG_PROJECT_ACCESS", "Access denied for project $pid by user " . $_PJ_auth->giveValue('id'));
-		$error_message		= $GLOBALS['_PJ_strings']['error_access'];
+		$error_message = $GLOBALS['_PJ_strings']['error_access'];
+		$center_title = $GLOBALS['_PJ_strings']['error'];
 		include("$_PJ_root/templates/error.ihtml.php");
 		include_once("$_PJ_include_path/degestiv.inc.php");
 		exit;

@@ -122,6 +122,18 @@
 	$GLOBALS['_PJ_strings']['remaining_attempts']		= 'Remaining attempts';
 	$GLOBALS['_PJ_strings']['lockout_warning']			= 'Your account will be temporarily locked after too many failed attempts.';
 	
+	// Template message headers
+	$GLOBALS['_PJ_strings']['success']					= 'Success';
+	$GLOBALS['_PJ_strings']['error']					= 'Error';
+	$GLOBALS['_PJ_strings']['information']				= 'Information';
+	$GLOBALS['_PJ_strings']['no_message_to_display']	= 'No message to display';
+	
+	// Activity stop messages
+	$GLOBALS['_PJ_strings']['activities_stopped']		= 'Activities stopped';
+	$GLOBALS['_PJ_strings']['no_activities_stopped']	= 'No activities were stopped.';
+	$GLOBALS['_PJ_strings']['one_activity_stopped']		= '1 activity was stopped.';
+	$GLOBALS['_PJ_strings']['multiple_activities_stopped'] = '%d activities were stopped.';
+	
 	// Registration and password recovery strings
 	$GLOBALS['_PJ_strings']['register']					= 'Register';
 	$GLOBALS['_PJ_strings']['register_new_account']		= 'Register new account';

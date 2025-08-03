@@ -1,39 +1,11 @@
 <?php
 	include_once($GLOBALS['_PJ_include_path'] . '/scripts.inc.php');
 ?>
-<!-- list.ihtml - START -->
-<HTML>
-<HEAD>
-<TITLE>TIMEEFFECT - Login</TITLE>
-<!-- Mobile viewport and PWA meta tags for Phase 1 mobile optimization -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#007bff">
-<!-- Original CSS -->
-<LINK REL="stylesheet" HREF="<?= $GLOBALS['_PJ_css_path']; ?>/project.css" TYPE="text/css">
-<!-- Responsive CSS for mobile optimization -->
-<LINK REL="stylesheet" HREF="<?= $GLOBALS['_PJ_css_path']; ?>/responsive.css" TYPE="text/css">
-<!-- Modern UI Design Framework -->
-<LINK REL="stylesheet" HREF="<?= $GLOBALS['_PJ_css_path']; ?>/modern.css" TYPE="text/css">
-<!-- Modern Layout System -->
-<LINK REL="stylesheet" HREF="<?= $GLOBALS['_PJ_css_path']; ?>/layout.css" TYPE="text/css">
-<SCRIPT LANGUAGE="Javascript1.2" SRC="<?= $GLOBALS['_PJ_http_root']; ?>/include/functions.js" type="text/javascript"></SCRIPT>
-<SCRIPT language="Javascript1.2">
-<!--
-function sf(){
-	if(document.forms[0].username.value == '')
-		document.forms[0].username.focus();
-	else
-		document.forms[0].password.focus();
-}
-
-//-->
-</SCRIPT>
-</HEAD>
-
-<BODY CLASS="login-page" onLoad='sf()'>
+<!-- login.ihtml - START -->
+<?php
+// Include unified header
+include_once(__DIR__ . '/../shared/header.ihtml.php');
+?>
 <TABLE CELLPADDING="0" CELLSPACING="0" BORDER="0" WIDTH="100%" HEIGHT="100%">
 	<TR HEIGHT="50">
 <!-- START - left navigation -->
