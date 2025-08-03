@@ -1,6 +1,20 @@
 <!-- inventory/effort/form.ihtml - START -->
 <?php
 
+	// Check if there are existing efforts with non-5-divisible minutes
+	$show_all_minutes = false;
+	if ($customer_id > 0) {
+		$db = new Database();
+		$query = "SELECT COUNT(*) as count FROM effort WHERE customer = ? AND (MINUTE(date) % 5 != 0 OR MINUTE(end) % 5 != 0)";
+		$stmt = $db->prepare($query);
+		$stmt->bind_param('i', $customer_id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		$show_all_minutes = ($row['count'] > 0);
+		debugLog("LOG_MINUTE_CHECK", "Customer ID: $customer_id, Non-5-divisible minutes found: " . ($show_all_minutes ? 'yes' : 'no'));
+	}
+
 	$a_gids						= $_PJ_auth->gids;
 	if($_PJ_auth->checkPermission('admin')) {
 		$u_gids						= @array_keys($a_gids);
@@ -304,23 +318,40 @@
 					?>
 					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('hour', 1)">+</button>
 
-					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('minute', -1)">−</button>
+					<button type="button" class="time-btn time-btn-minus" onclick="adjustTime('minute', <?= $show_all_minutes ? -1 : -5 ?>)">−</button>
 					<SELECT CLASS="FormSelect time-field time-minute" NAME="minute" title="<?php if(!empty($GLOBALS['_PJ_strings']['minute'])) echo $GLOBALS['_PJ_strings']['minute'] ?>">
 					<?php
 					    // ############# Beginn: minute
 						$a_minute = $minute;
 						if(empty($minute)) {
-							$a_minute = date("i");
+							$current_minute = date("i");
+							// Round to nearest 5-minute step if not showing all minutes
+							if (!$show_all_minutes) {
+								$a_minute = round($current_minute / 5) * 5;
+							} else {
+								$a_minute = $current_minute;
+							}
 						}
 	
-						for($i=0; $i < 60; $i++) {
-							print "<OPTION ";
-							if($a_minute == $i)
-								print " SELECTED";
-							printf(" VALUE='%02d'>%02d", $i, $i);
+						if ($show_all_minutes) {
+							// Show all minutes (0-59) if non-5-divisible minutes exist
+							for($i=0; $i < 60; $i++) {
+								print "<OPTION ";
+								if($a_minute == $i)
+									print " SELECTED";
+								printf(" VALUE='%02d'>%02d", $i, $i);
+							}
+						} else {
+							// Show only 5-minute steps (0, 5, 10, 15, ..., 55)
+							for($i=0; $i < 60; $i += 5) {
+								print "<OPTION ";
+								if($a_minute == $i)
+									print " SELECTED";
+								printf(" VALUE='%02d'>%02d", $i, $i);
+							}
 						}
 					?>
-					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('minute', 1)">+</button>
+					</SELECT><button type="button" class="time-btn time-btn-plus" onclick="adjustTime('minute', <?= $show_all_minutes ? 1 : 5 ?>)">+</button>
 					</TD>
 				</TR><TR>
 					<TD CLASS="FormFieldName"></TD>
@@ -642,9 +673,13 @@ function adjustTime(fieldName, increment) {
 		if (newValue < 0) newValue = 23;
 		if (newValue > 23) newValue = 0;
 	} else if (fieldName === 'minute') {
-		// Minutes: 0-59 (for start time)
-		if (newValue < 0) newValue = 59;
+		// Minutes: 0-59 (for start time) or 5-minute steps
+		if (newValue < 0) newValue = 55; // Go to 55 when going below 0
 		if (newValue > 59) newValue = 0;
+		// If increment is 5 or -5, ensure it's a valid 5-minute step
+		if (Math.abs(increment) === 5 && newValue % 5 !== 0) {
+			newValue = Math.round(newValue / 5) * 5;
+		}
 	} else if (fieldName === 'minutes') {
 		// Minutes: 0,5,10,15...55,59 (for duration, 5-minute steps)
 		if (newValue < 0) newValue = 59;
