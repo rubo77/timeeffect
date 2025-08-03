@@ -5,7 +5,7 @@
  */
 
 // Define the templates directory
-$templates_dir = __DIR__ . '/../templates';
+$templates_dir = __DIR__ . '/../../templates';
 
 // Find all .ihtml.php files
 function findTemplateFiles($dir) {
@@ -36,22 +36,46 @@ function updateTemplateFile($filepath) {
     $depth = substr_count(str_replace($GLOBALS['templates_dir'], '', $relative_path), '/');
     $include_path = str_repeat('../', $depth) . 'shared/header.ihtml.php';
     
-    // Pattern 1: Basic HTML header with HEAD section
-    $pattern1 = '/<!-- .*? - START -->\s*(?:<\?php[^>]*?\?>)?\s*<HTML[^>]*>\s*<HEAD>.*?<\/HEAD>\s*(?:<SCRIPT[^>]*>.*?<\/SCRIPT>\s*)*\s*<BODY[^>]*>/s';
+    // Skip files that already use the unified header
+    if (strpos($content, 'shared/header.ihtml.php') !== false) {
+        return false;
+    }
     
+    $comment_name = basename($filepath, '.ihtml.php');
+    $replacement = "<!-- $comment_name - START -->\n<?php\n// Include unified header\ninclude_once(__DIR__ . '/$include_path');\n?>";
+    
+    // Pattern 1: Complete header with PHP theme logic
+    $pattern1 = '/<!-- .*? - START -->\s*<\?php\s*\/\/ Get user theme preference.*?\?>\s*<HTML[^>]*>\s*<HEAD>.*?<\/HEAD>\s*<SCRIPT[^>]*>.*?<\/SCRIPT>/s';
     if (preg_match($pattern1, $content)) {
-        $replacement = "<!-- " . basename($filepath, '.php') . " - START -->\n<?php\n// Include unified header\ninclude_once(__DIR__ . '/$include_path');\n?>";
         $content = preg_replace($pattern1, $replacement, $content);
         $updated = true;
     }
     
-    // Pattern 2: PHP block followed by HTML
-    $pattern2 = '/<!-- .*? - START -->\s*<\?php\s+.*?\?\>\s*<HTML[^>]*>\s*<HEAD>.*?<\/HEAD>\s*(?:<SCRIPT[^>]*>.*?<\/SCRIPT>\s*)*\s*<BODY[^>]*>/s';
+    // Pattern 2: Simple HTML header without PHP
+    if (!$updated) {
+        $pattern2 = '/<!-- .*? - START -->\s*<HTML[^>]*>\s*<HEAD>.*?<\/HEAD>\s*(?:<SCRIPT[^>]*>.*?<\/SCRIPT>\s*)?(?=<BODY|\s*<BODY)/s';
+        if (preg_match($pattern2, $content)) {
+            $content = preg_replace($pattern2, $replacement, $content);
+            $updated = true;
+        }
+    }
     
-    if (!$updated && preg_match($pattern2, $content)) {
-        $replacement = "<!-- " . basename($filepath, '.php') . " - START -->\n<?php\n// Include unified header\ninclude_once(__DIR__ . '/$include_path');\n?>";
-        $content = preg_replace($pattern2, $replacement, $content);
-        $updated = true;
+    // Pattern 3: Header with empty lines and variations
+    if (!$updated) {
+        $pattern3 = '/<!-- .*? - START -->\s*\n*\s*<HTML[^>]*>\s*\n*\s*<HEAD>.*?<\/HEAD>\s*\n*\s*(?:<SCRIPT[^>]*>.*?<\/SCRIPT>\s*\n*\s*)*(?=<BODY|\s*<BODY)/s';
+        if (preg_match($pattern3, $content)) {
+            $content = preg_replace($pattern3, $replacement, $content);
+            $updated = true;
+        }
+    }
+    
+    // Pattern 4: Header with PHP blocks mixed in
+    if (!$updated) {
+        $pattern4 = '/<!-- .*? - START -->.*?<HTML[^>]*>.*?<HEAD>.*?<\/HEAD>.*?(?:<SCRIPT[^>]*>.*?<\/SCRIPT>.*?)*(?=<BODY|\s*<BODY)/s';
+        if (preg_match($pattern4, $content)) {
+            $content = preg_replace($pattern4, $replacement, $content);
+            $updated = true;
+        }
     }
     
     // Write back if updated

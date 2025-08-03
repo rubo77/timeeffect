@@ -1,12 +1,22 @@
 <?php
-// Unified header include for all TimeEffect pages
-// Manages dynamic favicon, CSS, and common meta tags
+/**
+ * Unified header include for all TimeEffect pages
+ *
+ * This file manages dynamic favicon, CSS, and common meta tags
+ * for consistent header implementation across the application.
+ *
+ * @category Templates
+ * @package  TimeEffect
+ * @author   Ruben Barkow-Kuder <github@r.z11.de>
+ * @license  MIT License
+ * @link     https://github.com/rubo77/timeeffect
+ */
 
 // Get user theme preference for data-theme attribute
 $user_theme = 'system'; // default
-if(isset($_PJ_auth) && is_object($_PJ_auth) && method_exists($_PJ_auth, 'giveValue')) {
+if (isset($_PJ_auth) && is_object($_PJ_auth) && method_exists($_PJ_auth, 'giveValue')) {
     $theme_pref = $_PJ_auth->giveValue('theme_preference');
-    if(!empty($theme_pref)) {
+    if (!empty($theme_pref)) {
         $user_theme = $theme_pref;
     }
 }
@@ -26,14 +36,14 @@ if (isset($favicon)) {
     // Check for effort-related pages
     if (strpos($current_script, 'efforts.php') !== false) {
         // Check if it's a new effort page
-        if (strpos($query_string, 'action=new') !== false || 
-            strpos($query_string, 'action=add') !== false ||
-            (!isset($_REQUEST['eid']) && !isset($_REQUEST['action']))) {
+        if (strpos($query_string, 'action=new') !== false
+            || strpos($query_string, 'action=add') !== false
+            || (!isset($_REQUEST['eid']) && !isset($_REQUEST['action']))
+        ) {
             $favicon_path = $GLOBALS['_PJ_image_path'] . '/start.png';
-        }
-        // Check if it's a stop all page
-        elseif (strpos($query_string, 'stop_all=1') !== false || 
-                strpos($query_string, 'action=stop_all') !== false) {
+        } elseif (strpos($query_string, 'stop_all=1') !== false
+            || strpos($query_string, 'action=stop_all') !== false
+        ) { // Check if it's a stop all page
             $favicon_path = $GLOBALS['_PJ_image_path'] . '/stop.png';
         }
     }
@@ -41,13 +51,13 @@ if (isset($favicon)) {
     // Check for specific action parameters
     if (isset($_REQUEST['action'])) {
         switch ($_REQUEST['action']) {
-            case 'new':
-            case 'add':
-                $favicon_path = $GLOBALS['_PJ_image_path'] . '/start.png';
-                break;
-            case 'stop_all':
-                $favicon_path = $GLOBALS['_PJ_image_path'] . '/stop.png';
-                break;
+        case 'new':
+        case 'add':
+            $favicon_path = $GLOBALS['_PJ_image_path'] . '/start.png';
+            break;
+        case 'stop_all':
+            $favicon_path = $GLOBALS['_PJ_image_path'] . '/stop.png';
+            break;
         }
     }
     
@@ -87,19 +97,19 @@ $page_title = isset($center_title) ? $center_title : 'TimeEffect';
 <!-- JavaScript -->
 <script src="<?= $GLOBALS['_PJ_http_root'] ?>/include/functions.js" type="text/javascript"></script>
 
-<?php if (isset($additional_head_content)): ?>
-<!-- Additional head content -->
-<?= $additional_head_content ?>
+<?php if (isset($additional_head_content)) : ?>
+    <!-- Additional head content -->
+    <?= $additional_head_content ?>
 <?php endif; ?>
 </HEAD>
 
-<?php if (isset($body_attributes)): ?>
+<?php if (isset($body_attributes)) : ?>
 <BODY <?= $body_attributes ?>>
 <?php else: ?>
 <BODY>
 <?php endif; ?>
 
-<?php if ($user_theme !== 'system'): ?>
+<?php if ($user_theme !== 'system') : ?>
 <script>
 // Initialize user theme preference from PHP
 (function() {
@@ -111,7 +121,7 @@ $page_title = isset($center_title) ? $center_title : 'TimeEffect';
 </script>
 <?php endif; ?>
 
-<?php if (isset($additional_body_scripts)): ?>
-<!-- Additional body scripts -->
-<?= $additional_body_scripts ?>
+<?php if (isset($additional_body_scripts)) : ?>
+    <!-- Additional body scripts -->
+    <?= $additional_body_scripts ?>
 <?php endif; ?>
